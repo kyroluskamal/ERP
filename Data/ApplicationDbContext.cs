@@ -7,7 +7,7 @@ namespace ERP.Data
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(
-            DbContextOptions options) : base(options)
+            DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
     }

@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { LoginComponent } from '../login/login.component';
+import { OwnersLoginComponent } from '../../Owners/Components/owners-login/owners-login.component';
+import { RegisterComponent } from '../register/register.component';
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
@@ -16,6 +17,9 @@ export class NavBarComponent implements OnInit {
   }
 
   OnLoginClick() {
-    this.dialog.open(LoginComponent);
+    this.dialog.open(OwnersLoginComponent);
+  }
+  OnRegisterlick() {
+    this.dialog.open(RegisterComponent);
   }
 }

@@ -1,12 +1,21 @@
+using ERP.Areas.Owners.Data;
+using ERP.Areas.Owners.Models;
+using ERP.Areas.Owners.Models.Identity;
 using ERP.Data;
 using ERP.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using ERP.Areas.Owners.Interfaces;
+using ERP.Areas.Owners.Services;
+using System.Text;
 
 namespace ERP
 {
@@ -22,18 +31,42 @@ namespace ERP
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<ITokenService, TokenService>();
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer());
 
+            //Add Owner Identity DbContext
+            services.AddDbContext<OwnersDbContext>(options =>
+                options.UseSqlServer());
             services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddTransient<IRoleStore<OwnerRole>, OwnerRoleStore>();
+            services.AddTransient<UserManager<Owner>, OwnerUserManager>();
+            services.AddTransient<SignInManager<Owner>, OwnerSignInManager>();
+            services.AddTransient<RoleManager<OwnerRole>, OwnerRoleManager>();
+            services.AddTransient<IUserStore<Owner>, OwnerUserStore>();
+            services.AddIdentityCore<Owner>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<OwnersDbContext>()
+                .AddRoles<OwnerRole>().AddRoleManager<OwnerRoleManager>()
+                .AddRoleStore<OwnerRoleStore>().AddUserManager<OwnerUserManager>()
+                .AddUserStore<OwnerUserStore>()
+               .AddDefaultTokenProviders();
+            services.AddScoped<OwnerRoleStore>();
+            services.AddScoped<OwnerUserStore>();
 
+            //Add App DB Context
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-
-
-            services.AddAuthentication();
+            //Configure JWT Tokens
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options=> {
+                    options.TokenValidationParameters = new TokenValidationParameters {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"])),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
             services.AddControllersWithViews();
             services.AddRazorPages();
             // In production, the Angular files will be served from this directory
@@ -41,6 +74,7 @@ namespace ERP
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

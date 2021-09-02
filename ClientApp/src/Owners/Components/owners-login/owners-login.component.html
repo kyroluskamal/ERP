@@ -10,13 +10,13 @@
     <div mat-dialog-content>
       <mat-form-field appearance="outline" class="Width100">
         <mat-label>Email</mat-label>
-        <input matInput type="text" value="" required autocomplete="email username" formControlName="email"/>
+        <input matInput type="text" value="" required autocomplete="email username" formControlName="email" />
         <mat-icon matSuffix>email</mat-icon>
         <mat-hint align="end" *ngIf="!emailInput?.value">Enter your email</mat-hint>
       </mat-form-field>
       <mat-form-field appearance="outline" class="Width100">
         <mat-label>Password</mat-label>
-        <input matInput value="" autocomplete="current-password" [type]="hide ? 'password' : 'text'" formControlName="password" required/>
+        <input matInput value="" autocomplete="current-password" [type]="hide ? 'password' : 'text'" formControlName="password" required />
         <mat-icon matSuffix (click)="hide = !hide">{{hide? 'visibility' : 'visibility_off'}}</mat-icon>
         <mat-hint align="end" *ngIf="!passwordInput?.value">Enter your password</mat-hint>
       </mat-form-field>

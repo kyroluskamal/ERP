@@ -9,6 +9,8 @@ import { SharedModule } from '../SharedModules/shared/shared.module';
 import { NavBarComponent } from '../CommonComponents/nav-bar/nav-bar.component';
 import { LoginComponent } from '../CommonComponents/login/login.component';
 import { RegisterComponent } from '../CommonComponents/register/register.component';
+import { OwnersLoginComponent } from '../Owners/Components/owners-login/owners-login.component';
+import { OwnerRegisterComponent } from '../Owners/Components/owner-register/owner-register.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +18,8 @@ import { RegisterComponent } from '../CommonComponents/register/register.compone
     NavBarComponent,
     LoginComponent,
     RegisterComponent,
+    OwnersLoginComponent,
+    OwnerRegisterComponent,
     
   ],
   imports: [

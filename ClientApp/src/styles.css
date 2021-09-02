@@ -24,3 +24,28 @@ body {
 .pointerCursor{
     cursor: pointer;
 }
+.dialog-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;   
+}
+.mat-dialog-title {
+  width: 90%;
+  border-bottom: 2px solid black;
+  font-weight: bold !important;
+}
+form p{
+    margin-top:18px !important;
+}
+.subdomain {
+  /*width: 100%;*/
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-items: center;
+  
+}
+
+.Overflow-x-hidden {
+  overflow-x: hidden !important;
+}
