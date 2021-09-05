@@ -13,6 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.9" />
@@ -36,12 +37,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Owners\Interfaces\" />
     <Folder Include="Areas\Owners\Views\" />
     <Folder Include="Areas\Tenants\Controllers\" />
     <Folder Include="Areas\Tenants\Views\" />
+    <Folder Include="ClientApp\src\Client\Models\" />
+    <Folder Include="ClientApp\src\Client\Services\Authentication\" />
+    <Folder Include="ClientApp\src\CommonComponents\" />
     <Folder Include="ClientApp\src\CommonServices\TokenService\" />
-    <Folder Include="ClientApp\src\Models\Owners\" />
-    <Folder Include="Controllers\" />
     <Folder Include="Repositories\IRepository\" />
     <Folder Include="Repositories\Repository\" />
     <Folder Include="Utilities\Helpers\" />

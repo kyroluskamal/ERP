@@ -6,10 +6,11 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { CommonModule } from '@angular/common';
 
 const MaterialComponents = [
   MatButtonModule, MatToolbarModule,MatIconModule,MatDialogModule,
-  MatBottomSheetModule, MatInputModule, MatFormFieldModule
+  MatBottomSheetModule, MatInputModule, MatFormFieldModule, CommonModule
 ];
 @NgModule({
   declarations: [],

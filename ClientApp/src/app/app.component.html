@@ -1,14 +1,2 @@
-<!-- Toolbar -->
-<div class="toolbar" role="banner">
-  <app-nav-bar [apptitle] ="title"></app-nav-bar>
-</div>
-
-<div class="content" role="main">
-  works
-  <!-- Footer -->
-  <footer>
-     
-  </footer>
-</div>
-
-<router-outlet></router-outlet>
+<app-owner-main [apptitle]="title" *ngIf="IsOwnerRoute"></app-owner-main>
+<app-client-main [apptitle]="title" *ngIf="IsOwnerRoute === false"></app-client-main>

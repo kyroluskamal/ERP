@@ -1,6 +1,7 @@
 ﻿using ERP.Areas.Owners.Data;
-using ERP.Areas.Owners.Interfaces;
 using ERP.Areas.Owners.Models;
+using ERP.Areas.Owners.Models.Identity;
+using ERP.Utilities.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -15,11 +16,11 @@ namespace ERP.Areas.Owners.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        public UserManager<Owner> OwnerManager { get; set; }
+        public OwnerUserManager OwnerManager { get; set; }
         public ITokenService TokenService { get; }
         public OwnersDbContext OwnersDbContext { get; set; }
-        public AccountController(OwnersDbContext OwnersDbContext, 
-            UserManager<Owner> OwnerManager, ITokenService TokenService)
+        public AccountController(OwnersDbContext OwnersDbContext,
+            OwnerUserManager OwnerManager, ITokenService TokenService)
         {
             this.OwnersDbContext = OwnersDbContext;
             this.OwnerManager = OwnerManager;
@@ -50,9 +51,10 @@ namespace ERP.Areas.Owners.Controllers
                 var result = await OwnerManager.CreateAsync(Owner, Register.Password);
                 if (result.Succeeded)
                 {
-                    return new OwnerWithToken {
-                        Owner = Owner,
-                        Token = TokenService.CreateToken(Owner)
+                    return new OwnerWithToken
+                    {
+                        Username = Owner.UserName,
+                        Token = TokenService.CreateOwnerToken(Owner)
                     };
                 }
                 return null;

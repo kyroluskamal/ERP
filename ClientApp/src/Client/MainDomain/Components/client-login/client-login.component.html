@@ -1,0 +1,39 @@
+<form [formGroup]="loginForm">
+  <div class="form-container">
+    <div class="dialog-header">
+      <h2 mat-dialog-title>
+        Login
+      </h2>
+      <mat-icon tabindex="-1" class="pointerCursor closeIcon float-right" matRipple (click)="Close()">close</mat-icon>
+    </div>
+    <!------------------------Mat-Dialog-CONTENT--------------------------->
+    <div mat-dialog-content>
+      <mat-form-field appearance="outline" class="Width100">
+        <mat-label>Email</mat-label>
+        <input matInput type="text" value="" required autocomplete="email username" formControlName="email" />
+        <mat-icon matSuffix>email</mat-icon>
+        <mat-hint align="end" *ngIf="!emailInput?.value">Enter your email</mat-hint>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="Width100">
+        <mat-label>Password</mat-label>
+        <input matInput value="" autocomplete="current-password" [type]="hide ? 'password' : 'text'" formControlName="password" required />
+        <mat-icon matSuffix (click)="hide = !hide">{{hide? 'visibility' : 'visibility_off'}}</mat-icon>
+        <mat-hint align="end" *ngIf="!passwordInput?.value">Enter your password</mat-hint>
+      </mat-form-field>
+    </div>
+    <!-- Fogrget Password -->
+    <a href="#">Forget password?</a>
+    <!------------------------Mat-Dialog-actions--------------------------->
+    <div mat-dialog-actions>
+      <button mat-raised-button color="primary" class="Width100" aria-label="press to login">
+        <mat-icon>login</mat-icon>
+        Login
+      </button>
+      <!--<button mat-raised-button color="warn" aria-label="cancel login dialog">
+        <mat-icon>cancel</mat-icon>Cancel
+      </button>-->
+    </div>
+    <!--End Mat-Dialog-actions-->
+  </div>
+  <p>Don't have Account?' <a href="#">Create one</a></p>
+</form>

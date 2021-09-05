@@ -3,6 +3,7 @@ using ERP.Areas.Owners.Models;
 using ERP.Areas.Owners.Models.Identity;
 using ERP.Data;
 using ERP.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -11,11 +12,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using ERP.Areas.Owners.Interfaces;
-using ERP.Areas.Owners.Services;
 using System.Text;
+using ERP.Data.Identity;
+using ERP.Areas.Tenants.Data;
+using ERP.Areas.Tenants.Services;
+using Microsoft.AspNetCore.Http;
+using ERP.Utilities.Services;
 
 namespace ERP
 {
@@ -31,10 +34,13 @@ namespace ERP
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<TenantProvider>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<ITokenService, TokenService>();
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer());
-
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseSqlServer());
+            services.AddEntityFrameworkSqlServer().AddDbContext<OwnersDbContext>(options =>
+                    options.UseSqlServer());
             //Add Owner Identity DbContext
             services.AddDbContext<OwnersDbContext>(options =>
                 options.UseSqlServer());
@@ -50,17 +56,41 @@ namespace ERP
                 .AddRoleStore<OwnerRoleStore>().AddUserManager<OwnerUserManager>()
                 .AddUserStore<OwnerUserStore>()
                .AddDefaultTokenProviders();
+            
             services.AddScoped<OwnerRoleStore>();
             services.AddScoped<OwnerUserStore>();
 
             //Add App DB Context
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseSqlServer());
+            services.AddEntityFrameworkSqlServer().AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer());
+            //services.AddScoped<IRoleStore<ApplicationUserRole>, ApplicationUserRoleStore>();
+            //services.AddScoped<UserManager<ApplicationUser>, ApplicationUserManager>();
+            //services.AddScoped<SignInManager<ApplicationUser>, ApplicationUserSignIngManager>();
+            //services.AddScoped<RoleManager<ApplicationUserRole>, ApplicationUserRoleManager>();
+            ////services.AddScoped<IUserStore<ApplicationUser>, ApplicationUserStore>();
+            //services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //    .AddEntityFrameworkStores<ApplicationDbContext>()
+            //    .AddRoles<ApplicationUserRole>().AddRoleManager<ApplicationUserRoleManager>()
+            //    .AddRoleStore<ApplicationUserRoleStore>().AddUserManager<ApplicationUserManager>()
+            //    .AddUserStore<ApplicationUserStore>()
+            //   .AddDefaultTokenProviders();
+
+            //services.AddScoped<ApplicationUserRoleStore>();
+            //services.AddScoped<ApplicationUserStore>();
+            //Add TenantDB
+            services.AddDbContext<TenantsDbContext>(options =>
+                    options.UseSqlServer()).AddEntityFrameworkSqlServer();
 
             //Configure JWT Tokens
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options=> {
-                    options.TokenValidationParameters = new TokenValidationParameters {
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"])),
                         ValidateIssuer = false,
@@ -70,11 +100,7 @@ namespace ERP
             services.AddControllersWithViews();
             services.AddRazorPages();
             // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/dist";
-            });
-            
+            services.AddSpaStaticFiles(configuration => configuration.RootPath = "ClientApp/dist");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -108,6 +134,10 @@ namespace ERP
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "areas",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+          );
                 endpoints.MapRazorPages();
             });
 

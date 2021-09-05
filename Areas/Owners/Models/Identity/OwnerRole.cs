@@ -4,5 +4,8 @@ namespace ERP.Areas.Owners.Models.Identity
 {
     public class OwnerRole : IdentityRole<string>
     {
+        public OwnerRole()
+        {
+        }
     }
 }

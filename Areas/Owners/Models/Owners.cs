@@ -2,7 +2,7 @@
 
 namespace ERP.Areas.Owners.Models
 {
-    public class Owner : IdentityUser<string>
+    public class Owner : IdentityUser
     {
     }
 }
