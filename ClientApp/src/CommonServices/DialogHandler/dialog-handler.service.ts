@@ -31,7 +31,14 @@ export class DialogHandlerService {
   OpenClientLoginDialog() {
     this.Dialog.open(ClientLoginComponent);
   }
-
+  CLoseRegisterThenOpen_Client_LoginDialog() {
+    this.CloseDialog();
+    this.OpenClientLoginDialog();
+  }
+  CLoseRegisterThenOpen_Owner_LoginDialog() {
+    this.CloseDialog();
+    this.OpenOwnerLoginDialog();
+  }
   CloseDialog() {
     this.Dialog.closeAll();
   }

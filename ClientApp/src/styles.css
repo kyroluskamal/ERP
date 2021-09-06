@@ -65,13 +65,40 @@ form p{
 }
 
 .closeIcon {
-  border: 2px solid;
+  border: 2px solid black !important;
+  color: black !important;
 }
-.closeIcon:hover{
-  border: 2px solid;
-  background-color: black;
-  color:white;
+  .closeIcon:hover {
+    border: 2px solid black !important;
+    background-color: black !important;
+    color: white !important;
+    cursor: pointer !important;
+  }
+
+.valid-green, .ng-valid div {
+  color: #009e08 !important;
+}
+
+.password>div .mat-form-field-subscript-wrapper{
+    position:relative !important;
+}
+.mat-dialog-title{
+    color:black !important;
+}
+.buttonLink {
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  color: #1a73e8;
+  display: inline-block;
+  font-weight: 500;
+  letter-spacing: .25px;
+  outline: 0;
+  position: relative;
+  background-color: transparent;
   cursor: pointer;
+  font-size: inherit;
+  padding: 0;
+  text-align: left;
+  border: 0;
+  font-weight:bold;
 }
-
-

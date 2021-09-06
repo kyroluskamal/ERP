@@ -17,7 +17,7 @@
       <mat-form-field appearance="outline" class="Width100">
         <mat-label>Password</mat-label>
         <input matInput value="" autocomplete="current-password" [type]="hide ? 'password' : 'text'" formControlName="password" required />
-        <mat-icon matSuffix (click)="hide = !hide">{{hide? 'visibility' : 'visibility_off'}}</mat-icon>
+        <mat-icon matSuffix class="pointerCursor" (click)="hide = !hide">{{hide? 'visibility' : 'visibility_off'}}</mat-icon>
         <mat-hint align="end" *ngIf="!passwordInput?.value">Enter your password</mat-hint>
       </mat-form-field>
     </div>
