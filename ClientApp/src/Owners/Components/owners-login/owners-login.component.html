@@ -14,6 +14,7 @@
         <mat-label [ngClass]="ValidationErrorMessage.getFormControl('Email', loginForm).valid?
                    'valid-green':''">Email</mat-label>
         <input matInput type="email" value="" formControlName="Email"
+               [errorStateMatcher]="customErrorStateMatcher"
                [ngClass]="loginForm.get('Email')?.valid? 'valid-color':''" />
         <mat-icon matSuffix>email</mat-icon>
         <mat-hint align="end" *ngIf="ValidationErrorMessage.getFormControl('Email', loginForm).invalid
@@ -29,6 +30,7 @@
                       ValidationErrorMessage.getFormControl('Password', loginForm).value? 'password':''">
         <mat-label [ngClass]="ValidationErrorMessage.getFormControl('Password', loginForm).valid? 'valid-green':''">Password</mat-label>
         <input matInput value="" autocomplete="current-password"
+               [errorStateMatcher]="customErrorStateMatcher"
                [type]="passwordHide ? 'password' : 'text'"
                formControlName="Password" /><!-- Input -->
         <mat-icon matSuffix class="pointerCursor"

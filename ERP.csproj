@@ -45,9 +45,10 @@
     <Folder Include="ClientApp\src\Client\Services\Authentication\" />
     <Folder Include="ClientApp\src\CommonServices\NotificationService\" />
     <Folder Include="ClientApp\src\CommonServices\TokenService\" />
+    <Folder Include="ClientApp\src\Helpers\CustomErrorStateMatcher\" />
     <Folder Include="ClientApp\src\Interceptors\ErrorHandling\" />
-    <Folder Include="Repositories\IRepository\" />
-    <Folder Include="Repositories\Repository\" />
+    <Folder Include="UnitOfWork\IRepository\" />
+    <Folder Include="UnitOfWork\Repository\" />
     <Folder Include="Utilities\Helpers\" />
   </ItemGroup>
 

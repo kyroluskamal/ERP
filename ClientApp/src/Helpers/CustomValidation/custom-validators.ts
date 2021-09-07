@@ -35,6 +35,7 @@ export class CustomValidators {
       case "Email": {
         if (errorType == "required") return "<strong>Email</strong> is required";
         if (errorType == "email") return "You have to <strong>enter valid Email</strong>";
+        if (errorType == "pattern") return "You have to <strong>enter valid Email</strong>";
         break;
       }
       case "Password": {

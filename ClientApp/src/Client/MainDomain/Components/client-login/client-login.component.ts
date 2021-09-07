@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
 import { ValidationErrorMessagesService } from '../../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
+import { CustomErrorStateMatcher } from '../../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
 
 @Component({
   selector: 'app-client-login',
@@ -10,7 +11,8 @@ import { ValidationErrorMessagesService } from '../../../../CommonServices/Valid
 })
 export class ClientLoginComponent implements OnInit {
   loginForm:FormGroup = new FormGroup({});
-  
+  customErrorStateMatcher: CustomErrorStateMatcher = new CustomErrorStateMatcher()
+
   passwordHide: boolean = true;
 
   constructor(public formBuilder: FormBuilder,

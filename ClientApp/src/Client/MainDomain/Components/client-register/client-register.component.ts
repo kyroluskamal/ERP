@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
 import { ValidationErrorMessagesService } from '../../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
+import { CustomErrorStateMatcher } from '../../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
 import { CustomValidators } from '../../../../Helpers/CustomValidation/custom-validators';
 import { ClientRegister } from '../../../Models/client-register.model';
 import { ClientAuthenticationService } from '../../../Services/Authentication/client-authentication.service';
@@ -16,6 +17,7 @@ export class ClientRegisterComponent implements OnInit {
   confirmPasswordHide: boolean = true;
   RegisterForm: FormGroup = new FormGroup({});
   ValidationErrors: string[] = [];
+  customErrorStateMatcher: CustomErrorStateMatcher= new CustomErrorStateMatcher()
 
   constructor(public ClientAuth: ClientAuthenticationService,
     public formBuilder: FormBuilder,
@@ -28,7 +30,7 @@ export class ClientRegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.RegisterForm = this.formBuilder.group({
-      Email: [null, [Validators.required, Validators.email, Validators.pattern(/.+@.+\..+/)]],
+      Email: [null, [Validators.required, Validators.email, CustomValidators.patternValidator(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, { pattern: true })]],
       Password: [null, Validators.compose([
         Validators.required,
         CustomValidators.patternValidator(/\d/, { hasNumber: true }),
@@ -40,10 +42,9 @@ export class ClientRegisterComponent implements OnInit {
       ConfirmPassword: [null, [Validators.required]],
       CompanyName: [null, [Validators.required]],
       Subdomain: [null, [Validators.required]],
-      Username: [null/*, [Validators.required]*/]
+      Username: [null, [Validators.required]]
     },
       {
-        // check whether our password and confirm password match
         validator: CustomValidators.passwordMatchValidator
       });
   }
