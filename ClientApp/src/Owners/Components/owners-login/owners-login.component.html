@@ -8,21 +8,29 @@
     </div>
     <!------------------------Mat-Dialog-CONTENT--------------------------->
     <div mat-dialog-content>
+      <!-- Email -->
       <mat-form-field appearance="outline" class="Width100">
-        <mat-label>Email</mat-label>
-        <input matInput type="text" value="" required autocomplete="email username" formControlName="email" />
+        <mat-label [ngClass]="ValidationErrorMessage.getFormControl('Email', loginForm).valid? 'valid-green':''">Email</mat-label>
+        <input matInput type="email" value="" formControlName="Email" [ngClass]="loginForm.get('Email')?.valid? 'valid-color':''" />
         <mat-icon matSuffix>email</mat-icon>
-        <mat-hint align="end" *ngIf="!loginForm.get('email')?.value">Enter your email</mat-hint>
+        <mat-hint align="end" *ngIf="ValidationErrorMessage.getFormControl('Email', loginForm).invalid || !ValidationErrorMessage.getFormControl('Email', loginForm).value">Enter your email</mat-hint>
+        <mat-error *ngIf="ValidationErrorMessage.getFormControl('Email', loginForm).hasError('required')"
+                   [innerHtml]="ValidationErrorMessage.getErrorMessage('Email', 'required')"></mat-error>
+        <mat-error *ngIf="ValidationErrorMessage.getFormControl('Email', loginForm).hasError('email')"
+                   [innerHtml]="ValidationErrorMessage.getErrorMessage('Email', 'email')"></mat-error>
       </mat-form-field>
-      <mat-form-field appearance="outline" class="Width100">
-        <mat-label>Password</mat-label>
-        <input matInput value="" autocomplete="current-password" [type]="hide ? 'password' : 'text'" formControlName="password" required />
-        <mat-icon matSuffix (click)="hide = !hide">{{hide? 'visibility' : 'visibility_off'}}</mat-icon>
-        <mat-hint align="end" *ngIf="!loginForm.get('password')?.value">Enter your password</mat-hint>
+      <!-- Password -->
+      <mat-form-field appearance="outline" class="Width100" [ngClass]="ValidationErrorMessage.getFormControl('Password', loginForm).invalid&&ValidationErrorMessage.getFormControl('Password', loginForm).value? 'password':''">
+        <mat-label [ngClass]="ValidationErrorMessage.getFormControl('Password', loginForm).valid? 'valid-green':''">Password</mat-label>
+        <input matInput value="" autocomplete="current-password" [type]="passwordHide ? 'password' : 'text'" formControlName="Password" /><!-- Input -->
+        <mat-icon matSuffix class="pointerCursor" (click)="passwordHide = !passwordHide">{{passwordHide? 'visibility' : 'visibility_off'}}</mat-icon>
+        <mat-hint align="end" *ngIf="ValidationErrorMessage.getFormControl('Password', loginForm).invalid || !ValidationErrorMessage.getFormControl('Password', loginForm).value">Enter your password</mat-hint>
+        <mat-error *ngIf="ValidationErrorMessage.getFormControl('Password', loginForm).hasError('required')"
+                   [innerHtml]="ValidationErrorMessage.getErrorMessage('Password', 'required')"></mat-error>
       </mat-form-field>
     </div>
     <!-- Fogrget Password -->
-    <a href="#">Forget password?</a>
+    <button class="buttonLink">Forget password?</button>
     <!------------------------Mat-Dialog-actions--------------------------->
     <div mat-dialog-actions>
       <button mat-raised-button color="primary" class="Width100" aria-label="press to login">
@@ -35,5 +43,8 @@
     </div>
     <!--End Mat-Dialog-actions-->
   </div>
-  <p>Don't have Account?' <a href="#">Create one</a></p>
+  <p>Don't have Account?' <button class="buttonLink" (click)="dialogHandler.CloseDialog();
+    dialogHandler.OpenOwnerRegisterDialog();">
+  Create one
+</button></p>
 </form>

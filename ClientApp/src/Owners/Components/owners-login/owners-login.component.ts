@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { DialogHandlerService } from '../../../CommonServices/DialogHandler/dialog-handler.service';
+import { ValidationErrorMessagesService } from '../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
 
 @Component({
   selector: 'app-owners-login',
@@ -8,15 +9,18 @@ import { DialogHandlerService } from '../../../CommonServices/DialogHandler/dial
   styleUrls: ['./owners-login.component.css']
 })
 export class OwnersLoginComponent implements OnInit {
-  hide: boolean = true;
-  loginForm = new FormGroup({
-    email: new FormControl('', [Validators.email, Validators.required]),
-    password: new FormControl('', [Validators.required, Validators.min(3)])
-  });
-  
+  passwordHide: boolean = true;
+  loginForm = new FormGroup({});
 
-  constructor(public dialogHandler: DialogHandlerService) {
+  constructor(public formBuilder: FormBuilder,
+    public dialogHandler: DialogHandlerService,
+    public ValidationErrorMessage: ValidationErrorMessagesService) {
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.loginForm = this.formBuilder.group({
+      Email: [null, [Validators.email, Validators.required]],
+      Password: [null, [Validators.required]]
+    });
+  }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
+import { ValidationErrorMessagesService } from '../../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
 
 @Component({
   selector: 'app-client-login',
@@ -8,23 +9,19 @@ import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/d
   styleUrls: ['./client-login.component.css']
 })
 export class ClientLoginComponent implements OnInit {
+  loginForm:FormGroup = new FormGroup({});
+  
+  passwordHide: boolean = true;
 
-  loginForm = new FormGroup({
-    email: new FormControl('', [Validators.email, Validators.required]),
-    password: new FormControl('', [Validators.required, Validators.min(3)])
-  });
-  hide: boolean = true;
-
-  constructor(public dialogHandler: DialogHandlerService) {
+  constructor(public formBuilder: FormBuilder,
+    public dialogHandler: DialogHandlerService,
+    public ValidationErrorMessage: ValidationErrorMessagesService) {
   }
 
-  ngOnInit(): void { }
-
-  get emailInput() { return this.loginForm.get('email'); }
-  get passwordInput() { return this.loginForm.get('password'); }
-
-  Close() {
-    this.dialogHandler.CloseDialog();
+  ngOnInit(): void {
+    this.loginForm = this.formBuilder.group({
+      Email: [null, [Validators.email, Validators.required]],
+      Password: [null, [Validators.required]]
+    });
   }
-
 }
