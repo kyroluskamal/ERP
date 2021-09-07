@@ -9,7 +9,7 @@ import { DialogHandlerService } from '../../../CommonServices/DialogHandler/dial
 export class OwnerNavBarComponent implements OnInit {
   constructor(public dialogHandler: DialogHandlerService, public bottomSheet: MatBottomSheet) { }
 
-  @Input("TitleInNave") title: string = "";
+  @Input("apptitle") title: string = "";
   ngOnInit(): void {
   }
 

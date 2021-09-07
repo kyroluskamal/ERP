@@ -102,3 +102,52 @@ form p{
   border: 0;
   font-weight:bold;
 }
+.Error-Notification{
+    background-color: red;
+    color:white;
+}
+.ValidationErrors>ul{
+    color:red !important;
+}
+.alert {
+  position: relative;
+  padding: .75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+}
+.alert-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    width: 970px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    width: 1170px;
+  }
+}
+.text-danger {
+  color: #a94442;
+}
+.marginTop-5{
+    margin-top:5px;
+}

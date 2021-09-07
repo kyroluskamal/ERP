@@ -9,6 +9,7 @@ import { ClientRegisterComponent } from './MainDomain/Components/client-register
 import { ClientLoginComponent } from './MainDomain/Components/client-login/client-login.component';
 import { ClientMainDomainComponent } from './MainDomain/Components/client-main-domain/client-main-domain.component';
 import { ClientMainDomainNavBarComponent } from './MainDomain/Components/client-main-domain-nav-bar/client-main-domain-nav-bar.component';
+import { NotFoundComponent } from '../CommonComponents/not-found/not-found.component';
 
 const Commponents = [
   ClientRegisterComponent, ClientLoginComponent, ClientMainComponent, ClientMainDomainComponent,

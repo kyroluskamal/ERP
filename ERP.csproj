@@ -43,8 +43,9 @@
     <Folder Include="Areas\Tenants\Views\" />
     <Folder Include="ClientApp\src\Client\Models\" />
     <Folder Include="ClientApp\src\Client\Services\Authentication\" />
-    <Folder Include="ClientApp\src\CommonComponents\" />
+    <Folder Include="ClientApp\src\CommonServices\NotificationService\" />
     <Folder Include="ClientApp\src\CommonServices\TokenService\" />
+    <Folder Include="ClientApp\src\Interceptors\ErrorHandling\" />
     <Folder Include="Repositories\IRepository\" />
     <Folder Include="Repositories\Repository\" />
     <Folder Include="Utilities\Helpers\" />

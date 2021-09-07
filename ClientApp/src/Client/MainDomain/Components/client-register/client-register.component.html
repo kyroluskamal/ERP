@@ -1,28 +1,41 @@
 <form [formGroup]="RegisterForm">
   <div class="form-container">
+    
     <div class="dialog-header">
       <h2 mat-dialog-title>
         Create account
       </h2>
-      <mat-icon tabindex="-1" class="closeIcon pointerCursor float-right" matRipple (click)="dialogHandler.CloseDialog()">close</mat-icon>
+      
+      <mat-icon tabindex="-1" class="closeIcon pointerCursor float-right"
+                matRipple (click)="dialogHandler.CloseDialog()">close</mat-icon>
     </div>
     <!------------------------Mat-Dialog-CONTENT--------------------------->
     <div mat-dialog-content class="Overflow-x-hidden">
+      <mat-error class="alert alert-danger" *ngIf="ValidationErrors.length>0">
+        <p>Please Correct the following errors</p>
+        <ul>
+          <li *ngFor="let error of ValidationErrors">{{error}}</li>
+        </ul>
+      </mat-error>
       <!-- Username -->
       <mat-form-field appearance="outline" class="Width100">
-        <mat-label [ngClass]="ValidationErrorMessage.getFormControl('Username', RegisterForm).valid? 'valid-green':''">Username</mat-label>
+        <mat-label [ngClass]="ValidationErrorMessage.getFormControl('Username', RegisterForm).valid?
+                   'valid-green':''">Username</mat-label>
         <input matInput type="text" value="" formControlName="Username" />
         <mat-icon matSuffix>person</mat-icon>
         <mat-hint align="end">Enter your username</mat-hint>
-        <mat-error *ngIf="ValidationErrorMessage.getFormControl('Username', RegisterForm).hasError('required')"
-                   [innerHtml]="ValidationErrorMessage.getErrorMessage('Username', 'required')"></mat-error>
+        <!--<mat-error *ngIf="ValidationErrorMessage.getFormControl('Username', RegisterForm).hasError('required')"
+             [innerHtml]="ValidationErrorMessage.getErrorMessage('Username', 'required')"></mat-error>-->
       </mat-form-field>
       <!-- Email -->
       <mat-form-field appearance="outline" class="Width100">
         <mat-label [ngClass]="ValidationErrorMessage.getFormControl('Email', RegisterForm).valid? 'valid-green':''">Email</mat-label>
-        <input matInput type="email" value="" formControlName="Email" [ngClass]="RegisterForm.get('Email')?.valid? 'valid-color':''" />
+        <input matInput type="email" value="" formControlName="Email"
+               [ngClass]="RegisterForm.get('Email')?.valid? 'valid-color':''" />
         <mat-icon matSuffix>email</mat-icon>
-        <mat-hint align="end" *ngIf="ValidationErrorMessage.getFormControl('Email', RegisterForm).invalid || !ValidationErrorMessage.getFormControl('Email', RegisterForm).value">Enter your email</mat-hint>
+        <mat-hint align="end"
+                  *ngIf="ValidationErrorMessage.getFormControl('Email', RegisterForm).invalid
+                  || !ValidationErrorMessage.getFormControl('Email', RegisterForm).value">Enter your email</mat-hint>
         <mat-error *ngIf="ValidationErrorMessage.getFormControl('Email', RegisterForm).hasError('required')"
                    [innerHtml]="ValidationErrorMessage.getErrorMessage('Email', 'required')"></mat-error>
         <mat-error *ngIf="ValidationErrorMessage.getFormControl('Email', RegisterForm).hasError('email')"
@@ -30,7 +43,8 @@
       </mat-form-field>
       <!-- Company name -->
       <mat-form-field appearance="outline" class="Width100">
-        <mat-label [ngClass]="ValidationErrorMessage.getFormControl('CompanyName', RegisterForm).valid? 'valid-green':''">Company name</mat-label>
+        <mat-label [ngClass]="ValidationErrorMessage.getFormControl('CompanyName', RegisterForm).valid?
+                   'valid-green':''">Company name</mat-label>
         <input matInput type="text" value="" formControlName="CompanyName" />
         <mat-icon matSuffix>business</mat-icon>
         <mat-hint align="end">Enter your company name</mat-hint>
@@ -42,7 +56,8 @@
         <p>https://</p>
         <div>
           <mat-form-field appearance="outline" class="Width100">
-            <mat-label [ngClass]="ValidationErrorMessage.getFormControl('Subdomain', RegisterForm).valid? 'valid-green':''">You company name</mat-label>
+            <mat-label [ngClass]="ValidationErrorMessage.getFormControl('Subdomain', RegisterForm).valid?
+                       'valid-green':''">You company name</mat-label>
             <input matInput type="email" value="" formControlName="Subdomain" />
             <mat-hint align="end">Enter your subdomain</mat-hint>
             <mat-error *ngIf="ValidationErrorMessage.getFormControl('Subdomain', RegisterForm).hasError('required')"
@@ -52,11 +67,22 @@
         <p>.kh-erp.com</p>
       </div>
       <!-- Password -->
-      <mat-form-field appearance="outline" class="Width100" [ngClass]="ValidationErrorMessage.getFormControl('Password', RegisterForm).invalid&&ValidationErrorMessage.getFormControl('Password', RegisterForm).value? 'password':''">
-        <mat-label [ngClass]="ValidationErrorMessage.getFormControl('Password', RegisterForm).valid? 'valid-green':''">Password</mat-label>
-        <input matInput value="" autocomplete="current-password" [type]="passwordHide ? 'password' : 'text'" formControlName="Password" /><!-- Input -->
-        <mat-icon matSuffix class="pointerCursor" (click)="passwordHide = !passwordHide">{{passwordHide? 'visibility' : 'visibility_off'}}</mat-icon>
-        <mat-hint align="end" *ngIf="ValidationErrorMessage.getFormControl('Password', RegisterForm).invalid || !ValidationErrorMessage.getFormControl('Password', RegisterForm).value">Enter your password</mat-hint>
+      <mat-form-field appearance="outline" class="Width100"
+                      [ngClass]="ValidationErrorMessage.getFormControl('Password', RegisterForm).invalid
+                      &&ValidationErrorMessage.getFormControl('Password', RegisterForm).value? 'password':''">
+        <mat-label [ngClass]="ValidationErrorMessage.getFormControl('Password', RegisterForm).valid?
+                   'valid-green':''">Password</mat-label>
+        <input matInput value=""
+               autocomplete="current-password"
+               [type]="passwordHide ? 'password' : 'text'"
+               formControlName="Password" /><!-- Input -->
+        <mat-icon matSuffix class="pointerCursor"
+                  (click)="passwordHide = !passwordHide">
+          {{passwordHide? 'visibility' : 'visibility_off'}}
+        </mat-icon>
+        <mat-hint align="end"
+                  *ngIf="ValidationErrorMessage.getFormControl('Password', RegisterForm).invalid
+                  || !ValidationErrorMessage.getFormControl('Password', RegisterForm).value">Enter your password</mat-hint>
         <mat-error *ngIf="ValidationErrorMessage.getFormControl('Password', RegisterForm).hasError('required')"
                    [innerHtml]="ValidationErrorMessage.getErrorMessage('Password', 'required')"></mat-error>
         <mat-error *ngIf="ValidationErrorMessage.getFormControl('Password', RegisterForm).hasError('hasNumber')"
@@ -72,9 +98,14 @@
       </mat-form-field>
       <!-- confirm password -->
       <mat-form-field appearance="outline" class="Width100">
-        <mat-label [ngClass]="ValidationErrorMessage.getFormControl('ConfirmPassword', RegisterForm).valid? 'valid-green':''">Confirm Password</mat-label>
-        <input matInput value="" [type]="confirmPasswordHide ? 'password' : 'text'" formControlName="ConfirmPassword" /><!-- Input -->
-        <mat-icon matSuffix class="pointerCursor" (click)="confirmPasswordHide = !confirmPasswordHide">{{confirmPasswordHide? 'visibility' : 'visibility_off'}}</mat-icon>
+        <mat-label [ngClass]="ValidationErrorMessage.getFormControl('ConfirmPassword', RegisterForm).valid?
+                   'valid-green':''">Confirm Password</mat-label>
+        <input matInput value="" [type]="confirmPasswordHide ? 'password' : 'text'"
+               formControlName="ConfirmPassword" /><!-- Input -->
+        <mat-icon matSuffix class="pointerCursor"
+                  (click)="confirmPasswordHide = !confirmPasswordHide">
+          {{confirmPasswordHide? 'visibility' : 'visibility_off'}}
+        </mat-icon>
         <mat-hint align="end">Enter your password again</mat-hint>
         <mat-error *ngIf="ValidationErrorMessage.getFormControl('ConfirmPassword', RegisterForm).hasError('required')"
                    [innerHtml]="ValidationErrorMessage.getErrorMessage('ConfirmPassword', 'required')"></mat-error>
@@ -89,11 +120,12 @@
         Create Account
       </button>
       <!--<button mat-raised-button color="warn" aria-label="cancel login dialog">
-        <mat-icon>cancel</mat-icon>Cancel
-      </button>-->
+      <mat-icon>cancel</mat-icon>Cancel
+    </button>-->
     </div>
     <!--End Mat-Dialog-actions-->
   </div>
-  <p>Already have Account?' <button class="buttonLink" (click)="dialogHandler.CLoseRegisterThenOpen_Client_LoginDialog()">Login</button></p>
+  <p>Already have Account?' <button class="buttonLink"
+                                    (click)="dialogHandler.CLoseRegisterThenOpen_Client_LoginDialog()">Login</button></p>
 </form>
 {{RegisterForm.value | json}}

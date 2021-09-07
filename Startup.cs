@@ -19,6 +19,7 @@ using ERP.Areas.Tenants.Data;
 using ERP.Areas.Tenants.Services;
 using Microsoft.AspNetCore.Http;
 using ERP.Utilities.Services;
+using API.Middleware.ErrorsHandling;
 
 namespace ERP
 {
@@ -83,7 +84,7 @@ namespace ERP
             //services.AddScoped<ApplicationUserStore>();
             //Add TenantDB
             services.AddDbContext<TenantsDbContext>(options =>
-                    options.UseSqlServer()).AddEntityFrameworkSqlServer();
+                    options.UseSqlServer())/*.AddEntityFrameworkSqlServer()*/;
 
             //Configure JWT Tokens
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -106,17 +107,18 @@ namespace ERP
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseMigrationsEndPoint();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+            app.UseMiddleware<ExceptionMiddleware>();
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //    app.UseMigrationsEndPoint();
+            //}
+            //else
+            //{
+            //    app.UseExceptionHandler("/Error");
+            //    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            //    app.UseHsts();
+            //}
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

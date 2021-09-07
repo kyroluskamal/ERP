@@ -8,10 +8,14 @@ import { Component, Input, OnInit } from '@angular/core';
 export class ClientMainComponent implements OnInit {
   subdomain: string = "";
   @Input("apptitle") title: string = "";
-  constructor() { }
+  
+  constructor() {
+  }
 
   ngOnInit(): void {
+   
     this.subdomain = window.location.href.split("kherp.com")[0].split("https://")[1].split(".")[0];
+
   }
 
 }

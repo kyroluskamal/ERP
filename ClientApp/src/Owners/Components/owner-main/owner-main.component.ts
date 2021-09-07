@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-owner-main',
@@ -8,7 +9,8 @@ import { Component, Input, OnInit } from '@angular/core';
 export class OwnerMainComponent implements OnInit {
   @Input("apptitle") title: string = "";
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }

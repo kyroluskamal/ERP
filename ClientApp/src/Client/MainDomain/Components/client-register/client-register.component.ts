@@ -15,6 +15,8 @@ export class ClientRegisterComponent implements OnInit {
   passwordHide: boolean = true;
   confirmPasswordHide: boolean = true;
   RegisterForm: FormGroup = new FormGroup({});
+  ValidationErrors: string[] = [];
+
   constructor(public ClientAuth: ClientAuthenticationService,
     public formBuilder: FormBuilder,
     public dialogHandler: DialogHandlerService,
@@ -38,7 +40,7 @@ export class ClientRegisterComponent implements OnInit {
       ConfirmPassword: [null, [Validators.required]],
       CompanyName: [null, [Validators.required]],
       Subdomain: [null, [Validators.required]],
-      Username: [null, [Validators.required]]
+      Username: [null/*, [Validators.required]*/]
     },
       {
         // check whether our password and confirm password match
@@ -50,9 +52,11 @@ export class ClientRegisterComponent implements OnInit {
       (response) => {
         this.clientWithToken = response;
         console.log(response);
+        this.ValidationErrors = [];
       },
       (error) => {
-        console.log(error);
+        console.log("This erorr" + error);
+        this.ValidationErrors = error;
       }
     );
   }

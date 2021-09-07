@@ -4,27 +4,37 @@
       <h2 mat-dialog-title>
         Login
       </h2>
-      <mat-icon tabindex="-1" class="pointerCursor closeIcon float-right" matRipple (click)="dialogHandler.CloseDialog()">close</mat-icon>
+      <mat-icon tabindex="-1" class="pointerCursor closeIcon float-right"
+                matRipple (click)="dialogHandler.CloseDialog()">close</mat-icon>
     </div>
     <!------------------------Mat-Dialog-CONTENT--------------------------->
     <div mat-dialog-content>
       <!-- Email -->
       <mat-form-field appearance="outline" class="Width100">
-        <mat-label [ngClass]="ValidationErrorMessage.getFormControl('Email', loginForm).valid? 'valid-green':''">Email</mat-label>
-        <input matInput type="email" value="" formControlName="Email" [ngClass]="loginForm.get('Email')?.valid? 'valid-color':''" />
+        <mat-label [ngClass]="ValidationErrorMessage.getFormControl('Email', loginForm).valid?
+                   'valid-green':''">Email</mat-label>
+        <input matInput type="email" value="" formControlName="Email"
+               [ngClass]="loginForm.get('Email')?.valid? 'valid-color':''" />
         <mat-icon matSuffix>email</mat-icon>
-        <mat-hint align="end" *ngIf="ValidationErrorMessage.getFormControl('Email', loginForm).invalid || !ValidationErrorMessage.getFormControl('Email', loginForm).value">Enter your email</mat-hint>
+        <mat-hint align="end" *ngIf="ValidationErrorMessage.getFormControl('Email', loginForm).invalid
+                  || !ValidationErrorMessage.getFormControl('Email', loginForm).value">Enter your email</mat-hint>
         <mat-error *ngIf="ValidationErrorMessage.getFormControl('Email', loginForm).hasError('required')"
                    [innerHtml]="ValidationErrorMessage.getErrorMessage('Email', 'required')"></mat-error>
         <mat-error *ngIf="ValidationErrorMessage.getFormControl('Email', loginForm).hasError('email')"
                    [innerHtml]="ValidationErrorMessage.getErrorMessage('Email', 'email')"></mat-error>
       </mat-form-field>
       <!-- Password -->
-      <mat-form-field appearance="outline" class="Width100" [ngClass]="ValidationErrorMessage.getFormControl('Password', loginForm).invalid&&ValidationErrorMessage.getFormControl('Password', loginForm).value? 'password':''">
+      <mat-form-field appearance="outline" class="Width100"
+                      [ngClass]="ValidationErrorMessage.getFormControl('Password', loginForm).invalid &&
+                      ValidationErrorMessage.getFormControl('Password', loginForm).value? 'password':''">
         <mat-label [ngClass]="ValidationErrorMessage.getFormControl('Password', loginForm).valid? 'valid-green':''">Password</mat-label>
-        <input matInput value="" autocomplete="current-password" [type]="passwordHide ? 'password' : 'text'" formControlName="Password" /><!-- Input -->
-        <mat-icon matSuffix class="pointerCursor" (click)="passwordHide = !passwordHide">{{passwordHide? 'visibility' : 'visibility_off'}}</mat-icon>
-        <mat-hint align="end" *ngIf="ValidationErrorMessage.getFormControl('Password', loginForm).invalid || !ValidationErrorMessage.getFormControl('Password', loginForm).value">Enter your password</mat-hint>
+        <input matInput value="" autocomplete="current-password"
+               [type]="passwordHide ? 'password' : 'text'"
+               formControlName="Password" /><!-- Input -->
+        <mat-icon matSuffix class="pointerCursor"
+                  (click)="passwordHide = !passwordHide">{{passwordHide? 'visibility' : 'visibility_off'}}</mat-icon>
+        <mat-hint align="end" *ngIf="ValidationErrorMessage.getFormControl('Password', loginForm).invalid
+                  || !ValidationErrorMessage.getFormControl('Password', loginForm).value">Enter your password</mat-hint>
         <mat-error *ngIf="ValidationErrorMessage.getFormControl('Password', loginForm).hasError('required')"
                    [innerHtml]="ValidationErrorMessage.getErrorMessage('Password', 'required')"></mat-error>
       </mat-form-field>
@@ -37,9 +47,6 @@
         <mat-icon>login</mat-icon>
         Login
       </button>
-      <!--<button mat-raised-button color="warn" aria-label="cancel login dialog">
-        <mat-icon>cancel</mat-icon>Cancel
-      </button>-->
     </div>
     <!--End Mat-Dialog-actions-->
   </div>
