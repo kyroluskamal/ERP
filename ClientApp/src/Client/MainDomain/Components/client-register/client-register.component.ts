@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
+import { NotificationsService } from '../../../../CommonServices/NotificationService/notifications.service';
 import { ValidationErrorMessagesService } from '../../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
 import { CustomErrorStateMatcher } from '../../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
 import { CustomValidators } from '../../../../Helpers/CustomValidation/custom-validators';
 import { ClientRegister } from '../../../Models/client-register.model';
-import { ClientAuthenticationService } from '../../../Services/Authentication/client-authentication.service';
+import { ClientWithToken } from '../../../Models/client-with-token.model';
+import { ClientAccountService } from '../../../Services/Authentication/client-account-service.service';
 
 @Component({
   selector: 'app-client-register',
@@ -13,20 +15,21 @@ import { ClientAuthenticationService } from '../../../Services/Authentication/cl
   styleUrls: ['./client-register.component.css']
 })
 export class ClientRegisterComponent implements OnInit {
+  //Properties
   passwordHide: boolean = true;
   confirmPasswordHide: boolean = true;
   RegisterForm: FormGroup = new FormGroup({});
   ValidationErrors: string[] = [];
   customErrorStateMatcher: CustomErrorStateMatcher= new CustomErrorStateMatcher()
-
-  constructor(public ClientAuth: ClientAuthenticationService,
+  ClientRegisterModel: ClientRegister = new ClientRegister();
+  clientWithToken: ClientWithToken = new ClientWithToken();
+  //Constructor
+  constructor(public ClientAuth: ClientAccountService,
     public formBuilder: FormBuilder,
     public dialogHandler: DialogHandlerService,
-    public ValidationErrorMessage: ValidationErrorMessagesService  ) {
+    public ValidationErrorMessage: ValidationErrorMessagesService,
+    public Notifications: NotificationsService) {
   }
-
-  ClientRegisterModel: ClientRegister = new ClientRegister();
-  clientWithToken: any = null;
 
   ngOnInit(): void {
     this.RegisterForm = this.formBuilder.group({
@@ -48,15 +51,17 @@ export class ClientRegisterComponent implements OnInit {
         validator: CustomValidators.passwordMatchValidator
       });
   }
+  //Register Function
   OnRegisterClick(event: any) {
-    this.ClientAuth.OwnerRegister(this.RegisterForm.value).subscribe(
-      (response) => {
+    this.ClientAuth.Register(this.RegisterForm.value).subscribe(
+      (response: ClientWithToken) => {
         this.clientWithToken = response;
         console.log(response);
         this.ValidationErrors = [];
+        this.Notifications.success("Your registered Successfully. Please Confirm your email");
       },
       (error) => {
-        console.log("This erorr" + error);
+        console.log(error);
         this.ValidationErrors = error;
       }
     );

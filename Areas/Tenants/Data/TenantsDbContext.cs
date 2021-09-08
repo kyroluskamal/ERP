@@ -8,7 +8,7 @@ namespace ERP.Areas.Tenants.Data
     {
         public TenantsDbContext([NotNullAttribute] DbContextOptions options) : base(options)
         {
-            Database.EnsureCreated();
+            Database.Migrate();
         }
 
         public DbSet<TenantsInfo> Tenants { get; set; }
@@ -16,6 +16,16 @@ namespace ERP.Areas.Tenants.Data
         {
             optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Tenants;Trusted_Connection=True;MultipleActiveResultSets=true");
             base.OnConfiguring(optionsBuilder);
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<TenantsInfo>()
+                .HasIndex(u => u.Subdomain)
+                .IsUnique();
+            builder.Entity<TenantsInfo>()
+                .HasIndex(u => u.ConnectionString)
+                .IsUnique();
         }
     }
 }

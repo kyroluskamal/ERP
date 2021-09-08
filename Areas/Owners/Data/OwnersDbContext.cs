@@ -18,9 +18,18 @@ namespace ERP.Areas.Owners.Data
             base.OnConfiguring(optionsBuilder);
         }
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<Owner>().Property(e => e.Id).ValueGeneratedOnAdd();
-        //}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Owner>()
+                   .HasIndex(u => u.Email)
+                   .IsUnique();
+            modelBuilder.Entity<Owner>()
+                .HasIndex(u => u.PhoneNumber)
+                .IsUnique();
+            modelBuilder.Entity<Owner>()
+                .HasIndex(u => u.Id)
+                .IsUnique();
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

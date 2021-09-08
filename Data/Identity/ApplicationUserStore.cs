@@ -11,7 +11,7 @@ namespace ERP.Data.Identity
 {
     public class ApplicationUserStore : UserStore<ApplicationUser>
     {
-        public ApplicationUserStore(DbContext context, 
+        public ApplicationUserStore(ApplicationDbContext context, 
             IdentityErrorDescriber describer = null) : base(context, describer)
         {
         }

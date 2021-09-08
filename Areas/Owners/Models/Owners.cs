@@ -4,5 +4,6 @@ namespace ERP.Areas.Owners.Models
 {
     public class Owner : IdentityUser
     {
+        
     }
 }

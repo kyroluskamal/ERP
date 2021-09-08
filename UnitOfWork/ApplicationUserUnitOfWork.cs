@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ERP.UnitOfWork
 {
-    public class ApplicationUserUnitOfWork : IUnitOfWork
+    public class ApplicationUserUnitOfWork : IUnitOfWork_ApplicationUser
     {
         public ApplicationDbContext ApplicationDbContext { get; }
 

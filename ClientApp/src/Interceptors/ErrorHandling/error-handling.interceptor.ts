@@ -19,22 +19,42 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError(error => {
         if (error) {
+          const modalStateErrors = [];
           switch (error.status) {
             case 400:
               if (error.error.errors) {
-                const modalStateErrors = [];
                 for (const key in error.error.errors) {
                   if (error.error.errors[key]) {
-                    modalStateErrors.push(error.error.errors[key])
+                    modalStateErrors.push(error.error.errors[key]);
                   }
                 }
+                this.Notification.error("Please correct the errors and try agaid", error.status);
+                throw modalStateErrors.flat();
+              } else if (error.error) {
+                if (Array.isArray(error.error)) {
+                  for (let i = 0; i < error.error.length; i++) {
+                    if (error.error[i].description) {
+                      modalStateErrors.push(error.error[i].description);
+                    }
+                  }
+                } else {
+                  modalStateErrors.push(error.error);
+                }
+                this.Notification.error("Please correct the errors and try agaid", error.status);
+                throw modalStateErrors.flat();
+              } else if (error) {
+                console.log("HEEEEEEEEEEEEEEEE");
+
+                modalStateErrors.push(error);
+                this.Notification.error("Please correct the errors and try agaid", error.status);
                 throw modalStateErrors.flat();
               } else {
-                this.Notification.error(error.statusText, error.status, "Close");
+                console.log("dfghjkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+                this.Notification.error(error.statusText, error.status);
               }
               break;
             case 401:
-              this.Notification.error(error.statusText, error.status, "Close");
+              this.Notification.error(error.statusText, error.status);
               break;
             case 404:
               this.router.navigateByUrl('/not-found');
@@ -44,8 +64,7 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
               this.router.navigateByUrl('/server-error', navigationExtras);
               break;
             default:
-              this.Notification.error('Something unexpected went wrong', "", "Close");
-              console.log(error);
+              this.Notification.error('Something unexpected went wrong', "");
               break;
           }
         }

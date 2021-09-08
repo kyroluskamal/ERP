@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 namespace ERP.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationUserRole, string>
     {
         //public IHttpContextAccessor _accessor;
 
@@ -23,37 +23,54 @@ namespace ERP.Data
             base.OnConfiguring(optionsBuilder);
         }
 
-        //protected override void OnModelCreating(ModelBuilder builder)
-        //{
-        //    builder.Entity<ApplicationUser>(i => {
-        //        i.ToTable("Users");
-        //        i.HasKey(x => x.Id).IsClustered(true);
-        //    }).UseIdentityColumns(1,1);
-        //    builder.Entity<ApplicationUserRole>(i => {
-        //        i.ToTable("Role");
-        //        i.HasKey(x => x.Id);
-        //    });
-        //    builder.Entity<IdentityUserRole<string>>(i => {
-        //        i.ToTable("UserRole");
-        //        i.HasKey(x => new { x.RoleId, x.UserId });
-        //    });
-        //    builder.Entity<IdentityUserLogin<string>>(i => {
-        //        i.ToTable("UserLogin");
-        //        i.HasKey(x => new { x.ProviderKey, x.LoginProvider });
-        //    });
-        //    builder.Entity<IdentityRoleClaim<string>>(i => {
-        //        i.ToTable("RoleClaims");
-        //        i.HasKey(x => x.Id);
-        //    });
-        //    builder.Entity<IdentityUserClaim<string>>(i => {
-        //        i.ToTable("UserClaims");
-        //        i.HasKey(x => x.Id);
-        //    });
-        //    builder.Entity<IdentityUserToken<string>>(i => {
-        //        i.ToTable("UserToken");
-        //        i.HasKey(x => x.UserId);
-        //    });
-        //}
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<ApplicationUser>()
+                   .HasIndex(u => u.Email)
+                   .IsUnique();
+            builder.Entity<ApplicationUser>()
+                .HasIndex(u => u.PhoneNumber)
+                .IsUnique();
+            builder.Entity<ApplicationUser>()
+                .HasIndex(u => u.Id)
+                .IsUnique();
+            base.OnModelCreating(builder);
+            //builder.Entity<ApplicationUser>(i =>
+            //{
+            //    i.ToTable("AspNetUsers");
+            //    i.HasKey(x => x.Id).IsClustered(true);
+            //}).UseIdentityColumns(1, 1);
+            //builder.Entity<IdentityRole>(i =>
+            //{
+            //    i.ToTable("AspNetRoles");
+            //    i.HasKey(x => x.Id);
+            //});
+            //builder.Entity<IdentityUserRole<string>>(i =>
+            //{
+            //    i.ToTable("AspNetUserRoles");
+            //    i.HasKey(x => new { x.RoleId, x.UserId });
+            //});
+            //builder.Entity<IdentityUserLogin<string>>(i =>
+            //{
+            //    i.ToTable("AspNetUserLogins");
+            //    i.HasKey(x => new { x.ProviderKey, x.LoginProvider });
+            //});
+            //builder.Entity<IdentityRoleClaim<string>>(i =>
+            //{
+            //    i.ToTable("AspNetRoleClaims");
+            //    i.HasKey(x => x.Id);
+            //});
+            //builder.Entity<IdentityUserClaim<string>>(i =>
+            //{
+            //    i.ToTable("AspNetUserClaims");
+            //    i.HasKey(x => x.Id);
+            //});
+            //builder.Entity<IdentityUserToken<string>>(i =>
+            //{
+            //    i.ToTable("AspNetUserTokens");
+            //    i.HasKey(x => x.UserId);
+            //});
+        }
     }
 }
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ERP.Data.Identity
 {
-    public class ApplicationUserRole : IdentityRole
+    public class ApplicationUserRole : IdentityRole<string>
     {
         public ApplicationUserRole()
         {

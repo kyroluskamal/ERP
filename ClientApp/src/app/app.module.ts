@@ -12,6 +12,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorHandlingInterceptor } from '../Interceptors/ErrorHandling/error-handling.interceptor';
 import { NotFoundComponent } from '../CommonComponents/not-found/not-found.component';
 import { ServerErrorComponent } from '../CommonComponents/server-error/server-error.component';
+import { TokenInterceptorInterceptor } from '../Interceptors/TokenInterceptor/token-interceptor.interceptor';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { ServerErrorComponent } from '../CommonComponents/server-error/server-er
     MaterialModule, SharedModule, OwnerModule, CommonModule, ClientModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorHandlingInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorHandlingInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorInterceptor, multi: true }
   ],
   bootstrap: [AppComponent],
   exports: [NotFoundComponent]

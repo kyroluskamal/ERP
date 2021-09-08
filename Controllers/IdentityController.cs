@@ -15,6 +15,8 @@ using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.Data.Entity;
+using System.Diagnostics;
+using ERP.UnitOfWork;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -25,19 +27,19 @@ namespace ERP.Controllers
     public class IdentityController : ControllerBase
     {
         private readonly ApplicationDbContext userDbContext;
-        public UserManager<ApplicationUser> UserManager { get; }
+        public ApplicationUserManager UserManager { get; }
         public ITokenService TokenService { get; }
-        public TenantsDbContext tenantsDbContext { get; }
+        public IUnitOfWork_Tenants TenantsUnitOfWork { get; }
         public DbContextOptions<ApplicationDbContext> DbOptions;
 
         public IdentityController(ApplicationDbContext UserDbContext,
-            UserManager<ApplicationUser> UserManager, ITokenService TokenService,
-            TenantsDbContext tenantsDbContext, DbContextOptions<ApplicationDbContext> DbOptions)
+            ApplicationUserManager UserManager, ITokenService TokenService,
+            IUnitOfWork_Tenants tenantsUnitOfWork, DbContextOptions<ApplicationDbContext> DbOptions)
         {
             userDbContext = UserDbContext;
             this.UserManager = UserManager;
             this.TokenService = TokenService;
-            this.tenantsDbContext = tenantsDbContext;
+            TenantsUnitOfWork = tenantsUnitOfWork;
             this.DbOptions = DbOptions;
         }
 
@@ -57,17 +59,20 @@ namespace ERP.Controllers
 
         // POST api/<IdentityController>
         [HttpPost]
-        public async Task<UserWithToken> Post([FromBody] ClientRegister clientRegister)
+        public async Task<ActionResult<UserWithToken>> Post([FromBody] ClientRegister clientRegister)
         {
             if (ModelState.IsValid)
             {
+                Debug.WriteLine(TenantsUnitOfWork.Tenants.IsSubdomainExist(clientRegister.Subdomain.ToLower()));
+                if (TenantsUnitOfWork.Tenants.IsSubdomainExist(clientRegister.Subdomain.ToLower()))
+                    return BadRequest("Subdomain name is taken. Please, Choose another one");
                 var Tenant = new TenantsInfo() {
                     CompanyName = clientRegister.CompanyName,
-                    Subdomain = clientRegister.Subdomain,
+                    Subdomain = clientRegister.Subdomain.ToLower(),
                     ConnectionString = $"Server=(localdb)\\mssqllocaldb;Database={clientRegister.Subdomain};Trusted_Connection=True;MultipleActiveResultSets=true"
                 };
-                tenantsDbContext.Add(Tenant);
-                tenantsDbContext.SaveChanges();
+                TenantsUnitOfWork.Tenants.Add(Tenant);
+                TenantsUnitOfWork.Save();
 
                 userDbContext.Database.SetConnectionString(Tenant.ConnectionString);
                 userDbContext.Database.Migrate();
@@ -75,6 +80,7 @@ namespace ERP.Controllers
 
                 var User = new ApplicationUser() { Email = clientRegister.Email, UserName = clientRegister.UserName };
                 var result = await UserManager.CreateAsync(User, clientRegister.Password);
+                Debug.WriteLine(result);
                 if (result.Succeeded)
                 {
                     return new UserWithToken
@@ -83,9 +89,10 @@ namespace ERP.Controllers
                         Token = TokenService.CreateClientToken(User)
                     };
                 }
-                return null;
+                else
+                    return BadRequest(result.Errors);
             }
-            return null;
+            return BadRequest(ModelState);
         }
 
         // PUT api/<IdentityController>/5

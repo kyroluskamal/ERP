@@ -39,10 +39,9 @@ namespace ERP
             services.AddScoped<TenantProvider>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<ITokenService, TokenService>();
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseSqlServer());
-            services.AddEntityFrameworkSqlServer().AddDbContext<OwnersDbContext>(options =>
-                    options.UseSqlServer());
+           
+            //services.AddEntityFrameworkSqlServer().AddDbContext<OwnersDbContext>(options =>
+            //        options.UseSqlServer());
             //Add Owner Identity DbContext
             services.AddDbContext<OwnersDbContext>(options =>
                 options.UseSqlServer());
@@ -61,19 +60,38 @@ namespace ERP
             
             services.AddScoped<OwnerRoleStore>();
             services.AddScoped<OwnerUserStore>();
+            
+            
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer());
+            services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddTransient<IRoleStore<ApplicationUserRole>, ApplicationUserRoleStore>();
+            services.AddTransient<UserManager<ApplicationUser>, ApplicationUserManager>();
+            services.AddTransient<SignInManager<ApplicationUser>, ApplicationUserSignIngManager>();
+            services.AddTransient<RoleManager<ApplicationUserRole>, ApplicationUserRoleManager>();
+            services.AddTransient<IUserStore<ApplicationUser>, ApplicationUserStore>();
+            services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddRoles<ApplicationUserRole>().AddRoleManager<ApplicationUserRoleManager>()
+                .AddRoleStore<ApplicationUserRoleStore>().AddUserManager<ApplicationUserManager>()
+                .AddUserStore<ApplicationUserStore>()
+               .AddDefaultTokenProviders();
+            
+            services.AddScoped<ApplicationUserRoleStore>();
+            services.AddScoped<ApplicationUserStore>();
 
             //Add App DB Context
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+            //services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //    .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
             //services.AddDbContext<ApplicationDbContext>(options =>
             //    options.UseSqlServer());
-            services.AddEntityFrameworkSqlServer().AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer());
+            //services.AddEntityFrameworkSqlServer().AddDbContext<ApplicationDbContext>(options =>
+            //        options.UseSqlServer());
             //services.AddScoped<IRoleStore<ApplicationUserRole>, ApplicationUserRoleStore>();
             //services.AddScoped<UserManager<ApplicationUser>, ApplicationUserManager>();
             //services.AddScoped<SignInManager<ApplicationUser>, ApplicationUserSignIngManager>();
             //services.AddScoped<RoleManager<ApplicationUserRole>, ApplicationUserRoleManager>();
-            ////services.AddScoped<IUserStore<ApplicationUser>, ApplicationUserStore>();
+            //services.AddScoped<IUserStore<ApplicationUser>, ApplicationUserStore>();
             //services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>()
             //    .AddRoles<ApplicationUserRole>().AddRoleManager<ApplicationUserRoleManager>()
@@ -85,7 +103,7 @@ namespace ERP
             //services.AddScoped<ApplicationUserStore>();
             //Add TenantDB
             services.AddDbContext<TenantsDbContext>(options =>
-                    options.UseSqlServer())/*.AddEntityFrameworkSqlServer()*/;
+                    options.UseSqlServer());
 
             //Configure JWT Tokens
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -99,9 +117,9 @@ namespace ERP
                         ValidateAudience = false
                     };
                 });
-            services.AddScoped<IUnitOfWork, ApplicationUserUnitOfWork>();
-            services.AddScoped<IUnitOfWork, OwnerUnitOfWork>();
-            services.AddScoped<IUnitOfWork, TenantsUnitOfWork>();
+            services.AddScoped<IUnitOfWork_ApplicationUser, ApplicationUserUnitOfWork>();
+            services.AddScoped<IUnitOfWork_Owners, OwnerUnitOfWork>();
+            services.AddScoped<IUnitOfWork_Tenants, TenantsUnitOfWork>();
             services.AddControllersWithViews();
             services.AddRazorPages();
             // In production, the Angular files will be served from this directory
@@ -120,7 +138,7 @@ namespace ERP
             //else
             //{
             //    app.UseExceptionHandler("/Error");
-            //    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            //    The default HSTS value is 30 days.You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             //    app.UseHsts();
             //}
 

@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DialogHandlerService } from '../../../CommonServices/DialogHandler/dialog-handler.service';
+import { NotificationsService } from '../../../CommonServices/NotificationService/notifications.service';
 import { ValidationErrorMessagesService } from '../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
 import { CustomErrorStateMatcher } from '../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
 import { CustomValidators } from '../../../Helpers/CustomValidation/custom-validators';
 import { OwnerRegister } from '../../Models/owner-register.model';
-import { OwnersAuthenticationService } from '../../Services/owners-authentication.service';
+import { OwnerAccountService } from '../../Services/Authentication/Owner-account-service.service';
 
 @Component({
   selector: 'app-owner-register',
@@ -19,10 +20,11 @@ export class OwnerRegisterComponent implements OnInit {
   ValidationErrors: string[] = [];
   customErrorStateMatcher: CustomErrorStateMatcher = new CustomErrorStateMatcher()
 
-  constructor(public OwnerAuth: OwnersAuthenticationService,
+  constructor(public OwnerAuth: OwnerAccountService,
     public formBuilder: FormBuilder,
     public dialogHandler: DialogHandlerService,
-    public ValidationErrorMessage: ValidationErrorMessagesService) { }
+    public ValidationErrorMessage: ValidationErrorMessagesService,
+    public Notifications: NotificationsService) { }
 
   OwnerRegisterModel: OwnerRegister = new OwnerRegister();
   ownerWithToken: any = null;
@@ -47,10 +49,12 @@ export class OwnerRegisterComponent implements OnInit {
   }
 
   OnRegisterClick(event: any) {
-    this.OwnerAuth.OwnerRegister(this.RegisterForm.value).subscribe(
+    this.OwnerAuth.Register(this.RegisterForm.value).subscribe(
       (response)=>{
         this.ownerWithToken = response;
+        this.Notifications.success("Your registered Successfully. Please Confirm your email");
         console.log(response);
+        this.ValidationErrors = [];
       },
       (error) => {
         this.ValidationErrors = error;

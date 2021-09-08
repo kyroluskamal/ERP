@@ -43,7 +43,7 @@ namespace ERP.Areas.Owners.Controllers
 
         // POST api/<AccountController>
         [HttpPost]
-        public async Task<OwnerWithToken> Post([FromBody] OwnerRegister Register)
+        public async Task<ActionResult<OwnerWithToken>> Post([FromBody] OwnerRegister Register)
         {
             if (ModelState.IsValid)
             {
@@ -57,7 +57,7 @@ namespace ERP.Areas.Owners.Controllers
                         Token = TokenService.CreateOwnerToken(Owner)
                     };
                 }
-                return null;
+                return BadRequest(result.Errors);
             }
             return null;
         }

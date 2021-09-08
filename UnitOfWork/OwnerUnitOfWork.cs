@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ERP.UnitOfWork
 {
-    public class OwnerUnitOfWork : IUnitOfWork
+    public class OwnerUnitOfWork : IUnitOfWork_Owners
     {
         public OwnersDbContext OwnersDbContext { get; }
 

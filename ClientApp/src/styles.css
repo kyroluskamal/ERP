@@ -104,10 +104,16 @@ form p{
 }
 .Error-Notification{
     background-color: red;
-    color:white;
+    
 }
-.ValidationErrors>ul{
-    color:red !important;
+.Success-Notification {
+  background-color: green;
+}
+.Error-Notification, .Success-Notification {
+  color: white;
+}
+.ValidationErrors > ul {
+  color: red !important;
 }
 .alert {
   position: relative;
@@ -150,4 +156,7 @@ form p{
 }
 .marginTop-5{
     margin-top:5px;
+}
+.Error-Notification .mat-simple-snackbar-action {
+  color: White;
 }
