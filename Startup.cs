@@ -20,6 +20,7 @@ using ERP.Areas.Tenants.Services;
 using Microsoft.AspNetCore.Http;
 using ERP.Utilities.Services;
 using API.Middleware.ErrorsHandling;
+using ERP.UnitOfWork;
 
 namespace ERP
 {
@@ -98,6 +99,9 @@ namespace ERP
                         ValidateAudience = false
                     };
                 });
+            services.AddScoped<IUnitOfWork, ApplicationUserUnitOfWork>();
+            services.AddScoped<IUnitOfWork, OwnerUnitOfWork>();
+            services.AddScoped<IUnitOfWork, TenantsUnitOfWork>();
             services.AddControllersWithViews();
             services.AddRazorPages();
             // In production, the Angular files will be served from this directory

@@ -47,8 +47,6 @@
     <Folder Include="ClientApp\src\CommonServices\TokenService\" />
     <Folder Include="ClientApp\src\Helpers\CustomErrorStateMatcher\" />
     <Folder Include="ClientApp\src\Interceptors\ErrorHandling\" />
-    <Folder Include="UnitOfWork\IRepository\" />
-    <Folder Include="UnitOfWork\Repository\" />
     <Folder Include="Utilities\Helpers\" />
   </ItemGroup>
 
