@@ -1,5 +1,6 @@
 ﻿using ERP.Areas.Tenants.Data;
 using ERP.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,12 @@ namespace ERP.UnitOfWork
         public async void Save()
         {
             await ApplicationDbContext.SaveChangesAsync();
+        }
+
+        public void SetConnectionString(string ConnectionString)
+        {
+            ApplicationDbContext.Database.SetConnectionString(ConnectionString);
+            ApplicationDbContext.Database.Migrate();
         }
     }
 }

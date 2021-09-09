@@ -10,7 +10,7 @@ export class NotificationsService {
 
   error(message: string, errorStatus:string) {
     this.SnackBar.open(message, "✖", {
-      duration: 5000000,
+      duration: 5000,
       horizontalPosition: "right",
       verticalPosition: "bottom",
       panelClass: "Error-Notification",

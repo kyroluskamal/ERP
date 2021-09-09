@@ -42,14 +42,8 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
                 }
                 this.Notification.error("Please correct the errors and try agaid", error.status);
                 throw modalStateErrors.flat();
-              } else if (error) {
-                console.log("HEEEEEEEEEEEEEEEE");
-
-                modalStateErrors.push(error);
-                this.Notification.error("Please correct the errors and try agaid", error.status);
-                throw modalStateErrors.flat();
+              
               } else {
-                console.log("dfghjkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
                 this.Notification.error(error.statusText, error.status);
               }
               break;

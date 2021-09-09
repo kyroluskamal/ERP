@@ -27,19 +27,24 @@ namespace ERP.Controllers
     public class IdentityController : ControllerBase
     {
         private readonly ApplicationDbContext userDbContext;
-        public ApplicationUserManager UserManager { get; }
-        public ITokenService TokenService { get; }
-        public IUnitOfWork_Tenants TenantsUnitOfWork { get; }
+        public ApplicationUserManager UserManager { get; set; }
+        public ITokenService TokenService { get; set; }
+        public IUnitOfWork_Tenants TenantsUnitOfWork { get; set; }
+        public IUnitOfWork_Owners OwnersUnitOfWork { get; set; }
+        public IUnitOfWork_ApplicationUser ClientUnitOfWork { get; set; }
         public DbContextOptions<ApplicationDbContext> DbOptions;
 
         public IdentityController(ApplicationDbContext UserDbContext,
             ApplicationUserManager UserManager, ITokenService TokenService,
-            IUnitOfWork_Tenants tenantsUnitOfWork, DbContextOptions<ApplicationDbContext> DbOptions)
+            IUnitOfWork_Tenants tenantsUnitOfWork, IUnitOfWork_ApplicationUser clientUnitOfWork,
+            IUnitOfWork_Owners ownersUnitOfWork, DbContextOptions<ApplicationDbContext> DbOptions)
         {
             userDbContext = UserDbContext;
             this.UserManager = UserManager;
             this.TokenService = TokenService;
             TenantsUnitOfWork = tenantsUnitOfWork;
+            ClientUnitOfWork = clientUnitOfWork;
+            OwnersUnitOfWork = ownersUnitOfWork;
             this.DbOptions = DbOptions;
         }
 
@@ -63,9 +68,8 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
-                Debug.WriteLine(TenantsUnitOfWork.Tenants.IsSubdomainExist(clientRegister.Subdomain.ToLower()));
                 if (TenantsUnitOfWork.Tenants.IsSubdomainExist(clientRegister.Subdomain.ToLower()))
-                    return BadRequest("Subdomain name is taken. Please, Choose another one");
+                    return BadRequest("Subdomain name is already taken.Please,Choose another one");
                 var Tenant = new TenantsInfo() {
                     CompanyName = clientRegister.CompanyName,
                     Subdomain = clientRegister.Subdomain.ToLower(),
@@ -73,10 +77,7 @@ namespace ERP.Controllers
                 };
                 TenantsUnitOfWork.Tenants.Add(Tenant);
                 TenantsUnitOfWork.Save();
-
-                userDbContext.Database.SetConnectionString(Tenant.ConnectionString);
-                userDbContext.Database.Migrate();
-                
+                ClientUnitOfWork.SetConnectionString(Tenant.ConnectionString);
 
                 var User = new ApplicationUser() { Email = clientRegister.Email, UserName = clientRegister.UserName };
                 var result = await UserManager.CreateAsync(User, clientRegister.Password);
