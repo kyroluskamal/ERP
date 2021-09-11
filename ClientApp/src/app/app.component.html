@@ -1,4 +1,4 @@
-<app-owner-main [apptitle]="title" *ngIf="IsOwnerRoute && notFound===false"></app-owner-main>
-<app-client-main [apptitle]="title" *ngIf="IsOwnerRoute === false && notFound===false"></app-client-main>
-<app-not-found *ngIf="notFound===true"></app-not-found>
-<app-server-error *ngIf="ServerError===true"></app-server-error>
+<app-owner-main [apptitle]="title" *ngIf="IsOwnerRoute && ServerError===false && notFound===false"></app-owner-main>
+<app-client-main [apptitle]="title" *ngIf="IsOwnerRoute === false && ServerError===false && notFound===false"></app-client-main>
+<app-server-error *ngIf="ServerError"></app-server-error>
+<app-not-found *ngIf="notFound"></app-not-found>

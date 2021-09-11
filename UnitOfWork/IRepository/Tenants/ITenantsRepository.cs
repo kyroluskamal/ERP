@@ -10,5 +10,8 @@ namespace ERP.UnitOfWork.IRepository.Tenants
     {
         void Update(TenantsInfo TenantsInfo);
         bool IsSubdomainExist(string subdomain);
+        TenantsInfo TenantBySubdomain(string subdomain);
+        TenantsInfo TenantByUsername(string username);
+        TenantsInfo TenantByEmail(string Email);
     }
 }

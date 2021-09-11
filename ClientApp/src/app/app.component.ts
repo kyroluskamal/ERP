@@ -1,29 +1,62 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
-import { Location } from '@angular/common';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
+import { ClientAccountService } from '../Client/Services/Authentication/client-account-service.service';
+import { OwnerAccountService } from '../Owners/Services/Authentication/Owner-account-service.service';
 
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit{
   title = 'KHerp';
-  CurrentUrl: string;
   IsOwnerRoute: boolean;
   notFound: boolean;
   ServerError: boolean;
-  constructor(private location: Location) {
-    this.CurrentUrl = this.location.path();
+  constructor(private router: Router, public ClientAccountService: ClientAccountService,
+    public OwnerAccountService: OwnerAccountService) {
     this.IsOwnerRoute = false;
-    this.notFound = false;
     this.ServerError = false;
+    this.notFound = false;
+    
   }
 
+  SetClientUser() {
+    if (localStorage.getItem("Client")) {
+      const user: any = localStorage.getItem("Client");
+      this.ClientAccountService.setCurrentUser(user);
+    } else if (sessionStorage.getItem("Client")) {
+      const user: any = sessionStorage.getItem("Client");
+      this.ClientAccountService.setCurrentUser(user);
+    }
+  }
+  SetOwnerUser() {
+    if (localStorage.getItem("Owner")) {
+      const user: any = localStorage.getItem("Owner");
+      this.OwnerAccountService.setCurrentUser(user);
+    } else if (sessionStorage.getItem("Owner")) {
+      const user: any = sessionStorage.getItem("Owner");
+      this.OwnerAccountService.setCurrentUser(user);
+    }
+  }
+
+  error: any;
   ngOnInit(): void {
-    if (this.CurrentUrl.includes("/owners")) this.IsOwnerRoute = true;
-    if (this.CurrentUrl.includes("/not-found")) this.notFound = true;
-    if (this.CurrentUrl.includes("/server-error")) this.ServerError = true;
+    this.router.events
+      .pipe(
+        filter(e => e instanceof NavigationEnd)
+      )
+      .subscribe((navEnd: any) => {
+        const navigation = this.router.getCurrentNavigation()?.extras;
+        this.error = navigation?.state?.error;
+        if (navEnd.urlAfterRedirects.includes("/owners")) this.IsOwnerRoute = true;
+        if (navEnd.urlAfterRedirects.includes("/not-found")) this.notFound = true;
+        else if (navEnd.urlAfterRedirects.includes("/server-error"))this.ServerError = true;
+      });
+    this.SetClientUser();
+    this.SetOwnerUser();
   }
 }

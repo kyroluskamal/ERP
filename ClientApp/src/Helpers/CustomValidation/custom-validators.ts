@@ -44,7 +44,6 @@ export class CustomValidators {
         // if control is empty return no error
         return null;
       }
-      console.log("From Validation " + validationError);
       if (validationError.length != 0) {
         control.get(controlName)?.setErrors(error);
       }

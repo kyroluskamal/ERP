@@ -26,26 +26,27 @@ namespace ERP.Controllers
     [ApiController]
     public class IdentityController : ControllerBase
     {
-        private readonly ApplicationDbContext userDbContext;
         public ApplicationUserManager UserManager { get; set; }
         public ITokenService TokenService { get; set; }
         public IUnitOfWork_Tenants TenantsUnitOfWork { get; set; }
         public IUnitOfWork_Owners OwnersUnitOfWork { get; set; }
+        public ApplicationUserSignIngManager ApplicationUserSignIngManager { get; }
         public IUnitOfWork_ApplicationUser ClientUnitOfWork { get; set; }
         public DbContextOptions<ApplicationDbContext> DbOptions;
 
-        public IdentityController(ApplicationDbContext UserDbContext,
-            ApplicationUserManager UserManager, ITokenService TokenService,
+        public IdentityController(
+            ApplicationUserManager userManager, ITokenService tokenService,
             IUnitOfWork_Tenants tenantsUnitOfWork, IUnitOfWork_ApplicationUser clientUnitOfWork,
-            IUnitOfWork_Owners ownersUnitOfWork, DbContextOptions<ApplicationDbContext> DbOptions)
+            IUnitOfWork_Owners ownersUnitOfWork, DbContextOptions<ApplicationDbContext> dbOptions,
+            ApplicationUserSignIngManager applicationUserSignIngManager)
         {
-            userDbContext = UserDbContext;
-            this.UserManager = UserManager;
-            this.TokenService = TokenService;
+            UserManager = userManager;
+            TokenService = tokenService;
             TenantsUnitOfWork = tenantsUnitOfWork;
             ClientUnitOfWork = clientUnitOfWork;
             OwnersUnitOfWork = ownersUnitOfWork;
-            this.DbOptions = DbOptions;
+            DbOptions = dbOptions;
+            ApplicationUserSignIngManager = applicationUserSignIngManager;
         }
 
         // GET: api/<IdentityController>
@@ -68,30 +69,60 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (TenantsUnitOfWork.Tenants.IsSubdomainExist(clientRegister.Subdomain.ToLower()))
+                var tenantbyEmail = TenantsUnitOfWork.Tenants.TenantByEmail(clientRegister.Email);
+                var tenantbyUsername = TenantsUnitOfWork.Tenants.TenantByUsername(clientRegister.UserName);
+                var tenantbySubdomain = TenantsUnitOfWork.Tenants.TenantBySubdomain(clientRegister.Subdomain.ToLower());
+                if (tenantbyEmail != null && tenantbySubdomain != null && tenantbyUsername != null)
+                    return BadRequest("Do you try to create an account with the same Email, Username and Subdomain?. " +
+                        "you can login or reset your password if you have forgetton it");
+                else if(tenantbyEmail != null && tenantbySubdomain != null && tenantbyUsername == null)
+                    return BadRequest("Email and Subdomain both are already exists");
+                else if(tenantbyEmail != null && tenantbySubdomain == null && tenantbyUsername != null)
+                    return BadRequest("Email and Username both are already exists");
+                else if(tenantbyEmail == null && tenantbySubdomain != null && tenantbyUsername != null)
+                    return BadRequest("subdomain and Username both are already exists");
+                else if (tenantbyEmail != null && tenantbySubdomain == null && tenantbyUsername == null)
+                    return BadRequest("This Email is already taken");
+                else if (tenantbyEmail == null && tenantbySubdomain == null && tenantbyUsername != null)
+                    return BadRequest("This Username Is already taken");
+                else if (tenantbyEmail == null && tenantbySubdomain != null && tenantbyUsername == null)
                     return BadRequest("Subdomain name is already taken.Please,Choose another one");
                 var Tenant = new TenantsInfo() {
                     CompanyName = clientRegister.CompanyName,
                     Subdomain = clientRegister.Subdomain.ToLower(),
+                    Username = clientRegister.UserName,
+                    Email = clientRegister.Email,
                     ConnectionString = $"Server=(localdb)\\mssqllocaldb;Database={clientRegister.Subdomain};Trusted_Connection=True;MultipleActiveResultSets=true"
-                };
-                TenantsUnitOfWork.Tenants.Add(Tenant);
-                TenantsUnitOfWork.Save();
+                };      
+                 TenantsUnitOfWork.Tenants.Add(Tenant);
+                 TenantsUnitOfWork.Save();
                 ClientUnitOfWork.SetConnectionString(Tenant.ConnectionString);
 
                 var User = new ApplicationUser() { Email = clientRegister.Email, UserName = clientRegister.UserName };
                 var result = await UserManager.CreateAsync(User, clientRegister.Password);
-                Debug.WriteLine(result);
+                if (result.Succeeded)return new UserWithToken{ Username = User.UserName, Token = TokenService.CreateClientToken(User)};
+                else return BadRequest(result.Errors);
+            }
+            return BadRequest(ModelState);
+        }
+        // POST api/<IdentityController>/LoginMainDomain
+        [HttpPost("LoginMainDomain")]
+        public async Task<ActionResult<UserWithToken>> LoginMainDomain([FromBody] ClientLogin clientLogin)
+        {
+            if (ModelState.IsValid) { 
+                //Get ConnectionString From Tenant Db
+                var tenant = TenantsUnitOfWork.Tenants.TenantByEmail(clientLogin.Email);
+                if (tenant == null) return BadRequest("There is no account by this mail");
+                //Connect to the correct Db based on the Connectionstring
+                ClientUnitOfWork.SetConnectionString(tenant.ConnectionString);
+                //Get user From Users table
+                var user = UserManager.Users.SingleOrDefault(x => x.Email == clientLogin.Email);
+                if (user == null) return Unauthorized("We can't find a user with this email. Check your email and try again");
+                //Sign In User
+                var result = await ApplicationUserSignIngManager.CheckPasswordSignInAsync(user, clientLogin.Password, false);
                 if (result.Succeeded)
-                {
-                    return new UserWithToken
-                    {
-                        Username = User.UserName,
-                        Token = TokenService.CreateClientToken(User)
-                    };
-                }
-                else
-                    return BadRequest(result.Errors);
+                    return new UserWithToken{Username = user.UserName, Token = TokenService.CreateClientToken(user)};
+                else return Unauthorized("Wrong Password");
             }
             return BadRequest(ModelState);
         }

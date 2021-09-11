@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace ERP.Migrations.ApplicationDb
+namespace ERP.Migrations
 {
-    public partial class ApplicationUserDbInitials : Migration
+    public partial class OwnersDbinitals : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

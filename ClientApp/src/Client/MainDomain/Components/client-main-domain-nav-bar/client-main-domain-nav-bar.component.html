@@ -2,14 +2,26 @@
   <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
     <mat-icon>menu</mat-icon>
   </button>
-  <span>{{title}}</span>
+  <span><a routerLink="/" class="homeLink">{{title}}</a></span>
   <span class="example-spacer"></span>
-  <button mat-stroked-button class="b-white" aria-label="Example icon-button with heart icon" (click)="OnLoginClick()">
-    <mat-icon>login</mat-icon>
-    Login
-  </button>&nbsp;
-  <button mat-stroked-button class="b-white" aria-label="Example icon-button with share icon" (click)="OnRegisterlick()">
-    <mat-icon>app_registration</mat-icon>
-    Register
-  </button>
+  <ng-container *ngIf="IsloggedIn===false">
+    <button mat-stroked-button class="b-white" aria-label="Example icon-button with heart icon" (click)="OnLoginClick()">
+      <mat-icon>login</mat-icon>
+      Login
+    </button>&nbsp;
+    <button mat-stroked-button class="b-white" aria-label="Example icon-button with share icon" (click)="OnRegisterlick()">
+      <mat-icon>app_registration</mat-icon>
+      Register
+    </button>
+  </ng-container>
+  <ng-container *ngIf="IsloggedIn">
+    <a class="b-white" aria-label="Example icon-button with heart icon">
+      {{currentUserName}}
+    </a>&nbsp;
+    <button mat-stroked-button class="b-white" aria-label="Example icon-button with heart icon" (click)="logOut()">
+      <mat-icon>logout</mat-icon>
+      Logout
+    </button>
+  </ng-container>
 </mat-toolbar>
+

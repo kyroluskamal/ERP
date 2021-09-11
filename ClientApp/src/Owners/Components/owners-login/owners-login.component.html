@@ -1,4 +1,4 @@
-<form [formGroup]="loginForm">
+<form [formGroup]="loginForm" (ngSubmit)="loginForm.valid">
   <div class="form-container">
     <div class="dialog-header">
       <h2 mat-dialog-title>
@@ -45,15 +45,19 @@
     <button class="buttonLink">Forget password?</button>
     <!------------------------Mat-Dialog-actions--------------------------->
     <div mat-dialog-actions>
-      <button mat-raised-button color="primary" class="Width100" aria-label="press to login">
+      <button mat-raised-button color="primary"
+              (ngSubmit)="Login(ValidationErrorMessage.getFormControl('RememberMe', loginForm).value)"
+              [disabled]="loginForm.invalid" class="Width100" aria-label="press to login"
+              (click)="Login(ValidationErrorMessage.getFormControl('RememberMe', loginForm).value)">>
         <mat-icon>login</mat-icon>
         Login
       </button>
     </div>
     <!--End Mat-Dialog-actions-->
   </div>
-  <p>Don't have Account?' <button class="buttonLink" (click)="dialogHandler.CloseDialog();
-    dialogHandler.OpenOwnerRegisterDialog();">
-  Create one
-</button></p>
+  <p>Don't have Account?'
+  <button class="buttonLink" (click)="dialogHandler.CloseDialog(); dialogHandler.OpenOwnerRegisterDialog();">
+      Create one
+  </button>
+  </p>
 </form>

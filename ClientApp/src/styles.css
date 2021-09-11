@@ -117,7 +117,7 @@ form p{
 }
 .alert {
   position: relative;
-  padding: .75rem 1.25rem;
+  padding: inherit;
   margin-bottom: 1rem;
   border: 1px solid transparent;
   border-radius: .25rem;
@@ -157,6 +157,11 @@ form p{
 .marginTop-5{
     margin-top:5px;
 }
-.Error-Notification .mat-simple-snackbar-action {
+.Error-Notification .mat-simple-snackbar-action,
+.Success-Notification .mat-simple-snackbar-action {
   color: White;
+}
+.homeLink{
+    text-decoration:none !important;
+    color:inherit !important;
 }

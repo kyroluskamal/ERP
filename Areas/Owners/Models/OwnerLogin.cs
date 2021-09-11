@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ERP.Models
+namespace ERP.Areas.Owners.Models
 {
-    public class ClientLogin
+    public class OwnerLogin
     {
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress]
@@ -14,7 +14,5 @@ namespace ERP.Models
         [Required(ErrorMessage = "Password is required")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-        public string Subdomain { get; set; }
-
     }
 }

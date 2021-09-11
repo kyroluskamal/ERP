@@ -53,12 +53,15 @@ export class ClientRegisterComponent implements OnInit {
   }
   //Register Function
   OnRegisterClick(event: any) {
+    if (this.RegisterForm.invalid) return;
     this.ClientAuth.Register(this.RegisterForm.value).subscribe(
       (response: ClientWithToken) => {
         this.clientWithToken = response;
         console.log(response);
         this.ValidationErrors = [];
         this.Notifications.success("Your registered Successfully. Please Confirm your email");
+        this.dialogHandler.CloseDialog();
+        
       },
       (error) => {
         console.log(error);

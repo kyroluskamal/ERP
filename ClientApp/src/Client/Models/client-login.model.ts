@@ -1,4 +1,5 @@
 export class ClientLogin {
-  Username: string = "";
+  Email: string = "";
   Password: string = "";
+  Subdomain: string = "";
 }

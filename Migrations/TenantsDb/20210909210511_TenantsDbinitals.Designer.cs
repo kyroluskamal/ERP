@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERP.Migrations.TenantsDb
 {
     [DbContext(typeof(TenantsDbContext))]
-    [Migration("20210908183617_TenantDbInitials")]
-    partial class TenantDbInitials
+    [Migration("20210909210511_TenantsDbinitals")]
+    partial class TenantsDbinitals
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,7 +35,15 @@ namespace ERP.Migrations.TenantsDb
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Subdomain")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -44,7 +52,13 @@ namespace ERP.Migrations.TenantsDb
                     b.HasIndex("ConnectionString")
                         .IsUnique();
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.HasIndex("Subdomain")
+                        .IsUnique();
+
+                    b.HasIndex("Username")
                         .IsUnique();
 
                     b.ToTable("Tenants");

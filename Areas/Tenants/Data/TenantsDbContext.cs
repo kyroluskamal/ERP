@@ -26,6 +26,13 @@ namespace ERP.Areas.Tenants.Data
             builder.Entity<TenantsInfo>()
                 .HasIndex(u => u.ConnectionString)
                 .IsUnique();
+            builder.Entity<TenantsInfo>()
+                .HasIndex(u => u.Username)
+                .IsUnique();
+            builder.Entity<TenantsInfo>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+            base.OnModelCreating(builder);
         }
     }
 }

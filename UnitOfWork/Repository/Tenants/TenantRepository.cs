@@ -29,8 +29,20 @@ namespace ERP.UnitOfWork.Repository.Tenants
             TenantsDbContext.Update(TenantsInfo);
         }
 
-     
+        public TenantsInfo TenantBySubdomain(string subdomain)
+        {
+            return  TenantsDbContext.Tenants.FirstOrDefault(x => x.Subdomain == subdomain);
 
-        
+        }
+
+        public TenantsInfo TenantByUsername(string username)
+        {
+            return TenantsDbContext.Tenants.FirstOrDefault(x => x.Username == username);
+        }
+
+        public TenantsInfo TenantByEmail(string Email)
+        {
+            return TenantsDbContext.Tenants.FirstOrDefault(x => x.Email == Email);
+        }
     }
 }

@@ -12,6 +12,10 @@ namespace ERP.Areas.Tenants.Models
         [Index(IsUnique = true)]
         public string Subdomain { get; set; }
         [Required]
+        public string Email { get; set; }
+        [Required]
+        public string Username { get; set; }
+        [Required]
         public string ConnectionString { get; set; }
     }
 }

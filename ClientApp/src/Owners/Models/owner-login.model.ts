@@ -1,4 +1,4 @@
 export class OwnerLogin {
-  Username: string = "";
+  Email: string = "";
   Password: string = "";
 }

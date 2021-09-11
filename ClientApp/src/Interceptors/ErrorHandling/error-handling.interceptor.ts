@@ -9,11 +9,10 @@ import { Observable, throwError } from 'rxjs';
 import { Router, NavigationExtras } from '@angular/router';
 import { catchError } from 'rxjs/operators';
 import { NotificationsService } from '../../CommonServices/NotificationService/notifications.service';
-
 @Injectable()
 export class ErrorHandlingInterceptor implements HttpInterceptor {
-
-  constructor(private router: Router, private Notification: NotificationsService) {}
+  
+  constructor(private router: Router, private Notification: NotificationsService) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
@@ -39,22 +38,27 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
                   }
                 } else {
                   modalStateErrors.push(error.error);
+                  this.Notification.error(error.error, error.status);
+                  throw modalStateErrors.flat();
                 }
                 this.Notification.error("Please correct the errors and try agaid", error.status);
                 throw modalStateErrors.flat();
-              
+
               } else {
                 this.Notification.error(error.statusText, error.status);
               }
               break;
             case 401:
-              this.Notification.error(error.statusText, error.status);
+              modalStateErrors.push(error.error);
+              this.Notification.error(error.error, error.status);
+              throw modalStateErrors.flat();
               break;
             case 404:
               this.router.navigateByUrl('/not-found');
               break;
             case 500:
               const navigationExtras: NavigationExtras = { state: { error: error.error } }
+              localStorage.setItem("ServerError", JSON.stringify(navigationExtras));
               this.router.navigateByUrl('/server-error', navigationExtras);
               break;
             default:

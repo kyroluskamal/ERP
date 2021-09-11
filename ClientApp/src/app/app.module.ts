@@ -16,12 +16,11 @@ import { TokenInterceptorInterceptor } from '../Interceptors/TokenInterceptor/to
 
 @NgModule({
   declarations: [
-    AppComponent, NotFoundComponent, ServerErrorComponent
+    AppComponent, NotFoundComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, BrowserAnimationsModule,
-    MaterialModule, SharedModule, OwnerModule, CommonModule, ClientModule
-  ],
+    MaterialModule, SharedModule, OwnerModule, CommonModule, ClientModule  ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorHandlingInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorInterceptor, multi: true }

@@ -2,7 +2,7 @@
 
 namespace ERP.Migrations.TenantsDb
 {
-    public partial class TenantDbInitials : Migration
+    public partial class TenantsDbinitals : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,6 +14,8 @@ namespace ERP.Migrations.TenantsDb
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Subdomain = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ConnectionString = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
@@ -28,9 +30,21 @@ namespace ERP.Migrations.TenantsDb
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Tenants_Email",
+                table: "Tenants",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tenants_Subdomain",
                 table: "Tenants",
                 column: "Subdomain",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tenants_Username",
+                table: "Tenants",
+                column: "Username",
                 unique: true);
         }
 

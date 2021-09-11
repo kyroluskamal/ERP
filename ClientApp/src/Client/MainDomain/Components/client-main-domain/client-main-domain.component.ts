@@ -1,5 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-client-main-domain',
@@ -8,15 +10,20 @@ import { Location } from '@angular/common';
 })
 export class ClientMainDomainComponent implements OnInit {
   @Input("apptitle") title: string = "";
+  
   notFound: boolean = false;
-  CurrentUrl: string = "";
-  constructor(private location: Location) {
-    this.CurrentUrl = this.location.path();
+  constructor(private router: Router, private location: Location) {
   }
 
   ngOnInit(): void {
-    if (this.CurrentUrl.includes("/not-found")) this.notFound = true;
-    else this.notFound = false;
+    //this.router.events
+    //  .pipe(
+    //    filter(e => e instanceof NavigationEnd)
+    //  )
+    //  .subscribe((navEnd: any) => {
+    //   if ()
+    //    //window.location.assign("/");
+    //  });
   }
 
 }

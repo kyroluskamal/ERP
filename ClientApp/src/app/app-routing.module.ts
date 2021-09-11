@@ -8,8 +8,9 @@ import { AppComponent } from './app.component';
 const routes: Routes = [
   { path: "owners", component: OwnerBodyComponent },
   { path: "not-found", component: NotFoundComponent },
-  { path: "server-error", component: ServerErrorComponent },
-  { path: "", component: AppComponent }
+  { path: "server-error", component: ServerErrorComponent},
+  { path: "", component: AppComponent },
+  { path: "**", redirectTo: '/not-found', pathMatch: 'prefix' }
 ];
 
 @NgModule({

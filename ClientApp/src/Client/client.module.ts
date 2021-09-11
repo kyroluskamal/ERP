@@ -10,10 +10,11 @@ import { ClientLoginComponent } from './MainDomain/Components/client-login/clien
 import { ClientMainDomainComponent } from './MainDomain/Components/client-main-domain/client-main-domain.component';
 import { ClientMainDomainNavBarComponent } from './MainDomain/Components/client-main-domain-nav-bar/client-main-domain-nav-bar.component';
 import { NotFoundComponent } from '../CommonComponents/not-found/not-found.component';
+import { ServerErrorComponent } from '../CommonComponents/server-error/server-error.component';
 
 const Commponents = [
   ClientRegisterComponent, ClientLoginComponent, ClientMainComponent, ClientMainDomainComponent,
-  ClientAppComponent, ClientMainDomainNavBarComponent
+  ClientAppComponent, ClientMainDomainNavBarComponent, ServerErrorComponent
 ]
 @NgModule({
   declarations: [Commponents],

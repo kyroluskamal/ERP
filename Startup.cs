@@ -52,10 +52,10 @@ namespace ERP
             services.AddTransient<RoleManager<OwnerRole>, OwnerRoleManager>();
             services.AddTransient<IUserStore<Owner>, OwnerUserStore>();
             services.AddIdentityCore<Owner>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<OwnersDbContext>()
-                .AddRoles<OwnerRole>().AddRoleManager<OwnerRoleManager>()
+                .AddEntityFrameworkStores<OwnersDbContext>().AddRoles<OwnerRole>()
+                .AddRoleManager<OwnerRoleManager>()
                 .AddRoleStore<OwnerRoleStore>().AddUserManager<OwnerUserManager>()
-                .AddUserStore<OwnerUserStore>()
+                .AddUserStore<OwnerUserStore>().AddSignInManager<OwnerSignInManager>()
                .AddDefaultTokenProviders();
             
             services.AddScoped<OwnerRoleStore>();
@@ -70,37 +70,16 @@ namespace ERP
             services.AddTransient<SignInManager<ApplicationUser>, ApplicationUserSignIngManager>();
             services.AddTransient<RoleManager<ApplicationUserRole>, ApplicationUserRoleManager>();
             services.AddTransient<IUserStore<ApplicationUser>, ApplicationUserStore>();
-            services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddRoles<ApplicationUserRole>().AddRoleManager<ApplicationUserRoleManager>()
                 .AddRoleStore<ApplicationUserRoleStore>().AddUserManager<ApplicationUserManager>()
-                .AddUserStore<ApplicationUserStore>()
+                .AddUserStore<ApplicationUserStore>().AddSignInManager<ApplicationUserSignIngManager>()
                .AddDefaultTokenProviders();
             
             services.AddScoped<ApplicationUserRoleStore>();
             services.AddScoped<ApplicationUserStore>();
 
-            //Add App DB Context
-            //services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            //    .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseSqlServer());
-            //services.AddEntityFrameworkSqlServer().AddDbContext<ApplicationDbContext>(options =>
-            //        options.UseSqlServer());
-            //services.AddScoped<IRoleStore<ApplicationUserRole>, ApplicationUserRoleStore>();
-            //services.AddScoped<UserManager<ApplicationUser>, ApplicationUserManager>();
-            //services.AddScoped<SignInManager<ApplicationUser>, ApplicationUserSignIngManager>();
-            //services.AddScoped<RoleManager<ApplicationUserRole>, ApplicationUserRoleManager>();
-            //services.AddScoped<IUserStore<ApplicationUser>, ApplicationUserStore>();
-            //services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            //    .AddEntityFrameworkStores<ApplicationDbContext>()
-            //    .AddRoles<ApplicationUserRole>().AddRoleManager<ApplicationUserRoleManager>()
-            //    .AddRoleStore<ApplicationUserRoleStore>().AddUserManager<ApplicationUserManager>()
-            //    .AddUserStore<ApplicationUserStore>()
-            //   .AddDefaultTokenProviders();
-
-            //services.AddScoped<ApplicationUserRoleStore>();
-            //services.AddScoped<ApplicationUserStore>();
             //Add TenantDB
             services.AddDbContext<TenantsDbContext>(options =>
                     options.UseSqlServer());
@@ -138,7 +117,7 @@ namespace ERP
             //else
             //{
             //    app.UseExceptionHandler("/Error");
-            //    The default HSTS value is 30 days.You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            //    //The default HSTS value is 30 days.You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             //    app.UseHsts();
             //}
 

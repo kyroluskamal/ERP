@@ -13,7 +13,6 @@ export class NotFoundComponent implements OnInit {
   //@Input("apptitle") title: string = "";
   constructor(private location: Location) {
     //this.CurrentUrl = this.location.path();
-    //console.log(this.CurrentUrl);
   }
 
   ngOnInit(): void {

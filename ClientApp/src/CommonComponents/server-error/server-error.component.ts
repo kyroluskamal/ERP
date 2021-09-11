@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import { ActivatedRoute, NavigationEnd, NavigationExtras, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-server-error',
@@ -8,16 +11,26 @@ import { Router } from '@angular/router';
 })
 export class ServerErrorComponent implements OnInit {
   error: any;
-
-  constructor(private router: Router) {
-    const navigation = this.router.getCurrentNavigation();
-    this.error = navigation?.extras?.state?.error;
-    console.log("The error in " + navigation);
+  back: string = "";
+  @Input("extras") extras: any;
+  constructor(private router: Router, private location: Location) {
   }
 
   ngOnInit(): void {
+    this.error = localStorage.getItem("ServerError");
+    this.error = JSON.parse(this.error);
+    this.error = this.error.state.error;
+    localStorage.removeItem("ServerError");
   }
   GoToHome() {
-    window.location.href = "/";
+    this.router.events
+      .pipe(
+        filter(e => e instanceof NavigationEnd)
+      )
+      .subscribe((navEnd: any) => {
+        window.location.assign("/");
+      });
+
   }
 }
+
