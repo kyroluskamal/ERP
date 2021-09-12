@@ -13,9 +13,8 @@ export class ClientMainComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   
-    this.subdomain = window.location.href.split("kherp.com")[0].split("https://")[1].split(".")[0];
-
+    this.subdomain = window.location.hostname.split(".")[0];
+    console.log(window.location.hostname.split("."))
   }
 
 }

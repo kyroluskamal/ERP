@@ -9,10 +9,12 @@ import { Observable, throwError } from 'rxjs';
 import { Router, NavigationExtras } from '@angular/router';
 import { catchError } from 'rxjs/operators';
 import { NotificationsService } from '../../CommonServices/NotificationService/notifications.service';
+import { DialogHandlerService } from '../../CommonServices/DialogHandler/dialog-handler.service';
 @Injectable()
 export class ErrorHandlingInterceptor implements HttpInterceptor {
   
-  constructor(private router: Router, private Notification: NotificationsService) { }
+  constructor(private router: Router, private Notification: NotificationsService,
+    private dialogHandler: DialogHandlerService) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
@@ -58,7 +60,7 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
               break;
             case 500:
               const navigationExtras: NavigationExtras = { state: { error: error.error } }
-              localStorage.setItem("ServerError", JSON.stringify(navigationExtras));
+              this.dialogHandler.CloseDialog();
               this.router.navigateByUrl('/server-error', navigationExtras);
               break;
             default:

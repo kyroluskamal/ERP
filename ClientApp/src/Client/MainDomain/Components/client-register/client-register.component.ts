@@ -53,8 +53,17 @@ export class ClientRegisterComponent implements OnInit {
   }
   //Register Function
   OnRegisterClick(event: any) {
+    this.ClientRegisterModel = {
+      Email: this.RegisterForm.get("Email")?.value,
+      Password : this.RegisterForm.get("Password")?.value,
+      Subdomain :this.RegisterForm.get("Subdomain")?.value,
+      CompanyName : this.RegisterForm.get("CompanyName")?.value,
+      ConfirmPassword : this.RegisterForm.get("ConfirmPassword")?.value,
+      UserName : this.RegisterForm.get("Username")?.value
+    };
+    console.log("Subdomain = " + this.ClientRegisterModel.Subdomain);
     if (this.RegisterForm.invalid) return;
-    this.ClientAuth.Register(this.RegisterForm.value).subscribe(
+    this.ClientAuth.Register(this.ClientRegisterModel).subscribe(
       (response: ClientWithToken) => {
         this.clientWithToken = response;
         console.log(response);

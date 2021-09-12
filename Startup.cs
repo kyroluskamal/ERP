@@ -21,6 +21,9 @@ using Microsoft.AspNetCore.Http;
 using ERP.Utilities.Services;
 using API.Middleware.ErrorsHandling;
 using ERP.UnitOfWork;
+using ERP.Utilities.Services.EmailService;
+using ERP.Utilities.Services.EmailSenderSendGrid;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace ERP
 {
@@ -84,6 +87,20 @@ namespace ERP
             services.AddDbContext<TenantsDbContext>(options =>
                     options.UseSqlServer());
 
+            //Email service
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.AddTransient<IMailService, MailService>();
+            //services.AddSingleton<IEmailSender, EmailSender>();
+            //services.Configure<EmailOptions>(Configuration);
+            services.AddControllers();
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc();
+            //});
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+            });
             //Configure JWT Tokens
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>

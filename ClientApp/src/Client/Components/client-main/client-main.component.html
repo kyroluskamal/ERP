@@ -1,2 +1,2 @@
-<app-client-main-domain [apptitle]="title" *ngIf="subdomain===''"></app-client-main-domain>
+<app-client-main-domain [apptitle]="title" *ngIf="subdomain==='localhost'||subdomain==='kherp'"></app-client-main-domain>
 <app-client-app *ngIf="subdomain!==''"></app-client-app>

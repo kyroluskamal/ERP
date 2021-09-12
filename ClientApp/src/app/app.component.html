@@ -1,4 +1,4 @@
-<app-owner-main [apptitle]="title" *ngIf="IsOwnerRoute && ServerError===false && notFound===false"></app-owner-main>
-<app-client-main [apptitle]="title" *ngIf="IsOwnerRoute === false && ServerError===false && notFound===false"></app-client-main>
-<app-server-error *ngIf="ServerError"></app-server-error>
-<app-not-found *ngIf="notFound"></app-not-found>
+<app-client-main-domain-nav-bar [apptitle]="title" *ngIf="!IsOwnerRoute &&
+                                (subdomain=='localhost:44369' || subdomain ==='kherp')"></app-client-main-domain-nav-bar>
+<app-owner-nav-bar [apptitle]="title" *ngIf="IsOwnerRoute"></app-owner-nav-bar>
+<router-outlet></router-outlet>

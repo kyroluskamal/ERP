@@ -20,6 +20,6 @@ export class NotFoundComponent implements OnInit {
     //this.subdomain = window.location.href.split("kherp.com")[0].split("https://")[1].split(".")[0];
   }
   GoToHome() {
-    window.location.href = "/";
+    this.location.back();
   }
 }

@@ -3,6 +3,7 @@
     <mat-icon>menu</mat-icon>
   </button>
   <span><a routerLink="/" class="homeLink">{{title}}</a></span>
+  <span class="example-spacer"></span>
   <ng-container *ngIf="IsloggedIn===false">
     <button mat-stroked-button class="b-white" aria-label="Example icon-button with heart icon" (click)="OnLoginClick()">
       <mat-icon>login</mat-icon>

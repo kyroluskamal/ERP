@@ -1,8 +1,8 @@
 <router-outlet>
   <div class="container">
-    <button mat-raised-button color="primary" routerLink='/' (click)="GoToHome()">
-      <mat-icon>home</mat-icon>
-      Return to home page
+    <button mat-raised-button color="primary" (click)="GoToHome()">
+      <mat-icon>arrow_left</mat-icon>
+      Back
     </button>
     <h1>Internal server error - refreshing the page will make the error disappear!</h1>
     <ng-container *ngIf="error">

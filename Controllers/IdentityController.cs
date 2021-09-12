@@ -17,6 +17,11 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.Data.Entity;
 using System.Diagnostics;
 using ERP.UnitOfWork;
+using ERP.Utilities.Services.EmailService;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text;
+using System.Text.Encodings.Web;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -31,6 +36,7 @@ namespace ERP.Controllers
         public IUnitOfWork_Tenants TenantsUnitOfWork { get; set; }
         public IUnitOfWork_Owners OwnersUnitOfWork { get; set; }
         public ApplicationUserSignIngManager ApplicationUserSignIngManager { get; }
+        public IMailService MailService { get; }
         public IUnitOfWork_ApplicationUser ClientUnitOfWork { get; set; }
         public DbContextOptions<ApplicationDbContext> DbOptions;
 
@@ -38,7 +44,7 @@ namespace ERP.Controllers
             ApplicationUserManager userManager, ITokenService tokenService,
             IUnitOfWork_Tenants tenantsUnitOfWork, IUnitOfWork_ApplicationUser clientUnitOfWork,
             IUnitOfWork_Owners ownersUnitOfWork, DbContextOptions<ApplicationDbContext> dbOptions,
-            ApplicationUserSignIngManager applicationUserSignIngManager)
+            ApplicationUserSignIngManager applicationUserSignIngManager, IMailService mailService)
         {
             UserManager = userManager;
             TokenService = tokenService;
@@ -47,6 +53,7 @@ namespace ERP.Controllers
             OwnersUnitOfWork = ownersUnitOfWork;
             DbOptions = dbOptions;
             ApplicationUserSignIngManager = applicationUserSignIngManager;
+            MailService = mailService;
         }
 
         // GET: api/<IdentityController>
@@ -67,6 +74,7 @@ namespace ERP.Controllers
         [HttpPost]
         public async Task<ActionResult<UserWithToken>> Post([FromBody] ClientRegister clientRegister)
         {
+            Debug.WriteLine(clientRegister);
             if (ModelState.IsValid)
             {
                 var tenantbyEmail = TenantsUnitOfWork.Tenants.TenantByEmail(clientRegister.Email);
@@ -96,11 +104,39 @@ namespace ERP.Controllers
                 };      
                  TenantsUnitOfWork.Tenants.Add(Tenant);
                  TenantsUnitOfWork.Save();
-                ClientUnitOfWork.SetConnectionString(Tenant.ConnectionString);
+                 ClientUnitOfWork.SetConnectionString(Tenant.ConnectionString);
 
                 var User = new ApplicationUser() { Email = clientRegister.Email, UserName = clientRegister.UserName };
                 var result = await UserManager.CreateAsync(User, clientRegister.Password);
-                if (result.Succeeded)return new UserWithToken{ Username = User.UserName, Token = TokenService.CreateClientToken(User)};
+                if (result.Succeeded)
+                {
+                    var code = await UserManager.GenerateEmailConfirmationTokenAsync(User);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    var callbackUrl = Url.Page(
+                        "/Account/ConfirmEmail",
+                        pageHandler: null,
+                        values: new { area = "Identity", userId = User.Id, code = code },
+                        protocol: Request.Scheme);
+                    var mailRequest = new MailRequest();
+                    mailRequest.ToEmail = "kyroluskamal@gmail.com";
+                    mailRequest.Subject = "Please confirm your email";
+                    mailRequest.Body = $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.";
+                    MailService.SendEmail(mailRequest);
+                    
+                    //await MailService.SendEmailAsync(clientRegister.Email, "Confirm your email",
+                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    if (UserManager.Options.SignIn.RequireConfirmedAccount)
+                    {
+                        return RedirectToPage("RegisterConfirmation", new { email = clientRegister.Email });
+                    }
+                    
+                    return new UserWithToken
+                    {
+                        Username = User.UserName,
+                        Token = TokenService.CreateClientToken(User)
+                    };
+                }
                 else return BadRequest(result.Errors);
             }
             return BadRequest(ModelState);
@@ -121,7 +157,9 @@ namespace ERP.Controllers
                 //Sign In User
                 var result = await ApplicationUserSignIngManager.CheckPasswordSignInAsync(user, clientLogin.Password, false);
                 if (result.Succeeded)
-                    return new UserWithToken{Username = user.UserName, Token = TokenService.CreateClientToken(user)};
+                {
+                    return new UserWithToken { Username = user.UserName, Token = TokenService.CreateClientToken(user) };
+                }
                 else return Unauthorized("Wrong Password");
             }
             return BadRequest(ModelState);

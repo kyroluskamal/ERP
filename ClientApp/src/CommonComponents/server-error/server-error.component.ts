@@ -14,23 +14,26 @@ export class ServerErrorComponent implements OnInit {
   back: string = "";
   @Input("extras") extras: any;
   constructor(private router: Router, private location: Location) {
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras?.state?.error == null) this.GoToHome();
+    this.error = navigation?.extras?.state?.error; 
   }
 
   ngOnInit(): void {
-    this.error = localStorage.getItem("ServerError");
-    this.error = JSON.parse(this.error);
-    this.error = this.error.state.error;
-    localStorage.removeItem("ServerError");
+    //this.error = localStorage.getItem("ServerError");
+    //this.error = JSON.parse(this.error);
+    //this.error = this.error.state.error;
+    //localStorage.removeItem("ServerError");
   }
   GoToHome() {
-    this.router.events
-      .pipe(
-        filter(e => e instanceof NavigationEnd)
-      )
-      .subscribe((navEnd: any) => {
-        window.location.assign("/");
-      });
-
+    //this.router.events
+    //  .pipe(
+    //    filter(e => e instanceof NavigationEnd)
+    //  )
+    //  .subscribe((navEnd: any) => {
+    //    window.location.assign("/");
+    //  });
+    this.location.back();
   }
 }
 
