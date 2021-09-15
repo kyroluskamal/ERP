@@ -5,4 +5,5 @@ export class ClientRegister {
   CompanyName: string = "";
   Subdomain: string = "";
   UserName: string = "";
+  ClientUrl = "";
 }

@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { SendEmailConfirmationAgian } from '../../../Client/Models/send-email-confirmation-agian.model';
 import { DialogHandlerService } from '../../../CommonServices/DialogHandler/dialog-handler.service';
 import { NotificationsService } from '../../../CommonServices/NotificationService/notifications.service';
 import { ValidationErrorMessagesService } from '../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
+import { Constants } from '../../../Helpers/constants';
 import { CustomErrorStateMatcher } from '../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
 import { OwnerLogin } from '../../Models/owner-login.model';
 import { OwnerAccountService } from '../../Services/Authentication/Owner-account-service.service';
@@ -15,7 +17,7 @@ import { OwnerAccountService } from '../../Services/Authentication/Owner-account
 export class OwnersLoginComponent implements OnInit {
   passwordHide: boolean = true;
   loginForm = new FormGroup({});
-  ValidationErrors: string[] = [];
+  ValidationErrors: any[] = [];
   customErrorStateMatcher: CustomErrorStateMatcher = new CustomErrorStateMatcher()
   OwnerLogin: OwnerLogin = new OwnerLogin();
   constructor(public formBuilder: FormBuilder,
@@ -42,12 +44,26 @@ export class OwnersLoginComponent implements OnInit {
     this.accountService.login(this.OwnerLogin, RememberMe).subscribe(
       response => {
         console.log(response);
-        this.Notifications.success("You logined in Successfully");
+        this.Notifications.success("You logged in Successfully");
         this.dialogHandler.CloseDialog();
       },
       error => {
         console.log(error);
         this.ValidationErrors = error;
+      }
+    );
+  }
+
+  SendConfirmationAgain() {
+    const sendEmailConfirmationAgian: SendEmailConfirmationAgian = {
+      Email: this.loginForm.get("Email")?.value,
+      ClientUrl: "https://" + window.location.host + "/" + Constants.Owner_EmailConfirmationUrl
+    }
+    this.accountService.SendConfirmationAgain(sendEmailConfirmationAgian).subscribe(
+      (response: any) => { this.Notifications.success("Email confirmation resended agian") },
+      (error) => {
+        this.Notifications.error("Can't resend Email confirmation again. Please contact us", "");
+        console.log(error);
       }
     );
   }

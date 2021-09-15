@@ -1,0 +1,10 @@
+<ng-container *ngIf="Success">
+  <h1 class="alert alert-success">Email confirmaed successfully</h1>
+  <p>You can now <a class="buttonLink" (click)="dialogHandler.OpenClientLoginDialog()">login</a></p>
+</ng-container>
+
+<ng-container *ngIf="Fail">
+  <h1 class="alert alert-danger">Email Confirmation failed</h1>
+  <h2>{{Error}}</h2>
+  <p><a class="buttonLink" (click)="dialogHandler.OpenClientLoginDialog()">Click here</a> to send verification email again</p>
+</ng-container>

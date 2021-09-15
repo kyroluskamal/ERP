@@ -23,5 +23,7 @@ namespace ERP.Models
         public string Subdomain { get; set; }
         [Required(ErrorMessage = "Your Username is required")]
         public string UserName { get; set; }
+        public string ClientUrl { get; set; }
+
     }
 }

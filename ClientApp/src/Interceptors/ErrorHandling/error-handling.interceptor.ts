@@ -24,6 +24,7 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
           switch (error.status) {
             case 400:
               if (error.error.errors) {
+                
                 for (const key in error.error.errors) {
                   if (error.error.errors[key]) {
                     modalStateErrors.push(error.error.errors[key]);
@@ -32,6 +33,7 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
                 this.Notification.error("Please correct the errors and try agaid", error.status);
                 throw modalStateErrors.flat();
               } else if (error.error) {
+                
                 if (Array.isArray(error.error)) {
                   for (let i = 0; i < error.error.length; i++) {
                     if (error.error[i].description) {
@@ -40,10 +42,10 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
                   }
                 } else {
                   modalStateErrors.push(error.error);
-                  this.Notification.error(error.error, error.status);
+                  this.Notification.error(error.error.error, error.status);
                   throw modalStateErrors.flat();
                 }
-                this.Notification.error("Please correct the errors and try agaid", error.status);
+                this.Notification.error("Please correct the errors and try again", error.status);
                 throw modalStateErrors.flat();
 
               } else {
@@ -52,7 +54,8 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
               break;
             case 401:
               modalStateErrors.push(error.error);
-              this.Notification.error(error.error, error.status);
+              this.Notification.error(error.error.error, error.status);
+              console.log(error.error.error);
               throw modalStateErrors.flat();
               break;
             case 404:

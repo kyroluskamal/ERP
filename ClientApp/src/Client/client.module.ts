@@ -9,14 +9,12 @@ import { ClientRegisterComponent } from './MainDomain/Components/client-register
 import { ClientLoginComponent } from './MainDomain/Components/client-login/client-login.component';
 import { ClientMainDomainComponent } from './MainDomain/Components/client-main-domain/client-main-domain.component';
 import { ClientMainDomainNavBarComponent } from './MainDomain/Components/client-main-domain-nav-bar/client-main-domain-nav-bar.component';
-import { NotFoundComponent } from '../CommonComponents/not-found/not-found.component';
 import { ServerErrorComponent } from '../CommonComponents/server-error/server-error.component';
-import { EmailConfirmationComponent } from './MainDomain/Components/email-confirmation/email-confirmation.component';
+import { EmailConfirmationClientComponent } from './MainDomain/Components/email-confirmation-client/email-confirmation-client.component';
 
 const Commponents = [
   ClientRegisterComponent, ClientLoginComponent, ClientMainComponent, ClientMainDomainComponent,
-  ClientAppComponent, ClientMainDomainNavBarComponent, ServerErrorComponent, EmailConfirmationComponent,
-
+  ClientAppComponent, ClientMainDomainNavBarComponent, ServerErrorComponent, EmailConfirmationClientComponent
 ]
 @NgModule({
   declarations: [Commponents],

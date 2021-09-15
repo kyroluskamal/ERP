@@ -11,7 +11,7 @@
       <mat-error class="alert alert-danger" *ngIf="ValidationErrors.length>0">
         <p>Please Correct the following errors</p>
         <ul>
-          <li *ngFor="let error of ValidationErrors">{{error}}</li>
+          <li *ngFor="let error of ValidationErrors">{{error.error}} <span *ngIf="error.status == 'EmailConfirmation'">To send confirmation message again, <a class='buttonLink' (click)='SendConfirmationAgain()'>Click here.</a></span></li>
         </ul>
       </mat-error>
       <!-- Email -->

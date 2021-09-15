@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
 import { NotificationsService } from '../../../../CommonServices/NotificationService/notifications.service';
 import { ValidationErrorMessagesService } from '../../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
+import { Constants } from '../../../../Helpers/constants';
 import { CustomErrorStateMatcher } from '../../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
 import { CustomValidators } from '../../../../Helpers/CustomValidation/custom-validators';
 import { ClientRegister } from '../../../Models/client-register.model';
@@ -19,7 +20,7 @@ export class ClientRegisterComponent implements OnInit {
   passwordHide: boolean = true;
   confirmPasswordHide: boolean = true;
   RegisterForm: FormGroup = new FormGroup({});
-  ValidationErrors: string[] = [];
+  ValidationErrors: any[] = [];
   customErrorStateMatcher: CustomErrorStateMatcher= new CustomErrorStateMatcher()
   ClientRegisterModel: ClientRegister = new ClientRegister();
   clientWithToken: ClientWithToken = new ClientWithToken();
@@ -59,9 +60,9 @@ export class ClientRegisterComponent implements OnInit {
       Subdomain :this.RegisterForm.get("Subdomain")?.value,
       CompanyName : this.RegisterForm.get("CompanyName")?.value,
       ConfirmPassword : this.RegisterForm.get("ConfirmPassword")?.value,
-      UserName : this.RegisterForm.get("Username")?.value
+      UserName: this.RegisterForm.get("Username")?.value,
+      ClientUrl: "https://" + window.location.host + "/"+Constants.Client_EmailConfirmationUrl
     };
-    console.log("Subdomain = " + this.ClientRegisterModel.Subdomain);
     if (this.RegisterForm.invalid) return;
     this.ClientAuth.Register(this.ClientRegisterModel).subscribe(
       (response: ClientWithToken) => {

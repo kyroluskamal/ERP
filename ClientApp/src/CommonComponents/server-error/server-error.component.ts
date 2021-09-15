@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { ActivatedRoute, NavigationEnd, NavigationExtras, Router } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { ActivatedRoute, ActivationStart, NavigationEnd, NavigationExtras, ResolveEnd, Router, RoutesRecognized } from '@angular/router';
 
 
 @Component({
@@ -19,20 +18,8 @@ export class ServerErrorComponent implements OnInit {
     this.error = navigation?.extras?.state?.error; 
   }
 
-  ngOnInit(): void {
-    //this.error = localStorage.getItem("ServerError");
-    //this.error = JSON.parse(this.error);
-    //this.error = this.error.state.error;
-    //localStorage.removeItem("ServerError");
-  }
+  ngOnInit(): void { }
   GoToHome() {
-    //this.router.events
-    //  .pipe(
-    //    filter(e => e instanceof NavigationEnd)
-    //  )
-    //  .subscribe((navEnd: any) => {
-    //    window.location.assign("/");
-    //  });
     this.location.back();
   }
 }

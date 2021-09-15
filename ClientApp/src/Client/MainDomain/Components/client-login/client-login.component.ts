@@ -4,8 +4,10 @@ import { Router } from '@angular/router';
 import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
 import { NotificationsService } from '../../../../CommonServices/NotificationService/notifications.service';
 import { ValidationErrorMessagesService } from '../../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
+import { Constants } from '../../../../Helpers/constants';
 import { CustomErrorStateMatcher } from '../../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
 import { ClientLogin } from '../../../Models/client-login.model';
+import { SendEmailConfirmationAgian } from '../../../Models/send-email-confirmation-agian.model';
 import { ClientAccountService } from '../../../Services/Authentication/client-account-service.service';
 
 @Component({
@@ -16,7 +18,7 @@ import { ClientAccountService } from '../../../Services/Authentication/client-ac
 export class ClientLoginComponent implements OnInit {
   loginForm:FormGroup = new FormGroup({});
   customErrorStateMatcher: CustomErrorStateMatcher = new CustomErrorStateMatcher()
-  ValidationErrors: string[]  = []
+  ValidationErrors: any[]  = []
   passwordHide: boolean = true;
   ClientLogin: ClientLogin = new ClientLogin();
   constructor(private formBuilder: FormBuilder,
@@ -46,13 +48,27 @@ export class ClientLoginComponent implements OnInit {
     this.accountService.loginMainDomain(this.ClientLogin, RememberMe).subscribe(
       response => {
         console.log(response);
-        this.Notifications.success("You logined Successfully");
+        this.Notifications.success("You logged in Successfully");
         this.dialogHandler.CloseDialog();
       },
       error => {
-        console.log(error);
+        console.log(error[0].error);
         this.ValidationErrors = error;
       },
+    );
+  }
+
+  SendConfirmationAgain() {
+    const sendEmailConfirmationAgian: SendEmailConfirmationAgian = {
+      Email: this.loginForm.get("Email")?.value,
+      ClientUrl: "https://" + window.location.host + "/" + Constants.Client_EmailConfirmationUrl
+    }
+    this.accountService.SendConfirmationAgain(sendEmailConfirmationAgian).subscribe(
+      (response: any) => { this.Notifications.success("Email confirmation resended agian") },
+      (error) => {
+        this.Notifications.error("Can't resend Email confirmation again. Please contact us", "");
+        console.log(error);
+      }
     );
   }
 }

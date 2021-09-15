@@ -1,13 +1,19 @@
 ﻿using ERP.Areas.Owners.Data;
 using ERP.Areas.Owners.Models;
 using ERP.Areas.Owners.Models.Identity;
+using ERP.Models;
 using ERP.UnitOfWork;
+using ERP.Utilities;
 using ERP.Utilities.Services;
+using ERP.Utilities.Services.EmailService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -24,16 +30,20 @@ namespace ERP.Areas.Owners.Controllers
         public IUnitOfWork_Owners OwnersUnitOfWork { get; }
         public DbContextOptions<OwnersDbContext> DbOptions { get; }
         public OwnerSignInManager OwnerSigninManager { get; }
+        public IMailService MailService { get; }
+        public Constants Constants { get; set; }
 
-        public AccountController(OwnerUserManager ownerManager, ITokenService tokenService,
+        public AccountController(OwnerUserManager ownerManager, ITokenService tokenService, Constants constants,
             IUnitOfWork_Owners ownersUnitOfWork, DbContextOptions<OwnersDbContext> dbOptions,
-            OwnerSignInManager ownerSigninManager)
+            OwnerSignInManager ownerSigninManager, IMailService mailService)
         {
             OwnerManager = ownerManager;
             TokenService = tokenService;
+            Constants = constants;
             OwnersUnitOfWork = ownersUnitOfWork;
             DbOptions = dbOptions;
             OwnerSigninManager = ownerSigninManager;
+            MailService = mailService;
         }
 
         // GET: api/<AccountController>
@@ -52,7 +62,7 @@ namespace ERP.Areas.Owners.Controllers
 
         // POST api/<AccountController>
         [HttpPost]
-        public async Task<ActionResult<OwnerWithToken>> Post([FromBody] OwnerRegister Register)
+        public async Task<ActionResult> Post([FromBody] OwnerRegister Register)
         {
             if (ModelState.IsValid)
             {
@@ -60,33 +70,85 @@ namespace ERP.Areas.Owners.Controllers
                 var result = await OwnerManager.CreateAsync(Owner, Register.Password);
                 if (result.Succeeded)
                 {
-                    return new OwnerWithToken
+                    var code = await OwnerManager.GenerateEmailConfirmationTokenAsync(Owner);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    var param = new Dictionary<string, string>
                     {
-                        Username = Owner.UserName,
-                        Token = TokenService.CreateOwnerToken(Owner)
+                        {"token", code },
+                        {"email", Register.Email }
                     };
+                    var callbackUrl = QueryHelpers.AddQueryString(Register.ClientUrl, param);
+                    
+                    var mailRequest = new MailRequest();
+                    mailRequest.ToEmail = Register.Email;
+                    mailRequest.Subject = Constants.ConfirmationEmail_Subject;
+                    mailRequest.Body = Constants.ConfirmationEmail_Body(HtmlEncoder.Default.Encode(callbackUrl));
+                    MailService.SendEmail(mailRequest);
+
+                    
+                    return Ok();
                 }
-                return BadRequest(result.Errors);
+                return BadRequest(new { status= Constants.ResultStatus_statuCode, error = result.Errors });
             }
-            return null;
+            return BadRequest(new { status = Constants.ModelState_statuCode, error = ModelState });
         }
 
         // POST api/<AccountController>/OwnerLogin
-        [HttpPost("OwnerLogin")]
+        [HttpPost(nameof(OwnerLogin))]
         public async Task<ActionResult<OwnerWithToken>> OwnerLogin([FromBody] OwnerLogin ownerLogin)
         {
             if (ModelState.IsValid)
             {
                 //Get user From Users table
                 var user = OwnerManager.Users.SingleOrDefault(x => x.Email == ownerLogin.Email);
-                if (user == null) return Unauthorized("There is no account by this mail");
+                if (user == null) return Unauthorized(new { status = Constants.NullUser_statuCode, error = Constants.NullUser_ErrorMessage });
                 //Sign In User
                 var result = await OwnerSigninManager.CheckPasswordSignInAsync(user, ownerLogin.Password, false);
 
                 if (result.Succeeded) return new OwnerWithToken { Username = user.UserName, Token = TokenService.CreateOwnerToken(user) };
-                else return Unauthorized("Wrong Password");
+                else return Unauthorized(new { status = Constants.WrongPassword_StatusCode, error = Constants.WrongPassword_ErrorMessage });
             }
-            return BadRequest(ModelState);
+            return BadRequest(new { status = Constants.ModelState_statuCode, error = ModelState });
+        }
+        [HttpPost(nameof(EmailConfirmation))]
+        public async Task<IActionResult> EmailConfirmation([FromBody] EmailConfirmationModel emailConfirmationModel)
+        {
+            
+            var OwnerbyEmail = OwnersUnitOfWork.Owners.OwnerByEmail(emailConfirmationModel.email);
+            if (OwnerbyEmail == null) return BadRequest(new { status = Constants.NullOwner_statuCode, error = Constants.NullOwner_ErrorMessage });
+            var user = await OwnerManager.FindByEmailAsync(emailConfirmationModel.email);
+            if (user == null)
+                return BadRequest(new { status = Constants.NullUser_statuCode, error = Constants.NullUser_ErrorMessage });
+            var token = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(emailConfirmationModel.token));
+            var confirmResult = await OwnerManager.ConfirmEmailAsync(user, token);
+            //if (!confirmResult.Succeeded)
+            //    return BadRequest(new { status = Constants.EmailConfirmResult_statuCode, error = confirmResult.Errors });
+            return StatusCode(201);
+        }
+
+        [HttpPost(nameof(SendConfirmationAgain))]
+        public async Task<IActionResult> SendConfirmationAgain([FromBody] SendEmailConfirmationAgian sendEmailConfirmationAgian)
+        {
+            var OwnerbyEmail = OwnersUnitOfWork.Owners.OwnerByEmail(sendEmailConfirmationAgian.Email);
+            if (OwnerbyEmail == null) return BadRequest(new { status = Constants.NullOwner_statuCode, error = Constants.NullOwner_ErrorMessage });
+            var user = await OwnerManager.FindByEmailAsync(sendEmailConfirmationAgian.Email);
+            if (user == null)
+                return BadRequest(new { status = Constants.NullUser_statuCode, error = Constants.NullUser_ErrorMessage });
+            var code = await OwnerManager.GenerateEmailConfirmationTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            var param = new Dictionary<string, string>
+                    {
+                        {"token", code },
+                        {"email", sendEmailConfirmationAgian.ClientUrl }
+                    };
+            var callbackUrl = QueryHelpers.AddQueryString(sendEmailConfirmationAgian.ClientUrl, param);
+
+            var mailRequest = new MailRequest();
+            mailRequest.ToEmail = sendEmailConfirmationAgian.Email;
+            mailRequest.Subject = Constants.ConfirmationEmail_Subject;
+            mailRequest.Body = Constants.ConfirmationEmail_Body(HtmlEncoder.Default.Encode(callbackUrl));
+            MailService.SendEmail(mailRequest);
+            return Ok();
         }
         // PUT api/<AccountController>/5
         [HttpPut("{id}")]

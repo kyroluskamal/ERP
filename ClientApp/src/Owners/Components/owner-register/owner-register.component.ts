@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { DialogHandlerService } from '../../../CommonServices/DialogHandler/dialog-handler.service';
 import { NotificationsService } from '../../../CommonServices/NotificationService/notifications.service';
 import { ValidationErrorMessagesService } from '../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
+import { Constants } from '../../../Helpers/constants';
 import { CustomErrorStateMatcher } from '../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
 import { CustomValidators } from '../../../Helpers/CustomValidation/custom-validators';
 import { OwnerRegister } from '../../Models/owner-register.model';
@@ -17,17 +18,15 @@ export class OwnerRegisterComponent implements OnInit {
   passwordHide: boolean = true;
   confirmPasswordHide: boolean = true;
   RegisterForm: FormGroup | any;
-  ValidationErrors: string[] = [];
+  ValidationErrors: any[] = [];
   customErrorStateMatcher: CustomErrorStateMatcher = new CustomErrorStateMatcher()
+  OwnerRegisterModel: OwnerRegister = new OwnerRegister();
 
   constructor(public OwnerAuth: OwnerAccountService,
     public formBuilder: FormBuilder,
     public dialogHandler: DialogHandlerService,
     public ValidationErrorMessage: ValidationErrorMessagesService,
     public Notifications: NotificationsService) { }
-
-  OwnerRegisterModel: OwnerRegister = new OwnerRegister();
-  ownerWithToken: any = null;
 
   ngOnInit(): void {
     this.RegisterForm = this.formBuilder.group({
@@ -49,9 +48,16 @@ export class OwnerRegisterComponent implements OnInit {
   }
 
   OnRegisterClick(event: any) {
-    this.OwnerAuth.Register(this.RegisterForm.value).subscribe(
+    this.OwnerRegisterModel = {
+      Email: this.RegisterForm.get("Email")?.value,
+      Password: this.RegisterForm.get("Password")?.value,
+      ConfirmPassword: this.RegisterForm.get("ConfirmPassword")?.value,
+      UserName: this.RegisterForm.get("Username")?.value,
+      ClientUrl: "https://" + window.location.host + "/" + Constants.Owner_EmailConfirmationUrl
+    };
+    if (this.RegisterForm.invalid) return;
+    this.OwnerAuth.Register(this.OwnerRegisterModel).subscribe(
       (response)=>{
-        this.ownerWithToken = response;
         this.Notifications.success("Your registered Successfully. Please Confirm your email");
         console.log(response);
         this.ValidationErrors = [];

@@ -22,7 +22,6 @@ export class AppComponent implements OnInit{
   constructor(private router: Router, public ClientAccountService: ClientAccountService,
     public OwnerAccountService: OwnerAccountService) {
     this.subdomain = window.location.host.split(".")[0];
-    console.log(this.subdomain);
   }
 
   //ngOnInit
@@ -35,7 +34,8 @@ export class AppComponent implements OnInit{
       .subscribe((navEnd: any) => {
         const navigation = this.router.getCurrentNavigation()?.extras;
         this.error = navigation?.state?.error;
-        if (navEnd.urlAfterRedirects.includes("/owners")) this.IsOwnerRoute = true
+        if (navEnd.url.includes("/owners")) this.IsOwnerRoute = true
+        else this.IsOwnerRoute = false;
       });
     this.SetClientUser();
     this.SetOwnerUser();

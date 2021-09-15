@@ -11,7 +11,7 @@
       <mat-error class="alert alert-danger" *ngIf="ValidationErrors.length>0">
         <p>Please Correct the following errors</p>
         <ul>
-          <li *ngFor="let error of ValidationErrors">{{error}}</li>
+          <li *ngFor="let error of ValidationErrors">{{error.error}}</li>
         </ul>
       </mat-error>
       <!-- Username -->
@@ -117,8 +117,10 @@
     </div>
     <!------------------------Mat-Dialog-actions--------------------------->
     <div mat-dialog-actions>
-      <button mat-raised-button color="primary" [disabled]="RegisterForm.invalid" class="Width100" aria-label="press to login" (click)=" OnRegisterClick($event)">
-        <mat-icon>login</mat-icon>
+      <button mat-raised-button color="primary" (submit) ="RegisterForm.valid"
+              [disabled]="RegisterForm.invalid" class="Width100" aria-label="press to login"
+              (click)=" OnRegisterClick($event)">
+        <mat-icon>app_registration</mat-icon>
         Create Account
       </button>
       <!--<button mat-raised-button color="warn" aria-label="cancel login dialog">

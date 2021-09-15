@@ -9,6 +9,12 @@
     </div>
     <!------------------------Mat-Dialog-CONTENT--------------------------->
     <div mat-dialog-content>
+      <mat-error class="alert alert-danger" *ngIf="ValidationErrors.length>0">
+        <p>Please Correct the following errors</p>
+        <ul>
+          <li *ngFor="let error of ValidationErrors">{{error.error}} <span *ngIf="error.status == 'EmailConfirmation'">To send confirmation message again, <a class='buttonLink' (click)='SendConfirmationAgain()'>Click here.</a></span></li>
+        </ul>
+      </mat-error>
       <!-- Email -->
       <mat-form-field appearance="outline" class="Width100">
         <mat-label [ngClass]="ValidationErrorMessage.getFormControl('Email', loginForm).valid?

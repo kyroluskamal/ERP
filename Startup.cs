@@ -24,6 +24,9 @@ using ERP.UnitOfWork;
 using ERP.Utilities.Services.EmailService;
 using ERP.Utilities.Services.EmailSenderSendGrid;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using ERP.Utilities;
+using ERP.Areas.Owners.CustomTokenProviders.EmailConfirmation;
+using System;
 
 namespace ERP
 {
@@ -54,32 +57,41 @@ namespace ERP
             services.AddTransient<SignInManager<Owner>, OwnerSignInManager>();
             services.AddTransient<RoleManager<OwnerRole>, OwnerRoleManager>();
             services.AddTransient<IUserStore<Owner>, OwnerUserStore>();
-            services.AddIdentityCore<Owner>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddIdentityCore<Owner>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = true;
+                //options.Tokens.EmailConfirmationTokenProvider = "OwnerCustomEmailConfirmation";
+            })
                 .AddEntityFrameworkStores<OwnersDbContext>().AddRoles<OwnerRole>()
                 .AddRoleManager<OwnerRoleManager>()
                 .AddRoleStore<OwnerRoleStore>().AddUserManager<OwnerUserManager>()
-                .AddUserStore<OwnerUserStore>().AddSignInManager<OwnerSignInManager>()
-               .AddDefaultTokenProviders();
-            
+                .AddUserStore<OwnerUserStore>().AddSignInManager<OwnerSignInManager>();
+                //.AddTokenProvider<CustomEmailConfirmationTokenProvider<Owner>>("OwnerCustomEmailConfirmation");
+
+
             services.AddScoped<OwnerRoleStore>();
             services.AddScoped<OwnerUserStore>();
             
             
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer());
+                options.UseSqlServer()); 
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddTransient<IRoleStore<ApplicationUserRole>, ApplicationUserRoleStore>();
             services.AddTransient<UserManager<ApplicationUser>, ApplicationUserManager>();
             services.AddTransient<SignInManager<ApplicationUser>, ApplicationUserSignIngManager>();
             services.AddTransient<RoleManager<ApplicationUserRole>, ApplicationUserRoleManager>();
             services.AddTransient<IUserStore<ApplicationUser>, ApplicationUserStore>();
-            services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            services.AddIdentityCore<ApplicationUser>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = true;
+            })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddRoles<ApplicationUserRole>().AddRoleManager<ApplicationUserRoleManager>()
                 .AddRoleStore<ApplicationUserRoleStore>().AddUserManager<ApplicationUserManager>()
                 .AddUserStore<ApplicationUserStore>().AddSignInManager<ApplicationUserSignIngManager>()
-               .AddDefaultTokenProviders();
-            
+                .AddDefaultTokenProviders();
+                //.AddTokenProvider<CustomEmailConfirmationTokenProvider<ApplicationUser>>("ClientCustomEmailConfirmation");
+
             services.AddScoped<ApplicationUserRoleStore>();
             services.AddScoped<ApplicationUserStore>();
 
@@ -120,6 +132,14 @@ namespace ERP
             services.AddRazorPages();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => configuration.RootPath = "ClientApp/dist");
+            services.AddSingleton<Constants>();
+            // Changes token lifespan of all token types
+            services.Configure<DataProtectionTokenProviderOptions>(o =>
+                    o.TokenLifespan = TimeSpan.FromHours(5));
+
+            // Changes token lifespan of just the Email Confirmation Token type
+            services.Configure<CustomEmailConfirmationTokenProviderOptions>(o =>
+                    o.TokenLifespan = TimeSpan.FromDays(3));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

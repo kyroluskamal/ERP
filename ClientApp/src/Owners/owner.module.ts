@@ -8,10 +8,11 @@ import { OwnerMainComponent } from '../Owners/Components/owner-main/owner-main.c
 import { AppRoutingModule } from '../app/app-routing.module';
 import { OwnerBodyComponent } from './Components/owner-body/owner-body.component';
 import { NotFoundComponent } from '../CommonComponents/not-found/not-found.component';
+import { EmailConfirmationOwnerComponent } from './Components/email-confirmation-owner/email-confirmation-owner.component';
 
 const Commponents = [
   OwnersLoginComponent, OwnerRegisterComponent, OwnerNavBarComponent,
-  OwnerMainComponent, OwnerBodyComponent
+  OwnerMainComponent, OwnerBodyComponent, EmailConfirmationOwnerComponent
 ]
 @NgModule({
   declarations: [Commponents],

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ERP.Migrations
 {
-    public partial class OwnersDbinitals : Migration
+    public partial class OwnersDbInitials : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

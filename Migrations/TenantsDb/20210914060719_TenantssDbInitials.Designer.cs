@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERP.Migrations.TenantsDb
 {
     [DbContext(typeof(TenantsDbContext))]
-    [Migration("20210909210511_TenantsDbinitals")]
-    partial class TenantsDbinitals
+    [Migration("20210914060719_TenantssDbInitials")]
+    partial class TenantssDbInitials
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

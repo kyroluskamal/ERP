@@ -6,6 +6,8 @@ import { ClientRegister } from '../../../Client/Models/client-register.model';
 import { Constants } from '../../../Helpers/constants';
 import { ClientLogin } from '../../Models/client-login.model';
 import { ClientWithToken } from '../../Models/client-with-token.model';
+import { EmailConfirmationModel } from '../../Models/email-confirmation-model.model';
+import { SendEmailConfirmationAgian } from '../../Models/send-email-confirmation-agian.model';
 
 
 @Injectable({
@@ -23,8 +25,6 @@ export class ClientAccountService {
       map((Client: ClientWithToken) => {
         if (Client) {
           console.log(Client);
-          //localStorage.setItem('Client', JSON.stringify(Client));
-          //this.currentUserSource.next(Client);
         }
         return Client;
       })
@@ -55,5 +55,12 @@ export class ClientAccountService {
     sessionStorage.removeItem(Constants.Client);
     localStorage.removeItem(Constants.Client);
     this.currentUserSource.next(undefined);
+  }
+  confirmEmail(emailConfirmationModel: EmailConfirmationModel) {
+    return this.httpClient.post(Constants.Client_EmailConfirmationUrl_APIURL, emailConfirmationModel, { responseType: "json" });
+  }
+
+  SendConfirmationAgain(sendEmailConfirmationAgian: SendEmailConfirmationAgian) {
+    return this.httpClient.post(Constants.Client_ResendEmailConfirmation_APIURL, sendEmailConfirmationAgian, { responseType: "json" })
   }
 }
