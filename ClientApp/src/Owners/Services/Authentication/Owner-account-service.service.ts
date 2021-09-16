@@ -6,8 +6,10 @@ import { ClientRegister } from '../../../Client/Models/client-register.model';
 import { EmailConfirmationModel } from '../../../Client/Models/email-confirmation-model.model';
 import { SendEmailConfirmationAgian } from '../../../Client/Models/send-email-confirmation-agian.model';
 import { Constants } from '../../../Helpers/constants';
+import { ForgetPasswordModel } from '../../Models/forget-password-model.model';
 import { OwnerLogin } from '../../Models/owner-login.model';
 import { OwnerRegister } from '../../Models/owner-register.model';
+import { OwnerResetPasswordModel } from '../../Models/owner-reset-password-model.model';
 import { OwnerWithToken } from '../../Models/owner-with-token.model';
 
 
@@ -62,5 +64,13 @@ export class OwnerAccountService {
 
   SendConfirmationAgain(sendEmailConfirmationAgian: SendEmailConfirmationAgian) {
     return this.httpClient.post(Constants.Owner_ResendEmailConfirmation_APIURL, sendEmailConfirmationAgian, { responseType: "json" })
+  }
+
+  OwnerForgetPassord(ForgetPassowrdModel: ForgetPasswordModel) {
+    return this.httpClient.post(Constants.Owner_ForgetPassword_APIURL, ForgetPassowrdModel, { responseType: "json" });
+  }
+
+  OwnerResetPassword(ownerResetPasswordModel: OwnerResetPasswordModel) {
+    return this.httpClient.post(Constants.Owner_ResetPassword_APIURL, ownerResetPasswordModel, { responseType: "json" });
   }
 }

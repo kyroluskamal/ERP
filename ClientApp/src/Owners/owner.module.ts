@@ -7,12 +7,14 @@ import { OwnerNavBarComponent } from './Components/owner-nav-bar/owner-nav-bar.c
 import { OwnerMainComponent } from '../Owners/Components/owner-main/owner-main.component';
 import { AppRoutingModule } from '../app/app-routing.module';
 import { OwnerBodyComponent } from './Components/owner-body/owner-body.component';
-import { NotFoundComponent } from '../CommonComponents/not-found/not-found.component';
 import { EmailConfirmationOwnerComponent } from './Components/email-confirmation-owner/email-confirmation-owner.component';
+import { OwnerResetPasswordComponent } from './Components/owner-reset-password/owner-reset-password.component';
+import { OwnerForgetPasswordComponent } from './Components/owner-forget-password/owner-forget-password.component';
 
 const Commponents = [
   OwnersLoginComponent, OwnerRegisterComponent, OwnerNavBarComponent,
-  OwnerMainComponent, OwnerBodyComponent, EmailConfirmationOwnerComponent
+  OwnerMainComponent, OwnerBodyComponent, EmailConfirmationOwnerComponent,
+  OwnerResetPasswordComponent, OwnerForgetPasswordComponent,
 ]
 @NgModule({
   declarations: [Commponents],

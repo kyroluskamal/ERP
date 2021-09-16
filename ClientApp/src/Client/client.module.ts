@@ -11,10 +11,13 @@ import { ClientMainDomainComponent } from './MainDomain/Components/client-main-d
 import { ClientMainDomainNavBarComponent } from './MainDomain/Components/client-main-domain-nav-bar/client-main-domain-nav-bar.component';
 import { ServerErrorComponent } from '../CommonComponents/server-error/server-error.component';
 import { EmailConfirmationClientComponent } from './MainDomain/Components/email-confirmation-client/email-confirmation-client.component';
+import { ClientForgetPasswordComponent } from './MainDomain/Components/client-forget-password/client-forget-password.component';
+import { ClientResetPasswordComponent } from './MainDomain/Components/client-reset-password/client-reset-password.component';
 
 const Commponents = [
   ClientRegisterComponent, ClientLoginComponent, ClientMainComponent, ClientMainDomainComponent,
-  ClientAppComponent, ClientMainDomainNavBarComponent, ServerErrorComponent, EmailConfirmationClientComponent
+  ClientAppComponent, ClientMainDomainNavBarComponent, ServerErrorComponent, EmailConfirmationClientComponent,
+  ClientResetPasswordComponent, ClientForgetPasswordComponent
 ]
 @NgModule({
   declarations: [Commponents],

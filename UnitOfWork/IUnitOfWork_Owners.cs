@@ -9,8 +9,6 @@ namespace ERP.UnitOfWork
 {
     public interface IUnitOfWork_Owners : IDisposable
     {
-        void SetConnectionString(string ConnectionString);
-
         IOwnersRepository Owners { get; }
         void Save();
     }

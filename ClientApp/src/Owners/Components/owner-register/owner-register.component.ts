@@ -61,6 +61,7 @@ export class OwnerRegisterComponent implements OnInit {
         this.Notifications.success("Your registered Successfully. Please Confirm your email");
         console.log(response);
         this.ValidationErrors = [];
+        this.dialogHandler.CloseDialog();
       },
       (error) => {
         this.ValidationErrors = error;

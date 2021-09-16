@@ -32,12 +32,5 @@ namespace ERP.UnitOfWork
         {
             await OwnersDbContext.SaveChangesAsync();
         }
-
-
-        public void SetConnectionString(string ConnectionString)
-        {
-            
-            
-        }
     }
 }

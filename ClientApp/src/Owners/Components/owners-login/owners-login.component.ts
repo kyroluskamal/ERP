@@ -44,7 +44,7 @@ export class OwnersLoginComponent implements OnInit {
     this.accountService.login(this.OwnerLogin, RememberMe).subscribe(
       response => {
         console.log(response);
-        this.Notifications.success("You logged in Successfully");
+        this.Notifications.success(Constants.LoggedInSuccessfully);
         this.dialogHandler.CloseDialog();
       },
       error => {
@@ -57,14 +57,17 @@ export class OwnersLoginComponent implements OnInit {
   SendConfirmationAgain() {
     const sendEmailConfirmationAgian: SendEmailConfirmationAgian = {
       Email: this.loginForm.get("Email")?.value,
-      ClientUrl: "https://" + window.location.host + "/" + Constants.Owner_EmailConfirmationUrl
+      ClientUrl: Constants.ClientUrl(Constants.Owner_EmailConfirmationUrl)
     }
     this.accountService.SendConfirmationAgain(sendEmailConfirmationAgian).subscribe(
-      (response: any) => { this.Notifications.success("Email confirmation resended agian") },
+      (response: any) => { this.Notifications.success(Constants.EmilConfirmationResnding_success) },
       (error) => {
-        this.Notifications.error("Can't resend Email confirmation again. Please contact us", "");
+        this.Notifications.error(Constants.EmilConfirmationResnding_Error, "");
         console.log(error);
       }
     );
+  }
+  rememberMeOnClick() {
+    localStorage.setItem(Constants.OwnerRememberMe, this.loginForm.get(Constants.RememberMe)?.value);
   }
 }

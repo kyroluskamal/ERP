@@ -40,20 +40,18 @@
         <mat-hint align="end" *ngIf="ValidationErrorMessage.getFormControl('Password', loginForm).invalid || !ValidationErrorMessage.getFormControl('Password', loginForm).value">Enter your password</mat-hint>
         <mat-error *ngIf="ValidationErrorMessage.getFormControl('Password', loginForm).hasError('required')"
                    [innerHtml]="ValidationErrorMessage.getErrorMessage('Password', 'required')"></mat-error>
-      </mat-form-field>
-      <div> {{loginForm.value | json}}</div>
-      
-
-      <mat-checkbox color="primary" formControlName="RememberMe"> Remember Me</mat-checkbox>
+      </mat-form-field>      
+      <mat-checkbox color="primary" formControlName="RememberMe" (change)="rememberMeOnClick()"> Remember Me</mat-checkbox>
     </div>
     <!-- Fogrget Password -->
-    <button class="buttonLink">Forget password?</button>
+    <button class="buttonLink" (click)="dialogHandler.CloseDialog(); dialogHandler.OpenClientForgetPassword();">Forget password?</button>
     <!------------------------Mat-Dialog-actions--------------------------->
     <div mat-dialog-actions>
       <button mat-raised-button color="primary"
               [disabled]="loginForm.invalid" class="Width100" aria-label="press to login"
               (click)="Login(ValidationErrorMessage.getFormControl('RememberMe', loginForm).value)"
-              (ngSubmit)="Login(ValidationErrorMessage.getFormControl('RememberMe', loginForm).value)">
+              (ngSubmit)="Login(ValidationErrorMessage.getFormControl('RememberMe', loginForm).value)"
+              (submit)="loginForm.valid">
         <mat-icon>login</mat-icon>
         Login
       </button>

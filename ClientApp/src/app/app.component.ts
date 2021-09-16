@@ -36,6 +36,7 @@ export class AppComponent implements OnInit{
         this.error = navigation?.state?.error;
         if (navEnd.url.includes("/owners")) this.IsOwnerRoute = true
         else this.IsOwnerRoute = false;
+        
       });
     this.SetClientUser();
     this.SetOwnerUser();

@@ -181,7 +181,7 @@ namespace ERP.Controllers
             }
             return BadRequest(new { status = Constants.ModelState_statuCode, error = ModelState });
         }
-        // GET api/<IdentityController>/EmailConfirmation
+        // POST api/<IdentityController>/EmailConfirmation
         [HttpPost(nameof(EmailConfirmation))]
         public async Task<IActionResult> EmailConfirmation([FromBody] EmailConfirmationModel emailConfirmationModel)
         {
@@ -191,13 +191,15 @@ namespace ERP.Controllers
             var user = await UserManager.FindByEmailAsync(emailConfirmationModel.email);
             if (user == null)
                 return BadRequest(new { status = Constants.NullUser_statuCode, error = Constants.NullUser_ErrorMessage });
+            if (await UserManager.IsEmailConfirmedAsync(user))
+                return BadRequest(new { status = Constants.Email_Is_Confirmed_statuCode, error = Constants.Email_Is_Confirmed_ErrorMessage });
             var token = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(emailConfirmationModel.token));
             var confirmResult = await UserManager.ConfirmEmailAsync(user, token);
             if (!confirmResult.Succeeded)
                 return BadRequest(new { status = Constants.EmailConfirmResult_statuCode, error = confirmResult.Errors });
             return StatusCode(201);
         }
-
+        // POST api/<IdentityController>/SendConfirmationAgain
         [HttpPost(nameof(SendConfirmationAgain))]
         public async Task<IActionResult> SendConfirmationAgain([FromBody] SendEmailConfirmationAgian sendEmailConfirmationAgian)
         {
@@ -207,12 +209,14 @@ namespace ERP.Controllers
             var user = await UserManager.FindByEmailAsync(sendEmailConfirmationAgian.Email);
             if (user == null)
                 return BadRequest(new { status= Constants.NullUser_statuCode, error=Constants.NullUser_ErrorMessage});
+            if (await UserManager.IsEmailConfirmedAsync(user))
+                return BadRequest(new { status = Constants.Email_Is_Confirmed_statuCode, error = Constants.Email_Is_Confirmed_ErrorMessage });
             var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
             var param = new Dictionary<string, string>
                     {
                         {"token", code },
-                        {"email", sendEmailConfirmationAgian.ClientUrl }
+                        {"email", sendEmailConfirmationAgian.Email }
                     };
             var callbackUrl = QueryHelpers.AddQueryString(sendEmailConfirmationAgian.ClientUrl, param);
             //var callbackUrl = Url.RouteUrl(.Page(
@@ -226,6 +230,52 @@ namespace ERP.Controllers
             mailRequest.Body = Constants.ConfirmationEmail_Body(HtmlEncoder.Default.Encode(callbackUrl));
             MailService.SendEmail(mailRequest);
             return Ok();
+        }
+        // POST api/<IdentityController>/ForgetPassword
+        [HttpPost(nameof(ForgetPassword))]
+        public async Task<IActionResult> ForgetPassword([FromBody] ClientForgetPasswordModel ForgetPasswordModel)
+        {
+            var tenantbyEmail = TenantsUnitOfWork.Tenants.TenantByEmail(ForgetPasswordModel.Email);
+            if (tenantbyEmail == null) return BadRequest(new { status = Constants.NullTenant_ErrorMessage, error = Constants.NullTenant_ErrorMessage });
+            ClientUnitOfWork.SetConnectionString(tenantbyEmail.ConnectionString);
+            var user = await UserManager.FindByEmailAsync(ForgetPasswordModel.Email);
+            if (user == null)
+                return BadRequest(new { status = Constants.NullUser_statuCode, error = Constants.NullUser_ErrorMessage });
+            var code = await UserManager.GeneratePasswordResetTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            var param = new Dictionary<string, string>
+                    {
+                        {"token", code },
+                        {"email", ForgetPasswordModel.Email }
+                    };
+            var callbackUrl = QueryHelpers.AddQueryString(ForgetPasswordModel.ClientUrl, param);
+
+            var mailRequest = new MailRequest();
+            mailRequest.ToEmail = ForgetPasswordModel.Email;
+            mailRequest.Subject = Constants.ResetPassword_Subject;
+            mailRequest.Body = Constants.ResetEmail_Body(HtmlEncoder.Default.Encode(callbackUrl));
+            MailService.SendEmail(mailRequest);
+            return Ok();
+        }
+        // Post api/<IdentityController>/ResetPassword
+        [HttpPost(nameof(ResetPassword))]
+        public async Task<IActionResult> ResetPassword([FromBody] ClientResetPasswordModel ResetPasswordModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var tenantbyEmail = TenantsUnitOfWork.Tenants.TenantByEmail(ResetPasswordModel.email);
+                if (tenantbyEmail == null) return BadRequest(new { status = Constants.NullTenant_ErrorMessage, error = Constants.NullTenant_ErrorMessage });
+                ClientUnitOfWork.SetConnectionString(tenantbyEmail.ConnectionString);
+                var user = await UserManager.FindByEmailAsync(ResetPasswordModel.email);
+                if (user == null)
+                    return BadRequest(new { status = Constants.NullUser_statuCode, error = Constants.NullUser_ErrorMessage });
+                var token = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(ResetPasswordModel.token));
+                var confirmResult = await UserManager.ResetPasswordAsync(user, token, ResetPasswordModel.Password);
+                if (!confirmResult.Succeeded)
+                    return BadRequest(new { status = Constants.ResetPassword_statuCode, error = confirmResult.Errors });
+                return StatusCode(201);
+            }
+            return BadRequest(new { status = Constants.ModelState_statuCode, error = ModelState });
         }
         // PUT api/<IdentityController>/5
         [HttpPut("{id}")]

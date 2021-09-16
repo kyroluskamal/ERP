@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LocalStorage } from '@ngx-pwa/local-storage';
 import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
 import { NotificationsService } from '../../../../CommonServices/NotificationService/notifications.service';
 import { ValidationErrorMessagesService } from '../../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
@@ -21,7 +22,7 @@ export class ClientLoginComponent implements OnInit {
   ValidationErrors: any[]  = []
   passwordHide: boolean = true;
   ClientLogin: ClientLogin = new ClientLogin();
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: FormBuilder, protected localStorage: LocalStorage,
     public dialogHandler: DialogHandlerService,
     public ValidationErrorMessage: ValidationErrorMessagesService,
     public accountService: ClientAccountService,
@@ -33,8 +34,9 @@ export class ClientLoginComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       Email: [null, [Validators.email, Validators.required]],
       Password: [null, [Validators.required]],
-      RememberMe:[null]
+      RememberMe:[false]
     });
+    this.rememberMeOnClick();
   }
   
   
@@ -48,7 +50,7 @@ export class ClientLoginComponent implements OnInit {
     this.accountService.loginMainDomain(this.ClientLogin, RememberMe).subscribe(
       response => {
         console.log(response);
-        this.Notifications.success("You logged in Successfully");
+        this.Notifications.success(Constants.LoggedInSuccessfully);
         this.dialogHandler.CloseDialog();
       },
       error => {
@@ -61,14 +63,18 @@ export class ClientLoginComponent implements OnInit {
   SendConfirmationAgain() {
     const sendEmailConfirmationAgian: SendEmailConfirmationAgian = {
       Email: this.loginForm.get("Email")?.value,
-      ClientUrl: "https://" + window.location.host + "/" + Constants.Client_EmailConfirmationUrl
+      ClientUrl: Constants.ClientUrl(Constants.Client_EmailConfirmationUrl)
     }
     this.accountService.SendConfirmationAgain(sendEmailConfirmationAgian).subscribe(
-      (response: any) => { this.Notifications.success("Email confirmation resended agian") },
+      (response: any) => { this.Notifications.success(Constants.EmilConfirmationResnding_success) },
       (error) => {
-        this.Notifications.error("Can't resend Email confirmation again. Please contact us", "");
+        this.Notifications.error(Constants.EmilConfirmationResnding_Error, '');
         console.log(error);
       }
     );
+  }
+
+  rememberMeOnClick() {
+    localStorage.setItem(Constants.ClientRememberMe, this.loginForm.get(Constants.RememberMe)?.value);
   }
 }

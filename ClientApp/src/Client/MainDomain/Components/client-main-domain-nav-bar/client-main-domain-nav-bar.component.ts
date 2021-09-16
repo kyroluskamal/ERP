@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { LocalStorage } from '@ngx-pwa/local-storage';
 import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
 import { Constants } from '../../../../Helpers/constants';
 import { ClientAccountService } from '../../../Services/Authentication/client-account-service.service';
@@ -13,7 +14,7 @@ export class ClientMainDomainNavBarComponent implements OnInit {
   currentUserName: string = ""
   IsloggedIn: boolean = false;
   constructor(public dialogHandler: DialogHandlerService, private accountService: ClientAccountService,
-    public bottomSheet: MatBottomSheet) { }
+    public bottomSheet: MatBottomSheet, private localStorage: LocalStorage) { }
 
   @Input("apptitle") title: string = "";
   ngOnInit(): void {
@@ -50,5 +51,4 @@ export class ClientMainDomainNavBarComponent implements OnInit {
   OnRegisterlick() {
     this.dialogHandler.OpenClientRegisterDialog();
   }
-
 }

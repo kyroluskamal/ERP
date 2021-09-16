@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ClientForgetPasswordComponent } from '../../Client/MainDomain/Components/client-forget-password/client-forget-password.component';
 import { ClientLoginComponent } from '../../Client/MainDomain/Components/client-login/client-login.component';
 import { ClientRegisterComponent } from '../../Client/MainDomain/Components/client-register/client-register.component';
+import { ClientResetPasswordComponent } from '../../Client/MainDomain/Components/client-reset-password/client-reset-password.component';
+import { OwnerForgetPasswordComponent } from '../../Owners/Components/owner-forget-password/owner-forget-password.component';
 import { OwnerRegisterComponent } from '../../Owners/Components/owner-register/owner-register.component';
+import { OwnerResetPasswordComponent } from '../../Owners/Components/owner-reset-password/owner-reset-password.component';
 import { OwnersLoginComponent } from '../../Owners/Components/owners-login/owners-login.component';
 
 @Injectable({
@@ -34,6 +38,20 @@ export class DialogHandlerService {
   CLoseRegisterThenOpen_Client_LoginDialog() {
     this.CloseDialog();
     this.OpenClientLoginDialog();
+  }
+
+  OpenOwnerForgetPassword() {
+    this.Dialog.open(OwnerForgetPasswordComponent);
+  }
+
+  OpenClientForgetPassword() {
+    this.Dialog.open(ClientForgetPasswordComponent);
+  }
+  OpenClientResetPassword() {
+    this.Dialog.open(ClientResetPasswordComponent);
+  }
+  OpenOwnerResetPassword() {
+    this.Dialog.open(OwnerResetPasswordComponent);
   }
   CLoseRegisterThenOpen_Owner_LoginDialog() {
     this.CloseDialog();
