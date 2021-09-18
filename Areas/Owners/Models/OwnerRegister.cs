@@ -16,5 +16,9 @@ namespace ERP.Areas.Owners.Models
         [Required(ErrorMessage = "Your Username is required")]
         public string UserName { get; set; }
         public string ClientUrl { get; set; }
+        [Required(ErrorMessage = "You first name is required")]
+        public string FirstName { get; set; }
+        [Required(ErrorMessage = "You last name is required")]
+        public string LastName { get; set; }
     }
 }

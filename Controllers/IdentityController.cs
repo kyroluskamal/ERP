@@ -3,6 +3,7 @@ using ERP.Models;
 using ERP.Utilities.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Text.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,6 +24,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 using System.Text.Encodings.Web;
 using ERP.Utilities;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -40,10 +42,12 @@ namespace ERP.Controllers
         public IUnitOfWork_ApplicationUser ClientUnitOfWork { get; set; }
         public DbContextOptions<ApplicationDbContext> DbOptions;
         public Constants Constants { get; set; }
+        public ApplicationUserRoleManager RoleManager { get; set; }
+        //...........................Constructor........................
         public IdentityController(
             ApplicationUserManager userManager, ITokenService tokenService, Constants constants,
             IUnitOfWork_Tenants tenantsUnitOfWork, IUnitOfWork_ApplicationUser clientUnitOfWork,
-            DbContextOptions<ApplicationDbContext> dbOptions,
+            DbContextOptions<ApplicationDbContext> dbOptions, ApplicationUserRoleManager roleManager,
             ApplicationUserSignIngManager applicationUserSignIngManager, IMailService mailService)
         {
             UserManager = userManager;
@@ -52,6 +56,7 @@ namespace ERP.Controllers
             TenantsUnitOfWork = tenantsUnitOfWork;
             ClientUnitOfWork = clientUnitOfWork;
             DbOptions = dbOptions;
+            RoleManager = roleManager;
             ApplicationUserSignIngManager = applicationUserSignIngManager;
             MailService = mailService;
         }
@@ -131,12 +136,22 @@ namespace ERP.Controllers
                  
                  ClientUnitOfWork.SetConnectionString(Tenant.ConnectionString);
 
-                var User = new ApplicationUser() { Email = clientRegister.Email, UserName = clientRegister.UserName };
+                var User = new ApplicationUser() { 
+                    Email = clientRegister.Email, UserName = clientRegister.UserName,
+                    FirstName = clientRegister.FirstName, LastName=clientRegister.LastName
+                };
                 var result = await UserManager.CreateAsync(User, clientRegister.Password);
                 if (result.Succeeded)
                 {
                     TenantsUnitOfWork.Save();
-                    var code = await UserManager.GenerateEmailConfirmationTokenAsync(User);
+                    var user = await UserManager.FindByEmailAsync(clientRegister.Email);
+                    if (!await RoleManager.RoleExistsAsync(Constants.Employee_Role)) 
+                        await RoleManager.CreateAsync(new ApplicationUserRole(Constants.Admin_Role));
+                    
+                    var roleResult = await UserManager.AddToRoleAsync(user, Constants.Admin_Role);
+                    if (!roleResult.Succeeded) 
+                        return BadRequest(new { status= Constants.RolenameAddtion_statuCode, error = Constants.RolenameAddtion_ErrorMessage });
+                    var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var param = new Dictionary<string, string>
                     {
@@ -175,7 +190,12 @@ namespace ERP.Controllers
                 var result = await ApplicationUserSignIngManager.CheckPasswordSignInAsync(user, clientLogin.Password, false);
                 if (result.Succeeded)
                 {
-                    return new UserWithToken { Username = user.UserName, Token = TokenService.CreateClientToken(user) };
+                    return new UserWithToken { 
+                        Username = user.UserName, 
+                        Token = TokenService.CreateClientToken(user),
+                        Roles = (List<string>)await UserManager.GetRolesAsync(user)
+
+                    };
                 }
                 else return Unauthorized(new { status = Constants.WrongPassword_StatusCode, error = Constants.WrongPassword_ErrorMessage});
             }
@@ -187,7 +207,7 @@ namespace ERP.Controllers
         {
             var tenantbyEmail = TenantsUnitOfWork.Tenants.TenantByEmail(emailConfirmationModel.email);
             if (tenantbyEmail == null) return BadRequest(new { status = Constants.NullTenant_ErrorMessage, error = Constants.NullTenant_ErrorMessage });
-            ClientUnitOfWork.SetConnectionString(tenantbyEmail.ConnectionString);
+            ClientUnitOfWork .SetConnectionString(tenantbyEmail.ConnectionString);
             var user = await UserManager.FindByEmailAsync(emailConfirmationModel.email);
             if (user == null)
                 return BadRequest(new { status = Constants.NullUser_statuCode, error = Constants.NullUser_ErrorMessage });
@@ -277,8 +297,10 @@ namespace ERP.Controllers
             }
             return BadRequest(new { status = Constants.ModelState_statuCode, error = ModelState });
         }
-        // PUT api/<IdentityController>/5
-        [HttpPut("{id}")]
+
+        
+    // PUT api/<IdentityController>/5
+    [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }

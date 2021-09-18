@@ -27,6 +27,9 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using ERP.Utilities;
 using ERP.Areas.Owners.CustomTokenProviders.EmailConfirmation;
 using System;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using ERP.Areas.Owners.Data.DbInitializer;
 
 namespace ERP
 {
@@ -63,7 +66,7 @@ namespace ERP
                 //options.Tokens.EmailConfirmationTokenProvider = "OwnerCustomEmailConfirmation";
             })
                 .AddEntityFrameworkStores<OwnersDbContext>().AddRoles<OwnerRole>()
-                .AddRoleManager<OwnerRoleManager>()
+                .AddRoleManager<OwnerRoleManager>().AddRoleValidator<RoleValidator<OwnerRole>>()
                 .AddRoleStore<OwnerRoleStore>().AddUserManager<OwnerUserManager>()
                 .AddUserStore<OwnerUserStore>().AddSignInManager<OwnerSignInManager>();
                 //.AddTokenProvider<CustomEmailConfirmationTokenProvider<Owner>>("OwnerCustomEmailConfirmation");
@@ -87,9 +90,9 @@ namespace ERP
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddRoles<ApplicationUserRole>().AddRoleManager<ApplicationUserRoleManager>()
-                .AddRoleStore<ApplicationUserRoleStore>().AddUserManager<ApplicationUserManager>()
-                .AddUserStore<ApplicationUserStore>().AddSignInManager<ApplicationUserSignIngManager>()
-                .AddDefaultTokenProviders();
+                .AddRoleValidator<RoleValidator<ApplicationUserRole>>().AddRoleStore<ApplicationUserRoleStore>()
+                .AddUserManager<ApplicationUserManager>().AddUserStore<ApplicationUserStore>()
+                .AddSignInManager<ApplicationUserSignIngManager>().AddDefaultTokenProviders();
                 //.AddTokenProvider<CustomEmailConfirmationTokenProvider<ApplicationUser>>("ClientCustomEmailConfirmation");
 
             services.AddScoped<ApplicationUserRoleStore>();
@@ -105,16 +108,21 @@ namespace ERP
             //services.AddSingleton<IEmailSender, EmailSender>();
             //services.Configure<EmailOptions>(Configuration);
             services.AddControllers();
-            //services.AddSwaggerGen(c =>
-            //{
-            //    c.SwaggerDoc();
-            //});
+
             services.AddCors(c =>
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
             });
+
+            services.AddScoped<IOwnerDbInitializer, OwnerDbInitializer>();
             //Configure JWT Tokens
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services.AddAuthentication(
+                options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    //options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    //options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer(options =>
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
@@ -143,7 +151,7 @@ namespace ERP
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOwnerDbInitializer ownerDbInitializer)
         {
             app.UseMiddleware<ExceptionMiddleware>();
             //if (env.IsDevelopment())
@@ -169,6 +177,7 @@ namespace ERP
 
             app.UseAuthentication();
             app.UseAuthorization();
+            ownerDbInitializer.Initialize();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

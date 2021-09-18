@@ -9,15 +9,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERP.Migrations.TenantsDb
 {
     [DbContext(typeof(TenantsDbContext))]
-    [Migration("20210914060719_TenantssDbInitials")]
-    partial class TenantssDbInitials
+    [Migration("20210917212034_TenantsInitial")]
+    partial class TenantsInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.9")
+                .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("ERP.Areas.Tenants.Models.TenantsInfo", b =>

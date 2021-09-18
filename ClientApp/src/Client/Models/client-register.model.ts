@@ -6,4 +6,6 @@ export class ClientRegister {
   Subdomain: string = "";
   UserName: string = "";
   ClientUrl = "";
+  FirstName: string = "";
+  LastName: string = "";
 }

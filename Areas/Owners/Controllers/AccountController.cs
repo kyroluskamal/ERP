@@ -26,6 +26,7 @@ namespace ERP.Areas.Owners.Controllers
     public class AccountController : ControllerBase
     {
         public OwnerUserManager OwnerManager { get; set; }
+        public OwnerRoleManager RoleManager { get; set; }
         public ITokenService TokenService { get; }
         public IUnitOfWork_Owners OwnersUnitOfWork { get; }
         public DbContextOptions<OwnersDbContext> DbOptions { get; }
@@ -35,7 +36,7 @@ namespace ERP.Areas.Owners.Controllers
 
         public AccountController(OwnerUserManager ownerManager, ITokenService tokenService, Constants constants,
             IUnitOfWork_Owners ownersUnitOfWork, DbContextOptions<OwnersDbContext> dbOptions,
-            OwnerSignInManager ownerSigninManager, IMailService mailService)
+            OwnerSignInManager ownerSigninManager, IMailService mailService, OwnerRoleManager roleManager)
         {
             OwnerManager = ownerManager;
             TokenService = tokenService;
@@ -44,6 +45,7 @@ namespace ERP.Areas.Owners.Controllers
             DbOptions = dbOptions;
             OwnerSigninManager = ownerSigninManager;
             MailService = mailService;
+            RoleManager = roleManager;
         }
 
         // GET: api/<AccountController>
@@ -70,7 +72,14 @@ namespace ERP.Areas.Owners.Controllers
                 var result = await OwnerManager.CreateAsync(Owner, Register.Password);
                 if (result.Succeeded)
                 {
-                    var code = await OwnerManager.GenerateEmailConfirmationTokenAsync(Owner);
+                    var User = await OwnerManager.FindByEmailAsync(Register.Email);
+                    if (!await RoleManager.RoleExistsAsync(Constants.Employee_Role)) 
+                        await RoleManager.CreateAsync(new OwnerRole(Constants.Employee_Role));
+                    
+                    var roleResult = await OwnerManager.AddToRoleAsync(User, Constants.Employee_Role);
+                    if (!roleResult.Succeeded) 
+                        return BadRequest(new { status= Constants.RolenameAddtion_statuCode, error = Constants.RolenameAddtion_ErrorMessage });
+                    var code = await OwnerManager.GenerateEmailConfirmationTokenAsync(User);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var param = new Dictionary<string, string>
                     {
@@ -103,10 +112,16 @@ namespace ERP.Areas.Owners.Controllers
                 var user = OwnerManager.Users.SingleOrDefault(x => x.Email == ownerLogin.Email);
                 if (user == null) return Unauthorized(new { status = Constants.NullUser_statuCode, error = Constants.NullUser_ErrorMessage });
                 //Sign In User
-                if (!await OwnerManager.IsEmailConfirmedAsync(user)) return Unauthorized(new { status = Constants.EmailConfirmation_StatusCode, error = Constants.Emailconfirmation_ErrorMessage });
+                var ConfimEmailResult = await OwnerManager.IsEmailConfirmedAsync(user);
+                if (!ConfimEmailResult) return Unauthorized(new { status = Constants.EmailConfirmation_StatusCode, error = Constants.Emailconfirmation_ErrorMessage });
                 var result = await OwnerSigninManager.CheckPasswordSignInAsync(user, ownerLogin.Password, false);
 
-                if (result.Succeeded) return new OwnerWithToken { Username = user.UserName, Token = TokenService.CreateOwnerToken(user) };
+                if (result.Succeeded) 
+                    return new OwnerWithToken { 
+                        Username = user.UserName, 
+                        Token = TokenService.CreateOwnerToken(user),
+                        Roles = (List<string>)await OwnerManager.GetRolesAsync(user)
+                    };
                 else return Unauthorized(new { status = Constants.WrongPassword_StatusCode, error = Constants.WrongPassword_ErrorMessage });
             }
             return BadRequest(new { status = Constants.ModelState_statuCode, error = ModelState });
@@ -114,9 +129,6 @@ namespace ERP.Areas.Owners.Controllers
         [HttpPost(nameof(EmailConfirmation))]
         public async Task<IActionResult> EmailConfirmation([FromBody] EmailConfirmationModel emailConfirmationModel)
         {
-            
-            var OwnerbyEmail = OwnersUnitOfWork.Owners.OwnerByEmail(emailConfirmationModel.email);
-            if (OwnerbyEmail == null) return BadRequest(new { status = Constants.NullOwner_statuCode, error = Constants.NullOwner_ErrorMessage });
             var user = await OwnerManager.FindByEmailAsync(emailConfirmationModel.email);
             if (user == null)
                 return BadRequest(new { status = Constants.NullUser_statuCode, error = Constants.NullUser_ErrorMessage });
@@ -131,9 +143,7 @@ namespace ERP.Areas.Owners.Controllers
         // Post api/<AccountController>/SendConfirmationAgain
         [HttpPost(nameof(SendConfirmationAgain))]
         public async Task<IActionResult> SendConfirmationAgain([FromBody] SendEmailConfirmationAgian sendEmailConfirmationAgian)
-        {
-            var OwnerbyEmail = OwnersUnitOfWork.Owners.OwnerByEmail(sendEmailConfirmationAgian.Email);
-            if (OwnerbyEmail == null) return BadRequest(new { status = Constants.NullOwner_statuCode, error = Constants.NullOwner_ErrorMessage });
+        { 
             var user = await OwnerManager.FindByEmailAsync(sendEmailConfirmationAgian.Email);
             if (user == null)
                 return BadRequest(new { status = Constants.NullUser_statuCode, error = Constants.NullUser_ErrorMessage });

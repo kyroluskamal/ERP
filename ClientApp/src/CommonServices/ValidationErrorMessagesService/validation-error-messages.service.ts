@@ -20,6 +20,14 @@ export class ValidationErrorMessagesService {
         else if (errorType == "pattern") return "You have to <strong>enter valid Email</strong>";
         break;
       }
+      case "LastName": {
+        if (errorType == "required") return "<strong>Last Name</strong> is required";
+        break;
+      }
+      case "FirstName": {
+        if (errorType == "required") return "<strong>First Name</strong> is required";
+        break;
+      }
       case "Password": {
         if (errorType == "required") return "<strong>Password</strong> is required";
         else if (errorType == "hasNumber") return "Password should have <strong> at least one number</strong>";

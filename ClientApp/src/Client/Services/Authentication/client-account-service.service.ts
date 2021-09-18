@@ -17,10 +17,14 @@ import { SendEmailConfirmationAgian } from '../../Models/send-email-confirmation
 })
 export class ClientAccountService {
 
-  constructor(private httpClient: HttpClient) { }
+  //constructor
+  constructor(private httpClient: HttpClient) {
+    
+    
+  }
   private currentUserSource = new ReplaySubject<ClientWithToken>(1);
   currentUserOvservable = this.currentUserSource.asObservable();
-
+  
   Register(clientRegisterModel: ClientRegister): Observable<any> {
     return this.httpClient.post<any>(Constants.ClientRegister_APIurl, clientRegisterModel, { responseType: "json" })
      .pipe(
@@ -72,5 +76,4 @@ export class ClientAccountService {
   ClientResetPassword(clientResetPasswordModel: ClientResetPasswordModel) {
     return this.httpClient.post(Constants.Client_ResetPassword_APIURL, clientResetPasswordModel, { responseType: "json" });
   }
-  
 }

@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace ERP.Areas.Owners.Models.Identity
 {
-    public class OwnerRoleStore : RoleStore<OwnerRole, OwnersDbContext>
+    public class OwnerRoleStore : RoleStore<OwnerRole, OwnersDbContext, int, OwnerUserRole, IdentityRoleClaim<int>>
     {
-        public OwnerRoleStore(OwnersDbContext OwnersDbContext, IdentityErrorDescriber describer = null) : base(OwnersDbContext, describer)
+        public OwnerRoleStore(OwnersDbContext context, IdentityErrorDescriber describer = null) : base(context, describer)
         {
         }
     }

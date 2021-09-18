@@ -40,7 +40,7 @@
         <mat-hint align="end" *ngIf="ValidationErrorMessage.getFormControl('Password', loginForm).invalid || !ValidationErrorMessage.getFormControl('Password', loginForm).value">Enter your password</mat-hint>
         <mat-error *ngIf="ValidationErrorMessage.getFormControl('Password', loginForm).hasError('required')"
                    [innerHtml]="ValidationErrorMessage.getErrorMessage('Password', 'required')"></mat-error>
-      </mat-form-field>      
+      </mat-form-field>
       <mat-checkbox color="primary" formControlName="RememberMe" (change)="rememberMeOnClick()"> Remember Me</mat-checkbox>
     </div>
     <!-- Fogrget Password -->

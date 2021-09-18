@@ -17,30 +17,35 @@ import { ClientAccountService } from '../../../Services/Authentication/client-ac
   styleUrls: ['./client-login.component.css']
 })
 export class ClientLoginComponent implements OnInit {
-  loginForm:FormGroup = new FormGroup({});
+  //create array to store user data we need
+  // create a field to hold error messages so we can bind it to our        template
+  resultMessage: string = "";
+  loginForm: FormGroup = new FormGroup({});
   customErrorStateMatcher: CustomErrorStateMatcher = new CustomErrorStateMatcher()
-  ValidationErrors: any[]  = []
+  ValidationErrors: any[] = []
   passwordHide: boolean = true;
   ClientLogin: ClientLogin = new ClientLogin();
+  //constructor
   constructor(private formBuilder: FormBuilder, protected localStorage: LocalStorage,
     public dialogHandler: DialogHandlerService,
     public ValidationErrorMessage: ValidationErrorMessagesService,
     public accountService: ClientAccountService,
     private Notifications: NotificationsService,
-    public router: Router  ) {
+    public router: Router) {
+    
   }
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
       Email: [null, [Validators.email, Validators.required]],
       Password: [null, [Validators.required]],
-      RememberMe:[false]
+      RememberMe: [false]
     });
     this.rememberMeOnClick();
   }
-  
-  
-  Login(RememberMe:boolean) {
+
+
+  Login(RememberMe: boolean) {
     if (this.loginForm.invalid) return;
     this.ClientLogin = {
       Email: this.loginForm.get("Email")?.value,
@@ -54,7 +59,7 @@ export class ClientLoginComponent implements OnInit {
         this.dialogHandler.CloseDialog();
       },
       error => {
-        console.log(error[0].error);
+        console.log(error);
         this.ValidationErrors = error;
       },
     );
@@ -73,7 +78,6 @@ export class ClientLoginComponent implements OnInit {
       }
     );
   }
-
   rememberMeOnClick() {
     localStorage.setItem(Constants.ClientRememberMe, this.loginForm.get(Constants.RememberMe)?.value);
   }

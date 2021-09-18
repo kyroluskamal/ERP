@@ -46,7 +46,9 @@ export class ClientRegisterComponent implements OnInit {
       ConfirmPassword: [null, [Validators.required]],
       CompanyName: [null, [Validators.required]],
       Subdomain: [null, [Validators.required]],
-      Username: [null, [Validators.required]]
+      Username: [null, [Validators.required]],
+      FirstName: [null, [Validators.required]],
+      LastName: [null, [Validators.required]]
     },
       {
         validator: CustomValidators.passwordMatchValidator
@@ -61,7 +63,9 @@ export class ClientRegisterComponent implements OnInit {
       CompanyName : this.RegisterForm.get("CompanyName")?.value,
       ConfirmPassword : this.RegisterForm.get("ConfirmPassword")?.value,
       UserName: this.RegisterForm.get("Username")?.value,
-      ClientUrl: "https://" + window.location.host + "/"+Constants.Client_EmailConfirmationUrl
+      ClientUrl: "https://" + window.location.host + "/" + Constants.Client_EmailConfirmationUrl,
+      FirstName: this.RegisterForm.get("FirstName")?.value,
+      LastName: this.RegisterForm.get("LastName")?.value,
     };
     if (this.RegisterForm.invalid) return;
     this.ClientAuth.Register(this.ClientRegisterModel).subscribe(

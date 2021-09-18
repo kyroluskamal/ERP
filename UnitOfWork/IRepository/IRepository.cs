@@ -20,7 +20,7 @@ namespace ERP.UnitOfWork.IRepository
             Expression<Func<T, bool>> filter = null,
             string includeProperties = null
             );
-
+        public T GetByStringId(string id, string loginProvider, string name);
         void Add(T entity);
         void Remove(int id);
         void Remove(T entity);

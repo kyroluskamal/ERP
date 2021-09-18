@@ -2,7 +2,7 @@
 
 namespace ERP.Migrations.TenantsDb
 {
-    public partial class TenantssDbInitials : Migration
+    public partial class TenantsInitial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

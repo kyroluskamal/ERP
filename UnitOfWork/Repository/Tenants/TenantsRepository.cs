@@ -54,6 +54,11 @@ namespace ERP.UnitOfWork.Repository.Tenants
             return query.ToList();
         }
 
+        public T GetByStringId(string id, string loginProvider, string name)
+        {
+            return dbSet.Find(id);
+        }
+
         public T GetFirstOrDefault(Expression<Func<T, bool>> filter = null, string includeProperties = null)
         {
             IQueryable<T> query = dbSet;

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -10,6 +10,7 @@
 
     <!-- Set this to true if you enable server-side prerendering -->
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
+    <UserSecretsId>1b0e332e-beab-4fb2-abb2-31e565600e6b</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -35,6 +36,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="MimeKit" Version="2.15.1" />
     <PackageReference Include="SendGrid" Version="9.24.2" />
+    <PackageReference Include="System.Text.Json" Version="5.0.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,7 +48,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Owners\CustomTokenProviders\TokenProviders\" />
-    <Folder Include="Areas\Owners\Interfaces\" />
     <Folder Include="Areas\Owners\Views\" />
     <Folder Include="Areas\Tenants\Controllers\" />
     <Folder Include="Areas\Tenants\Views\" />
@@ -54,6 +55,7 @@
     <Folder Include="ClientApp\src\Helpers\CustomErrorStateMatcher\" />
     <Folder Include="ClientApp\src\Interceptors\ErrorHandling\" />
     <Folder Include="ClientApp\src\Interceptors\TokenInterceptor\" />
+    <Folder Include="UnitOfWork\IRepository\ApplicationUser\" />
     <Folder Include="Utilities\Helpers\" />
   </ItemGroup>
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ERP.Data.Identity
 {
-    public class ApplicationUserRoleStore : RoleStore<ApplicationUserRole, ApplicationDbContext>
+    public class ApplicationUserRoleStore : RoleStore<ApplicationUserRole, ApplicationDbContext, int, ApplicationUserUserRoles, IdentityRoleClaim<int>>
     {
         public ApplicationUserRoleStore(ApplicationDbContext context, 
             IdentityErrorDescriber describer = null) : base(context, describer)

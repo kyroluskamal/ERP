@@ -40,7 +40,9 @@ export class OwnerRegisterComponent implements OnInit {
         Validators.minLength(8)])
       ],
       ConfirmPassword: [null, [Validators.required]],
-      Username: [null, [Validators.required]]
+      Username: [null, [Validators.required]],
+      FirstName: [null, [Validators.required]],
+      LastName: [null, [Validators.required]]
     },
       {
         validator: CustomValidators.passwordMatchValidator
@@ -53,7 +55,9 @@ export class OwnerRegisterComponent implements OnInit {
       Password: this.RegisterForm.get("Password")?.value,
       ConfirmPassword: this.RegisterForm.get("ConfirmPassword")?.value,
       UserName: this.RegisterForm.get("Username")?.value,
-      ClientUrl: "https://" + window.location.host + "/" + Constants.Owner_EmailConfirmationUrl
+      ClientUrl: "https://" + window.location.host + "/" + Constants.Owner_EmailConfirmationUrl,
+      FirstName: this.RegisterForm.get("FirstName")?.value,
+      LastName: this.RegisterForm.get("LastName")?.value
     };
     if (this.RegisterForm.invalid) return;
     this.OwnerAuth.Register(this.OwnerRegisterModel).subscribe(

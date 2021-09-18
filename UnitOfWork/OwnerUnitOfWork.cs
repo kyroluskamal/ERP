@@ -12,14 +12,14 @@ namespace ERP.UnitOfWork
 {
     public class OwnerUnitOfWork : IUnitOfWork_Owners
     {
-        public OwnersDbContext OwnersDbContext { get; }
+        private OwnersDbContext OwnersDbContext { get; }
         public IOwnersRepository Owners { get; private set; }
 
 
         public OwnerUnitOfWork(OwnersDbContext ownersDbContext)
         {
             OwnersDbContext = ownersDbContext;
-            Owners = new OwnerRepository(ownersDbContext);
+            Owners = new OwnerRepository(OwnersDbContext);
         }
 
 

@@ -29,6 +29,10 @@ namespace ERP.UnitOfWork.Repository.ApplicationUser
         {
             return dbSet.Find(id);
         }
+        public T GetByStringId(string id, string loginProvider, string name)
+        {
+            return dbSet.Find(id, loginProvider, name);
+        }
 
         public IEnumerable<T> GetAll(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = null)
         {

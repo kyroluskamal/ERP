@@ -21,6 +21,7 @@ export abstract class Constants {
   static Client_ForgetPassword_APIURL: string = "/api/Identity/ForgetPassword";
   static Owner_ResetPassword_APIURL: string = "/api/Owners/Account/ResetPassword";
   static Client_ResetPassword_APIURL: string = "/api/Identity/ResetPassword";
+  static Client_SocialLogins_APIURL: string = "/api/Identity/SoicalLogin";
   //Client URLs
   static Client_EmailConfirmationUrl: string = "client/emailconfirmation";
   static Owner_EmailConfirmationUrl: string = "owners/emailconfirmation";

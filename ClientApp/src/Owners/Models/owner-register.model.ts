@@ -4,4 +4,6 @@ export class OwnerRegister {
   ConfirmPassword: string | null="";
   UserName: string | null = "";
   ClientUrl = "";
+  FirstName: string = "";
+  LastName: string = "";
 }
