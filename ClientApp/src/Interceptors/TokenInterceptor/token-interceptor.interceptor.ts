@@ -7,11 +7,10 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { OwnerAccountService } from '../../Owners/Services/Authentication/Owner-account-service.service';
-import { ClientAccountService } from '../../Client/Services/Authentication/client-account-service.service';
-
 import { take } from 'rxjs/operators';
 import { OwnerWithToken } from '../../Owners/Models/owner-with-token.model';
 import { ClientWithToken } from '../../Client/Models/client-with-token.model';
+import { ClientAccountService } from '../../Client/MainDomain/Authentication/client-account-service.service';
 
 @Injectable()
 export class TokenInterceptorInterceptor implements HttpInterceptor {

@@ -1,0 +1,15 @@
+{
+  "Login": "دخول",
+  "Register": "إنشاء حساب",
+  "Logout": "خروج",
+  "Email": "البريد الالكتروني",
+  "Password": "كلمة السر",
+  "Forget password?": "هل نسيت كلمة السر؟",
+  "Don't have Account?": "ليس لديك حساب؟",
+  "Create one": "اشترك الآن",
+  "Remember Me": "تذكر دخولي",
+  "Email hint": "ادخل بريدك الالكتروني",
+  "EmailRequired": "لابد من ادخال بريدك الالكتروني",
+  "PasswordRequired": "لابد من ادخال كلمة السر",
+  "IncorrecEmail": "ادخل بريدك الالكتروني بشكل صحيح"
+}

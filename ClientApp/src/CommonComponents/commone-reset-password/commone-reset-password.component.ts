@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { ClientAccountService } from '../../Client/Services/Authentication/client-account-service.service';
+import { ClientAccountService } from '../../Client/MainDomain/Authentication/client-account-service.service';
 import { DialogHandlerService } from '../../CommonServices/DialogHandler/dialog-handler.service';
 import { Constants } from '../../Helpers/constants';
 import { OwnerAccountService } from '../../Owners/Services/Authentication/Owner-account-service.service';

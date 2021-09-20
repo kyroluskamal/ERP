@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
 import { Constants } from '../../../../Helpers/constants';
 import { EmailConfirmationModel } from '../../../Models/email-confirmation-model.model';
-import { ClientAccountService } from '../../../Services/Authentication/client-account-service.service';
+import { ClientAccountService } from '../../Authentication/client-account-service.service';
 
 @Component({
   selector: 'app-email-confirmation-client',

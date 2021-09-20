@@ -8,7 +8,7 @@ import { CustomErrorStateMatcher } from '../../../../Helpers/CustomErrorStateMat
 import { CustomValidators } from '../../../../Helpers/CustomValidation/custom-validators';
 import { ClientRegister } from '../../../Models/client-register.model';
 import { ClientWithToken } from '../../../Models/client-with-token.model';
-import { ClientAccountService } from '../../../Services/Authentication/client-account-service.service';
+import { ClientAccountService } from '../../Authentication/client-account-service.service';
 
 @Component({
   selector: 'app-client-register',
@@ -21,6 +21,7 @@ export class ClientRegisterComponent implements OnInit {
   confirmPasswordHide: boolean = true;
   RegisterForm: FormGroup = new FormGroup({});
   ValidationErrors: any[] = [];
+  loading: boolean = false;
   customErrorStateMatcher: CustomErrorStateMatcher= new CustomErrorStateMatcher()
   ClientRegisterModel: ClientRegister = new ClientRegister();
   clientWithToken: ClientWithToken = new ClientWithToken();
@@ -56,6 +57,7 @@ export class ClientRegisterComponent implements OnInit {
   }
   //Register Function
   OnRegisterClick(event: any) {
+    this.loading = true;
     this.ClientRegisterModel = {
       Email: this.RegisterForm.get("Email")?.value,
       Password : this.RegisterForm.get("Password")?.value,
@@ -75,10 +77,10 @@ export class ClientRegisterComponent implements OnInit {
         this.ValidationErrors = [];
         this.Notifications.success("Your registered Successfully. Please Confirm your email");
         this.dialogHandler.CloseDialog();
-        
       },
       (error) => {
         console.log(error);
+        this.loading = false;
         this.ValidationErrors = error;
       }
     );

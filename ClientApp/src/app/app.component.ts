@@ -1,11 +1,11 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { ClientAccountService } from '../Client/Services/Authentication/client-account-service.service';
+import { ClientAccountService } from '../Client/MainDomain/Authentication/client-account-service.service';
 import { Constants } from '../Helpers/constants';
 import { OwnerAccountService } from '../Owners/Services/Authentication/Owner-account-service.service';
-import { Location } from '@angular/common'
 
 @Component({
   selector: 'app-root',
@@ -20,8 +20,9 @@ export class AppComponent implements OnInit{
   error: any;
   //constructor
   constructor(private router: Router, public ClientAccountService: ClientAccountService,
-    public OwnerAccountService: OwnerAccountService) {
+    public OwnerAccountService: OwnerAccountService, private titleService: Title) {
     this.subdomain = window.location.host.split(".")[0];
+    console.log(this.subdomain);
   }
 
   //ngOnInit

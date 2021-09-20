@@ -42,4 +42,11 @@ export abstract class Constants {
   static ClientUrl(url: string) : string{
     return "https://" + window.location.host + "/" + url;
   }
+
+  //RoleNames
+  static Admin_Role = "Admin";
+
+  //Guards Error Messages
+  static UnAuthorizedAdmin = "Your are not admin to access this area";
+  static NotLoggedInUser = "You are not logged in. Please login to access this page";
 }

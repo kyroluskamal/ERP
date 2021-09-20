@@ -13,16 +13,22 @@ import { ServerErrorComponent } from '../CommonComponents/server-error/server-er
 import { EmailConfirmationClientComponent } from './MainDomain/Components/email-confirmation-client/email-confirmation-client.component';
 import { ClientForgetPasswordComponent } from './MainDomain/Components/client-forget-password/client-forget-password.component';
 import { ClientResetPasswordComponent } from './MainDomain/Components/client-reset-password/client-reset-password.component';
+import { ClientMainDomainAccountComponent } from './MainDomain/Components/client-main-domain-account/client-main-domain-account.component';
+import { ClientMainDominRoutingModule } from './MainDomain/client-main-domin-routing/client-main-domin-routing.module';
+import { ClientMainDomainBodyComponent } from './MainDomain/Components/client-main-domain-body/client-main-domain-body.component';
+import { TranslateModule } from '@ngx-translate/core';
+
 
 const Commponents = [
   ClientRegisterComponent, ClientLoginComponent, ClientMainComponent, ClientMainDomainComponent,
   ClientAppComponent, ClientMainDomainNavBarComponent, ServerErrorComponent, EmailConfirmationClientComponent,
-  ClientResetPasswordComponent, ClientForgetPasswordComponent
+  ClientResetPasswordComponent, ClientForgetPasswordComponent, ClientMainDomainAccountComponent,
+  ClientMainDomainBodyComponent
 ]
 @NgModule({
   declarations: [Commponents],
   imports: [
-    SharedModule, MaterialModule, AppRoutingModule, CommonModule
+SharedModule, MaterialModule, ClientMainDominRoutingModule, CommonModule,
   ],
   exports: [Commponents]
 })

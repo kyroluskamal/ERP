@@ -51,10 +51,13 @@
     <Folder Include="Areas\Owners\Views\" />
     <Folder Include="Areas\Tenants\Controllers\" />
     <Folder Include="Areas\Tenants\Views\" />
+    <Folder Include="ClientApp\src\Client\MainDomain\Guards\" />
+    <Folder Include="ClientApp\src\Client\Services\" />
     <Folder Include="ClientApp\src\CommonServices\NotificationService\" />
     <Folder Include="ClientApp\src\Helpers\CustomErrorStateMatcher\" />
     <Folder Include="ClientApp\src\Interceptors\ErrorHandling\" />
     <Folder Include="ClientApp\src\Interceptors\TokenInterceptor\" />
+    <Folder Include="ClientApp\src\Owners\Dashboard\Employers\" />
     <Folder Include="UnitOfWork\IRepository\ApplicationUser\" />
     <Folder Include="Utilities\Helpers\" />
   </ItemGroup>

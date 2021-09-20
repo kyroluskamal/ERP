@@ -6,7 +6,7 @@ import { ValidationErrorMessagesService } from '../../../../CommonServices/Valid
 import { Constants } from '../../../../Helpers/constants';
 import { CustomErrorStateMatcher } from '../../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
 import { ClientForgetPasswordModel } from '../../../Models/client-forget-password-model.model';
-import { ClientAccountService } from '../../../Services/Authentication/client-account-service.service';
+import { ClientAccountService } from '../../Authentication/client-account-service.service';
 
 @Component({
   selector: 'app-client-forget-password',

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-owner-body',
@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./owner-body.component.css']
 })
 export class OwnerBodyComponent implements OnInit {
-
+  @Input("apptitle") title: string = "";
   constructor() { }
 
   ngOnInit(): void {

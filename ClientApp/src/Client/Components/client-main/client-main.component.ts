@@ -7,7 +7,6 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class ClientMainComponent implements OnInit {
   subdomain: string = "";
-  @Input("apptitle") title: string = "";
   
   constructor() {
   }

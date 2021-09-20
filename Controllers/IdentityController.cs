@@ -145,7 +145,7 @@ namespace ERP.Controllers
                 {
                     TenantsUnitOfWork.Save();
                     var user = await UserManager.FindByEmailAsync(clientRegister.Email);
-                    if (!await RoleManager.RoleExistsAsync(Constants.Employee_Role)) 
+                    if (!await RoleManager.RoleExistsAsync(Constants.Admin_Role)) 
                         await RoleManager.CreateAsync(new ApplicationUserRole(Constants.Admin_Role));
                     
                     var roleResult = await UserManager.AddToRoleAsync(user, Constants.Admin_Role);

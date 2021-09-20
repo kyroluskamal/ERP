@@ -8,19 +8,31 @@ import { SharedModule } from '../SharedModules/shared/shared.module';
 import { OwnerModule } from '../Owners/owner.module';
 import { CommonModule } from '@angular/common';
 import { ClientModule } from '../Client/client.module';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorHandlingInterceptor } from '../Interceptors/ErrorHandling/error-handling.interceptor';
 import { NotFoundComponent } from '../CommonComponents/not-found/not-found.component';
 import { TokenInterceptorInterceptor } from '../Interceptors/TokenInterceptor/token-interceptor.interceptor';
 import { CommoneResetPasswordComponent } from '../CommonComponents/commone-reset-password/commone-reset-password.component';
+import { ClientMainDominRoutingModule } from '../Client/MainDomain/client-main-domin-routing/client-main-domin-routing.module';
+import { OwnersRoutingModule } from '../Owners/owners-routing/owners-routing.module';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 @NgModule({
   declarations: [
     AppComponent, NotFoundComponent,  CommoneResetPasswordComponent
   ],
   imports: [
-    BrowserModule, AppRoutingModule, BrowserAnimationsModule, 
-    MaterialModule, SharedModule, OwnerModule, CommonModule, ClientModule  ],
+    BrowserModule, BrowserAnimationsModule, MaterialModule, SharedModule,
+    OwnerModule, CommonModule, ClientModule, AppRoutingModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: httpTranslateLoader,
+        deps: [HttpClient]
+      }
+    })
+  ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorHandlingInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorInterceptor, multi: true },
@@ -30,3 +42,7 @@ import { CommoneResetPasswordComponent } from '../CommonComponents/commone-reset
   exports: [NotFoundComponent]
 })
 export class AppModule { }
+// AOT compilation support
+export function httpTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http,'./assets/i18n/', '.json');
+}

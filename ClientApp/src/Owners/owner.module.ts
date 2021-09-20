@@ -10,16 +10,19 @@ import { OwnerBodyComponent } from './Components/owner-body/owner-body.component
 import { EmailConfirmationOwnerComponent } from './Components/email-confirmation-owner/email-confirmation-owner.component';
 import { OwnerResetPasswordComponent } from './Components/owner-reset-password/owner-reset-password.component';
 import { OwnerForgetPasswordComponent } from './Components/owner-forget-password/owner-forget-password.component';
+import { OwnersRoutingModule } from './owners-routing/owners-routing.module';
+import { OwnersDashBoardComponent } from './Dashboard/Owners/Components/owners-dash-board/owners-dash-board.component';
 
 const Commponents = [
   OwnersLoginComponent, OwnerRegisterComponent, OwnerNavBarComponent,
   OwnerMainComponent, OwnerBodyComponent, EmailConfirmationOwnerComponent,
   OwnerResetPasswordComponent, OwnerForgetPasswordComponent,
+  OwnersDashBoardComponent
 ]
 @NgModule({
   declarations: [Commponents],
   imports: [
-    SharedModule, MaterialModule, AppRoutingModule
+    SharedModule, MaterialModule, OwnersRoutingModule
   ],
   exports: [Commponents]
 })

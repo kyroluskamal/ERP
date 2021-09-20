@@ -1,0 +1,12 @@
+{
+  "Login": "Login",
+  "Register": "Register",
+  "Logout": "Logout",
+  "Email": "Email",
+  "Password": "Password",
+  "Forget password?": "Forget password?",
+  "Don't have Account?": "Don't have Account?",
+  "Create one": "Create one",
+  "Remember Me": "Remember Me",
+  "Email hint": "Enter your email"
+}

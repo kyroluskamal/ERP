@@ -8,9 +8,9 @@ import { Constants } from '../../../../Helpers/constants';
 import { CustomErrorStateMatcher } from '../../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
 import { CustomValidators } from '../../../../Helpers/CustomValidation/custom-validators';
 import { ClientResetPasswordModel } from '../../../Models/client-reset-password-model.model';
-import { ClientAccountService } from '../../../Services/Authentication/client-account-service.service';
 import { Location } from '@angular/common'
 import { ClientForgetPasswordModel } from '../../../Models/client-forget-password-model.model';
+import { ClientAccountService } from '../../Authentication/client-account-service.service';
 @Component({
   selector: 'app-client-reset-password',
   templateUrl: './client-reset-password.component.html',

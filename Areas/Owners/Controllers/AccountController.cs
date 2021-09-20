@@ -68,7 +68,10 @@ namespace ERP.Areas.Owners.Controllers
         {
             if (ModelState.IsValid)
             {
-                var Owner = new Owner() { Email = Register.Email, UserName = Register.UserName };
+                var Owner = new Owner() { 
+                    Email = Register.Email, UserName = Register.UserName,
+                    FirstName = Register.FirstName, LastName= Register.LastName
+                };
                 var result = await OwnerManager.CreateAsync(Owner, Register.Password);
                 if (result.Succeeded)
                 {

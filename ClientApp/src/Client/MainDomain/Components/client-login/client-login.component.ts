@@ -2,14 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LocalStorage } from '@ngx-pwa/local-storage';
+import { TranslateService } from '@ngx-translate/core';
 import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
 import { NotificationsService } from '../../../../CommonServices/NotificationService/notifications.service';
+import { TranslationServiceService } from '../../../../CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from '../../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
 import { Constants } from '../../../../Helpers/constants';
 import { CustomErrorStateMatcher } from '../../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
 import { ClientLogin } from '../../../Models/client-login.model';
 import { SendEmailConfirmationAgian } from '../../../Models/send-email-confirmation-agian.model';
-import { ClientAccountService } from '../../../Services/Authentication/client-account-service.service';
+import { ClientAccountService } from '../../Authentication/client-account-service.service';
 
 @Component({
   selector: 'app-client-login',
@@ -17,25 +19,30 @@ import { ClientAccountService } from '../../../Services/Authentication/client-ac
   styleUrls: ['./client-login.component.css']
 })
 export class ClientLoginComponent implements OnInit {
-  //create array to store user data we need
-  // create a field to hold error messages so we can bind it to our        template
-  resultMessage: string = "";
   loginForm: FormGroup = new FormGroup({});
   customErrorStateMatcher: CustomErrorStateMatcher = new CustomErrorStateMatcher()
   ValidationErrors: any[] = []
   passwordHide: boolean = true;
   ClientLogin: ClientLogin = new ClientLogin();
+  selected: any;
   //constructor
-  constructor(private formBuilder: FormBuilder, protected localStorage: LocalStorage,
-    public dialogHandler: DialogHandlerService,
+  constructor(private formBuilder: FormBuilder,
+    public dialogHandler: DialogHandlerService, public translate: TranslationServiceService,
     public ValidationErrorMessage: ValidationErrorMessagesService,
-    public accountService: ClientAccountService,
+    public accountService: ClientAccountService, 
     private Notifications: NotificationsService,
     public router: Router) {
     
   }
 
   ngOnInit(): void {
+    this.selected = localStorage.getItem('lang');
+    if (!this.selected) {
+      this.selected = "en";
+      this.switchLang(this.selected);
+    } else {
+      this.switchLang(this.selected);
+    }
     this.loginForm = this.formBuilder.group({
       Email: [null, [Validators.email, Validators.required]],
       Password: [null, [Validators.required]],
@@ -81,4 +88,8 @@ export class ClientLoginComponent implements OnInit {
   rememberMeOnClick() {
     localStorage.setItem(Constants.ClientRememberMe, this.loginForm.get(Constants.RememberMe)?.value);
   }
+  switchLang(lang: string) {
+    this.selected = this.translate.setTranslationLang(lang);
+  }
+
 }

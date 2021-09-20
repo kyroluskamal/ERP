@@ -97,8 +97,7 @@
     <div mat-dialog-actions>
       <button mat-raised-button color="primary"  [disabled]="RegisterForm.invalid" (submit) ="RegisterForm.valid"
               class="Width100" aria-label="press to login" (click)="OnRegisterClick($event)">
-        <mat-icon>app_registration</mat-icon>
-        Create Account
+        <mat-icon><mat-spinner diameter="20" color="warn" *ngIf="loading"></mat-spinner><span *ngIf="!loading">app_registration</span></mat-icon>        Create Account
       </button>
       <!--<button mat-raised-button color="warn" aria-label="cancel login dialog">
         <mat-icon>cancel</mat-icon>Cancel

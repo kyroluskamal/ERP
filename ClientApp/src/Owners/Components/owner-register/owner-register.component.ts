@@ -16,6 +16,7 @@ import { OwnerAccountService } from '../../Services/Authentication/Owner-account
 })
 export class OwnerRegisterComponent implements OnInit {
   passwordHide: boolean = true;
+  loading: boolean = false;
   confirmPasswordHide: boolean = true;
   RegisterForm: FormGroup | any;
   ValidationErrors: any[] = [];
@@ -50,6 +51,7 @@ export class OwnerRegisterComponent implements OnInit {
   }
 
   OnRegisterClick(event: any) {
+    this.loading = true;
     this.OwnerRegisterModel = {
       Email: this.RegisterForm.get("Email")?.value,
       Password: this.RegisterForm.get("Password")?.value,
@@ -68,6 +70,7 @@ export class OwnerRegisterComponent implements OnInit {
         this.dialogHandler.CloseDialog();
       },
       (error) => {
+        this.loading = false;
         this.ValidationErrors = error;
       }
     );

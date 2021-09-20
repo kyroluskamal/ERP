@@ -1,27 +1,38 @@
-<mat-toolbar color="primary">
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span><a routerLink="/" class="homeLink">{{title}}</a></span>
-  <span class="example-spacer"></span>
-  <ng-container *ngIf="IsloggedIn===false">
-    <button mat-stroked-button class="b-white" aria-label="Example icon-button with heart icon" (click)="OnLoginClick()">
-      <mat-icon>login</mat-icon>
-      Login
-    </button>&nbsp;
-    <button mat-stroked-button class="b-white" aria-label="Example icon-button with share icon" (click)="OnRegisterlick()">
-      <mat-icon>app_registration</mat-icon>
-      Register
+<mat-toolbar color="primary" [fxLayout]="selected !=='ar'?'row':'row-reverse'" fxLayoutAlign="space-between">
+  <div [fxLayout]="selected !=='ar'?'row':'row-reverse'" fxLayoutAlign="space-between">
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+      <mat-icon>menu</mat-icon>
     </button>
-  </ng-container>
-  <ng-container *ngIf="IsloggedIn">
-    <a class="b-white" aria-label="Example icon-button with heart icon">
-      {{currentUserName}}
-    </a>&nbsp;
-    <button mat-stroked-button class="b-white" aria-label="Example icon-button with heart icon" (click)="logOut()">
-      <mat-icon>logout</mat-icon>
-      Logout
-    </button>
-  </ng-container>
+    <span><a routerLink="/" class="homeLink">{{title}}</a></span>
+    <mat-form-field appearance="outline" class="b-white">
+      <mat-select [(value)]="selected">
+        <mat-option *ngFor="let language of translate.getLangs()"
+                    [value]="language" (click)="switchLang(selected)">
+          {{ language | titlecase }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+    <div [fxLayout]="selected !=='ar'?'row':'row-reverse'" fxLayoutAlign="space-between">
+      <ng-container *ngIf="IsloggedIn===false">
+        <button mat-stroked-button class="b-white" aria-label="Example icon-button with heart icon" (click)="OnLoginClick()">
+          <mat-icon>login</mat-icon>
+          {{'Login' | translate}}
+        </button>&nbsp;
+        <button mat-stroked-button class="b-white" aria-label="Example icon-button with share icon" (click)="OnRegisterlick()">
+          <mat-icon>app_registration</mat-icon>
+          {{'Register' | translate}}
+        </button>
+      </ng-container>
+      <ng-container *ngIf="IsloggedIn">
+        <a class="b-white" aria-label="Example icon-button with heart icon">
+          {{currentUserName}}
+        </a>&nbsp;
+        <button mat-stroked-button class="b-white" aria-label="Example icon-button with heart icon" (click)="logOut()">
+          <mat-icon>logout</mat-icon>
+          {{'Logout' | translate}}
+        </button>
+      </ng-container>
+    </div>
 </mat-toolbar>
 
