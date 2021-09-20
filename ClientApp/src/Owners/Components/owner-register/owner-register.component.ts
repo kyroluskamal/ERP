@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogHandlerService } from '../../../CommonServices/DialogHandler/dialog-handler.service';
 import { NotificationsService } from '../../../CommonServices/NotificationService/notifications.service';
+import { TranslationService } from '../../../CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from '../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
 import { Constants } from '../../../Helpers/constants';
 import { CustomErrorStateMatcher } from '../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
@@ -22,14 +23,21 @@ export class OwnerRegisterComponent implements OnInit {
   ValidationErrors: any[] = [];
   customErrorStateMatcher: CustomErrorStateMatcher = new CustomErrorStateMatcher()
   OwnerRegisterModel: OwnerRegister = new OwnerRegister();
-
+  selected: any;
   constructor(public OwnerAuth: OwnerAccountService,
-    public formBuilder: FormBuilder,
+    public formBuilder: FormBuilder, public translate: TranslationService,
     public dialogHandler: DialogHandlerService,
     public ValidationErrorMessage: ValidationErrorMessagesService,
     public Notifications: NotificationsService) { }
 
   ngOnInit(): void {
+    this.selected = localStorage.getItem('lang');
+    if (!this.selected) {
+      this.selected = "en";
+      this.switchLang(this.selected);
+    } else {
+      this.switchLang(this.selected);
+    }
     this.RegisterForm = this.formBuilder.group({
       Email: [null, [Validators.required, Validators.email, Validators.pattern(/.+@.+\..+/)]],
       Password: [null, Validators.compose([
@@ -74,5 +82,8 @@ export class OwnerRegisterComponent implements OnInit {
         this.ValidationErrors = error;
       }
     );
+  }
+  switchLang(lang: string) {
+    this.selected = this.translate.setTranslationLang(lang);
   }
 }

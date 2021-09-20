@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
 import { NotificationsService } from '../../../../CommonServices/NotificationService/notifications.service';
+import { TranslationService } from '../../../../CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from '../../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
 import { Constants } from '../../../../Helpers/constants';
 import { CustomErrorStateMatcher } from '../../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
@@ -17,9 +18,10 @@ export class ClientForgetPasswordComponent implements OnInit {
   ForgetPassworForm = new FormGroup({});
   customErrorStateMatcher: CustomErrorStateMatcher = new CustomErrorStateMatcher()
   ValidationErrors: any[] = [];
+  selected: any;
   //Constructor
   constructor(private formBuilder: FormBuilder, private AccountService: ClientAccountService,
-    public dialogHandler: DialogHandlerService,
+    public dialogHandler: DialogHandlerService, public translate: TranslationService,
     public ValidationErrorMessage: ValidationErrorMessagesService,
     private Notifications: NotificationsService) { }
   //NgOnInit
@@ -31,6 +33,13 @@ export class ClientForgetPasswordComponent implements OnInit {
 
   //new Functions
   OnSubmit() {
+    this.selected = localStorage.getItem('lang');
+    if (!this.selected) {
+      this.selected = "en";
+      this.switchLang(this.selected);
+    } else {
+      this.switchLang(this.selected);
+    }
     const ForgetPasswordModel: ClientForgetPasswordModel = {
       Email: this.ForgetPassworForm.get("Email")?.value,
       ClientUrl: Constants.ClientUrl(Constants.Client_PasswordResetURL)
@@ -46,5 +55,7 @@ export class ClientForgetPasswordComponent implements OnInit {
       }
     );
   }
-
+  switchLang(lang: string) {
+    this.selected = this.translate.setTranslationLang(lang);
+  }
 }

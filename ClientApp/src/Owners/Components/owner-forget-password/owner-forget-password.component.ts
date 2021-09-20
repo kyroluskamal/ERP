@@ -7,6 +7,7 @@ import { Constants } from '../../../Helpers/constants';
 import { ForgetPasswordModel } from '../../Models/forget-password-model.model';
 import { OwnerAccountService } from '../../Services/Authentication/Owner-account-service.service';
 import { CustomErrorStateMatcher } from '../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
+import { TranslationService } from '../../../CommonServices/translation-service.service';
 
 @Component({
   selector: 'app-owner-forget-password',
@@ -17,13 +18,21 @@ export class OwnerForgetPasswordComponent implements OnInit {
   ForgetPassworForm = new FormGroup({});
   customErrorStateMatcher: CustomErrorStateMatcher = new CustomErrorStateMatcher()
   ValidationErrors: any[] = [];
+  selected: any;
   //Constructor
   constructor(private formBuilder: FormBuilder, private AccountService: OwnerAccountService,
-    public dialogHandler: DialogHandlerService,
+    public dialogHandler: DialogHandlerService, public translate: TranslationService,
     public ValidationErrorMessage: ValidationErrorMessagesService,
     private Notifications: NotificationsService) { }
   //NgOnInit
   ngOnInit(): void {
+    this.selected = localStorage.getItem('lang');
+    if (!this.selected) {
+      this.selected = "en";
+      this.switchLang(this.selected);
+    } else {
+      this.switchLang(this.selected);
+    }
     this.ForgetPassworForm = this.formBuilder.group({
       Email: [null, [Validators.email, Validators.required]]
     });
@@ -45,5 +54,8 @@ export class OwnerForgetPasswordComponent implements OnInit {
         this.ValidationErrors = error;
       }
     );
+  }
+  switchLang(lang: string) {
+    this.selected = this.translate.setTranslationLang(lang);
   }
 }

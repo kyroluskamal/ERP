@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LocalStorage } from '@ngx-pwa/local-storage';
-import { TranslateService } from '@ngx-translate/core';
 import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
 import { NotificationsService } from '../../../../CommonServices/NotificationService/notifications.service';
-import { TranslationServiceService } from '../../../../CommonServices/translation-service.service';
+import { TranslationService } from '../../../../CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from '../../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
 import { Constants } from '../../../../Helpers/constants';
 import { CustomErrorStateMatcher } from '../../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
@@ -27,11 +25,10 @@ export class ClientLoginComponent implements OnInit {
   selected: any;
   //constructor
   constructor(private formBuilder: FormBuilder,
-    public dialogHandler: DialogHandlerService, public translate: TranslationServiceService,
+    public dialogHandler: DialogHandlerService, public translate: TranslationService,
     public ValidationErrorMessage: ValidationErrorMessagesService,
     public accountService: ClientAccountService, 
-    private Notifications: NotificationsService,
-    public router: Router) {
+    private Notifications: NotificationsService, public router: Router) {
     
   }
 

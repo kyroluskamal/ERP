@@ -3,7 +3,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { SendEmailConfirmationAgian } from '../../../Client/Models/send-email-confirmation-agian.model';
 import { DialogHandlerService } from '../../../CommonServices/DialogHandler/dialog-handler.service';
 import { NotificationsService } from '../../../CommonServices/NotificationService/notifications.service';
-import { TranslationServiceService } from '../../../CommonServices/translation-service.service';
+import { TranslationService } from '../../../CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from '../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
 import { Constants } from '../../../Helpers/constants';
 import { CustomErrorStateMatcher } from '../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
@@ -24,7 +24,7 @@ selected: any;
   customErrorStateMatcher: CustomErrorStateMatcher = new CustomErrorStateMatcher()
   OwnerLogin: OwnerLogin = new OwnerLogin();
   //Constructor
-  constructor(public formBuilder: FormBuilder, public translate: TranslationServiceService,
+  constructor(public formBuilder: FormBuilder, public translate: TranslationService,
     public dialogHandler: DialogHandlerService,
     public ValidationErrorMessage: ValidationErrorMessagesService,
     private Notifications: NotificationsService,

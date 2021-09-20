@@ -11,6 +11,7 @@ import { ClientResetPasswordModel } from '../../../Models/client-reset-password-
 import { Location } from '@angular/common'
 import { ClientForgetPasswordModel } from '../../../Models/client-forget-password-model.model';
 import { ClientAccountService } from '../../Authentication/client-account-service.service';
+import { TranslationService } from '../../../../CommonServices/translation-service.service';
 @Component({
   selector: 'app-client-reset-password',
   templateUrl: './client-reset-password.component.html',
@@ -28,14 +29,24 @@ export class ClientResetPasswordComponent implements OnInit {
   Fail: boolean = false;
   Error: any;
   email: string | null = "";
-  token: string |null= "";
+  token: string | null = "";
+  selected: any;
+
   //Constructor
   constructor(private accountService: ClientAccountService, private route: ActivatedRoute,
     public formBuilder: FormBuilder, public dialogHandler: DialogHandlerService,
     public ValidationErrorMessage: ValidationErrorMessagesService, private location: Location,
-    public Notifications: NotificationsService, private router: Router) { }
+    public Notifications: NotificationsService, private router: Router,
+    public translate: TranslationService  ) { }
   //ngOnInit
   ngOnInit(): void {
+    this.selected = localStorage.getItem('lang');
+    if (!this.selected) {
+      this.selected = "en";
+      this.switchLang(this.selected);
+    } else {
+      this.switchLang(this.selected);
+    }
     this.ResetForm = this.formBuilder.group({
       Password: [null, Validators.compose([
         Validators.required,
@@ -99,5 +110,8 @@ export class ClientResetPasswordComponent implements OnInit {
         this.ValidationErrors = error;
       }
     );
+  }
+  switchLang(lang: string) {
+    this.selected = this.translate.setTranslationLang(lang);
   }
 }

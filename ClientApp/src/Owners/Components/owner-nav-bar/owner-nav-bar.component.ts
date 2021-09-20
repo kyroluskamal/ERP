@@ -2,7 +2,7 @@ import { ViewEncapsulation } from '@angular/core';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { DialogHandlerService } from '../../../CommonServices/DialogHandler/dialog-handler.service';
-import { TranslationServiceService } from '../../../CommonServices/translation-service.service';
+import { TranslationService } from '../../../CommonServices/translation-service.service';
 import { Constants } from '../../../Helpers/constants';
 import { OwnerAccountService } from '../../Services/Authentication/Owner-account-service.service';
 @Component({
@@ -19,7 +19,7 @@ export class OwnerNavBarComponent implements OnInit {
   selected : any;
   //Constructor
   constructor(public dialogHandler: DialogHandlerService, public bottomSheet: MatBottomSheet,
-    private accountService: OwnerAccountService, public translate: TranslationServiceService)
+    private accountService: OwnerAccountService, public translate: TranslationService)
   {
     
   }

@@ -5,13 +5,13 @@ import { SharedModule } from '../SharedModules/shared/shared.module';
 import { MaterialModule } from '../SharedModules/material/material.module';
 import { OwnerNavBarComponent } from './Components/owner-nav-bar/owner-nav-bar.component';
 import { OwnerMainComponent } from '../Owners/Components/owner-main/owner-main.component';
-import { AppRoutingModule } from '../app/app-routing.module';
 import { OwnerBodyComponent } from './Components/owner-body/owner-body.component';
 import { EmailConfirmationOwnerComponent } from './Components/email-confirmation-owner/email-confirmation-owner.component';
 import { OwnerResetPasswordComponent } from './Components/owner-reset-password/owner-reset-password.component';
 import { OwnerForgetPasswordComponent } from './Components/owner-forget-password/owner-forget-password.component';
 import { OwnersRoutingModule } from './owners-routing/owners-routing.module';
 import { OwnersDashBoardComponent } from './Dashboard/Owners/Components/owners-dash-board/owners-dash-board.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 const Commponents = [
   OwnersLoginComponent, OwnerRegisterComponent, OwnerNavBarComponent,

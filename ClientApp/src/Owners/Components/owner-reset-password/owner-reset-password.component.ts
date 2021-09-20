@@ -11,6 +11,7 @@ import { ForgetPasswordModel } from '../../Models/forget-password-model.model';
 import { OwnerResetPasswordModel } from '../../Models/owner-reset-password-model.model';
 import { OwnerAccountService } from '../../Services/Authentication/Owner-account-service.service';
 import { Location } from '@angular/common';
+import { TranslationService } from '../../../CommonServices/translation-service.service';
 @Component({
   selector: 'app-owner-reset-password',
   templateUrl: './owner-reset-password.component.html',
@@ -30,13 +31,23 @@ export class OwnerResetPasswordComponent implements OnInit {
   Error: any;
   email: string | null = "";
   token: string | null = "";
+  selected: any;
+
   //Constructor
   constructor(private accountService: OwnerAccountService, private route: ActivatedRoute,
     public formBuilder: FormBuilder, public dialogHandler: DialogHandlerService,
     public ValidationErrorMessage: ValidationErrorMessagesService, private location: Location,
-    public Notifications: NotificationsService, private router: Router) { }
+    public Notifications: NotificationsService, private router: Router,
+    public translate: TranslationService  ) { }
   //ngOnInit
   ngOnInit(): void {
+    this.selected = localStorage.getItem('lang');
+    if (!this.selected) {
+      this.selected = "en";
+      this.switchLang(this.selected);
+    } else {
+      this.switchLang(this.selected);
+    }
     this.ResetForm = this.formBuilder.group({
       Password: [null, Validators.compose([
         Validators.required,
@@ -101,5 +112,7 @@ export class OwnerResetPasswordComponent implements OnInit {
       }
     );
   }
-
+  switchLang(lang: string) {
+    this.selected = this.translate.setTranslationLang(lang);
+  }
 }
