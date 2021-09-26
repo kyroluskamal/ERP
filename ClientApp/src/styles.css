@@ -1,41 +1,92 @@
-/* You can add global styles to this file, and also import other style files */
+/*'Chewy'*/
+@import url("./assets/Fonts/Chewy/stylesheet.css");
+/*'Fredoka One'*/
+@import url("./assets/Fonts/Fredoka_One/stylesheet.css");
+/*'Jomhuria'*/
+@import url("./assets/Fonts/Jomhuria/stylesheet.css");
+/*'Patrick Hand'*/
+@import url("./assets/Fonts/Patrick_Hand/stylesheet.css");
+/*'Scheherazade New'*/
+@import url("./assets/Fonts/Scheherazade_New/stylesheet.css");
+/*'Paytone One'*/
+@import url("./assets/Fonts/Paytone_One/stylesheet.css");
+/*'Titan One'*/
+@import url("./assets/Fonts/Titan_One/stylesheet.css");
+/*Lalezar*/
+@import url("./assets/Fonts/Lalezar/stylesheet.css");
+/*'Almarai'*/
+@import url("./assets/Fonts/Almarai/stylesheet.css");
+/*'Noto Sans Arabic'*/
+@import url("./assets/Fonts/Noto_Sans_Arabic/stylesheet.css");
+:root {
+  /*.....................................Fonts.........................*/
+  --Almarai : "Almarai"
+  --Chewy: "Chewy";
+  --Fredoka: "Fredoka One";
+  --Jomhuria: "Jomhuria";
+  --Patrick: "Patrick Hand";
+  --Scheherazade: "Scheherazade New";
+  --Paytone: "Paytone One";
+  --Titan: "Titan One";
+  --NotoSansArabic: "Noto Sans Arabic";
+  --Lalezar:"Lalezar";
+  /*......................................colors..........................*/
+  --sucessColor: #2dce89;
+  --infoColor: #11cdef;
+  --WarningCOlor:#fa3a0e;
+  --DangerColor: #f5365c;
+  --PrimaryColor_Active: #324cdd;
+  --PrimaryColor:#5e72e4;
+}
 
-html, body {
-  height: 100%;
+html,
+body {
+  height: 100vh;
 }
 
 body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-image:linear-gradient(
+    150deg, rgb(119, 149, 248) 15%, rgb(103, 114, 229) 70%, rgb(85, 90, 191) 94%);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    margin: 0;
+  /* padding-top: 70px !important; */
+  /* background-color: rgb(247 247 247 / 34%); */
+  /*background-image: url("./assets/abstract-blue-flowing-lines-background.png");
+
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;*/
 }
 
 .example-spacer {
   flex: 1 1 auto;
 }
-.Width100{
-    width:100%
+.Width100 {
+  width: 100%;
 }
-.b-white{
-    border-color: white !important;
+.b-white {
+  border-color: white !important;
 }
-.float-right{
-    float:right;
+.float-right {
+  float: right;
 }
-.pointerCursor{
-    cursor: pointer;
+.pointerCursor {
+  cursor: pointer;
 }
-.dialog-header{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;   
+.dialog-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 .mat-dialog-title {
   width: 90%;
   border-bottom: 2px solid black;
   font-weight: bold !important;
 }
-form p{
-    margin-top:18px !important;
+form p {
+  margin-top: 18px !important;
 }
 .subdomain {
   /*width: 100%;*/
@@ -43,18 +94,17 @@ form p{
   flex-direction: row;
   align-items: stretch;
   justify-items: center;
-  
 }
 
 .Overflow-x-hidden {
   overflow-x: hidden !important;
 }
 .OwnerRegisterDialog {
-  max-width:100vw !important;
+  max-width: 100vw !important;
 }
 .OwnerRegisterDialog .mat-dialog-container {
-    width: 100vw !important;
-    height: 100vh !important;
+  width: 100vw !important;
+  height: 100vh !important;
 }
 .ClientRegisterDialog {
   max-width: 100vw !important;
@@ -68,22 +118,23 @@ form p{
   border: 2px solid black !important;
   color: black !important;
 }
-  .closeIcon:hover {
-    border: 2px solid black !important;
-    background-color: black !important;
-    color: white !important;
-    cursor: pointer !important;
-  }
+.closeIcon:hover {
+  border: 2px solid black !important;
+  background-color: black !important;
+  color: white !important;
+  cursor: pointer !important;
+}
 
-.valid-green, .ng-valid div {
+.valid-green,
+.ng-valid div {
   color: #009e08 !important;
 }
 
-.password>div .mat-form-field-subscript-wrapper{
-    position:relative !important;
+.password > div .mat-form-field-subscript-wrapper {
+  position: relative !important;
 }
-.mat-dialog-title{
-    color:black !important;
+.mat-dialog-title {
+  color: black !important;
 }
 .buttonLink {
   -moz-border-radius: 4px;
@@ -91,7 +142,7 @@ form p{
   color: #1a73e8;
   display: inline-block;
   font-weight: 500;
-  letter-spacing: .25px;
+  letter-spacing: 0.25px;
   outline: 0;
   position: relative;
   background-color: transparent;
@@ -100,16 +151,16 @@ form p{
   padding: 0;
   text-align: left;
   border: 0;
-  font-weight:bold;
+  font-weight: bold;
 }
-.Error-Notification{
-    background-color: red;
-    
+.Error-Notification {
+  background-color: red;
 }
 .Success-Notification {
   background-color: green;
 }
-.Error-Notification, .Success-Notification {
+.Error-Notification,
+.Success-Notification {
   color: white;
 }
 .ValidationErrors > ul {
@@ -154,16 +205,16 @@ form p{
 .text-danger {
   color: #a94442;
 }
-.marginTop-5{
-    margin-top:5px;
+.marginTop-5 {
+  margin-top: 5px;
 }
 .Error-Notification .mat-simple-snackbar-action,
 .Success-Notification .mat-simple-snackbar-action {
   color: White;
 }
-.homeLink{
-    text-decoration:none !important;
-    color:inherit !important;
+.homeLink {
+  text-decoration: none !important;
+  color: inherit !important;
 }
 .alert {
   padding: 15px;
@@ -172,36 +223,36 @@ form p{
   border-radius: 4px;
 }
 
-  .alert h4 {
-    margin-top: 0;
-    color: inherit;
-  }
+.alert h4 {
+  margin-top: 0;
+  color: inherit;
+}
 
-  .alert .alert-link {
-    font-weight: bold;
-  }
+.alert .alert-link {
+  font-weight: bold;
+}
 
-  .alert > p,
-  .alert > ul {
-    margin-bottom: 0;
-  }
+.alert > p,
+.alert > ul {
+  margin-bottom: 0;
+}
 
-    .alert > p + p {
-      margin-top: 5px;
-    }
+.alert > p + p {
+  margin-top: 5px;
+}
 
 .alert-dismissable,
 .alert-dismissible {
   padding-right: 35px;
 }
 
-  .alert-dismissable .close,
-  .alert-dismissible .close {
-    position: relative;
-    top: -2px;
-    right: -21px;
-    color: inherit;
-  }
+.alert-dismissable .close,
+.alert-dismissible .close {
+  position: relative;
+  top: -2px;
+  right: -21px;
+  color: inherit;
+}
 
 .alert-success {
   background-color: #dff0d8;
@@ -209,13 +260,13 @@ form p{
   color: #3c763d;
 }
 
-  .alert-success hr {
-    border-top-color: #c9e2b3;
-  }
+.alert-success hr {
+  border-top-color: #c9e2b3;
+}
 
-  .alert-success .alert-link {
-    color: #2b542c;
-  }
+.alert-success .alert-link {
+  color: #2b542c;
+}
 
 .alert-info {
   background-color: #d9edf7;
@@ -223,13 +274,13 @@ form p{
   color: #31708f;
 }
 
-  .alert-info hr {
-    border-top-color: #a6e1ec;
-  }
+.alert-info hr {
+  border-top-color: #a6e1ec;
+}
 
-  .alert-info .alert-link {
-    color: #245269;
-  }
+.alert-info .alert-link {
+  color: #245269;
+}
 
 .alert-warning {
   background-color: #fcf8e3;
@@ -237,13 +288,13 @@ form p{
   color: #8a6d3b;
 }
 
-  .alert-warning hr {
-    border-top-color: #f7e1b5;
-  }
+.alert-warning hr {
+  border-top-color: #f7e1b5;
+}
 
-  .alert-warning .alert-link {
-    color: #66512c;
-  }
+.alert-warning .alert-link {
+  color: #66512c;
+}
 
 .alert-danger {
   background-color: #f2dede;
@@ -251,11 +302,224 @@ form p{
   color: #a94442;
 }
 
-  .alert-danger hr {
-    border-top-color: #e4b9c0;
-  }
+.alert-danger hr {
+  border-top-color: #e4b9c0;
+}
 
-  .alert-danger .alert-link {
-    color: #843534;
-  }
+.alert-danger .alert-link {
+  color: #843534;
+}
+
+.min-height-100vh {
+  min-height: 100vh;
+  padding: 1.5rem;
+}
+.bg-white{
+  background-color: white;
+}
+/*................................Fonts ..................*/
+.ScheherazadeNew-Regular {
+  font-family: Almarai, Lalezar !important;
+  font-weight: normal;
+}
+
+.ScheherazadeNew-Bold {
+  font-family: NotoSansArabic !important;
+  font-weight: bold;
+}
+.max-width-100 {
+  max-width: 100% !important;
+}
+[dir="rtl"] {
+  font-family: NotoSansArabic !important;
+}
+.ButtonArabicFont {
+  font-family: NotoSansArabic, Almarai !important;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+.langSelectionSize {
+  width: 60px !important;
+}
+.ToolBar {
+  position: fixed;
+  position: -webkit-sticky; /* For macOS/iOS Safari */
+  top: 0; /* Sets the sticky toolbar to be on top */
+  z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
+  background: #ffffff;
+    color: rgba(0,0,0,.87);
+}
+
+.logo {
+  max-width: 100%;
+  color: white;
+}
+.MainDomainHomeFirstSection {
+  color: white;
+}
+.MainDomainHomeFirstSection h1 {
+  font-family: Chewy !important;
+  text-align: center;
+  color:  white;
+  margin-bottom: 50px !important;
+	text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777, 0px 4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444, 0px 7px 0px #333, 0px 8px 7px #001135;
+}
+.MainDomainHomeFirstSection h1[dir="rtl"]{
+  font-family: Jomhuria !important;
+  margin-bottom: 20px !important;
+	text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777, 0px 4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444, 0px 7px 0px #333, 0px 8px 7px #001135;
+}
+.MainDomainHomeFirstSection article {
+  font-family: Scheherazade !important;
+  text-align: justify;
+  background-color: rgba(0,0,0,.19);
+  color:  white;
+  font-size: 2rem;
+  line-height: 40px;
+  font-weight: bold;
+  padding: 10px;
+  box-shadow: 0px 0px 20px #fff, 4px 5px 19px 0px #ffefef;
+}
+.loginButton{
+  color:blue;
+}
+.loginButton:hover{
+  background-color: blue;
+  color: white;
+}
+
+.LelezarFont{
+  font-family: Lalezar !important;
+}
+.font-size-1-5rem{
+  font-size: 1.5rem !important;
+}
+.langSelectorMaidDomainStyle{
+  padding: 9px;
+  border-radius: 6px;
+  margin-top:2px;
+}
+.langSelectorMaidDomainStyle-StickyToolbar{
+  background-color: black;
+  color: white;
+}
+.langSelectorMaidDomainStyle-UnStickyToolbar{
+  background-color: white;
+    color: black;
+}
+.langSelectionSize .mat-form-field-underline{
+  display: none !important;
+}
+
+.bg-transparent{
+  background: transparent !important;
+}
+.MainDomain-Mat-Diverder{
+  display: block;
+
+    box-sizing: border-box;
+    height: 150px;
+    width: 100%;
+    background:white;
+    padding: 10px;
+    -webkit-clip-path: polygon(0% 0%, 90% 10%, 100% 100%, 0% 100%);
+    clip-path: polygon(0% 90%, 100% 10%, 100% 100%, 0% 100%);
+}
+.Main-domain-grid-tile{
+  border-bottom-left-radius: 20px;
+  border-top-right-radius:  20px;
+}
+.Main-domain-grid-tile mat-grid-tile-header{
+  background-color: black !important;
+  font-family: Almarai;
+  font-size: 1.5rem;
+  font-weight: bolder;
+}
+.bg-grey{
+  background-color: rgb(203, 203, 203);
+}
+.Main-domain-grid-tile .mat-grid-list-text{
+  padding: 60px 10px 10px 10px;
+  font-size: 2rem;
+  font-family: Scheherazade;
+  line-height: 30px;
+}
+.btn{
+  position: relative;
+  text-transform: uppercase;
+  transition: all .15s ease;
+  will-change: transform;
+  letter-spacing: .025em;
+  font-size: .875rem;
+  margin-top: .7rem;
+    margin-bottom: .7rem;
+}
+.btn-primary {
+  color: #fff;
+  background-color: #5e72e4;
+  border-color: #5e72e4;
+  box-shadow: 0 4px 6px rgb(50 50 93 / 11%), 0 1px 3px rgb(0 0 0 / 8%);
+}
+.btn-info {
+  color: #fff;
+  background-color: #11cdef;
+  border-color: #11cdef;
+  box-shadow: 0 4px 6px rgb(50 50 93 / 11%), 0 1px 3px rgb(0 0 0 / 8%);
+}
+.btn-success {
+  color: #fff;
+  background-color: #2dce89;
+  border-color: #2dce89;
+  box-shadow: 0 4px 6px rgb(50 50 93 / 11%), 0 1px 3px rgb(0 0 0 / 8%);
+}
+.btn-warning {
+  color: #fff;
+  background-color: #fb6340;
+  border-color: #fb6340;
+  box-shadow: 0 4px 6px rgb(50 50 93 / 11%), 0 1px 3px rgb(0 0 0 / 8%);
+}
+.btn-danger {
+  color: #fff;
+  background-color: #f5365c;
+  border-color: #f5365c;
+  box-shadow: 0 4px 6px rgb(50 50 93 / 11%), 0 1px 3px rgb(0 0 0 / 8%);
+}
+.btn-neutral {
+  background-color: #fff;
+  border-color: #fff;
+  color: #5e72e4;
+  box-shadow: 0 4px 6px rgb(50 50 93 / 11%), 0 1px 3px rgb(0 0 0 / 8%);
+}
+.btn:hover {
+  box-shadow: 0 7px 14px rgb(50 50 93 / 10%), 0 3px 6px rgb(0 0 0 / 8%);
+  -webkit-transform: translateY(-1px);
+  transform: translateY(-1px);
+}
+.MainDomainHomeFirstSection .mat-list-item-content{
+  justify-content: center;
+  font-size: 1.5rem;
+}
+.justify-Content-Center{
+  justify-content: center;
+}
+.text-info{
+  color:var(--infoColor) !important;
+}
+.text-success{
+  color: var(--sucessColor) !important;
+}
+
+.text-warning{
+  color: var(--WarningCOlor) !important;
+}
+.text-primary{
+  color: var(--PrimaryColor) !important;
+}
+.text-danger{
+  color: var(--DangerColor) !important;
+}
+.text-white{
+  color: white !important;
+}
+
 

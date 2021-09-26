@@ -1,5 +1,7 @@
+import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
 import { NotificationsService } from '../../../../CommonServices/NotificationService/notifications.service';
 import { TranslationService } from '../../../../CommonServices/translation-service.service';
@@ -16,7 +18,7 @@ import { ClientAccountService } from '../../Authentication/client-account-servic
   templateUrl: './client-register.component.html',
   styleUrls: ['./client-register.component.css']
 })
-export class ClientRegisterComponent implements OnInit {
+export class ClientRegisterComponent implements OnInit, OnDestroy {
   //Properties
   passwordHide: boolean = true;
   confirmPasswordHide: boolean = true;
@@ -27,22 +29,27 @@ export class ClientRegisterComponent implements OnInit {
   ClientRegisterModel: ClientRegister = new ClientRegister();
   clientWithToken: ClientWithToken = new ClientWithToken();
   selected: any;
+  CompanyName: string = '';
+  LangSubscibtion: Subscription = new Subscription();
+
   //Constructor
   constructor(public ClientAuth: ClientAccountService,
     public formBuilder: FormBuilder, public translate: TranslationService,
     public dialogHandler: DialogHandlerService,
     public ValidationErrorMessage: ValidationErrorMessagesService,
-    public Notifications: NotificationsService) {
+    public Notifications: NotificationsService)
+  {
+    this.selected = localStorage.getItem(Constants.lang);
+
   }
+    
 
   ngOnInit(): void {
-    this.selected = localStorage.getItem('lang');
-    if (!this.selected) {
-      this.selected = "en";
-      this.switchLang(this.selected);
-    } else {
-      this.switchLang(this.selected);
-    }
+    this.LangSubscibtion = this.translate.SelectedLangSubject.subscribe(
+      (response) => {
+        this.selected = response;
+      }
+    );
     this.RegisterForm = this.formBuilder.group({
       Email: [null, [Validators.required, Validators.email, CustomValidators.patternValidator(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, { pattern: true })]],
       Password: [null, Validators.compose([
@@ -54,7 +61,7 @@ export class ClientRegisterComponent implements OnInit {
         Validators.minLength(8)])
       ],
       ConfirmPassword: [null, [Validators.required]],
-      CompanyName: [null, [Validators.required]],
+      CompanyName: [null, [Validators.required, CustomValidators.patternValidator(/[A-Za-z]/, { EnglishName: true })]],
       Subdomain: [null, [Validators.required]],
       Username: [null, [Validators.required]],
       FirstName: [null, [Validators.required]],
@@ -96,8 +103,17 @@ export class ClientRegisterComponent implements OnInit {
 
     
   }
-  switchLang(lang: string) {
-    this.selected = this.translate.setTranslationLang(lang);
+
+  autoSubdomain() {
+    this.CompanyName = this.RegisterForm.get('CompanyName')?.value;
+    this.CompanyName = this.CompanyName.split(' ').join('').trim();
+    this.RegisterForm.patchValue({
+      Subdomain: this.CompanyName
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.LangSubscibtion.unsubscribe();
   }
 }
 

@@ -44,6 +44,7 @@ export class ValidationErrorMessagesService {
       }
       case "CompanyName": {
         if (errorType == "required") return "<strong>Company Name</strong> is required";
+        else if (errorType == "EnglishName") return "Enter Your Company name in English";
         break;
       }
       case "Subdomain": {

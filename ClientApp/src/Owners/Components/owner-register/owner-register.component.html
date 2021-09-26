@@ -1,5 +1,5 @@
 <form [formGroup]="RegisterForm" (ngSubmit)="RegisterForm.valid"
-      [dir]="selected!=='ar'?'ltr':'rtl'">
+      [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
   <div class="form-container">
     <div class="dialog-header">
       <h2 mat-dialog-title>{{'Create Account'|translate}}</h2>

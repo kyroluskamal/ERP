@@ -1,5 +1,7 @@
+import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
 import { TranslationService } from '../../../../CommonServices/translation-service.service';
 import { Constants } from '../../../../Helpers/constants';
@@ -11,28 +13,28 @@ import { ClientAccountService } from '../../Authentication/client-account-servic
   templateUrl: './email-confirmation-client.component.html',
   styleUrls: ['./email-confirmation-client.component.css']
 })
-export class EmailConfirmationClientComponent implements OnInit {
+export class EmailConfirmationClientComponent implements OnInit, OnDestroy {
   //properties
   EmailConfirmationModel: EmailConfirmationModel = new EmailConfirmationModel();
   Success: boolean = false;
   Fail: boolean = false;
   Error: any;
   selected: any;
+  LangSubscibtion: Subscription = new Subscription();
 
   //constructor
   constructor(private route: ActivatedRoute, private router: Router,
     private accountService: ClientAccountService, public dialogHandler: DialogHandlerService,
-    public translate: TranslationService  ) {
+    public translate: TranslationService) {
+    this.selected = localStorage.getItem(Constants.lang);
   }
   //ngOnInit
   ngOnInit(): void {
-    this.selected = localStorage.getItem('lang');
-    if (!this.selected) {
-      this.selected = "en";
-      this.switchLang(this.selected);
-    } else {
-      this.switchLang(this.selected);
-    }
+    this.LangSubscibtion = this.translate.SelectedLangSubject.subscribe(
+      (response) => {
+        this.selected = response;
+      }
+    );
     const email = this.route.snapshot.queryParamMap.get(Constants.email);
     const token = this.route.snapshot.queryParamMap.get(Constants.token);
     if (email && token) {
@@ -52,5 +54,9 @@ export class EmailConfirmationClientComponent implements OnInit {
   }
   switchLang(lang: string) {
     this.selected = this.translate.setTranslationLang(lang);
+  }
+
+  ngOnDestroy(): void {
+    this.LangSubscibtion.unsubscribe();
   }
 }

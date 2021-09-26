@@ -12,12 +12,14 @@ import { OwnerResetPasswordModel } from '../../Models/owner-reset-password-model
 import { OwnerAccountService } from '../../Services/Authentication/Owner-account-service.service';
 import { Location } from '@angular/common';
 import { TranslationService } from '../../../CommonServices/translation-service.service';
+import { Subscription } from 'rxjs';
+import { OnDestroy } from '@angular/core';
 @Component({
   selector: 'app-owner-reset-password',
   templateUrl: './owner-reset-password.component.html',
   styleUrls: ['./owner-reset-password.component.css']
 })
-export class OwnerResetPasswordComponent implements OnInit {
+export class OwnerResetPasswordComponent implements OnInit, OnDestroy {
 
   //Properties
   passwordHide: boolean = true;
@@ -32,22 +34,23 @@ export class OwnerResetPasswordComponent implements OnInit {
   email: string | null = "";
   token: string | null = "";
   selected: any;
+  LangSubscibtion: Subscription = new Subscription();
 
   //Constructor
   constructor(private accountService: OwnerAccountService, private route: ActivatedRoute,
     public formBuilder: FormBuilder, public dialogHandler: DialogHandlerService,
     public ValidationErrorMessage: ValidationErrorMessagesService, private location: Location,
     public Notifications: NotificationsService, private router: Router,
-    public translate: TranslationService  ) { }
+    public translate: TranslationService) {
+    this.selected = localStorage.getItem(Constants.lang);
+  }
   //ngOnInit
   ngOnInit(): void {
-    this.selected = localStorage.getItem('lang');
-    if (!this.selected) {
-      this.selected = "en";
-      this.switchLang(this.selected);
-    } else {
-      this.switchLang(this.selected);
-    }
+    this.LangSubscibtion = this.translate.SelectedLangSubject.subscribe(
+      (response) => {
+        this.selected = response;
+      }
+    );
     this.ResetForm = this.formBuilder.group({
       Password: [null, Validators.compose([
         Validators.required,
@@ -112,7 +115,7 @@ export class OwnerResetPasswordComponent implements OnInit {
       }
     );
   }
-  switchLang(lang: string) {
-    this.selected = this.translate.setTranslationLang(lang);
+  ngOnDestroy(): void {
+    this.LangSubscibtion.unsubscribe();
   }
 }

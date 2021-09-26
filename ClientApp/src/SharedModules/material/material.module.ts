@@ -13,12 +13,16 @@ import { CommonModule } from '@angular/common';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatSelectModule } from '@angular/material/select';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatListModule} from '@angular/material/list';
 
 const MaterialComponents = [
-  MatButtonModule, MatToolbarModule,MatIconModule,MatDialogModule,
+  MatButtonModule, MatToolbarModule,MatIconModule,MatDialogModule,MatListModule,
   MatBottomSheetModule, MatInputModule, MatFormFieldModule, CommonModule,
-  MatSnackBarModule, MatCheckboxModule, MatProgressSpinnerModule,
-  MatSidenavModule, FlexLayoutModule, MatSelectModule
+  MatSnackBarModule, MatCheckboxModule, MatProgressSpinnerModule,MatGridListModule,
+  MatSidenavModule, FlexLayoutModule, MatSelectModule, MatMenuModule, MatExpansionModule
 ];
 @NgModule({
   declarations: [],

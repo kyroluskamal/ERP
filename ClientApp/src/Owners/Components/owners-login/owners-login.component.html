@@ -1,7 +1,8 @@
-<form [formGroup]="loginForm" (ngSubmit)="loginForm.valid" [dir]="selected!=='ar'?'ltr':'rtl'">
+<form [formGroup]="loginForm" (ngSubmit)="loginForm.valid"
+      [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
   <div class="form-container">
     <div class="dialog-header">
-      <h2 mat-dialog-title [dir]="selected!=='ar'?'ltr':'rtl'">
+      <h2 mat-dialog-title [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
         {{'Login' | translate}}
       </h2>
       <mat-icon tabindex="-1" class="pointerCursor closeIcon float-right" matRipple (click)="dialogHandler.CloseDialog();">close</mat-icon>

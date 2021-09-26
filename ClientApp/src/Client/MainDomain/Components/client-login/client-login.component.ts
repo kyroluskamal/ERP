@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
 import { NotificationsService } from '../../../../CommonServices/NotificationService/notifications.service';
 import { TranslationService } from '../../../../CommonServices/translation-service.service';
@@ -16,30 +17,30 @@ import { ClientAccountService } from '../../Authentication/client-account-servic
   templateUrl: './client-login.component.html',
   styleUrls: ['./client-login.component.css']
 })
-export class ClientLoginComponent implements OnInit {
+export class ClientLoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup = new FormGroup({});
   customErrorStateMatcher: CustomErrorStateMatcher = new CustomErrorStateMatcher()
   ValidationErrors: any[] = []
   passwordHide: boolean = true;
   ClientLogin: ClientLogin = new ClientLogin();
   selected: any;
+  LangSubscibtion: Subscription = new Subscription();
+
   //constructor
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: FormBuilder, public router: Router,
     public dialogHandler: DialogHandlerService, public translate: TranslationService,
     public ValidationErrorMessage: ValidationErrorMessagesService,
-    public accountService: ClientAccountService, 
-    private Notifications: NotificationsService, public router: Router) {
-    
+    public accountService: ClientAccountService, private Notifications: NotificationsService)
+  {
+    this.selected = localStorage.getItem(Constants.lang);
   }
 
   ngOnInit(): void {
-    this.selected = localStorage.getItem('lang');
-    if (!this.selected) {
-      this.selected = "en";
-      this.switchLang(this.selected);
-    } else {
-      this.switchLang(this.selected);
-    }
+    this.LangSubscibtion = this.translate.SelectedLangSubject.subscribe(
+      (response) => {
+        this.selected = response;
+      }
+    );
     this.loginForm = this.formBuilder.group({
       Email: [null, [Validators.email, Validators.required]],
       Password: [null, [Validators.required]],
@@ -85,8 +86,8 @@ export class ClientLoginComponent implements OnInit {
   rememberMeOnClick() {
     localStorage.setItem(Constants.ClientRememberMe, this.loginForm.get(Constants.RememberMe)?.value);
   }
-  switchLang(lang: string) {
-    this.selected = this.translate.setTranslationLang(lang);
-  }
 
+  ngOnDestroy(): void {
+    this.LangSubscibtion.unsubscribe();
+  }
 }

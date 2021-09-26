@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { SendEmailConfirmationAgian } from '../../../Client/Models/send-email-confirmation-agian.model';
 import { DialogHandlerService } from '../../../CommonServices/DialogHandler/dialog-handler.service';
 import { NotificationsService } from '../../../CommonServices/NotificationService/notifications.service';
@@ -15,7 +16,7 @@ import { OwnerAccountService } from '../../Services/Authentication/Owner-account
   templateUrl: './owners-login.component.html',
   styleUrls: ['./owners-login.component.css']
 })
-export class OwnersLoginComponent implements OnInit {
+export class OwnersLoginComponent implements OnInit, OnDestroy {
   passwordHide: boolean = true;
   loading: boolean = false;
   loginForm = new FormGroup({});
@@ -23,22 +24,23 @@ export class OwnersLoginComponent implements OnInit {
 selected: any;
   customErrorStateMatcher: CustomErrorStateMatcher = new CustomErrorStateMatcher()
   OwnerLogin: OwnerLogin = new OwnerLogin();
+  LangSubscibtion: Subscription = new Subscription();
+
   //Constructor
   constructor(public formBuilder: FormBuilder, public translate: TranslationService,
     public dialogHandler: DialogHandlerService,
     public ValidationErrorMessage: ValidationErrorMessagesService,
     private Notifications: NotificationsService,
-    public accountService: OwnerAccountService  ) {
+    public accountService: OwnerAccountService) {
+    this.selected = localStorage.getItem(Constants.lang);
   }
 
   ngOnInit(): void {
-    this.selected = localStorage.getItem('lang');
-    if (!this.selected) {
-      this.selected = "en";
-      this.switchLang(this.selected);
-    } else {
-      this.switchLang(this.selected);
-    }
+    this.LangSubscibtion = this.translate.SelectedLangSubject.subscribe(
+      (response) => {
+        this.selected = response;
+      }
+    );
     this.loginForm = this.formBuilder.group({
       Email: [null, [Validators.email, Validators.required]],
       Password: [null, [Validators.required]],
@@ -89,8 +91,7 @@ selected: any;
   rememberMeOnClick() {
     localStorage.setItem(Constants.OwnerRememberMe, this.loginForm.get(Constants.RememberMe)?.value);
   }
-
-  switchLang(lang: string) {
-    this.selected = this.translate.setTranslationLang(lang);
+  ngOnDestroy(): void {
+    this.LangSubscibtion.unsubscribe();
   }
 }

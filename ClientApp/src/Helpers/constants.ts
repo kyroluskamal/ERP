@@ -7,6 +7,7 @@ export abstract class Constants {
   static RememberMe: string = "RememberMe";
   static ClientRememberMe: string = "CleintRememberMe";
   static OwnerRememberMe: string = "OwnerRememberMe";
+  static lang: string = "lang";
 
   //API URLS
   static ClientLoginMainDomain_APIurl: string = "/api/Identity/loginMainDomain";

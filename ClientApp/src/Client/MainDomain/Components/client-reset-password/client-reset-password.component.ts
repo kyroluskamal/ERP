@@ -12,12 +12,14 @@ import { Location } from '@angular/common'
 import { ClientForgetPasswordModel } from '../../../Models/client-forget-password-model.model';
 import { ClientAccountService } from '../../Authentication/client-account-service.service';
 import { TranslationService } from '../../../../CommonServices/translation-service.service';
+import { Subscription } from 'rxjs';
+import { OnDestroy } from '@angular/core';
 @Component({
   selector: 'app-client-reset-password',
   templateUrl: './client-reset-password.component.html',
   styleUrls: ['./client-reset-password.component.css']
 })
-export class ClientResetPasswordComponent implements OnInit {
+export class ClientResetPasswordComponent implements OnInit, OnDestroy {
   //Properties
   passwordHide: boolean = true;
   confirmPasswordHide: boolean = true;
@@ -31,22 +33,24 @@ export class ClientResetPasswordComponent implements OnInit {
   email: string | null = "";
   token: string | null = "";
   selected: any;
+  LangSubscibtion: Subscription = new Subscription();
 
   //Constructor
   constructor(private accountService: ClientAccountService, private route: ActivatedRoute,
     public formBuilder: FormBuilder, public dialogHandler: DialogHandlerService,
     public ValidationErrorMessage: ValidationErrorMessagesService, private location: Location,
     public Notifications: NotificationsService, private router: Router,
-    public translate: TranslationService  ) { }
+    public translate: TranslationService) {
+    this.selected = localStorage.getItem(Constants.lang);
+
+  }
   //ngOnInit
   ngOnInit(): void {
-    this.selected = localStorage.getItem('lang');
-    if (!this.selected) {
-      this.selected = "en";
-      this.switchLang(this.selected);
-    } else {
-      this.switchLang(this.selected);
-    }
+    this.LangSubscibtion = this.translate.SelectedLangSubject.subscribe(
+      (response) => {
+        this.selected = response;
+      }
+    );
     this.ResetForm = this.formBuilder.group({
       Password: [null, Validators.compose([
         Validators.required,
@@ -111,7 +115,7 @@ export class ClientResetPasswordComponent implements OnInit {
       }
     );
   }
-  switchLang(lang: string) {
-    this.selected = this.translate.setTranslationLang(lang);
+  ngOnDestroy(): void {
+    this.LangSubscibtion.unsubscribe();
   }
 }

@@ -1,5 +1,7 @@
+import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { EmailConfirmationModel } from '../../../Client/Models/email-confirmation-model.model';
 import { DialogHandlerService } from '../../../CommonServices/DialogHandler/dialog-handler.service';
 import { TranslationService } from '../../../CommonServices/translation-service.service';
@@ -11,7 +13,7 @@ import { OwnerAccountService } from '../../Services/Authentication/Owner-account
   templateUrl: './email-confirmation-owner.component.html',
   styleUrls: ['./email-confirmation-owner.component.css']
 })
-export class EmailConfirmationOwnerComponent implements OnInit {
+export class EmailConfirmationOwnerComponent implements OnInit, OnDestroy {
 
   //properties
   EmailConfirmationModel: EmailConfirmationModel = new EmailConfirmationModel();
@@ -19,21 +21,21 @@ export class EmailConfirmationOwnerComponent implements OnInit {
   Fail: boolean = false;
   Error: any;
   selected: any;
+  LangSubscibtion: Subscription = new Subscription();
 
   //constructor
   constructor(private route: ActivatedRoute, private router: Router,
     private accountService: OwnerAccountService, public dialogHandler: DialogHandlerService,
-    public translate: TranslationService  ) {
+    public translate: TranslationService) {
+    this.selected = localStorage.getItem(Constants.lang);
   }
   //ngOnInit
   ngOnInit(): void {
-    this.selected = localStorage.getItem('lang');
-    if (!this.selected) {
-      this.selected = "en";
-      this.switchLang(this.selected);
-    } else {
-      this.switchLang(this.selected);
-    }
+    this.LangSubscibtion = this.translate.SelectedLangSubject.subscribe(
+      (response) => {
+        this.selected = response;
+      }
+    );
     const email = this.route.snapshot.queryParamMap.get(Constants.email);
     const token = this.route.snapshot.queryParamMap.get(Constants.token);
     if (email && token) {
@@ -51,7 +53,7 @@ export class EmailConfirmationOwnerComponent implements OnInit {
       (error: any) => { this.Fail = true; this.Error = error[0].error; console.log(error) }
     );
   }
-  switchLang(lang: string) {
-    this.selected = this.translate.setTranslationLang(lang);
+  ngOnDestroy(): void {
+    this.LangSubscibtion.unsubscribe();
   }
 }

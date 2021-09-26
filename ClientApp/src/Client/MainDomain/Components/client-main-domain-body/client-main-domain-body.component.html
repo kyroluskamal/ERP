@@ -1,1 +1,119 @@
-<p>client-main-domain-body works!</p>
+<app-client-main-domain-nav-bar #MainDomainToolbar></app-client-main-domain-nav-bar>
+<main>
+  <span class="bubble bubble1"></span>
+  <span class="bubble bubble2"></span>
+  <span class="bubble bubble3"></span>
+  <span class="bubble bubble4"></span>
+  <span class="bubble bubble5"></span>
+  <span class="bubble bubble6"></span>
+  <span class="bubble bubble7"></span>
+  <span class="bubble bubble10"></span>
+  <span class="bubble bubble11"></span>
+  <span class="bubble bubble12"></span>
+  <span class="bubble bubble13"></span>
+  <section class="MainDomainHomeFirstSection min-height-100vh"
+    fxLayout="column" fxLayoutGap="50px"
+    fxLayoutAlign="center center" fxLayout.xs="column">
+    <header>
+      <h1 [style.font-size]='FirstSec_Header_fontSize'
+        class="animate__animated animate__bounce"
+        [style.line-height]='FirstSec_Header_LineSpace'
+        [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
+        {{'MainDomainFirstSectionTitle'| translate}}
+      </h1>
+    </header>
+    <button mat-raised-button class="btn btn-success LelezarFont
+      font-size-1-5rem">
+      {{'Create account now'|translate}}</button>
+    <mat-list fxLayout="row" fxLayout.xs="column" fxFill
+      fxLayoutAlign="center"
+      [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'"
+      style="font-weight:600;
+      text-align: center;">
+      <mat-list-item class="text-white">
+        <mat-icon>check_circle</mat-icon>&nbsp;
+        {{'Free 30-day trial'|translate}}
+      </mat-list-item>
+      <mat-list-item class="text-white"><mat-icon>check_circle</mat-icon>&nbsp;
+        {{"NoCreditCardNeeded"|translate}}</mat-list-item>
+      <mat-list-item class="text-white"><mat-icon>check_circle</mat-icon>&nbsp;
+        {{"No Setup"|translate}}</mat-list-item>
+    </mat-list>
+  </section>
+  <mat-divider class="MainDomain-Mat-Diverder"></mat-divider>
+  <!------------------------------------------- Secont Section ------------------------->
+  <section class="bg-white
+    mat-elevation-z9"
+    [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
+    <div>
+      <header>
+        <h1 [style.font-size]='FirstSec_Header_fontSize'
+          [style.line-height]='FirstSec_Header_LineSpace'
+          [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
+          {{'OurIntegratedApps'| translate}}
+        </h1>
+      </header>
+      <mat-grid-list cols={{gridCols}} gutterSize="10px" rowHeight="160px">
+        <mat-grid-tile class="Main-domain-grid-tile"
+          fxLayout="column">
+          <mat-grid-tile-header style="text-align:center">
+            <mat-icon>receipt</mat-icon> {{"Sales" | translate}}
+          </mat-grid-tile-header>
+          <div class="mat-grid-list-text" fxFlexAlign="start">
+            {{"SalesText" | translate}}
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-grid-tile-header>Test</mat-grid-tile-header>
+          ;lks;lfkls;dkfl;s
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-grid-tile-header>Test</mat-grid-tile-header>
+          ;lks;lfkls;dkfl;s
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-grid-tile-header>Test</mat-grid-tile-header>
+          ;lks;lfkls;dkfl;s
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-grid-tile-header>Test</mat-grid-tile-header>
+          ;lks;lfkls;dkfl;s
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-grid-tile-header>Test</mat-grid-tile-header>
+          ;lks;lfkls;dkfl;s
+        </mat-grid-tile>
+      </mat-grid-list>
+
+    </div>
+  </section>
+  <section class="MainDomainHomeFirstSection min-height-100vh"
+    [fxLayout]="selected&&translate.isRightToLeft(selected)?
+    'row wrap':'row-reverse wrap'"
+    fxLayoutAlign="center center" fxLayout.xs="column">
+    <div>
+      <header>
+        <h1 [style.font-size]='FirstSec_Header_fontSize'
+          [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
+          {{'MainDomainFirstSectionTitle'| translate}}
+        </h1>
+      </header>
+      <div>
+        Test Clas
+      </div>
+    </div>
+  </section>
+  <section
+    [fxLayout]="selected&&translate.isRightToLeft(selected)?'row-reverse':'row'">
+    <div class="container bg-success">
+      <header>
+        <h1 [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
+          {{'MainDomainFirstSectionTitle'| translate}}
+        </h1>
+      </header>
+    </div>
+    <div class="container">
+
+    </div>
+  </section>
+</main>

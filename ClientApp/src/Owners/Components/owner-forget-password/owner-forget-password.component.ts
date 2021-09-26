@@ -8,31 +8,35 @@ import { ForgetPasswordModel } from '../../Models/forget-password-model.model';
 import { OwnerAccountService } from '../../Services/Authentication/Owner-account-service.service';
 import { CustomErrorStateMatcher } from '../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
 import { TranslationService } from '../../../CommonServices/translation-service.service';
+import { OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-owner-forget-password',
   templateUrl: './owner-forget-password.component.html',
   styleUrls: ['./owner-forget-password.component.css']
 })
-export class OwnerForgetPasswordComponent implements OnInit {
+export class OwnerForgetPasswordComponent implements OnInit, OnDestroy {
   ForgetPassworForm = new FormGroup({});
   customErrorStateMatcher: CustomErrorStateMatcher = new CustomErrorStateMatcher()
   ValidationErrors: any[] = [];
   selected: any;
+  LangSubscibtion: Subscription = new Subscription();
+
   //Constructor
   constructor(private formBuilder: FormBuilder, private AccountService: OwnerAccountService,
     public dialogHandler: DialogHandlerService, public translate: TranslationService,
     public ValidationErrorMessage: ValidationErrorMessagesService,
-    private Notifications: NotificationsService) { }
+    private Notifications: NotificationsService) {
+    this.selected = localStorage.getItem(Constants.lang);
+  }
   //NgOnInit
   ngOnInit(): void {
-    this.selected = localStorage.getItem('lang');
-    if (!this.selected) {
-      this.selected = "en";
-      this.switchLang(this.selected);
-    } else {
-      this.switchLang(this.selected);
-    }
+    this.LangSubscibtion = this.translate.SelectedLangSubject.subscribe(
+      (response) => {
+        this.selected = response;
+      }
+    );
     this.ForgetPassworForm = this.formBuilder.group({
       Email: [null, [Validators.email, Validators.required]]
     });
@@ -55,7 +59,7 @@ export class OwnerForgetPasswordComponent implements OnInit {
       }
     );
   }
-  switchLang(lang: string) {
-    this.selected = this.translate.setTranslationLang(lang);
+  ngOnDestroy(): void {
+    this.LangSubscibtion.unsubscribe();
   }
 }

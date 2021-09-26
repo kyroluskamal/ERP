@@ -1,5 +1,5 @@
 <form [formGroup]="RegisterForm" (ngSubmit)="RegisterForm.valid"
-      [dir]="selected!=='ar'?'ltr':'rtl'">
+      [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
   <div class="form-container">
     <div class="dialog-header">
       <h2 mat-dialog-title>{{'Create Account'|translate}}</h2>
@@ -105,7 +105,7 @@
           RegisterForm).valid?
           'valid-green':''">{{'Company name'|translate}}</mat-label>
         <input matInput type="text" value="" formControlName="CompanyName"
-               [errorStateMatcher]="customErrorStateMatcher" />
+               [errorStateMatcher]="customErrorStateMatcher"  (input)="autoSubdomain()"/>
         <mat-icon matSuffix>business</mat-icon>
         <mat-hint align="end">{{"CompanyNameHint"|translate}}</mat-hint>
         <mat-error *ngIf="ValidationErrorMessage.getFormControl('CompanyName',
@@ -116,10 +116,18 @@
           RegisterForm).hasError('required')&& selected==='ar'">
           {{'CompanyNameRequired'|translate}}
         </mat-error>
+      <mat-error *ngIf="ValidationErrorMessage.getFormControl('CompanyName',
+          RegisterForm).hasError('EnglishName')&& selected==='en'"
+                   [innerHtml]="ValidationErrorMessage.getErrorMessage('CompanyName',
+          'EnglishName')"></mat-error>
+      <mat-error *ngIf="ValidationErrorMessage.getFormControl('CompanyName',
+          RegisterForm).hasError('EnglishName')&& selected==='ar'">
+        {{'CompanyNamevEnglishName'|translate}}
+      </mat-error>
       </mat-form-field>
       <!-- subdomain name -->
-      <div class="subdomain">
-        <p>https://</p>
+      <div class="subdomain" [fxLayout]="selected&&translate.isRightToLeft(selected)?'row-reverse':'row'">
+        <p dir="ltr">https://</p>
         <div>
           <mat-form-field appearance="outline" class="Width100">
             <mat-label [ngClass]="ValidationErrorMessage.getFormControl('Subdomain',
@@ -138,7 +146,7 @@
             </mat-error>
           </mat-form-field>
         </div>
-        <p>.kherp.com</p>
+        <p dir="ltr">.kherp.com</p>
       </div>
       <!-- Password -->
       <mat-form-field appearance="outline" class="Width100"

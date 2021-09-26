@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
 import { NotificationsService } from '../../../../CommonServices/NotificationService/notifications.service';
 import { TranslationService } from '../../../../CommonServices/translation-service.service';
@@ -14,18 +15,28 @@ import { ClientAccountService } from '../../Authentication/client-account-servic
   templateUrl: './client-forget-password.component.html',
   styleUrls: ['./client-forget-password.component.css']
 })
-export class ClientForgetPasswordComponent implements OnInit {
+export class ClientForgetPasswordComponent implements OnInit, OnDestroy {
   ForgetPassworForm = new FormGroup({});
   customErrorStateMatcher: CustomErrorStateMatcher = new CustomErrorStateMatcher()
   ValidationErrors: any[] = [];
   selected: any;
+  LangSubscibtion: Subscription = new Subscription();
+
   //Constructor
   constructor(private formBuilder: FormBuilder, private AccountService: ClientAccountService,
     public dialogHandler: DialogHandlerService, public translate: TranslationService,
     public ValidationErrorMessage: ValidationErrorMessagesService,
-    private Notifications: NotificationsService) { }
+    private Notifications: NotificationsService) {
+    this.selected = localStorage.getItem(Constants.lang);
+
+  }
   //NgOnInit
   ngOnInit(): void {
+    this.LangSubscibtion = this.translate.SelectedLangSubject.subscribe(
+      (response) => {
+        this.selected = response;
+      }
+    );
     this.ForgetPassworForm = this.formBuilder.group({
       Email: [null, [Validators.email, Validators.required]]
     });
@@ -33,13 +44,6 @@ export class ClientForgetPasswordComponent implements OnInit {
 
   //new Functions
   OnSubmit() {
-    this.selected = localStorage.getItem('lang');
-    if (!this.selected) {
-      this.selected = "en";
-      this.switchLang(this.selected);
-    } else {
-      this.switchLang(this.selected);
-    }
     const ForgetPasswordModel: ClientForgetPasswordModel = {
       Email: this.ForgetPassworForm.get("Email")?.value,
       ClientUrl: Constants.ClientUrl(Constants.Client_PasswordResetURL)
@@ -55,7 +59,7 @@ export class ClientForgetPasswordComponent implements OnInit {
       }
     );
   }
-  switchLang(lang: string) {
-    this.selected = this.translate.setTranslationLang(lang);
+  ngOnDestroy(): void {
+    this.LangSubscibtion.unsubscribe();
   }
 }

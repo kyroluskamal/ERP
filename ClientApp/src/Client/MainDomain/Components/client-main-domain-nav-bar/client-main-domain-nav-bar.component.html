@@ -1,38 +1,79 @@
-<mat-toolbar color="primary" [fxLayout]="selected !=='ar'?'row':'row-reverse'" fxLayoutAlign="space-between">
-  <div [fxLayout]="selected !=='ar'?'row':'row-reverse'" fxLayoutAlign="space-between">
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <span><a routerLink="/" class="homeLink">{{title}}</a></span>
-    <mat-form-field appearance="outline" class="b-white">
-      <mat-select [(value)]="selected">
-        <mat-option *ngFor="let language of translate.getLangs()"
-                    [value]="language" (click)="switchLang(selected)">
-          {{ language | titlecase }}
+<mat-toolbar fxLayoutAlign="space-between center" #Toolbar
+  [class]="toolbarStyle"
+  [fxLayout]="selected&&translate.isRightToLeft(selected)?'row-reverse':'row'">
+  <div fxLayoutGap="50px"
+    [fxLayout]="selected&&translate.isRightToLeft(selected)?'row-reverse':'row'">
+    <a fxLayoutAlign="center center" [fxFlex]="fxFlex" mat-button><img
+        class="logo"
+        src="../../../../assets/logo.png" alt="logo"></a>
+    <mat-form-field class="b-white langSelectionSize">
+      <mat-select [(value)]="selected" [class]="langSelectionStyle">
+        <mat-option *ngFor="let code of translate.getLangs()"
+          [value]="code" (click)="switchLang(selected)">
+          {{ translate.NameByCode(code) | titlecase }}
         </mat-option>
       </mat-select>
     </mat-form-field>
   </div>
-    <div [fxLayout]="selected !=='ar'?'row':'row-reverse'" fxLayoutAlign="space-between">
-      <ng-container *ngIf="IsloggedIn===false">
-        <button mat-stroked-button class="b-white" aria-label="Example icon-button with heart icon" (click)="OnLoginClick()">
-          <mat-icon>login</mat-icon>
-          {{'Login' | translate}}
-        </button>&nbsp;
-        <button mat-stroked-button class="b-white" aria-label="Example icon-button with share icon" (click)="OnRegisterlick()">
-          <mat-icon>app_registration</mat-icon>
-          {{'Register' | translate}}
-        </button>
-      </ng-container>
-      <ng-container *ngIf="IsloggedIn">
-        <a class="b-white" aria-label="Example icon-button with heart icon">
-          {{currentUserName}}
-        </a>&nbsp;
-        <button mat-stroked-button class="b-white" aria-label="Example icon-button with heart icon" (click)="logOut()">
-          <mat-icon>logout</mat-icon>
-          {{'Logout' | translate}}
-        </button>
-      </ng-container>
-    </div>
-</mat-toolbar>
+  <div
+    [fxLayout]="selected&&translate.isRightToLeft(selected)?'row-reverse':'row'"
+    fxLayoutAlign="space-between" fxLayoutGap="10px">
+    <ng-container *ngIf="IsloggedIn===false">
+      <button mat-icon-button class="example-icon" aria-label="Example
+        icon-button with menu icon" fxHide.gt-xs fxShow.xs
+        [matMenuTriggerFor]="LoginRegister">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <button mat-raised-button class="btn btn-neutral" aria-label="Example
+        icon-button
+        with heart icon" (click)="OnLoginClick()" fxHide.xs
+        [ngClass]="selected&&translate.isRightToLeft(selected)?'ButtonArabicFont':''">
+        <mat-icon>login</mat-icon>
+        {{'Login' | translate}}
+      </button>
+      <button mat-raised-button class="btn btn-success"
+        aria-label="Example
+        icon-button
+        with share icon" (click)="OnRegisterlick()" fxHide.xs
+        [ngClass]="selected&&translate.isRightToLeft(selected)?'ButtonArabicFont':''">
+        <mat-icon>person_add</mat-icon>
+        {{'Register' | translate}}
+      </button>
+    </ng-container>
+    <ng-container *ngIf="IsloggedIn">
+      <a class="b-white" aria-label="Example icon-button with heart icon">
+        {{currentUserName}}
+      </a>&nbsp;
+      <button mat-stroked-button class="b-white" aria-label="Example icon-button
+        with heart icon" (click)="logOut()">
+        <mat-icon>logout</mat-icon>
+        {{'Logout' | translate}}
+      </button>
+    </ng-container>
+  </div>
 
+  <mat-menu #LoginRegister="matMenu">
+    <ng-container *ngIf="IsloggedIn===false">
+      <button mat-menu-item (click)="OnLoginClick()"
+        [ngClass]="selected&&translate.isRightToLeft(selected)?'ButtonArabicFont':''">
+        <mat-icon>login</mat-icon>
+        {{'Login' | translate}}
+      </button>
+      <button mat-menu-item (click)="OnRegisterlick()"
+        class="CreateAccountNowButton"
+        [ngClass]="selected&&translate.isRightToLeft(selected)?'ButtonArabicFont':''">
+        <mat-icon>person_add</mat-icon>
+        {{'Register' | translate}}
+      </button>
+    </ng-container>
+    <ng-container *ngIf="IsloggedIn">
+      <a mat-menu-item>
+        {{currentUserName}}
+      </a>
+      <button mat-menu-item (click)="logOut()">
+        <mat-icon>logout</mat-icon>
+        {{'Logout' | translate}}
+      </button>
+    </ng-container>
+  </mat-menu>
+</mat-toolbar>

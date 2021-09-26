@@ -25,6 +25,9 @@
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
     "angular-web-storage": "^12.0.0",
+    "animate.css": "^4.1.1",
+    "flag-icon-css": "^3.5.0",
+    "ngx-flag-icon-css": "^1.0.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",
     "zone.js": "~0.11.4"

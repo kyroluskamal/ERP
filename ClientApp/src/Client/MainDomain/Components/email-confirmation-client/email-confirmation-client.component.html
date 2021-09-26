@@ -1,4 +1,4 @@
-<ng-container *ngIf="Success" [dir]="selected!=='ar'?'ltr':'rtl'">
+<ng-container *ngIf="Success" [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
   <h1 class="alert alert-success">{{'CorrectEmailConfirmation'|translate}}</h1>
   <p>{{'You can now'|translate}} <a class="buttonLink" (click)="dialogHandler.OpenClientLoginDialog()">{{'Login'|translate}}</a></p>
 </ng-container>

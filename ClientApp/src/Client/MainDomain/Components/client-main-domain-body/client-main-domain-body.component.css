@@ -1,0 +1,231 @@
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  z-index: -1;
+  transform: translateY(120vh);
+  box-shadow: 0 20px 30px rgb(0 0 0 / 20%),
+    inset 0px 10px 30px 5px rgb(255 255 255/ 0.5);
+}
+
+.bubble1 {
+  width: 100px;
+  height: 100px;
+  animation: bubble1 5s ease-in-out 0.2s infinite normal forwards;
+}
+
+@keyframes bubble1 {
+  from {
+    transform: translateX(0vw) translateY(100vh);
+    transition: transform 5s ease-in-out 0.5s;
+  }
+
+  to {
+    transform: translateX(0vw) translateY(-30vh);
+    transition: transform 5s ease-in-out 0.5s;
+  }
+}
+.bubble2 {
+  width: 20px;
+  height: 20px;
+  animation: bubble2 5s ease-in-out 1s infinite normal forwards;
+}
+
+@keyframes bubble2 {
+  from {
+    transform: translateX(50vw) translateY(100vh);
+    transition: transform 5s ease-in-out 0.5s;
+  }
+
+  to {
+    transform: translateX(50vw) translateY(-30vh);
+    transition: transform 5s ease-in-out 0.5s;
+  }
+}
+
+.bubble3 {
+  width: 60px;
+  height: 60px;
+  animation: bubble3 5s ease-in-out 1.5s infinite normal forwards;
+}
+
+@keyframes bubble3 {
+  from {
+    transform: translateX(20vw) translateY(100vh);
+    transition: transform 2s ease-in-out 0.5s;
+  }
+
+  to {
+    transform: translateX(20vw) translateY(-30vh);
+    transition: transform 2s ease-in-out 0.5s;
+  }
+}
+.bubble4 {
+  width: 150px;
+  height: 150px;
+  animation: bubble4 5s ease-in-out 3s infinite normal forwards;
+}
+
+@keyframes bubble4 {
+  from {
+    transform: translateX(90vw) translateY(100vh);
+    transition: transform 1s ease-in-out 0.5s;
+  }
+
+  to {
+    transform: translateX(90vw) translateY(-50vh);
+    transition: transform 1s ease-in-out 0.5s;
+  }
+}
+.bubble5 {
+  width: 35px;
+  height: 35px;
+  animation: bubble5 5s ease-in-out 3.5s infinite normal forwards;
+}
+
+@keyframes bubble5 {
+  from {
+    transform: translateX(32vw) translateY(100vh);
+    transition: transform 1.5s ease-in-out 0.5s;
+  }
+
+  to {
+    transform: translateX(32vw) translateY(-50vh);
+    transition: transform 1.5s ease-in-out 0.5s;
+  }
+}
+.bubble6 {
+  width: 61px;
+  height: 61px;
+  animation: bubble6 4s ease-in-out 3.5s infinite normal forwards;
+}
+
+@keyframes bubble6 {
+  from {
+    transform: translateX(45vw) translateY(100vh);
+    transition: transform 3s ease-in-out 0.5s;
+  }
+
+  to {
+    transform: translateX(45vw) translateY(-50vh);
+    transition: transform 3s ease-in-out 0.5s;
+  }
+}
+.bubble7 {
+  width: 56px;
+  height: 56px;
+  animation: bubble7 6s ease-in-out 4s infinite normal forwards;
+}
+
+@keyframes bubble7 {
+  from {
+    transform: translateX(77vw) translateY(100vh);
+    transition: transform 3s ease-in-out 0.5s;
+  }
+
+  to {
+    transform: translateX(77vw) translateY(-50vh);
+    transition: transform 3s ease-in-out 0.5s;
+  }
+}
+.bubble8 {
+  width: 120px;
+  height: 120px;
+  animation: bubble8 4s ease-in-out 4.5s infinite normal forwards;
+}
+
+@keyframes bubble8 {
+  from {
+    transform: translateX(56vw) translateY(100vh);
+    transition: transform 5s ease-in-out 0.5s;
+  }
+
+  to {
+    transform: translateX(56vw) translateY(-50vh);
+    transition: transform 5s ease-in-out 0.5s;
+  }
+}
+.bubble9 {
+  width: 90px;
+  height: 90px;
+  animation: bubble9 5.5s ease-in-out 1s infinite normal forwards;
+}
+
+@keyframes bubble9 {
+  from {
+    transform: translateX(66vw) translateY(100vh);
+    transition: transform 7s ease-in-out 0.5s;
+  }
+
+  to {
+    transform: translateX(66vw) translateY(-50vh);
+    transition: transform 7s ease-in-out 0.5s;
+  }
+}
+.bubble10 {
+  width: 109px;
+  height: 109px;
+  animation: bubble10 3s ease-in-out 5s infinite normal forwards;
+}
+
+@keyframes bubble10 {
+  from {
+    transform: translateX(22vw) translateY(100vh);
+    transition: transform 5s ease-in-out 0.5s;
+  }
+
+  to {
+    transform: translateX(22vw) translateY(-50vh);
+    transition: transform 5s ease-in-out 0.5s;
+  }
+}
+.bubble11 {
+  width: 39px;
+  height: 39px;
+  animation: bubble11 7s ease-in-out 3s infinite normal forwards;
+}
+
+@keyframes bubble11 {
+  from {
+    transform: translateX(87vw) translateY(100vh);
+    transition: transform 4s ease-in-out 0.5s;
+  }
+
+  to {
+    transform: translateX(87vw) translateY(-50vh);
+    transition: transform 4s ease-in-out 0.5s;
+  }
+}
+.bubble12 {
+  width: 55px;
+  height: 55px;
+  animation: bubble12 6.5s ease-in-out 5s infinite normal forwards;
+}
+
+@keyframes bubble12 {
+  from {
+    transform: translateX(66vw) translateY(100vh);
+    transition: transform 4s ease-in-out 0.5s;
+  }
+
+  to {
+    transform: translateX(66vw) translateY(-50vh);
+    transition: transform 4s ease-in-out 0.5s;
+  }
+}
+.bubble13 {
+  width: 29px;
+  height: 29px;
+  animation: bubble13 8s ease-in-out 6s infinite normal forwards;
+}
+
+@keyframes bubble13 {
+  from {
+    transform: translateX(70vw) translateY(100vh);
+    transition: transform 1s ease-in-out 0.5s;
+  }
+
+  to {
+    transform: translateX(70vw) translateY(-50vh);
+    transition: transform 1s ease-in-out 0.5s;
+  }
+}

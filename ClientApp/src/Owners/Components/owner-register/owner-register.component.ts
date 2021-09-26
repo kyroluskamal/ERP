@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { DialogHandlerService } from '../../../CommonServices/DialogHandler/dialog-handler.service';
 import { NotificationsService } from '../../../CommonServices/NotificationService/notifications.service';
 import { TranslationService } from '../../../CommonServices/translation-service.service';
@@ -15,7 +16,7 @@ import { OwnerAccountService } from '../../Services/Authentication/Owner-account
   templateUrl: './owner-register.component.html',
   styleUrls: ['./owner-register.component.css']
 })
-export class OwnerRegisterComponent implements OnInit {
+export class OwnerRegisterComponent implements OnInit, OnDestroy {
   passwordHide: boolean = true;
   loading: boolean = false;
   confirmPasswordHide: boolean = true;
@@ -24,20 +25,23 @@ export class OwnerRegisterComponent implements OnInit {
   customErrorStateMatcher: CustomErrorStateMatcher = new CustomErrorStateMatcher()
   OwnerRegisterModel: OwnerRegister = new OwnerRegister();
   selected: any;
+  LangSubscibtion: Subscription = new Subscription();
+
+  //constructor
   constructor(public OwnerAuth: OwnerAccountService,
     public formBuilder: FormBuilder, public translate: TranslationService,
     public dialogHandler: DialogHandlerService,
     public ValidationErrorMessage: ValidationErrorMessagesService,
-    public Notifications: NotificationsService) { }
+    public Notifications: NotificationsService) {
+    this.selected = localStorage.getItem(Constants.lang);
+  }
 
   ngOnInit(): void {
-    this.selected = localStorage.getItem('lang');
-    if (!this.selected) {
-      this.selected = "en";
-      this.switchLang(this.selected);
-    } else {
-      this.switchLang(this.selected);
-    }
+    this.LangSubscibtion = this.translate.SelectedLangSubject.subscribe(
+      (response) => {
+        this.selected = response;
+      }
+    );
     this.RegisterForm = this.formBuilder.group({
       Email: [null, [Validators.required, Validators.email, Validators.pattern(/.+@.+\..+/)]],
       Password: [null, Validators.compose([
@@ -83,7 +87,7 @@ export class OwnerRegisterComponent implements OnInit {
       }
     );
   }
-  switchLang(lang: string) {
-    this.selected = this.translate.setTranslationLang(lang);
+  ngOnDestroy(): void {
+    this.LangSubscibtion.unsubscribe();
   }
 }

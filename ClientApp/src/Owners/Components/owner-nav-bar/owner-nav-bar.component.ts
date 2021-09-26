@@ -1,6 +1,7 @@
 import { ViewEncapsulation } from '@angular/core';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { Subscription } from 'rxjs';
 import { DialogHandlerService } from '../../../CommonServices/DialogHandler/dialog-handler.service';
 import { TranslationService } from '../../../CommonServices/translation-service.service';
 import { Constants } from '../../../Helpers/constants';
@@ -16,19 +17,18 @@ export class OwnerNavBarComponent implements OnInit {
   currentUserName: string = "";
   IsloggedIn: boolean = false;
   @Input("apptitle") title: string = "";
-  selected : any;
+  selected: any;
+  LangSubscibtion: Subscription = new Subscription();
+
   //Constructor
   constructor(public dialogHandler: DialogHandlerService, public bottomSheet: MatBottomSheet,
     private accountService: OwnerAccountService, public translate: TranslationService)
-  {
-    
-  }
+  {}
 
   ngOnInit(): void {
-    
     this.selected = localStorage.getItem('lang');
-    if (!this.selected) {
-      this.selected = "en";
+    if (!this.selected && JSON.parse(this.selected) === undefined) {
+      this.selected = 'en'
       this.switchLang(this.selected);
     } else {
       this.switchLang(this.selected);
