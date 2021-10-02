@@ -2,11 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { RouterConstants } from 'src/Helpers/RouterConstants';
+import { ConstantsService } from '../../../../CommonServices/constants.service';
 import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
 import { NotificationsService } from '../../../../CommonServices/NotificationService/notifications.service';
 import { TranslationService } from '../../../../CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from '../../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
-import { Constants } from '../../../../Helpers/constants';
 import { CustomErrorStateMatcher } from '../../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
 import { ClientLogin } from '../../../Models/client-login.model';
 import { SendEmailConfirmationAgian } from '../../../Models/send-email-confirmation-agian.model';
@@ -29,10 +30,9 @@ export class ClientLoginComponent implements OnInit, OnDestroy {
   //constructor
   constructor(private formBuilder: FormBuilder, public router: Router,
     public dialogHandler: DialogHandlerService, public translate: TranslationService,
-    public ValidationErrorMessage: ValidationErrorMessagesService,
-    public accountService: ClientAccountService, private Notifications: NotificationsService)
-  {
-    this.selected = localStorage.getItem(Constants.lang);
+    public ValidationErrorMessage: ValidationErrorMessagesService, public Constants: ConstantsService,
+    public accountService: ClientAccountService, private Notifications: NotificationsService) {
+    this.selected = localStorage.getItem(this.Constants.lang);
   }
 
   ngOnInit(): void {
@@ -55,12 +55,12 @@ export class ClientLoginComponent implements OnInit, OnDestroy {
     this.ClientLogin = {
       Email: this.loginForm.get("Email")?.value,
       Password: this.loginForm.get("Password")?.value,
-      Subdomain: window.location.href.split("kherp.com")[0].split("https://")[1].split(".")[0]
+      Subdomain: window.location.hostname.split(".")[0]
     }
     this.accountService.loginMainDomain(this.ClientLogin, RememberMe).subscribe(
       response => {
         console.log(response);
-        this.Notifications.success(Constants.LoggedInSuccessfully);
+        this.Notifications.success(this.Constants.LoggedInSuccessfully);
         this.dialogHandler.CloseDialog();
       },
       error => {
@@ -73,18 +73,18 @@ export class ClientLoginComponent implements OnInit, OnDestroy {
   SendConfirmationAgain() {
     const sendEmailConfirmationAgian: SendEmailConfirmationAgian = {
       Email: this.loginForm.get("Email")?.value,
-      ClientUrl: Constants.ClientUrl(Constants.Client_EmailConfirmationUrl)
+      ClientUrl: this.Constants.ClientUrl(RouterConstants.Client_EmailConfirmationUrl)
     }
     this.accountService.SendConfirmationAgain(sendEmailConfirmationAgian).subscribe(
-      (response: any) => { this.Notifications.success(Constants.EmilConfirmationResnding_success) },
+      (response: any) => { this.Notifications.success(this.Constants.EmilConfirmationResnding_success) },
       (error) => {
-        this.Notifications.error(Constants.EmilConfirmationResnding_Error, '');
+        this.Notifications.error(this.Constants.EmilConfirmationResnding_Error, '');
         console.log(error);
       }
     );
   }
   rememberMeOnClick() {
-    localStorage.setItem(Constants.ClientRememberMe, this.loginForm.get(Constants.RememberMe)?.value);
+    localStorage.setItem(this.Constants.ClientRememberMe, this.loginForm.get(this.Constants.RememberMe)?.value);
   }
 
   ngOnDestroy(): void {

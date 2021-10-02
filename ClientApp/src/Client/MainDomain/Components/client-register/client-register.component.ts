@@ -2,11 +2,12 @@ import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { RouterConstants } from 'src/Helpers/RouterConstants';
+import { ConstantsService } from '../../../../CommonServices/constants.service';
 import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
 import { NotificationsService } from '../../../../CommonServices/NotificationService/notifications.service';
 import { TranslationService } from '../../../../CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from '../../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
-import { Constants } from '../../../../Helpers/constants';
 import { CustomErrorStateMatcher } from '../../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
 import { CustomValidators } from '../../../../Helpers/CustomValidation/custom-validators';
 import { ClientRegister } from '../../../Models/client-register.model';
@@ -25,7 +26,7 @@ export class ClientRegisterComponent implements OnInit, OnDestroy {
   RegisterForm: FormGroup = new FormGroup({});
   ValidationErrors: any[] = [];
   loading: boolean = false;
-  customErrorStateMatcher: CustomErrorStateMatcher= new CustomErrorStateMatcher()
+  customErrorStateMatcher: CustomErrorStateMatcher = new CustomErrorStateMatcher()
   ClientRegisterModel: ClientRegister = new ClientRegister();
   clientWithToken: ClientWithToken = new ClientWithToken();
   selected: any;
@@ -33,16 +34,15 @@ export class ClientRegisterComponent implements OnInit, OnDestroy {
   LangSubscibtion: Subscription = new Subscription();
 
   //Constructor
-  constructor(public ClientAuth: ClientAccountService,
+  constructor(public ClientAuth: ClientAccountService, public Constants: ConstantsService,
     public formBuilder: FormBuilder, public translate: TranslationService,
     public dialogHandler: DialogHandlerService,
     public ValidationErrorMessage: ValidationErrorMessagesService,
-    public Notifications: NotificationsService)
-  {
+    public Notifications: NotificationsService) {
     this.selected = localStorage.getItem(Constants.lang);
 
   }
-    
+
 
   ngOnInit(): void {
     this.LangSubscibtion = this.translate.SelectedLangSubject.subscribe(
@@ -76,12 +76,12 @@ export class ClientRegisterComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.ClientRegisterModel = {
       Email: this.RegisterForm.get("Email")?.value,
-      Password : this.RegisterForm.get("Password")?.value,
-      Subdomain :this.RegisterForm.get("Subdomain")?.value,
-      CompanyName : this.RegisterForm.get("CompanyName")?.value,
-      ConfirmPassword : this.RegisterForm.get("ConfirmPassword")?.value,
+      Password: this.RegisterForm.get("Password")?.value,
+      Subdomain: this.RegisterForm.get("Subdomain")?.value,
+      CompanyName: this.RegisterForm.get("CompanyName")?.value,
+      ConfirmPassword: this.RegisterForm.get("ConfirmPassword")?.value,
       UserName: this.RegisterForm.get("Username")?.value,
-      ClientUrl: "https://" + window.location.host + "/" + Constants.Client_EmailConfirmationUrl,
+      ClientUrl: "https://" + window.location.host + "/" + RouterConstants.Client_EmailConfirmationUrl,
       FirstName: this.RegisterForm.get("FirstName")?.value,
       LastName: this.RegisterForm.get("LastName")?.value,
     };
@@ -101,7 +101,7 @@ export class ClientRegisterComponent implements OnInit, OnDestroy {
       }
     );
 
-    
+
   }
 
   autoSubdomain() {

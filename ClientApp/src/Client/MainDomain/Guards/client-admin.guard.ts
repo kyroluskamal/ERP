@@ -5,33 +5,49 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DialogHandlerService } from '../../../CommonServices/DialogHandler/dialog-handler.service';
 import { NotificationsService } from '../../../CommonServices/NotificationService/notifications.service';
-import { Constants } from '../../../Helpers/constants';
 import { ClientAccountService } from '../Authentication/client-account-service.service';
+import { ConstantsService } from '../../../CommonServices/constants.service';
 @Injectable({
   providedIn: 'root'
 })
 export class ClientAdminGuard implements CanActivate {
+  InLocalStorage: any;
+  InSessionStorage: any;
   constructor(private accountService: ClientAccountService, private Notifications: NotificationsService,
-    private router: Router, private dialogHandler:DialogHandlerService, private location: Location) { }
+    public Constants: ConstantsService) {
+    this.InLocalStorage = localStorage.getItem(this.Constants.Client);
+    this.InSessionStorage = sessionStorage.getItem(this.Constants.Client);
+  }
   canActivate(
-    route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree >
-  {
-    if (!localStorage.getItem(Constants.Client) && !sessionStorage.getItem(Constants.Client)) {
-      this.router.navigateByUrl("/");
-      this.dialogHandler.OpenClientLoginDialog();
-      this.Notifications.error(Constants.NotLoggedInUser, "");
-    }
+    route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return this.accountService.currentUserOvservable.pipe(
       map(user => {
-        const temp: any = user;
-        user = JSON.parse(temp);
-        for (let role of user.roles) {
-          if (role == Constants.Admin_Role) return true
+        if (user) {
+          if (typeof user === "string") {
+            user = JSON.parse(user);
+          }
+          for (let role of user.roles) {
+            if (role == this.Constants.Admin_Role) return true
+          }
         }
-        this.Notifications.error(Constants.UnAuthorizedAdmin, "");
+        this.Notifications.error(this.Constants.UnAuthorizedAdmin, "");
         return false
       })
     );
+    // if (this.InLocalStorage) {
+    //   let User = JSON.parse(JSON.stringify(this.InLocalStorage));
+    //   for (let role of User.roles) {
+    //     if (role === this.Constants.Admin_Role) return true;
+    //   }
+    // } else if (this.InSessionStorage) {
+    //   let User = JSON.parse(JSON.stringify(this.InSessionStorage));
+    //   for (let role of User.roles) {
+    //     if (role === this.Constants.Admin_Role) return true;
+    //   }
+    // }
+    // this.Notifications.error(this.Constants.UnAuthorizedAdmin, "");
+    // return false
+
   }
-  
+
 }

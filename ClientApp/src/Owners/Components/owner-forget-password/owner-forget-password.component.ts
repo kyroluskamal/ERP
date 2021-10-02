@@ -3,13 +3,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogHandlerService } from '../../../CommonServices/DialogHandler/dialog-handler.service';
 import { NotificationsService } from '../../../CommonServices/NotificationService/notifications.service';
 import { ValidationErrorMessagesService } from '../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
-import { Constants } from '../../../Helpers/constants';
 import { ForgetPasswordModel } from '../../Models/forget-password-model.model';
 import { OwnerAccountService } from '../../Services/Authentication/Owner-account-service.service';
 import { CustomErrorStateMatcher } from '../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
 import { TranslationService } from '../../../CommonServices/translation-service.service';
 import { OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { ConstantsService } from '../../../CommonServices/constants.service';
+import { RouterConstants } from 'src/Helpers/RouterConstants';
 
 @Component({
   selector: 'app-owner-forget-password',
@@ -27,7 +28,7 @@ export class OwnerForgetPasswordComponent implements OnInit, OnDestroy {
   constructor(private formBuilder: FormBuilder, private AccountService: OwnerAccountService,
     public dialogHandler: DialogHandlerService, public translate: TranslationService,
     public ValidationErrorMessage: ValidationErrorMessagesService,
-    private Notifications: NotificationsService) {
+    private Notifications: NotificationsService, public Constants: ConstantsService) {
     this.selected = localStorage.getItem(Constants.lang);
   }
   //NgOnInit
@@ -42,19 +43,19 @@ export class OwnerForgetPasswordComponent implements OnInit, OnDestroy {
     });
   }
 
- //new Functions
+  //new Functions
   OnSubmit() {
     const ForgetPasswordModel: ForgetPasswordModel = {
       Email: this.ForgetPassworForm.get("Email")?.value,
-      ClientUrl: Constants.ClientUrl(Constants.Owner_PasswordResetURL)
+      ClientUrl: this.Constants.ClientUrl(RouterConstants.Owner_PasswordResetURL)
     }
     this.AccountService.OwnerForgetPassord(ForgetPasswordModel).subscribe(
       () => {
-        this.Notifications.success(Constants.PasswordResetEmail_success)
+        this.Notifications.success(this.Constants.PasswordResetEmail_success)
         this.dialogHandler.CloseDialog();
       },
       (error) => {
-        this.Notifications.error(Constants.PasswordResetEmail_Error, "");
+        this.Notifications.error(this.Constants.PasswordResetEmail_Error, "");
         this.ValidationErrors = error;
       }
     );

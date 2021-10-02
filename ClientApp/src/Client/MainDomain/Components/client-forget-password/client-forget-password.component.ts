@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { RouterConstants } from 'src/Helpers/RouterConstants';
+import { ConstantsService } from '../../../../CommonServices/constants.service';
 import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
 import { NotificationsService } from '../../../../CommonServices/NotificationService/notifications.service';
 import { TranslationService } from '../../../../CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from '../../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
-import { Constants } from '../../../../Helpers/constants';
 import { CustomErrorStateMatcher } from '../../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
 import { ClientForgetPasswordModel } from '../../../Models/client-forget-password-model.model';
 import { ClientAccountService } from '../../Authentication/client-account-service.service';
@@ -25,9 +26,9 @@ export class ClientForgetPasswordComponent implements OnInit, OnDestroy {
   //Constructor
   constructor(private formBuilder: FormBuilder, private AccountService: ClientAccountService,
     public dialogHandler: DialogHandlerService, public translate: TranslationService,
-    public ValidationErrorMessage: ValidationErrorMessagesService,
+    public ValidationErrorMessage: ValidationErrorMessagesService, public Constants: ConstantsService,
     private Notifications: NotificationsService) {
-    this.selected = localStorage.getItem(Constants.lang);
+    this.selected = localStorage.getItem(this.Constants.lang);
 
   }
   //NgOnInit
@@ -46,15 +47,15 @@ export class ClientForgetPasswordComponent implements OnInit, OnDestroy {
   OnSubmit() {
     const ForgetPasswordModel: ClientForgetPasswordModel = {
       Email: this.ForgetPassworForm.get("Email")?.value,
-      ClientUrl: Constants.ClientUrl(Constants.Client_PasswordResetURL)
+      ClientUrl: this.Constants.ClientUrl(RouterConstants.Client_PasswordResetURL)
     }
     this.AccountService.ClientForgetPassord(ForgetPasswordModel).subscribe(
       () => {
-        this.Notifications.success(Constants.PasswordResetEmail_success)
+        this.Notifications.success(this.Constants.PasswordResetEmail_success)
         this.dialogHandler.CloseDialog();
       },
       (error) => {
-        this.Notifications.error(Constants.PasswordResetEmail_Error, "");
+        this.Notifications.error(this.Constants.PasswordResetEmail_Error, "");
         this.ValidationErrors = error;
       }
     );

@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
-import { Constants } from '../../../Helpers/constants';
+import { ConstantsService } from '../../../CommonServices/constants.service';
 import { OwnerAccountService } from '../../Services/Authentication/Owner-account-service.service';
 
 @Component({
@@ -11,18 +10,18 @@ import { OwnerAccountService } from '../../Services/Authentication/Owner-account
 export class OwnerMainComponent implements OnInit {
 
 
-  constructor(private OwnerAccountService : OwnerAccountService) {
+  constructor(private OwnerAccountService: OwnerAccountService, public Constants: ConstantsService) {
   }
 
   ngOnInit(): void {
     this.SetOwnerUser();
   }
   SetOwnerUser() {
-    if (localStorage.getItem(Constants.Owner)) {
-      const user: any = localStorage.getItem(Constants.Owner);
+    if (localStorage.getItem(this.Constants.Owner)) {
+      const user: any = localStorage.getItem(this.Constants.Owner);
       this.OwnerAccountService.setCurrentUser(user);
-    } else if (sessionStorage.getItem(Constants.Owner)) {
-      const user: any = sessionStorage.getItem(Constants.Owner);
+    } else if (sessionStorage.getItem(this.Constants.Owner)) {
+      const user: any = sessionStorage.getItem(this.Constants.Owner);
       this.OwnerAccountService.setCurrentUser(user);
     }
   }

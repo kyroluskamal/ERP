@@ -1,13 +1,14 @@
 <mat-toolbar fxLayoutAlign="space-between center" #Toolbar
   [class]="toolbarStyle"
   [fxLayout]="selected&&translate.isRightToLeft(selected)?'row-reverse':'row'">
-  <div fxLayoutGap="50px"
+  <div fxLayoutGap="25px"
     [fxLayout]="selected&&translate.isRightToLeft(selected)?'row-reverse':'row'">
-    <a fxLayoutAlign="center center" [fxFlex]="fxFlex" mat-button><img
+    <a fxLayoutAlign="center center" routerLink="/" [fxFlex]="fxFlex"><img
         class="logo"
         src="../../../../assets/logo.png" alt="logo"></a>
     <mat-form-field class="b-white langSelectionSize">
-      <mat-select [(value)]="selected" [class]="langSelectionStyle">
+      <mat-select [(value)]="selected" [class]="langSelectionStyle"
+        class="mat-elevation-z4">
         <mat-option *ngFor="let code of translate.getLangs()"
           [value]="code" (click)="switchLang(selected)">
           {{ translate.NameByCode(code) | titlecase }}
@@ -18,19 +19,22 @@
   <div
     [fxLayout]="selected&&translate.isRightToLeft(selected)?'row-reverse':'row'"
     fxLayoutAlign="space-between" fxLayoutGap="10px">
-    <ng-container *ngIf="IsloggedIn===false">
+    <ng-container *ngIf="currentUserName===null">
+      <!-- icon for mobile devices -->
       <button mat-icon-button class="example-icon" aria-label="Example
         icon-button with menu icon" fxHide.gt-xs fxShow.xs
         [matMenuTriggerFor]="LoginRegister">
         <mat-icon>menu</mat-icon>
       </button>
+      <!-- loggin on wide screens -->
       <button mat-raised-button class="btn btn-neutral" aria-label="Example
         icon-button
-        with heart icon" (click)="OnLoginClick()" fxHide.xs
+        with heart icon" (click)="OnLoginClick($event)" fxHide.xs
         [ngClass]="selected&&translate.isRightToLeft(selected)?'ButtonArabicFont':''">
         <mat-icon>login</mat-icon>
         {{'Login' | translate}}
       </button>
+      <!-- Register on wide screesn -->
       <button mat-raised-button class="btn btn-success"
         aria-label="Example
         icon-button
@@ -40,21 +44,23 @@
         {{'Register' | translate}}
       </button>
     </ng-container>
-    <ng-container *ngIf="IsloggedIn">
+    <!-- UserName on wide screens -->
+    <ng-container *ngIf="currentUserName!==null">
       <a class="b-white" aria-label="Example icon-button with heart icon">
         {{currentUserName}}
       </a>&nbsp;
-      <button mat-stroked-button class="b-white" aria-label="Example icon-button
-        with heart icon" (click)="logOut()">
+      <!-- loggout on white screens -->
+      <button mat-raised-button class="btn btn-neutral" aria-label="loggout
+        button" (click)="logOut()" *ngIf="currentUserName!==null">
         <mat-icon>logout</mat-icon>
         {{'Logout' | translate}}
       </button>
     </ng-container>
   </div>
-
+  <!-- menu for small screens -->
   <mat-menu #LoginRegister="matMenu">
-    <ng-container *ngIf="IsloggedIn===false">
-      <button mat-menu-item (click)="OnLoginClick()"
+    <ng-container *ngIf="currentUserName===null">
+      <button mat-menu-item (click)="OnLoginClick($event)"
         [ngClass]="selected&&translate.isRightToLeft(selected)?'ButtonArabicFont':''">
         <mat-icon>login</mat-icon>
         {{'Login' | translate}}
@@ -66,7 +72,7 @@
         {{'Register' | translate}}
       </button>
     </ng-container>
-    <ng-container *ngIf="IsloggedIn">
+    <ng-container *ngIf="currentUserName!==null">
       <a mat-menu-item>
         {{currentUserName}}
       </a>

@@ -2,7 +2,7 @@
   position: absolute;
   border-radius: 50%;
   z-index: -1;
-  transform: translateY(120vh);
+  transform: translateY(200vh);
   box-shadow: 0 20px 30px rgb(0 0 0 / 20%),
     inset 0px 10px 30px 5px rgb(255 255 255/ 0.5);
 }
@@ -228,4 +228,154 @@
     transform: translateX(70vw) translateY(-50vh);
     transition: transform 1s ease-in-out 0.5s;
   }
+}
+
+mat-divider {
+  display: block;
+  position: relative;
+  z-index: 500;
+  box-sizing: border-box;
+  height: 150px;
+  width: 100%;
+  background: white;
+  padding: 10px;
+  -webkit-clip-path: polygon(0% 0%, 90% 10%, 100% 100%, 0% 100%);
+  clip-path: polygon(0% 90%, 100% 10%, 100% 100%, 0% 100%);
+}
+section mat-grid-tile {
+  border-bottom-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+section mat-grid-tile-header {
+  background-color: #f1f5f7 !important;
+  font-family: Chewy;
+  font-size: 1.9rem;
+  font-weight: bold;
+  text-align: center;
+  color: #131628 !important;
+  border-bottom: 2px solid #131628;
+}
+section mat-grid-tile-header[dir="rtl"] {
+  font-family: Almarai !important;
+}
+section mat-grid-tile .mat-grid-list-text {
+  font-size: 1.7rem;
+  align-self: flex-start;
+  padding-top: 50px;
+  line-height: 1.7;
+  color: #424556;
+  font-family: Calibri !important;
+}
+/*-----------------------------------------------------------------------------------------
+---------------------------------------- First Section styles -----------------------------
+-------------------------------------------------------------------------------------------*/
+main section:first-child .mat-grid-list-text {
+  padding: 60px 10px 10px 10px;
+  font-size: 2rem;
+  font-family: val(--NotoSansArabic);
+  line-height: 30px;
+}
+main section:first-child {
+  color: white;
+}
+main section:first-child h1 {
+  font-family: Lalezar !important;
+  text-align: center;
+  color: white;
+  margin-bottom: 50px !important;
+  text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777,
+    0px 4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444, 0px 7px 0px #333,
+    0px 8px 7px #001135;
+}
+main section:first-child h1[dir="rtl"] {
+  font-family: Lalezar !important;
+  margin-bottom: 20px !important;
+  text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777,
+    0px 4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444, 0px 7px 0px #333,
+    0px 8px 7px #001135;
+}
+main section:first-child article {
+  font-family: Scheherazade !important;
+  text-align: justify;
+  background-color: rgba(0, 0, 0, 0.19);
+  color: white;
+  font-size: 2rem;
+  line-height: 40px;
+  font-weight: bold;
+  padding: 10px;
+  box-shadow: 0px 0px 20px #fff, 4px 5px 19px 0px #ffefef;
+}
+
+main section:not(:first-child) h2[dir="rtl"] {
+  font-family: var(--Hacen) !important;
+}
+main section:not(:first-child) h2 {
+  font-family: var(--Fredoka) !important;
+  font-size: 5rem;
+  padding: 40px 20px 40px 20px;
+  color: #131628;
+  text-align: center;
+  line-height: 1.2;
+}
+main section:nth-child(even):not(:first-child) {
+  background-color: #f1f5f7;
+}
+main section:nth-child(odd):not(:first-child) {
+  background-color: white;
+  box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 3px rgba(0, 0, 0, 0.12), 0 4px 15px 0 rgba(0, 0, 0, 0.2) !important;
+}
+main section:nth-child(odd):not(:first-child) {
+  position: relative;
+}
+main section:not(:first-child) article {
+  font-family: var(--Patrick) !important;
+  font-size: 2rem;
+  line-height: 50px;
+  color: #2b314b;
+  text-align: justify;
+}
+
+main section:not(:first-child) article[dir="rtl"] {
+  font-family: var(--Calibri) !important;
+}
+mat-list {
+  font-weight: 600;
+  text-align: center;
+}
+section {
+  min-height: 100vh !important;
+  padding: 10px;
+}
+article p {
+  padding: 20px;
+}
+mat-grid-list {
+  max-height: 100% !important;
+}
+main {
+  min-width: 100vw;
+}
+footer {
+  background-color: #131628;
+  min-height: 100vh;
+  padding: 60px 50px 0px 50px;
+}
+footer mat-grid-tile-header,
+footer .mat-grid-list-text {
+  background-color: transparent !important;
+  color: white !important;
+  font-family: Calibri !important;
+  font-size: 1.2rem;
+}
+
+footer mat-grid-tile-header {
+  padding: 0px !important;
+}
+footer .mat-grid-list-text {
+  padding-top: 80px;
+}
+ul a {
+  text-decoration: none;
+  color: white;
 }

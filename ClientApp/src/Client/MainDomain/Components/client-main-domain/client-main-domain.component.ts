@@ -1,10 +1,9 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
-import { NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs/operators';
-import { Constants } from '../../../../Helpers/constants';
+import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { ClientAccountService } from '../../Authentication/client-account-service.service';
 import { Title } from '@angular/platform-browser';
+import { ConstantsService } from '../../../../CommonServices/constants.service';
+import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-client-main-domain',
@@ -17,25 +16,35 @@ export class ClientMainDomainComponent implements OnInit {
   IsOwnerRoute: boolean = false;
   subdomain: string = ""
   error: any;
+
   //constructor
   constructor(private router: Router, public ClientAccountService: ClientAccountService,
-     private titleService: Title) {
+    private titleService: Title, public Constants: ConstantsService) {
     this.subdomain = window.location.host.split(".")[0];
     console.log(this.subdomain);
   }
 
+
   //ngOnInit
   ngOnInit(): void {
     this.SetClientUser();
-  }
-  //Functions
-  SetClientUser() {
-    if (localStorage.getItem(Constants.Client)) {
-      const user: any = localStorage.getItem(Constants.Client);
+    if (localStorage.getItem(this.Constants.Client)) {
+      const user: any = localStorage.getItem(this.Constants.Client);
       this.ClientAccountService.setCurrentUser(user);
-    } else if (sessionStorage.getItem(Constants.Client)) {
-      const user: any = sessionStorage.getItem(Constants.Client);
+    } else if (sessionStorage.getItem(this.Constants.Client)) {
+      const user: any = sessionStorage.getItem(this.Constants.Client);
       this.ClientAccountService.setCurrentUser(user);
     }
   }
+  //Functions
+  SetClientUser() {
+    if (localStorage.getItem(this.Constants.Client)) {
+      const user: any = localStorage.getItem(this.Constants.Client);
+      this.ClientAccountService.setCurrentUser(user);
+    } else if (sessionStorage.getItem(this.Constants.Client)) {
+      const user: any = sessionStorage.getItem(this.Constants.Client);
+      this.ClientAccountService.setCurrentUser(user);
+    }
+  }
+
 }

@@ -1,12 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { RouterConstants } from 'src/Helpers/RouterConstants';
 import { SendEmailConfirmationAgian } from '../../../Client/Models/send-email-confirmation-agian.model';
+import { ConstantsService } from '../../../CommonServices/constants.service';
 import { DialogHandlerService } from '../../../CommonServices/DialogHandler/dialog-handler.service';
 import { NotificationsService } from '../../../CommonServices/NotificationService/notifications.service';
 import { TranslationService } from '../../../CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from '../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
-import { Constants } from '../../../Helpers/constants';
 import { CustomErrorStateMatcher } from '../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
 import { OwnerLogin } from '../../Models/owner-login.model';
 import { OwnerAccountService } from '../../Services/Authentication/Owner-account-service.service';
@@ -21,18 +22,18 @@ export class OwnersLoginComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   loginForm = new FormGroup({});
   ValidationErrors: any[] = [];
-selected: any;
+  selected: any;
   customErrorStateMatcher: CustomErrorStateMatcher = new CustomErrorStateMatcher()
   OwnerLogin: OwnerLogin = new OwnerLogin();
   LangSubscibtion: Subscription = new Subscription();
 
   //Constructor
   constructor(public formBuilder: FormBuilder, public translate: TranslationService,
-    public dialogHandler: DialogHandlerService,
+    public dialogHandler: DialogHandlerService, public Constants: ConstantsService,
     public ValidationErrorMessage: ValidationErrorMessagesService,
     private Notifications: NotificationsService,
     public accountService: OwnerAccountService) {
-    this.selected = localStorage.getItem(Constants.lang);
+    this.selected = localStorage.getItem(this.Constants.lang);
   }
 
   ngOnInit(): void {
@@ -58,7 +59,7 @@ selected: any;
     this.accountService.login(this.OwnerLogin, RememberMe).subscribe(
       response => {
         console.log(response);
-        this.Notifications.success(Constants.LoggedInSuccessfully);
+        this.Notifications.success(this.Constants.LoggedInSuccessfully);
         this.dialogHandler.CloseDialog();
         this.loading = false;
       },
@@ -74,22 +75,22 @@ selected: any;
     this.loading = true;
     const sendEmailConfirmationAgian: SendEmailConfirmationAgian = {
       Email: this.loginForm.get("Email")?.value,
-      ClientUrl: Constants.ClientUrl(Constants.Owner_EmailConfirmationUrl)
+      ClientUrl: this.Constants.ClientUrl(RouterConstants.Owner_EmailConfirmationUrl)
     }
     this.accountService.SendConfirmationAgain(sendEmailConfirmationAgian).subscribe(
       (response: any) => {
-        this.Notifications.success(Constants.EmilConfirmationResnding_success);
+        this.Notifications.success(this.Constants.EmilConfirmationResnding_success);
         this.loading = false;
       },
       (error) => {
         this.loading = false;
-        this.Notifications.error(Constants.EmilConfirmationResnding_Error, "");
+        this.Notifications.error(this.Constants.EmilConfirmationResnding_Error, "");
         console.log(error);
       }
     );
   }
   rememberMeOnClick() {
-    localStorage.setItem(Constants.OwnerRememberMe, this.loginForm.get(Constants.RememberMe)?.value);
+    localStorage.setItem(this.Constants.OwnerRememberMe, this.loginForm.get(this.Constants.RememberMe)?.value);
   }
   ngOnDestroy(): void {
     this.LangSubscibtion.unsubscribe();

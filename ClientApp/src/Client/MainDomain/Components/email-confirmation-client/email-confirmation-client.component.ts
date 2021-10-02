@@ -2,9 +2,9 @@ import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { ConstantsService } from '../../../../CommonServices/constants.service';
 import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
 import { TranslationService } from '../../../../CommonServices/translation-service.service';
-import { Constants } from '../../../../Helpers/constants';
 import { EmailConfirmationModel } from '../../../Models/email-confirmation-model.model';
 import { ClientAccountService } from '../../Authentication/client-account-service.service';
 
@@ -23,7 +23,7 @@ export class EmailConfirmationClientComponent implements OnInit, OnDestroy {
   LangSubscibtion: Subscription = new Subscription();
 
   //constructor
-  constructor(private route: ActivatedRoute, private router: Router,
+  constructor(private route: ActivatedRoute, private router: Router, public Constants: ConstantsService,
     private accountService: ClientAccountService, public dialogHandler: DialogHandlerService,
     public translate: TranslationService) {
     this.selected = localStorage.getItem(Constants.lang);
@@ -35,8 +35,8 @@ export class EmailConfirmationClientComponent implements OnInit, OnDestroy {
         this.selected = response;
       }
     );
-    const email = this.route.snapshot.queryParamMap.get(Constants.email);
-    const token = this.route.snapshot.queryParamMap.get(Constants.token);
+    const email = this.route.snapshot.queryParamMap.get(this.Constants.email);
+    const token = this.route.snapshot.queryParamMap.get(this.Constants.token);
     if (email && token) {
       this.EmailConfirmationModel = { email: email, token: token }
       console.log(this.EmailConfirmationModel);

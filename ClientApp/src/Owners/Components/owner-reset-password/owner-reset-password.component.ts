@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DialogHandlerService } from '../../../CommonServices/DialogHandler/dialog-handler.service';
 import { NotificationsService } from '../../../CommonServices/NotificationService/notifications.service';
 import { ValidationErrorMessagesService } from '../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
-import { Constants } from '../../../Helpers/constants';
 import { CustomErrorStateMatcher } from '../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
 import { CustomValidators } from '../../../Helpers/CustomValidation/custom-validators';
 import { ForgetPasswordModel } from '../../Models/forget-password-model.model';
@@ -14,6 +13,8 @@ import { Location } from '@angular/common';
 import { TranslationService } from '../../../CommonServices/translation-service.service';
 import { Subscription } from 'rxjs';
 import { OnDestroy } from '@angular/core';
+import { ConstantsService } from '../../../CommonServices/constants.service';
+import { RouterConstants } from 'src/Helpers/RouterConstants';
 @Component({
   selector: 'app-owner-reset-password',
   templateUrl: './owner-reset-password.component.html',
@@ -41,8 +42,8 @@ export class OwnerResetPasswordComponent implements OnInit, OnDestroy {
     public formBuilder: FormBuilder, public dialogHandler: DialogHandlerService,
     public ValidationErrorMessage: ValidationErrorMessagesService, private location: Location,
     public Notifications: NotificationsService, private router: Router,
-    public translate: TranslationService) {
-    this.selected = localStorage.getItem(Constants.lang);
+    public translate: TranslationService, public Constants: ConstantsService) {
+    this.selected = localStorage.getItem(this.Constants.lang);
   }
   //ngOnInit
   ngOnInit(): void {
@@ -65,8 +66,8 @@ export class OwnerResetPasswordComponent implements OnInit, OnDestroy {
       {
         validator: CustomValidators.passwordMatchValidator
       });
-    this.email = this.route.snapshot.queryParamMap.get(Constants.email);
-    this.token = this.route.snapshot.queryParamMap.get(Constants.token);
+    this.email = this.route.snapshot.queryParamMap.get(this.Constants.email);
+    this.token = this.route.snapshot.queryParamMap.get(this.Constants.token);
     if (this.email && this.token) {
     } else {
       this.Success = false;
@@ -85,7 +86,7 @@ export class OwnerResetPasswordComponent implements OnInit, OnDestroy {
     this.accountService.OwnerResetPassword(this.OwnerResetPasswordModel).subscribe(
       (Response: any) => {
         this.Success = true;
-        this.Notifications.success(Constants.ResetPassword_Success);
+        this.Notifications.success(this.Constants.ResetPassword_Success);
         this.router.navigateByUrl("/owners");
         this.dialogHandler.CloseDialog();
       },
@@ -93,7 +94,7 @@ export class OwnerResetPasswordComponent implements OnInit, OnDestroy {
         this.Fail = true;
         this.Success = false;
         this.ValidationErrors = error
-        this.Notifications.error(Constants.ResetPassword_Error, "");
+        this.Notifications.error(this.Constants.ResetPassword_Error, "");
       }
     );
   }
@@ -101,16 +102,16 @@ export class OwnerResetPasswordComponent implements OnInit, OnDestroy {
   OnSubmit() {
     const ForgetPasswordModel: ForgetPasswordModel = {
       Email: this.email,
-      ClientUrl: Constants.ClientUrl(Constants.Owner_PasswordResetURL)
+      ClientUrl: this.Constants.ClientUrl(RouterConstants.Owner_PasswordResetURL)
     }
     this.accountService.OwnerForgetPassord(ForgetPasswordModel).subscribe(
       () => {
-        this.Notifications.success(Constants.PasswordResetEmail_success)
+        this.Notifications.success(this.Constants.PasswordResetEmail_success)
         this.router.navigateByUrl("/owners");
         this.dialogHandler.CloseDialog();
       },
       (error) => {
-        this.Notifications.error(Constants.PasswordResetEmail_Error, "");
+        this.Notifications.error(this.Constants.PasswordResetEmail_Error, "");
         this.ValidationErrors = error;
       }
     );

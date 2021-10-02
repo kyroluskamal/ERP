@@ -1,12 +1,11 @@
-import { ViewportScroller } from '@angular/common';
-import { Component, ElementRef, HostListener, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { MatToolbar } from '@angular/material/toolbar';
+import { NavigationStart, Router } from '@angular/router';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
+import { ConstantsService } from '../../../../CommonServices/constants.service';
 import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
-import { Constants } from '../../../../Helpers/constants';
 import { ClientAccountService } from '../../Authentication/client-account-service.service';
 
 @Component({
@@ -15,28 +14,30 @@ import { ClientAccountService } from '../../Authentication/client-account-servic
   styleUrls: ['./client-main-domain-nav-bar.component.css']
 })
 export class ClientMainDomainNavBarComponent implements OnInit {
-//Properties
-  currentUserName: string = ""
+  //Properties
+  currentUserName: string | null = null;
   IsloggedIn: boolean = false;
+
   selected: any;
   isActive = false;
   MediaSubscription: Subscription = new Subscription();
-  fxFlex: number=0;
-  toolbarStyle: string="bg-transparent"
+  fxFlex: number = 0;
+  toolbarStyle: string = "bg-transparent"
   langSelectionStyle: string = "langSelectorMaidDomainStyle langSelectorMaidDomainStyle-UnStickyToolbar"
-//Constructor
-  constructor(public dialogHandler: DialogHandlerService, private accountService: ClientAccountService,
-    public bottomSheet: MatBottomSheet, public translate: TranslationService,
-    private mediaObserver: MediaObserver, private viewportScroller: ViewportScroller
-    ) {
-    }
+  //Constructor
+  constructor(public dialogHandler: DialogHandlerService, public accountService: ClientAccountService,
+    public bottomSheet: MatBottomSheet, public translate: TranslationService, public Constants: ConstantsService,
+    private mediaObserver: MediaObserver, private ClientAccountService: ClientAccountService, private router: Router) {
+
+  }
 
   @Input("apptitle") title: string = "";
+  @Output("LoginClick") loginClick = new EventEmitter()
   ngOnInit(): void {
     this.MediaSubscription = this.mediaObserver.asObservable().subscribe(
       (response: MediaChange[]) => {
-        if(response.some(x=>x.mqAlias==='xs')) this.fxFlex=50;
-        else this.fxFlex=17;
+        if (response.some(x => x.mqAlias === 'xs')) this.fxFlex = 50;
+        else this.fxFlex = 17;
       }
     );
 
@@ -47,36 +48,52 @@ export class ClientMainDomainNavBarComponent implements OnInit {
     } else {
       this.switchLang(this.selected);
     }
-
     this.getCurrentUser();
-    if (localStorage.getItem(Constants.Client)) {
-      const UserinlocalStorage: any = localStorage.getItem(Constants.Client);
+    if (localStorage.getItem(this.Constants.Client)) {
+      const UserinlocalStorage: any = localStorage.getItem(this.Constants.Client);
       this.accountService.setCurrentUser(UserinlocalStorage);
       this.currentUserName = JSON.parse(UserinlocalStorage).username;
-      this.IsloggedIn = true;
-    } else if (sessionStorage.getItem(Constants.Client)) {
-      const UserinSessionStorage: any = sessionStorage.getItem(Constants.Client);
+    } else if (sessionStorage.getItem(this.Constants.Client)) {
+      const UserinSessionStorage: any = sessionStorage.getItem(this.Constants.Client);
       this.accountService.setCurrentUser(UserinSessionStorage);
       this.currentUserName = JSON.parse(UserinSessionStorage).username;
-      this.IsloggedIn = true;
     }
-
   }
 
   getCurrentUser() {
     this.accountService.currentUserOvservable.subscribe(
       user => {
-        this.IsloggedIn = !!user;
-        this.currentUserName = user.username;
+        if (user) {
+          this.currentUserName = user.username;
+        } else {
+          this.currentUserName == null;
+        }
       },
       error => console.log(error)
     );
+
   }
   logOut() {
     this.accountService.logout();
+    this.currentUserName = null;
+    this.IsloggedIn = false
   }
-  OnLoginClick() {
+  OnLoginClick(event: any) {
+    this.accountService.currentUserOvservable.subscribe(
+      user => {
+        if (user) {
+          this.IsloggedIn = true;
+          this.currentUserName = user.username;
+          this.loginClick.emit({ event: event, clientName: this.currentUserName });
+        } else {
+          this.IsloggedIn = false;
+          this.currentUserName == null;
+        }
+      },
+      error => console.log(error)
+    );
     this.dialogHandler.OpenClientLoginDialog();
+
   }
   OnRegisterlick() {
     this.dialogHandler.OpenClientRegisterDialog();

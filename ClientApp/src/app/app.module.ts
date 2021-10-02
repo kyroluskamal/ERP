@@ -13,14 +13,12 @@ import { ErrorHandlingInterceptor } from '../Interceptors/ErrorHandling/error-ha
 import { NotFoundComponent } from '../CommonComponents/not-found/not-found.component';
 import { TokenInterceptorInterceptor } from '../Interceptors/TokenInterceptor/token-interceptor.interceptor';
 import { CommoneResetPasswordComponent } from '../CommonComponents/commone-reset-password/commone-reset-password.component';
-import { ClientMainDominRoutingModule } from '../Client/MainDomain/client-main-domin-routing/client-main-domin-routing.module';
-import { OwnersRoutingModule } from '../Owners/owners-routing/owners-routing.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 @NgModule({
   declarations: [
-    AppComponent, NotFoundComponent,  CommoneResetPasswordComponent
+    AppComponent, NotFoundComponent, CommoneResetPasswordComponent
   ],
   imports: [
     BrowserModule, BrowserAnimationsModule, MaterialModule, SharedModule,
@@ -36,7 +34,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorHandlingInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorInterceptor, multi: true },
-    
+
   ],
   bootstrap: [AppComponent],
   exports: [NotFoundComponent]
@@ -44,5 +42,5 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 export class AppModule { }
 // AOT compilation support
 export function httpTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http,'./assets/i18n/', '.json');
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }

@@ -4,7 +4,7 @@ import { Title } from '@angular/platform-browser';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { ClientAccountService } from '../Client/MainDomain/Authentication/client-account-service.service';
-import { Constants } from '../Helpers/constants';
+import { ConstantsService } from '../CommonServices/constants.service';
 import { OwnerAccountService } from '../Owners/Services/Authentication/Owner-account-service.service';
 
 @Component({
@@ -20,7 +20,8 @@ export class AppComponent implements OnInit{
   error: any;
   //constructor
   constructor(private router: Router, public ClientAccountService: ClientAccountService,
-    public OwnerAccountService: OwnerAccountService, private titleService: Title) {
+    public OwnerAccountService: OwnerAccountService, private titleService: Title,
+    public Constants: ConstantsService) {
     this.subdomain = window.location.host.split(".")[0];
     console.log(this.subdomain);
   }
@@ -44,20 +45,20 @@ export class AppComponent implements OnInit{
   }
   //Functions
   SetClientUser() {
-    if (localStorage.getItem(Constants.Client)) {
-      const user: any = localStorage.getItem(Constants.Client);
+    if (localStorage.getItem(this.Constants.Client)) {
+      const user: any = localStorage.getItem(this.Constants.Client);
       this.ClientAccountService.setCurrentUser(user);
-    } else if (sessionStorage.getItem(Constants.Client)) {
-      const user: any = sessionStorage.getItem(Constants.Client);
+    } else if (sessionStorage.getItem(this.Constants.Client)) {
+      const user: any = sessionStorage.getItem(this.Constants.Client);
       this.ClientAccountService.setCurrentUser(user);
     }
   }
   SetOwnerUser() {
-    if (localStorage.getItem(Constants.Owner)) {
-      const user: any = localStorage.getItem(Constants.Owner);
+    if (localStorage.getItem(this.Constants.Owner)) {
+      const user: any = localStorage.getItem(this.Constants.Owner);
       this.OwnerAccountService.setCurrentUser(user);
-    } else if (sessionStorage.getItem(Constants.Owner)) {
-      const user: any = sessionStorage.getItem(Constants.Owner);
+    } else if (sessionStorage.getItem(this.Constants.Owner)) {
+      const user: any = sessionStorage.getItem(this.Constants.Owner);
       this.OwnerAccountService.setCurrentUser(user);
     }
   }

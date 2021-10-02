@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { RouterConstants } from 'src/Helpers/RouterConstants';
+import { ConstantsService } from '../../../CommonServices/constants.service';
 import { DialogHandlerService } from '../../../CommonServices/DialogHandler/dialog-handler.service';
 import { NotificationsService } from '../../../CommonServices/NotificationService/notifications.service';
 import { TranslationService } from '../../../CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from '../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
-import { Constants } from '../../../Helpers/constants';
 import { CustomErrorStateMatcher } from '../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
 import { CustomValidators } from '../../../Helpers/CustomValidation/custom-validators';
 import { OwnerRegister } from '../../Models/owner-register.model';
@@ -30,7 +31,7 @@ export class OwnerRegisterComponent implements OnInit, OnDestroy {
   //constructor
   constructor(public OwnerAuth: OwnerAccountService,
     public formBuilder: FormBuilder, public translate: TranslationService,
-    public dialogHandler: DialogHandlerService,
+    public dialogHandler: DialogHandlerService, public Constants: ConstantsService,
     public ValidationErrorMessage: ValidationErrorMessagesService,
     public Notifications: NotificationsService) {
     this.selected = localStorage.getItem(Constants.lang);
@@ -69,13 +70,13 @@ export class OwnerRegisterComponent implements OnInit, OnDestroy {
       Password: this.RegisterForm.get("Password")?.value,
       ConfirmPassword: this.RegisterForm.get("ConfirmPassword")?.value,
       UserName: this.RegisterForm.get("Username")?.value,
-      ClientUrl: "https://" + window.location.host + "/" + Constants.Owner_EmailConfirmationUrl,
+      ClientUrl: "https://" + window.location.host + "/" + RouterConstants.Owner_EmailConfirmationUrl,
       FirstName: this.RegisterForm.get("FirstName")?.value,
       LastName: this.RegisterForm.get("LastName")?.value
     };
     if (this.RegisterForm.invalid) return;
     this.OwnerAuth.Register(this.OwnerRegisterModel).subscribe(
-      (response)=>{
+      (response) => {
         this.Notifications.success("Your registered Successfully. Please Confirm your email");
         console.log(response);
         this.ValidationErrors = [];
