@@ -20,7 +20,7 @@
 @import url("./assets/Fonts/Noto_Sans_Arabic/stylesheet.css");
 /*'Calibri'*/
 @import url("./assets/Fonts/calibri/stylesheet.css");
-/*'Calibri'*/
+/*'HacenCasablancaHeavy'*/
 @import url("./assets/Fonts/HacenCasablancaHeavy/stylesheet.css");
 :root {
   /*.....................................Fonts.........................*/
@@ -51,19 +51,7 @@ body {
 }
 
 body {
-  background-image:linear-gradient(
-    150deg, rgb(119, 149, 248) 15%, rgb(103, 114, 229) 70%, rgb(85, 90, 191) 94%);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    margin: 0;
-  /* padding-top: 70px !important; */
-  /* background-color: rgb(247 247 247 / 34%); */
-  /*background-image: url("./assets/abstract-blue-flowing-lines-background.png");
-
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  background-size: cover;*/
+  margin: 0;
   overflow-x: hidden !important;
 }
 /* ----------------------------------------------------------------------------------------
@@ -377,7 +365,9 @@ form p {
 [dir="rtl"] {
   font-family: Calibri !important;
 }
-
+.Calibri-font{
+  font-family: Calibri !important;
+}
 .LelezarFont{
   font-family: Lalezar !important;
 }
@@ -433,10 +423,10 @@ form p {
   box-shadow: 0 4px 6px rgb(50 50 93 / 11%), 0 1px 3px rgb(0 0 0 / 8%);
 }
 .btn-neutral {
-  background-color: #fff;
-  border-color: #fff;
-  color: #5e72e4;
-  box-shadow: 0 4px 6px rgb(50 50 93 / 11%), 0 1px 3px rgb(0 0 0 / 8%);
+  background-color: #fff !important;
+  border-color: #fff !important;
+  color: #5e72e4 !important;
+  box-shadow: 0 4px 6px rgb(50 50 93 / 11%), 0 1px 3px rgb(0 0 0 / 8%) !important;
 }
 .btn:hover {
   box-shadow: 0 7px 14px rgb(50 50 93 / 10%), 0 3px 6px rgb(0 0 0 / 8%);
@@ -444,7 +434,12 @@ form p {
   transform: translateY(-1px);
 }
 
-
+.btn-black {
+  color: #fff;
+  background-color: black;
+  border-color: black;
+  box-shadow: 0 4px 6px rgb(50 50 93 / 11%), 0 1px 3px rgb(0 0 0 / 8%);
+}
 /* ----------------------------------------------------------------------------------------
 ------------------------ ToolBar Styles  ----------------------------------------------------
 ----------------------------------------------------------------------------*/
@@ -453,15 +448,10 @@ form p {
   padding: 9px;
   border-radius: 6px;
   margin-top: 2px;
-}
-.langSelectorMaidDomainStyle-StickyToolbar {
-  background-color: black;
-  color: white;
-}
-.langSelectorMaidDomainStyle-UnStickyToolbar {
   background-color: white;
   color: black;
 }
+
 .langSelectionSize .mat-form-field-underline {
   display: none !important;
 }
@@ -481,7 +471,7 @@ form p {
   width: 60px !important;
 }
 .ToolBar {
-  position: fixed;
+  position: fixed !important;
   top: 0; /* Sets the sticky toolbar to be on top */
   z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
   background: #ffffff;
@@ -535,4 +525,7 @@ form p {
   opacity: 0;
   animation-name: fadeInUp;
   -webkit-animation-name: fadeInUp;
+}
+form[dir="rtl"] *:not(mat-icon) {
+  font-family: Calibri !important;
 }

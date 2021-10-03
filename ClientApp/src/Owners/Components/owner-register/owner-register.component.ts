@@ -81,6 +81,7 @@ export class OwnerRegisterComponent implements OnInit, OnDestroy {
         console.log(response);
         this.ValidationErrors = [];
         this.dialogHandler.CloseDialog();
+        this.loading = false;
       },
       (error) => {
         this.loading = false;

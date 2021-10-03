@@ -26,7 +26,7 @@ export class ClientLoginComponent implements OnInit, OnDestroy {
   ClientLogin: ClientLogin = new ClientLogin();
   selected: any;
   LangSubscibtion: Subscription = new Subscription();
-
+  loading: boolean = false;
   //constructor
   constructor(private formBuilder: FormBuilder, public router: Router,
     public dialogHandler: DialogHandlerService, public translate: TranslationService,
@@ -51,6 +51,7 @@ export class ClientLoginComponent implements OnInit, OnDestroy {
 
 
   Login(RememberMe: boolean) {
+    this.loading = true;
     if (this.loginForm.invalid) return;
     this.ClientLogin = {
       Email: this.loginForm.get("Email")?.value,
@@ -62,8 +63,10 @@ export class ClientLoginComponent implements OnInit, OnDestroy {
         console.log(response);
         this.Notifications.success(this.Constants.LoggedInSuccessfully);
         this.dialogHandler.CloseDialog();
+        this.loading = false;
       },
       error => {
+        this.loading = false;
         console.log(error);
         this.ValidationErrors = error;
       },

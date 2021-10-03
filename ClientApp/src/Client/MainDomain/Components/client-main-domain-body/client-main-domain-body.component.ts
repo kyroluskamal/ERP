@@ -29,17 +29,35 @@ export class ClientMainDomainBodyComponent implements OnInit, OnDestroy {
   FirstSec_Header_LineSpace: string = '';
   gridCols: number = 3;
   test: any;
+  IsLoggedIn: boolean = false;
   NavigateToAccount: any = "/account";
-  localStorageSubscription: Subscription = new Subscription();
-  SessionStorageSubscription: Subscription = new Subscription();
+  currentUserName: string | null = null;
+
+  UrlWithSubdomain: string = "";
+
   //constructor
   constructor(public translate: TranslationService, private viewportScroller: ViewportScroller,
     private mediaObserver: MediaObserver, public dialogHandler: DialogHandlerService,
-    public Constants: ConstantsService, private router: Router, private ClientAccountService: ClientAccountService) {
+    public Constants: ConstantsService, private router: Router, public accountService: ClientAccountService,) {
     this.selected = localStorage.getItem(this.Constants.lang);
+
   }
 
   ngOnInit(): void {
+    this.accountService.currentUserOvservable.subscribe(
+      user => {
+        if (user) {
+          this.currentUserName = user.username;
+          let x: any = JSON.stringify(user);
+          x = JSON.parse(x);
+          this.UrlWithSubdomain = `https://${x.subdomain}.${window.location.host}`;
+          console.log(user.Subdomain);
+        } else {
+          this.currentUserName == null;
+        }
+      },
+      error => console.log(error)
+    );
     this.MediaSubscription = this.mediaObserver.asObservable().subscribe(
       (response: MediaChange[]) => {
         if (response.some(x => x.mqAlias === 'xs')) {
@@ -74,19 +92,20 @@ export class ClientMainDomainBodyComponent implements OnInit, OnDestroy {
   @HostListener('window:scroll')
   onWindowScroll() {
     if (this.viewportScroller.getScrollPosition()[1] > 200) {
-      this.ClientNavBar.langSelectionStyle = "langSelectorMaidDomainStyle langSelectorMaidDomainStyle-StickyToolbar"
       this.ClientNavBar.toolbarStyle = "ToolBar mat-elevation-z9";
     } else {
-      this.ClientNavBar.toolbarStyle = "bg-transparent";
-      this.ClientNavBar.langSelectionStyle = "langSelectorMaidDomainStyle langSelectorMaidDomainStyle-UnStickyToolbar"
-
+      this.ClientNavBar.toolbarStyle = "";
     }
   }
   OnloginClick(value: any) {
     if (value.clientName != null) {
-      console.log("clieded hererer")
       this.router.navigateByUrl(`/${RouterConstants.Client_MainDomainAccountURL}`);
+      this.currentUserName = value.clientName;
     }
   }
+  OnLogoutClick(value: any) {
 
+    this.currentUserName = value.clientName;
+    console.log(value);
+  }
 }

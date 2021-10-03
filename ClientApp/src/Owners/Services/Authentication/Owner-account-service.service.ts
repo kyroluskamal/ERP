@@ -54,8 +54,8 @@ export class OwnerAccountService {
   }
 
   logout() {
-    sessionStorage.removeItem(RouterConstants.Owner);
-    localStorage.removeItem(RouterConstants.Owner);
+    sessionStorage.removeItem(this.Constants.Owner);
+    localStorage.removeItem(this.Constants.Owner);
     this.currentUserSource.next(undefined);
   }
 

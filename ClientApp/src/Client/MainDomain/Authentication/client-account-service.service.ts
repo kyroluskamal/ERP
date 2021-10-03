@@ -49,7 +49,7 @@ export class ClientAccountService {
             sessionStorage.setItem(this.Constants.Client, JSON.stringify(user));
           this.currentUserSource.next(user);
         }
-        return response;
+        return user;
       })
     )
   }

@@ -1,3 +1,9 @@
+span.bubble {
+  z-index: 1;
+}
+main * {
+  z-index: 2;
+}
 .bubble {
   position: absolute;
   border-radius: 50%;
@@ -233,7 +239,7 @@
 mat-divider {
   display: block;
   position: relative;
-  z-index: 500;
+  z-index: 500 !important;
   box-sizing: border-box;
   height: 150px;
   width: 100%;
@@ -378,4 +384,15 @@ footer .mat-grid-list-text {
 ul a {
   text-decoration: none;
   color: white;
+}
+main {
+  background-image: linear-gradient(
+    150deg,
+    rgb(119, 149, 248) 15%,
+    rgb(103, 114, 229) 70%,
+    rgb(85, 90, 191) 94%
+  ) !important;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
 }

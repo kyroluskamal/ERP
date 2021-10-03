@@ -1,5 +1,5 @@
 <app-client-main-domain-nav-bar #MainDomainToolbar
-  (LoginClick)="OnloginClick($event)"></app-client-main-domain-nav-bar>
+  (LoginClick)="OnloginClick($event)" (LogOutClick)="OnLogoutClick($event)"></app-client-main-domain-nav-bar>
 <span class="bubble bubble1"></span>
 <span class="bubble bubble2"></span>
 <span class="bubble bubble3"></span>
@@ -24,9 +24,19 @@
         {{'MainDomainFirstSectionTitle'| translate}}
       </h1>
     </header>
-    <button mat-raised-button class="btn btn-success LelezarFont
+    <button mat-raised-button *ngIf="currentUserName===null"
+      (click)="dialogHandler.OpenClientRegisterDialog()"
+      class="btn btn-success
+      LelezarFont
       font-size-1-5rem">
       {{'Create account now'|translate}}</button>
+    <!-- GO to Dashboard Button -->
+    <a mat-raised-button *ngIf="currentUserName!==null"
+      [href]="UrlWithSubdomain + '/dashboard'"
+      class="btn btn-black
+      LelezarFont
+      font-size-1-5rem">
+      {{"Go to Dashboard"|translate}}</a>
     <mat-list fxLayout="row" fxLayout.xs="column" fxFill
       fxLayoutAlign="center"
       [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">

@@ -1,0 +1,19 @@
+mat-toolbar {
+  background-color: #172774 !important;
+  z-index: 1000;
+  position: relative;
+}
+ul li {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  color: white;
+  display: flex;
+  font-size: 0.9rem;
+  align-items: center;
+}
+
+ul li a mat-icon {
+  font-size: 1.3rem;
+}

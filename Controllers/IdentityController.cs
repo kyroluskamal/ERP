@@ -190,11 +190,11 @@ namespace ERP.Controllers
                 var result = await ApplicationUserSignIngManager.CheckPasswordSignInAsync(user, clientLogin.Password, false);
                 if (result.Succeeded)
                 {
-                    return new UserWithToken { 
-                        Username = user.UserName, 
+                    return new UserWithToken {
+                        Username = user.UserName,
                         Token = TokenService.CreateClientToken(user),
-                        Roles = (List<string>)await UserManager.GetRolesAsync(user)
-
+                        Roles = (List<string>)await UserManager.GetRolesAsync(user),
+                        Subdomain = tenant.Subdomain
                     };
                 }
                 else return Unauthorized(new { status = Constants.WrongPassword_StatusCode, error = Constants.WrongPassword_ErrorMessage});
