@@ -7,10 +7,11 @@ import { ServerErrorComponent } from '../CommonComponents/server-error/server-er
 const routes: Routes = [
   { path: "not-found", component: NotFoundComponent },
   { path: "server-error", component: ServerErrorComponent },
+  { path: "**", component: NotFoundComponent, pathMatch: 'full' }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes/*, { enableTracing: true }*/)],
+  imports: [RouterModule.forRoot(routes, { enableTracing: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

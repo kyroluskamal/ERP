@@ -15,6 +15,7 @@ import { TokenInterceptorInterceptor } from '../Interceptors/TokenInterceptor/to
 import { CommoneResetPasswordComponent } from '../CommonComponents/commone-reset-password/commone-reset-password.component';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { ClientAppModule } from 'src/Client/ClientApp/client-app.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
   ],
   imports: [
     BrowserModule, BrowserAnimationsModule, MaterialModule, SharedModule,
-    OwnerModule, CommonModule, ClientModule, AppRoutingModule,
+    OwnerModule, CommonModule, ClientModule, ClientAppModule, AppRoutingModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

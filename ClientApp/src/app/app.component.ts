@@ -12,7 +12,7 @@ import { OwnerAccountService } from '../Owners/Services/Authentication/Owner-acc
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   //Properties
   title = 'KHerp';
   IsOwnerRoute: boolean = false;
@@ -28,7 +28,7 @@ export class AppComponent implements OnInit{
 
   //ngOnInit
   ngOnInit(): void {
-    
+    console.log(this.router);
     this.router.events
       .pipe(
         filter(e => e instanceof NavigationEnd)
@@ -38,7 +38,11 @@ export class AppComponent implements OnInit{
         this.error = navigation?.state?.error;
         if (navEnd.url.includes("/owners")) this.IsOwnerRoute = true
         else this.IsOwnerRoute = false;
-        
+        if (navEnd.url.includes("/dashboard") &&
+          window.location.host.split('.')[0] === window.location.host
+        ) {
+          this.router.navigateByUrl('/');
+        }
       });
     this.SetClientUser();
     this.SetOwnerUser();

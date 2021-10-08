@@ -22,4 +22,9 @@ export abstract class RouterConstants {
   static Client_MainDomainAccountURL: string = "account";
   static Client_Dashboard: string = "Dashboard";
 
+  //ClientAppUrls
+  static App_login = "login";
+  static App_main = "app";
+  static App_register = "register";
+
 }

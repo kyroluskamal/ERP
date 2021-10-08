@@ -3,7 +3,6 @@
 <span class="bubble bubble1"></span>
 <span class="bubble bubble2"></span>
 <span class="bubble bubble3"></span>
-<span class="bubble bubble4"></span>
 <span class="bubble bubble5"></span>
 <span class="bubble bubble6"></span>
 <span class="bubble bubble7"></span>
@@ -64,7 +63,7 @@
       </header>
       <article [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'"
         [fxLayout.gt-sm]="selected&&translate.isRightToLeft(selected)?
-        'row':'row reverse'" fxLayout.lt-sm="column" fxLayout.sm="row">
+        'row':'row reverse'" fxLayout.lt-md="column" fxLayout.sm="row">
         <p fxFlexOrder.lt-sm="2" fxFlex.lt-sm="100%" fxFlex.sm="100%"
           fxFlex.gt-sm="50%">
           {{'Who are we answer'| translate}}
@@ -78,7 +77,7 @@
           background-image: url('../../../../assets/team.jpg');
           background-size: cover;
           background-repeat: no-repeat;">
-          <span ngStyle.lt-sm="display:block; width: 100vh; height: 100vh"></span>
+          <span ngStyle.lt-sm="display:block; height: 100vh"></span>
         </div>
       </article>
     </div>
@@ -174,19 +173,20 @@
       </mat-grid-list>
     </div>
   </section>
-  <!----------------------------------------------------------------------------------- fourth Section ------------------------->
+  <!----------------------------------------------------------------------- fourth Section ------------------------->
   <section [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'"
     AnimateOnScroll animName="FadeUp">
     <div>
       <header>
-        <h2
+        <h2 [style.font-size]='FirstSec_Header_fontSize'
+          [style.line-height]='FirstSec_Header_LineSpace'
           [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
           {{'Robust Online Sales Management Software'| translate}}
         </h2>
       </header>
       <article [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'"
         [fxLayout.gt-sm]="selected&&translate.isRightToLeft(selected)?
-        'row':'row reverse'" fxLayout.lt-sm="column" fxLayout.sm="row">
+        'row':'row reverse'" fxLayout.lt-md="column" fxLayout.md="column">
         <img src="../../../../assets/sales.png" alt="Sales image" fxFlex="50%"
           fxFlex.lt-sm="100%" style="padding: 10px;" fxFlexOrder.lt-sm="1">
         <p fxFlexOrder.lt-sm="2" fxFlex.lt-sm="100%" fxFlex.sm="100%"
@@ -196,19 +196,20 @@
       </article>
     </div>
   </section>
-  <!----------------------------------------------------------------------------------- Fifth Section ------------------------->
+  <!---------------------------------------------------------------------- Fifth Section ------------------------->
   <section AnimateOnScroll animName="FadeUp"
     [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
     <div>
       <header>
-        <h2
+        <h2 [style.font-size]='FirstSec_Header_fontSize'
+          [style.line-height]='FirstSec_Header_LineSpace'
           [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
           {{"End-to-end Accounting and Bookkeeping"| translate}}
         </h2>
       </header>
       <article [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'"
         [fxLayout.gt-sm]="selected&&translate.isRightToLeft(selected)?
-        'row':'row reverse'" fxLayout.lt-sm="column" fxLayout.sm="row">
+        'row':'row reverse'" fxLayout.lt-md="column" fxLayout.md="column">
         <p fxFlexOrder.lt-sm="2" fxFlex.lt-sm="100%" fxFlex.sm="100%"
           fxFlex.gt-sm="50%">
           {{"AccountingSection"| translate}}
@@ -224,14 +225,15 @@
     [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
     <div>
       <header>
-        <h2
+        <h2 [style.font-size]='FirstSec_Header_fontSize'
+          [style.line-height]='FirstSec_Header_LineSpace'
           [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
           {{"Convenient Operations, beyond ERP"| translate}}
         </h2>
       </header>
       <article [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'"
         [fxLayout.gt-sm]="selected&&translate.isRightToLeft(selected)?
-        'row':'row reverse'" fxLayout.lt-sm="column" fxLayout.sm="row">
+        'row':'row reverse'" fxLayout.lt-sm="column" fxLayout.sm="column">
         <img src="../../../../assets/workflow_2.png" alt="Workflow image"
           fxFlex="50%"
           fxFlex.lt-sm="100%" style="padding: 10px;" fxFlexOrder.lt-sm="1">
@@ -247,14 +249,15 @@
     [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
     <div>
       <header>
-        <h2
+        <h2 [style.font-size]='FirstSec_Header_fontSize'
+          [style.line-height]='FirstSec_Header_LineSpace'
           [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
           {{"Online CRM Software to Put your Clients first"| translate}}
         </h2>
       </header>
       <article [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'"
         [fxLayout.gt-sm]="selected&&translate.isRightToLeft(selected)?
-        'row':'row reverse'" fxLayout.lt-sm="column" fxLayout.sm="row">
+        'row':'row reverse'" fxLayout.lt-sm="column" fxLayout.sm="column">
         <p fxFlexOrder.lt-sm="2" fxFlex.lt-sm="100%" fxFlex.sm="100%"
           fxFlex.gt-sm="50%">
           {{"CRMSection"| translate}}

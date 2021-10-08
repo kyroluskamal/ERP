@@ -1,0 +1,78 @@
+<mat-sidenav-container hasBackdrop="false">
+  <!-- --------------------------------------------------------------------------------------
+     ----------------------------------- Full Openned sidenav ----------------------------
+     ------------------------------------------------------------------------------------->
+  <mat-sidenav mode="side" opened="true" (mouseleave)="OnMouseLeave()"
+    [ngClass]="ToggleClass" fxLayout="column" class="dark">
+    <mat-nav-list fxLayout="row" fxLayoutAlign="space-between center">
+      <a [class]="Constants.CSS_Dashboard_Sidenav_CompmanyName" fxFlex="1 2 90%"
+        [routerLink]="['','app']">KH-ERP</a>
+      <button [matTooltip]="pinned?'Close sidebar':'Fix sidebar'"
+        matTooltipPosition="right"
+        [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
+        mat-icon-button
+        (click)="PinSideNav()"
+        [class]="pinned?'':Constants.CSS_Openned_pin">
+        <mat-icon>
+          push_pin
+        </mat-icon>
+      </button>
+    </mat-nav-list>
+  </mat-sidenav>
+  <!-- --------------------------------------------------------------------------------------
+     ----------------------------------- Half Closed ----------------------------
+     ------------------------------------------------------------------------------------->
+  <mat-sidenav mode="side" opened="true" (mouseover)="OnMouseOver()"
+    [ngClass]="fixedSideNavToggle" fxLayout="column" class="dark">
+    <mat-nav-list fxLayout="row" fxLayoutAlign="center center">
+      <mat-icon (click)="PinSideNav()"
+        [class]="pinned?'':Constants.CSS_Openned_pin"><span
+          class="material-icons-two-tone">
+          push_pin
+        </span></mat-icon>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <!-- --------------------------------------------------------------------------------------
+     ----------------------------------- Content -----------------------------------------
+     ------------------------------------------------------------------------------------->
+  <mat-sidenav-content
+    [ngClass]="SideNav_Content_class">
+
+    <!-- Toolbar -->
+    <mat-toolbar class="light mat-elevation-z3" fxLayout="row"
+      fxLayoutAlign="space-between center">
+      <div fxLayoutAlign="center center">
+        <button mat-raised-button color="primary">Add new</button>
+      </div>
+      <!-- second Div -->
+      <div fxLayoutAlign="center center" fxLayoutGap="3px"
+        (click)="ToggleFullscreen()">
+        <button mat-icon-button>
+          <mat-icon><span class="material-icons-outlined">
+              {{FullscreenEnabled?'fullscreen_exit':'fullscreen'}}
+            </span></mat-icon>
+        </button>
+        <button mat-icon-button>
+          <mat-icon><span class="material-icons-outlined">
+              notifications_active
+            </span></mat-icon>
+        </button>
+
+        <button mat-icon-button><img class="mat-elevation-z5"
+            [class]="Constants.CSS_userIconImage"
+            src="../../../../../assets/user.jpg"
+            width="32" height="32" />
+        </button>
+
+        <button mat-icon-button>
+          <mat-icon><span class="material-icons-outlined">
+              settings
+            </span></mat-icon>
+        </button>
+
+      </div>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

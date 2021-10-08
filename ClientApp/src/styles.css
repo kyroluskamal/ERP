@@ -47,12 +47,13 @@
 
 html,
 body {
-  height: 100vh;
+  /* height: 100vh !important;
+  width: 100vw!important; */
+  overflow-x: hidden !important;
 }
 
 body {
   margin: 0;
-  overflow-x: hidden !important;
 }
 /* ----------------------------------------------------------------------------------------
 ------------------------General Styles ----------------------------------------------------
@@ -228,9 +229,7 @@ form p {
     width: 1170px;
   }
 }
-.text-danger {
-  color: #a94442;
-}
+
 .marginTop-5 {
   margin-top: 5px;
 }
@@ -384,13 +383,13 @@ form p {
 
 .btn{
   position: relative;
-  text-transform: uppercase;
   transition: all .15s ease;
   will-change: transform;
   letter-spacing: .025em;
   font-size: .875rem;
   margin-top: .7rem;
-    margin-bottom: .7rem;
+  margin-bottom: .7rem;
+  padding: 5px !important;
 }
 .btn-primary {
   color: #fff;
@@ -528,4 +527,39 @@ form p {
 }
 form[dir="rtl"] *:not(mat-icon) {
   font-family: Calibri !important;
+}
+.Dashboard-ToolTip{
+  background-color: rgb(133, 0, 0);
+  color: white;
+  font-size: 0.9rem !important;
+}
+
+.text-center{
+  text-align: center !important;
+}
+.Dashboard-Sidenav-CompmanyName{
+  text-align: center !important;
+  font-size: 2.0rem;
+  font-weight: bold;
+}
+.mat-drawer-inner-container {
+  overflow-x: hidden !important;
+}
+.userIconImage{
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+/* For dark and light themes */
+.dark {
+  background-color: #232b3e;
+  color: #96a2b4;
+  padding-top: 1px;
+}
+.light {
+  background-color: white !important;
+  color: #1a202e !important;
+}
+mat-sidenav.dark{
+  color:#e6e6e6;
 }

@@ -6,14 +6,15 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./client-main.component.css']
 })
 export class ClientMainComponent implements OnInit {
-  subdomain: string = "";
-  
+  IsSubdomain: boolean = false;
+
   constructor() {
   }
 
   ngOnInit(): void {
-    this.subdomain = window.location.hostname.split(".")[0];
-    console.log(window.location.hostname.split("."))
+    this.IsSubdomain = window.location.hostname.split(".")[0] !== window.location.hostname;
+    console.log(window.location.hostname.split(".")[0]);
+    console.log(window.location.hostname);
   }
 
 }

@@ -15,12 +15,12 @@ const routes: Routes = [
       [
         { path: "dashboard", component: OwnersDashBoardComponent },
         { path: "", component: OwnerBodyComponent },
-        { path: "**", component: NotFoundComponent, pathMatch: 'full' }
+        // { path: "**", component: NotFoundComponent, pathMatch: 'full' }
       ]
   },
   { path: RouterConstants.Owner_EmailConfirmationUrl, component: EmailConfirmationOwnerComponent },
   { path: RouterConstants.Owner_PasswordResetURL, component: CommoneResetPasswordComponent },
-  
+
 ];
 
 @NgModule({

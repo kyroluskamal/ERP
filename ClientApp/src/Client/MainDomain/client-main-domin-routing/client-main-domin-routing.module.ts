@@ -20,12 +20,11 @@ const routes: Routes = [
         {
           path: RouterConstants.Client_MainDomainAccountURL, component: ClientMainDomainAccountComponent, canActivate: [IsLoggedInGuard, ClientAdminGuard]
         },
-        { path: "", component: ClientMainDomainBodyComponent },
+        // { path: "", component: ClientMainDomainBodyComponent },
         { path: RouterConstants.Client_EmailConfirmationUrl, component: EmailConfirmationClientComponent },
         { path: RouterConstants.Client_PasswordResetURL, component: CommoneResetPasswordComponent },
-        { path: "**", component: NotFoundComponent, pathMatch: 'prefix' },
       ]
-  },
+  }
 ];
 
 @NgModule({

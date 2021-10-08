@@ -9,8 +9,6 @@ import { Subscription } from 'rxjs';
 import { DialogHandlerService } from 'src/CommonServices/DialogHandler/dialog-handler.service';
 import { TranslationService } from '../../../../CommonServices/translation-service.service';
 import { ClientMainDomainNavBarComponent } from '../client-main-domain-nav-bar/client-main-domain-nav-bar.component';
-
-import 'aos/dist/aos.css';
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { NavigationStart, Router } from '@angular/router';
 import { ClientAccountService } from '../../Authentication/client-account-service.service';
@@ -28,9 +26,6 @@ export class ClientMainDomainBodyComponent implements OnInit, OnDestroy {
   FirstSec_Header_fontSize: string = '';
   FirstSec_Header_LineSpace: string = '';
   gridCols: number = 3;
-  test: any;
-  IsLoggedIn: boolean = false;
-  NavigateToAccount: any = "/account";
   currentUserName: string | null = null;
 
   UrlWithSubdomain: string = "";
@@ -48,10 +43,7 @@ export class ClientMainDomainBodyComponent implements OnInit, OnDestroy {
       user => {
         if (user) {
           this.currentUserName = user.username;
-          let x: any = JSON.stringify(user);
-          x = JSON.parse(x);
-          this.UrlWithSubdomain = `https://${x.subdomain}.${window.location.host}`;
-          console.log(user.Subdomain);
+          this.UrlWithSubdomain = `https://${user.subdomain}.${window.location.host}`;
         } else {
           this.currentUserName == null;
         }
@@ -61,8 +53,8 @@ export class ClientMainDomainBodyComponent implements OnInit, OnDestroy {
     this.MediaSubscription = this.mediaObserver.asObservable().subscribe(
       (response: MediaChange[]) => {
         if (response.some(x => x.mqAlias === 'xs')) {
-          this.FirstSec_Header_fontSize = '2rem';
-          this.FirstSec_Header_LineSpace = '30px';
+          this.FirstSec_Header_fontSize = '2.5rem';
+          this.FirstSec_Header_LineSpace = '50px';
           this.gridCols = 1;
         } else {
           this.FirstSec_Header_fontSize = '5rem';
@@ -92,7 +84,7 @@ export class ClientMainDomainBodyComponent implements OnInit, OnDestroy {
   @HostListener('window:scroll')
   onWindowScroll() {
     if (this.viewportScroller.getScrollPosition()[1] > 200) {
-      this.ClientNavBar.toolbarStyle = "ToolBar mat-elevation-z9";
+      this.ClientNavBar.toolbarStyle = `${this.Constants.CSS_ToolBar} ${this.Constants.CSS_mat_elevation_z9}`;
     } else {
       this.ClientNavBar.toolbarStyle = "";
     }

@@ -4,18 +4,20 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { filter } from 'rxjs/operators';
+import { ClientAccountService } from 'src/Client/MainDomain/Authentication/client-account-service.service';
+import { ConstantsService } from 'src/CommonServices/constants.service';
+import { DialogHandlerService } from 'src/CommonServices/DialogHandler/dialog-handler.service';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { RouterConstants } from 'src/Helpers/RouterConstants';
-import { ConstantsService } from '../../../../CommonServices/constants.service';
-import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
-import { ClientAccountService } from '../../Authentication/client-account-service.service';
+
 
 @Component({
-  selector: 'app-client-main-domain-nav-bar',
-  templateUrl: './client-main-domain-nav-bar.component.html',
-  styleUrls: ['./client-main-domain-nav-bar.component.css']
+  selector: 'app-client-app-home-navbar',
+  templateUrl: './client-app-home-navbar.component.html',
+  styleUrls: ['./client-app-home-navbar.component.css']
 })
-export class ClientMainDomainNavBarComponent implements OnInit {
+export class ClientAppHomeNavbarComponent implements OnInit {
+
   //Properties
   currentUserName: string | null = null;
   IsloggedIn: boolean = false;
