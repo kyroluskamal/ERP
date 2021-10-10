@@ -32,7 +32,21 @@
         </span></mat-icon>
     </mat-nav-list>
   </mat-sidenav>
-
+  <!-- --------------------------------------------------------------------------------------
+     ----------------------------------- Settings nav ----------------------------
+     ------------------------------------------------------------------------------------->
+  <mat-sidenav mode="side" #sideNav position="end"
+    fxLayout="column" [class]="Constants.CSS_SideNav_FullOpened">
+    <button mat-icon-button class="smallCloseIcone" [disableRipple]="true">
+      <mat-icon (click)="sideNav.toggle()"><span
+          class="material-icons-outlined">cancel</span></mat-icon>
+    </button>
+    <mat-nav-list>
+      <div mat-list-item>
+        <h3>Theme settings</h3>
+      </div>
+    </mat-nav-list>
+  </mat-sidenav>
   <!-- --------------------------------------------------------------------------------------
      ----------------------------------- Content -----------------------------------------
      ------------------------------------------------------------------------------------->
@@ -46,9 +60,8 @@
         <button mat-raised-button color="primary">Add new</button>
       </div>
       <!-- second Div -->
-      <div fxLayoutAlign="center center" fxLayoutGap="3px"
-        (click)="ToggleFullscreen()">
-        <button mat-icon-button>
+      <div fxLayoutAlign="center center" fxLayoutGap="3px">
+        <button mat-icon-button (click)="ToggleFullscreen()">
           <mat-icon><span class="material-icons-outlined">
               {{FullscreenEnabled?'fullscreen_exit':'fullscreen'}}
             </span></mat-icon>
@@ -65,7 +78,7 @@
             width="32" height="32" />
         </button>
 
-        <button mat-icon-button>
+        <button mat-icon-button (click)="sideNav.toggle()">
           <mat-icon><span class="material-icons-outlined">
               settings
             </span></mat-icon>

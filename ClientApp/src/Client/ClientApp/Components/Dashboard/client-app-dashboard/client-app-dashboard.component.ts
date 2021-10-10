@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { NotificationsService } from 'src/CommonServices/NotificationService/notifications.service';
 import { ConstantsService } from '../../../../../CommonServices/constants.service';
 @Component({
@@ -70,12 +70,16 @@ export class ClientAppDashboardComponent implements OnInit {
     } else {
       if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen()
-        this.FullscreenEnabled = true;
       }
       else {
-        this.FullscreenEnabled = false
         document.exitFullscreen();
       }
     }
+  }
+
+  //Only to toggle fullscreen ICON
+  @HostListener("window:resize")
+  ToggleFullScreenIcon() {
+    this.FullscreenEnabled = !this.FullscreenEnabled;
   }
 }

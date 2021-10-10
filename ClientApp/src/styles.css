@@ -557,9 +557,20 @@ form[dir="rtl"] *:not(mat-icon) {
   padding-top: 1px;
 }
 .light {
-  background-color: white !important;
-  color: #1a202e !important;
+  background-color: #f9f9f9 !important;
+  color: #232b3e !important;
 }
 mat-sidenav.dark{
   color:#e6e6e6;
+}
+.smallCloseIcone{
+  margin: 0!important;
+  padding: 0!important;
+  min-width: 0 !important;
+  line-height: 0!important;
+  height: 0!important;
+  width: 0!important;
+}
+.smallCloseIcone span{
+  font-size: 20px;
 }
