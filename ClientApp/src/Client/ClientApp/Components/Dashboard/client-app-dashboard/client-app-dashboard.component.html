@@ -2,8 +2,9 @@
   <!-- --------------------------------------------------------------------------------------
      ----------------------------------- Full Openned sidenav ----------------------------
      ------------------------------------------------------------------------------------->
-  <mat-sidenav mode="side" opened="true" (mouseleave)="OnMouseLeave()"
-    [ngClass]="ToggleClass" fxLayout="column" class="dark">
+  <mat-sidenav mode="side" opened="true"
+    (mouseleave)="OnMouseLeave()"
+    [ngClass]="ToggleClass + ' ' +SidenavThemeClass" fxLayout="column">
     <mat-nav-list fxLayout="row" fxLayoutAlign="space-between center">
       <a [class]="Constants.CSS_Dashboard_Sidenav_CompmanyName" fxFlex="1 2 90%"
         [routerLink]="['','app']">KH-ERP</a>
@@ -22,8 +23,9 @@
   <!-- --------------------------------------------------------------------------------------
      ----------------------------------- Half Closed ----------------------------
      ------------------------------------------------------------------------------------->
-  <mat-sidenav mode="side" opened="true" (mouseover)="OnMouseOver()"
-    [ngClass]="fixedSideNavToggle" fxLayout="column" class="dark">
+  <mat-sidenav mode="side" opened="true"
+    (mouseover)="OnMouseOver()"
+    [ngClass]="fixedSideNavToggle + ' ' + SidenavThemeClass" fxLayout="column">
     <mat-nav-list fxLayout="row" fxLayoutAlign="center center">
       <mat-icon (click)="PinSideNav()"
         [class]="pinned?'':Constants.CSS_Openned_pin"><span
@@ -36,14 +38,53 @@
      ----------------------------------- Settings nav ----------------------------
      ------------------------------------------------------------------------------------->
   <mat-sidenav mode="side" #sideNav position="end"
-    fxLayout="column" [class]="Constants.CSS_SideNav_FullOpened">
+    fxLayout="column" [class]="Constants.CSS_SideNav_FullOpened + ' '
+    +SidenavThemeClass">
     <button mat-icon-button class="smallCloseIcone" [disableRipple]="true">
       <mat-icon (click)="sideNav.toggle()"><span
           class="material-icons-outlined">cancel</span></mat-icon>
     </button>
-    <mat-nav-list>
+    <mat-nav-list [class]="Constants.CSS_padding_10">
       <div mat-list-item>
         <h3>Theme settings</h3>
+
+        <p>
+          Theme appearance:
+          <mat-button-toggle-group [formControl]="ThemeAppearence"
+            name="ThemeAppearence"
+            aria-label="Theme Appearence">
+            <mat-button-toggle value="light" disableRipple
+              (click)="DarkOrLight()" [checked]="BodyThemeClass==='light'?true:
+              false">Light</mat-button-toggle>
+            <mat-button-toggle value="dark" disableRipple
+              (click)="DarkOrLight()" [checked]="BodyThemeClass==='dark'?true:
+              false">Dark</mat-button-toggle>
+          </mat-button-toggle-group>
+        </p>
+        <p>
+          Sidebar appeareance:
+          <mat-button-toggle-group name="SidebarAppeareance"
+            aria-label="Sidebar
+            appeareance">
+            <mat-button-toggle value="Light" disableRipple>Light</mat-button-toggle>
+            <mat-button-toggle value="Dark" disableRipple>Dark</mat-button-toggle>
+          </mat-button-toggle-group>
+        </p>
+        <p>Theme colors</p>
+        <p fxLayout="row wrap" fxLayoutAlign="start center"
+          fxLayoutGap="3px"
+          #themeColorPicker>
+
+          <button mat-icon-button *ngFor="let x of ThemeColors; let i=
+            index"
+            [value]="x.value" (click)="ColorChoose(x.colorName, i);"
+            [ngStyle]="{'background-color':
+            x.value}"><mat-icon class="mat-18">{{x.choosen?'check':''}}</mat-icon></button>
+        </p>
+      </div>
+      <div>
+        <h3>Layout settings</h3>
+        <mat-slide-toggle color="primary" disableRipple (click)="RTLToggle()">RTL</mat-slide-toggle>
       </div>
     </mat-nav-list>
   </mat-sidenav>
@@ -51,10 +92,11 @@
      ----------------------------------- Content -----------------------------------------
      ------------------------------------------------------------------------------------->
   <mat-sidenav-content
-    [ngClass]="SideNav_Content_class">
+    [class]="SideNav_Content_class">
 
     <!-- Toolbar -->
-    <mat-toolbar class="light mat-elevation-z3" fxLayout="row"
+    <mat-toolbar class="{{Constants.CSS_light_White_bg}} mat-elevation-z3"
+      fxLayout="row" [class]="ToolbarThemeClass"
       fxLayoutAlign="space-between center">
       <div fxLayoutAlign="center center">
         <button mat-raised-button color="primary">Add new</button>

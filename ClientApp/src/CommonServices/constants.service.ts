@@ -112,7 +112,13 @@ export class ConstantsService {
   CSS_text_center = "text-center";
   CSS_Dashboard_Sidenav_CompmanyName = "Dashboard-Sidenav-CompmanyName";
   CSS_userIconImage = "userIconImage";
-
+  CSS_padding_10 = "padding-10";
+  CSS_light_White_bg = "light-White-bg";
+  CSS_Dark = "dark";
+  CSS_light = "light";
   //Local Stoarage
   FixedSidnav = "FixedSidNav";
+  ToolbarThemeClass = "ToolbarThemeClass";
+  BodyThemeClass = "BodyThemeClass";
+  SideNavThemeClass = "SideNavThemeClass";
 }

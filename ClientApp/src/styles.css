@@ -573,4 +573,14 @@ mat-sidenav.dark{
 }
 .smallCloseIcone span{
   font-size: 20px;
+  color: var(--DangerColor);
+}
+
+.padding-10{
+  padding: 10px;
+}
+
+.light-White-bg {
+  background-color: white !important;
+  color: #232b3e !important;
 }

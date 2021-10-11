@@ -1,6 +1,9 @@
 mat-sidenav-content {
   min-height: 100vh;
 }
+mat-sidenav-container {
+  display: flexbox;
+}
 mat-sidenav {
   padding: 0.2rem;
   overflow-x: hidden !important;
@@ -45,4 +48,20 @@ body {
   background-color: #f1f2f7;
   transition: all 0.5s;
   font-size: 13px;
+}
+mat-nav-list div h3 {
+  font-weight: bold;
+  border-bottom: #232b3e solid 1px;
+}
+.mat-button-toggle-checked {
+  color: white !important;
+  background-color: violet !important;
+}
+
+/*This part is to style the buttons for theme colors settings*/
+p button {
+  padding: 0px !important;
+}
+p button mat-icon {
+  color: white !important;
 }
