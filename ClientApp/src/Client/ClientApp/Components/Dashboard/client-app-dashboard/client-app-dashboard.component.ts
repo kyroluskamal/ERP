@@ -3,7 +3,6 @@ import { FormControl } from '@angular/forms';
 import { NotificationsService } from 'src/CommonServices/NotificationService/notifications.service';
 import { ConstantsService } from '../../../../../CommonServices/constants.service';
 import { Directionality } from '@angular/cdk/bidi';
-import { Subscription } from 'rxjs/internal/Subscription';
 
 @Component({
   selector: 'app-client-app-dashboard',
@@ -15,14 +14,12 @@ export class ClientAppDashboardComponent implements OnInit {
   pinned: boolean;
   IsRTL: boolean;
   FullscreenEnabled: boolean = false;
-  Display: string = this.Constants.CSS_displayNone;
-  SideNav_Content_class = this.Constants.CSS_sidenav_content_initial;
-  fixedSideNavToggle: string = this.Constants.CSS_SideNav_HalfClosed;
-  ToggleClass: string = this.Constants.CSS_SideNav_fullyClosed;
-  preventMouseLeave: boolean = false;
+  Display: string;
+  SideNav_Content_class: string;
+  ToggleClass: string;
+  preventMouseLeave: boolean;
   choosenColor: boolean = false;
   /** Subscription to the Directionality change EventEmitter. */
-  private _dirChangeSubscription = Subscription.EMPTY;
   ThemeColors = [
     { colorName: "amber", value: "#ffc107", choosen: false },
     { colorName: "blue", value: "#5c77ff", choosen: false },
@@ -45,45 +42,52 @@ export class ClientAppDashboardComponent implements OnInit {
   //Constructor............................................................................
   constructor(public Constants: ConstantsService, dir: Directionality,
     private Notifications: NotificationsService) {
-    this.IsRTL = dir.value === "rtl";
-    this._dirChangeSubscription = dir.change.subscribe(() => {
-      this.flipDirection();
-    })
+    //set the direction of the document
+    if (localStorage.getItem(this.Constants.IsRTL)) {
+      this.IsRTL = localStorage.getItem(this.Constants.IsRTL) === "false" ? false : true;
+    } else {
+      this.IsRTL = false;
+      localStorage.setItem(this.Constants.IsRTL, String(this.IsRTL));
+    }
+    //set the .............. sidenav .......... dark or light themes
     if (localStorage.getItem(this.Constants.SideNavThemeClass)) {
-      this.SidenavThemeClass = localStorage.getItem(this.Constants.SideNavThemeClass)
-
+      this.SidenavThemeClass = localStorage.getItem(this.Constants.SideNavThemeClass);
     } else {
       this.SidenavThemeClass = this.Constants.CSS_Dark;
       localStorage.setItem(this.Constants.SideNavThemeClass, this.SidenavThemeClass);
     }
+    //set the ........ toolabar .......... dark or ligt theme
     if (localStorage.getItem(this.Constants.ToolbarThemeClass)) {
-      this.ToolbarThemeClass = localStorage.getItem(this.Constants.ToolbarThemeClass)
+      this.ToolbarThemeClass = localStorage.getItem(this.Constants.ToolbarThemeClass);
     } else {
       this.ToolbarThemeClass = this.Constants.CSS_light_White_bg;
       localStorage.setItem(this.Constants.ToolbarThemeClass, this.ToolbarThemeClass);
     }
+
+    //set the ..... body ......dark or light theme
     if (localStorage.getItem(this.Constants.BodyThemeClass)) {
-      this.BodyThemeClass = localStorage.getItem(this.Constants.BodyThemeClass)
+      this.BodyThemeClass = localStorage.getItem(this.Constants.BodyThemeClass);
     } else {
       this.BodyThemeClass = this.Constants.CSS_light;
       localStorage.setItem(this.Constants.BodyThemeClass, this.BodyThemeClass);
     }
-
+    //set the fixed ot non fixed sidenav
     if (localStorage.getItem(this.Constants.FixedSidnav)) {
       this.pinned = localStorage.getItem(this.Constants.FixedSidnav) === "false" ? false : true;
     } else {
       this.pinned = false;
-      localStorage.setItem(this.Constants.FixedSidnav, String(this.pinned))
+      localStorage.setItem(this.Constants.FixedSidnav, String(this.pinned));
     }
-    console.log(this.pinned);
     if (this.pinned) {
+      this.Display = this.Constants.CSS_display_inline_block;
       this.preventMouseLeave = true;
       this.ToggleClass = this.Constants.CSS_SideNav_FullOpened;
-      this.SideNav_Content_class = this.Constants.CSS_sidenav_content_pin
+      this.SideNav_Content_class = this.IsRTL ? this.Constants.CSS_sidenav_content_pin_RTL : this.Constants.CSS_sidenav_content_pin_LTR;
     } else {
+      this.Display = this.Constants.CSS_displayNone;
       this.preventMouseLeave = false;
-      this.ToggleClass = this.Constants.CSS_SideNav_fullyClosed;
-      this.SideNav_Content_class = this.Constants.CSS_sidenav_content_initial;
+      this.ToggleClass = this.Constants.CSS_SideNav_HalfClosed;
+      this.SideNav_Content_class = this.IsRTL ? this.Constants.CSS_sidenav_content_nonPinned_RTL : this.Constants.CSS_sidenav_content_nonPinned_LTR;
     }
   }
   //NgOn it .....................................................................
@@ -92,11 +96,14 @@ export class ClientAppDashboardComponent implements OnInit {
   }
 
   //Events to toggle the left sidenav
-  OnMouseOver() { this.ToggleClass = this.Constants.CSS_SideNav_FullOpened; }
+  OnMouseOver() {
+    this.ToggleClass = this.Constants.CSS_SideNav_FullOpened;
+    this.Display = this.Constants.CSS_display_inline_block;
+  }
   OnMouseLeave() {
     if (!this.preventMouseLeave) {
-      this.ToggleClass = this.Constants.CSS_SideNav_fullyClosed;
-      this.fixedSideNavToggle = this.Constants.CSS_SideNav_HalfClosed;
+      this.ToggleClass = this.Constants.CSS_SideNav_HalfClosed;
+      this.Display = this.Constants.CSS_displayNone;
     }
   }
 
@@ -106,11 +113,13 @@ export class ClientAppDashboardComponent implements OnInit {
     if (this.pinned) {
       this.preventMouseLeave = true;
       this.ToggleClass = this.Constants.CSS_SideNav_FullOpened;
-      this.SideNav_Content_class = this.Constants.CSS_sidenav_content_pin
+      this.SideNav_Content_class = this.IsRTL ? this.Constants.CSS_sidenav_content_pin_RTL : this.Constants.CSS_sidenav_content_pin_LTR;
+      this.Display = this.Constants.CSS_display_inline_block;
     } else {
+      this.Display = this.Constants.CSS_displayNone;
       this.preventMouseLeave = false;
-      this.ToggleClass = this.Constants.CSS_SideNav_fullyClosed;
-      this.SideNav_Content_class = this.Constants.CSS_sidenav_content_initial;
+      this.ToggleClass = this.Constants.CSS_SideNav_HalfClosed;
+      this.SideNav_Content_class = this.IsRTL ? this.Constants.CSS_sidenav_content_nonPinned_RTL : this.Constants.CSS_sidenav_content_nonPinned_LTR;
     }
   }
 
@@ -144,11 +153,18 @@ export class ClientAppDashboardComponent implements OnInit {
       this.ThemeAppearence.value === "dark" ? this.Constants.CSS_Dark : this.Constants.CSS_light_White_bg;
     localStorage.setItem(this.Constants.SideNavThemeClass, this.SidenavThemeClass);
   }
-
   RTLToggle() {
     this.IsRTL = !this.IsRTL;
-    if (this.IsRTL) {
-      document.dir = "rtl";
-    } else document.dir = "ltr";
+    localStorage.setItem(this.Constants.IsRTL, String(this.IsRTL));
+    if (this.pinned) {
+      this.preventMouseLeave = true;
+      this.ToggleClass = this.Constants.CSS_SideNav_FullOpened;
+      this.SideNav_Content_class = this.IsRTL ? this.Constants.CSS_sidenav_content_pin_RTL : this.Constants.CSS_sidenav_content_pin_LTR;
+    } else {
+      this.preventMouseLeave = false;
+      this.ToggleClass = this.Constants.CSS_SideNav_HalfClosed;
+      this.SideNav_Content_class = this.IsRTL ? this.Constants.CSS_sidenav_content_nonPinned_RTL : this.Constants.CSS_sidenav_content_nonPinned_LTR;
+    }
   }
+
 }

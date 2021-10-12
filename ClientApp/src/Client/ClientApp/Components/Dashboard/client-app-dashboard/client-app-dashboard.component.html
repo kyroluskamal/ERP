@@ -1,12 +1,14 @@
-<mat-sidenav-container hasBackdrop="false">
+<mat-sidenav-container hasBackdrop="false" [dir]="IsRTL?'rtl':'ltr'">
   <!-- --------------------------------------------------------------------------------------
-     ----------------------------------- Full Openned sidenav ----------------------------
+     ----------------------------------- Half Closed ----------------------------
      ------------------------------------------------------------------------------------->
   <mat-sidenav mode="side" opened="true"
-    (mouseleave)="OnMouseLeave()"
-    [ngClass]="ToggleClass + ' ' +SidenavThemeClass" fxLayout="column">
+    (mouseover)="OnMouseOver()" (mouseleave)="OnMouseLeave()"
+    [ngClass]="ToggleClass+ ' ' + SidenavThemeClass"
+    fxLayout="column">
     <mat-nav-list fxLayout="row" fxLayoutAlign="space-between center">
-      <a [class]="Constants.CSS_Dashboard_Sidenav_CompmanyName" fxFlex="1 2 90%"
+      <a [class]="Constants.CSS_Dashboard_Sidenav_CompmanyName + ' ' + Display"
+        fxFlex="1 2 90%"
         [routerLink]="['','app']">KH-ERP</a>
       <button [matTooltip]="pinned?'Close sidebar':'Fix sidebar'"
         matTooltipPosition="right"
@@ -21,26 +23,13 @@
     </mat-nav-list>
   </mat-sidenav>
   <!-- --------------------------------------------------------------------------------------
-     ----------------------------------- Half Closed ----------------------------
-     ------------------------------------------------------------------------------------->
-  <mat-sidenav mode="side" opened="true"
-    (mouseover)="OnMouseOver()"
-    [ngClass]="fixedSideNavToggle + ' ' + SidenavThemeClass" fxLayout="column">
-    <mat-nav-list fxLayout="row" fxLayoutAlign="center center">
-      <mat-icon (click)="PinSideNav()"
-        [class]="pinned?'':Constants.CSS_Openned_pin"><span
-          class="material-icons-two-tone">
-          push_pin
-        </span></mat-icon>
-    </mat-nav-list>
-  </mat-sidenav>
-  <!-- --------------------------------------------------------------------------------------
      ----------------------------------- Settings nav ----------------------------
      ------------------------------------------------------------------------------------->
-  <mat-sidenav mode="side" #sideNav position="end"
+  <mat-sidenav mode="over" #sideNav position="end"
     fxLayout="column" [class]="Constants.CSS_SideNav_FullOpened + ' '
     +SidenavThemeClass">
-    <button mat-icon-button class="smallCloseIcone" [disableRipple]="true">
+    <button mat-icon-button [class]="Constants.CSS_smallCloseIcone"
+      [disableRipple]="true">
       <mat-icon (click)="sideNav.toggle()"><span
           class="material-icons-outlined">cancel</span></mat-icon>
     </button>
@@ -128,6 +117,6 @@
 
       </div>
     </mat-toolbar>
-    <router-outlet></router-outlet>
+    <router-outlet [class]="BodyThemeClass"></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

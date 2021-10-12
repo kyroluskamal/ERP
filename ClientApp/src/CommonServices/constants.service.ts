@@ -105,8 +105,10 @@ export class ConstantsService {
   CSS_displayNone = "displayNone";
   CSS_display_inline_block = "display-inline-block";
   CSS_SideNav_fullyClosed = "SideNav-fullyClosed";
-  CSS_sidenav_content_initial = "mat-sidenav-content-initial";
-  CSS_sidenav_content_pin = "mat-sidenav-content-pin";
+  CSS_sidenav_content_nonPinned_LTR = "mat-sidenav-content-nonPinned-LTR";
+  CSS_sidenav_content_nonPinned_RTL = "mat-sidenav-content-nonPinned-RTL";
+  CSS_sidenav_content_pin_LTR = "mat-sidenav-content-pin-LTR";
+  CSS_sidenav_content_pin_RTL = "mat-sidenav-content-pin-RTL";
   CSS_Openned_pin = "Openned-pin";
   CSS_Dashboard_ToolTip = "Dashboard-ToolTip";
   CSS_text_center = "text-center";
@@ -116,9 +118,11 @@ export class ConstantsService {
   CSS_light_White_bg = "light-White-bg";
   CSS_Dark = "dark";
   CSS_light = "light";
+  CSS_smallCloseIcone = "smallCloseIcone";
   //Local Stoarage
   FixedSidnav = "FixedSidNav";
   ToolbarThemeClass = "ToolbarThemeClass";
   BodyThemeClass = "BodyThemeClass";
   SideNavThemeClass = "SideNavThemeClass";
+  IsRTL = "IsRTL";
 }
