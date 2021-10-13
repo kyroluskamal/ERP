@@ -551,21 +551,22 @@ form[dir="rtl"] *:not(mat-icon) {
 }
 
 /* For dark and light themes */
-.dark {
+.dark-for-Body {
   background-color: #232b3e;
   color: #96a2b4;
-  padding-top: 1px;
+  /* padding-top: 1px; */
   transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-.light {
-  background-color: #f9f9f9 !important;
-  color: #232b3e !important;
-  transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+.light-For_body {
+  background-color: #f1f2f7;
+  transition: all 0.5s;
+  font-family: "Poppins", sans-serif;
+  transition: all 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-mat-sidenav.dark{
+/* mat-sidenav.dark{
   color:#e6e6e6;
   transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
+} */
 .smallCloseIcone{
   margin: 0!important;
   padding: 0!important;
@@ -582,9 +583,44 @@ mat-sidenav.dark{
 .padding-10{
   padding: 10px;
 }
+.dark-for-others{
+  background-color: #1a202e !important;
+  color:#e6e6e6 !important;
+  transition: all 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
-.light-White-bg {
-  background-color: white !important;
-  color: #232b3e !important;
-  transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
+
+.light-for-others {
+  background-color: white !important;
+  color: #333 !important;
+  transition: all 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.dark-color{
+  color: #333 !important;
+}
+.light-color{
+  color:#e6e6e6 !important;
+}
+.blue-bg{background-color: #5c77ff;}
+.amber-bg{ background-color: #ffc107 }
+.cyan-bg{background-color: #00bcd4}
+.deep_organge-bg{background-color: #ff5722 }
+.deep_purple-bg{background-color: #673ab7 }
+.green-bg{background-color:#4caf50 }
+.organge-bg{background-color:#ff9800}
+.pink-bg{background-color:#e91e63}
+.purple-bg{background-color:#9c27b0}
+.red-bg{background-color:#f44336}
+.teal-bg{background-color:#009688 }
+
+.blue{color: #5c77ff;}
+.amber{ color: #ffc107 }
+.cyan{color: #00bcd4}
+.deep_organge{color: #ff5722 }
+.deep_purple{color: #673ab7 }
+.green{color:#4caf50 }
+.organge{color:#ff9800}
+.pink{color:#e91e63}
+.purple{color:#9c27b0}
+.red{color:#f44336}
+.teal{color:#009688 }

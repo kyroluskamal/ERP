@@ -115,14 +115,47 @@ export class ConstantsService {
   CSS_Dashboard_Sidenav_CompmanyName = "Dashboard-Sidenav-CompmanyName";
   CSS_userIconImage = "userIconImage";
   CSS_padding_10 = "padding-10";
-  CSS_light_White_bg = "light-White-bg";
-  CSS_Dark = "dark";
-  CSS_light = "light";
+  CSS_light_for_others = "light-for-others";
+  CSS_dark_for_others = "dark-for-others";
+  CSS_Dark_for_body = "dark-for-Body";
+  CSS_light_for_body = "light-For_body";
   CSS_smallCloseIcone = "smallCloseIcone";
+
+  CSS_blue_bg = "blue-bg";
+  CSS_amber_bg = "amber-bg";
+  CSS_cyan_bg = "cyan-bg";
+  CSS_deep_organge_bg = "deep_organge-bg";
+  CSS_deep_purple_bg = "deep_purple-bg";
+  CSS_green_bg = "green-bg";
+  CSS_organge_bg = "organge-bg";
+  CSS_pink_bg = "pink-bg";
+  CSS_purple_bg = "purple-bg";
+  CSS_red_bg = "red-bg";
+  CSS_teal_bg = "teal-bg";
+
+  CSS_blue = "blue";
+  CSS_amber = "amber";
+  CSS_cyan = "cyan";
+  CSS_deep_organge = "deep_organge";
+  CSS_deep_purple = "deep_purple";
+  CSS_green = "green";
+  CSS_organge = "organge";
+  CSS_pink = "pink";
+  CSS_purple = "purple";
+  CSS_red = "red";
+  CSS_teal = "teal";
+
+  CSS_dark_color = "dark-color";
+  CSS_light_color = "light-color"
   //Local Stoarage
   FixedSidnav = "FixedSidNav";
   ToolbarThemeClass = "ToolbarThemeClass";
   BodyThemeClass = "BodyThemeClass";
   SideNavThemeClass = "SideNavThemeClass";
-  IsRTL = "IsRTL";
+  ThemeAppearence = "ThemeAppearence";
+  SidebarAppeareance = "SidebarAppeareance";
+  BodyAppeareance = "BodyAppeareance";
+  ToolbarAppeareance = "ToolbarAppeareance";
+  dir = "dir";
+  ChoosenThemeColors = "ChoosenThemeColors";
 }

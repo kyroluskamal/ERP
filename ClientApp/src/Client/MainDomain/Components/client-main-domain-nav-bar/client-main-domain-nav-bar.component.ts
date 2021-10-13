@@ -39,7 +39,7 @@ export class ClientMainDomainNavBarComponent implements OnInit {
       .subscribe((navEnd: any) => {
         if (navEnd.url.length === 1) this.HomeButtonActive = "btn btn-neutral";
         else this.HomeButtonActive = ""
-        if (navEnd.url.includes("/dashboard")) this.DashboardButtonActive = "btn btn-neutral";
+        if (navEnd.url.includes("/app")) this.DashboardButtonActive = "btn btn-neutral";
         else this.DashboardButtonActive = "";
       });
   }
@@ -62,7 +62,7 @@ export class ClientMainDomainNavBarComponent implements OnInit {
 
     this.selected = localStorage.getItem('lang');
     if (!this.selected) {
-      this.selected = 'end';
+      this.selected = 'en';
       this.switchLang(this.selected);
     } else {
       this.switchLang(this.selected);

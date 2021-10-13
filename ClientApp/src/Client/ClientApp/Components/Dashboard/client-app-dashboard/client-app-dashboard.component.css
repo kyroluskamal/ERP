@@ -55,14 +55,18 @@ mat-sidenav-container {
   transform: rotate(45deg);
 }
 
-body {
+/* body {
   background-color: #f1f2f7;
   transition: all 0.5s;
   font-size: 13px;
-}
-mat-nav-list div h3 {
+} */
+mat-sidenav.dark-for-others div h3 {
   font-weight: bold;
-  border-bottom: #232b3e solid 1px;
+  border-bottom: #e6e6e6 solid 1px;
+}
+mat-sidenav.light-for-others div h3 {
+  font-weight: bold;
+  border-bottom: #333 solid 1px;
 }
 .mat-button-toggle-checked {
   color: white !important;
@@ -75,4 +79,7 @@ p button {
 }
 p button mat-icon {
   color: white !important;
+}
+mat-toolbar {
+  transform: translate(0, -1px);
 }

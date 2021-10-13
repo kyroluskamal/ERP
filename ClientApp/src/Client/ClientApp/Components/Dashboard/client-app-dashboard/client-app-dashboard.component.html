@@ -1,4 +1,4 @@
-<mat-sidenav-container hasBackdrop="false" [dir]="IsRTL?'rtl':'ltr'">
+<mat-sidenav-container hasBackdrop="false" [dir]="dir">
   <!-- --------------------------------------------------------------------------------------
      ----------------------------------- Half Closed ----------------------------
      ------------------------------------------------------------------------------------->
@@ -23,11 +23,12 @@
     </mat-nav-list>
   </mat-sidenav>
   <!-- --------------------------------------------------------------------------------------
-     ----------------------------------- Settings nav ----------------------------
-     ------------------------------------------------------------------------------------->
+     ----------------------------------- Settings nav ---------------------------------------
+     ---------------------------------------------------------------------------------------->
   <mat-sidenav mode="over" #sideNav position="end"
+    [dir]="translate.isRightToLeft(SelectedLanguage)?'rtl':'ltr'"
     fxLayout="column" [class]="Constants.CSS_SideNav_FullOpened + ' '
-    +SidenavThemeClass">
+    + SidenavThemeClass">
     <button mat-icon-button [class]="Constants.CSS_smallCloseIcone"
       [disableRipple]="true">
       <mat-icon (click)="sideNav.toggle()"><span
@@ -36,44 +37,71 @@
     <mat-nav-list [class]="Constants.CSS_padding_10">
       <div mat-list-item>
         <h3>Theme settings</h3>
-
+        <p>Theme appearance:</p>
         <p>
-          Theme appearance:
           <mat-button-toggle-group [formControl]="ThemeAppearence"
             name="ThemeAppearence"
+            (change)="AllThemeDarkOrLight(ThemeAppearence.value)"
             aria-label="Theme Appearence">
-            <mat-button-toggle value="light" disableRipple
-              (click)="DarkOrLight()" [checked]="BodyThemeClass==='light'?true:
-              false">Light</mat-button-toggle>
-            <mat-button-toggle value="dark" disableRipple
-              (click)="DarkOrLight()" [checked]="BodyThemeClass==='dark'?true:
-              false">Dark</mat-button-toggle>
+            <mat-button-toggle value="light" disableRipple>Light</mat-button-toggle>
+            <mat-button-toggle value="dark" disableRipple>Dark</mat-button-toggle>
           </mat-button-toggle-group>
         </p>
+        <p>Sidebar appeareance:</p>
         <p>
-          Sidebar appeareance:
           <mat-button-toggle-group name="SidebarAppeareance"
-            aria-label="Sidebar
-            appeareance">
-            <mat-button-toggle value="Light" disableRipple>Light</mat-button-toggle>
-            <mat-button-toggle value="Dark" disableRipple>Dark</mat-button-toggle>
+            aria-label="Sidebar appeareance"
+            (change)="SidebarAppeareanceToggle(SidebarAppeareance.value)"
+            [formControl]="SidebarAppeareance">
+            <mat-button-toggle value="light" disableRipple>Light</mat-button-toggle>
+            <mat-button-toggle value="dark" disableRipple>Dark</mat-button-toggle>
+          </mat-button-toggle-group>
+        </p>
+        <p>Toolbar appeareance:</p>
+        <p>
+          <mat-button-toggle-group name="ToolbarAppeareance"
+            aria-label="Toolbar appeareance"
+            (change)="ToolbarAppeareanceToggle(ToolbarAppeareance.value)"
+            [formControl]="ToolbarAppeareance">
+            <mat-button-toggle value="light" disableRipple>Light</mat-button-toggle>
+            <mat-button-toggle value="dark" disableRipple>Dark</mat-button-toggle>
+          </mat-button-toggle-group>
+        </p>
+        <p>Body appeareance:</p>
+        <p>
+          <mat-button-toggle-group name="Body Appeareance"
+            aria-label="Body appeareance"
+            (change)="BodyAppeareanceToggle(BodyAppeareance.value)"
+            [formControl]="BodyAppeareance">
+            <mat-button-toggle value="light" disableRipple>Light</mat-button-toggle>
+            <mat-button-toggle value="dark" disableRipple>Dark</mat-button-toggle>
           </mat-button-toggle-group>
         </p>
         <p>Theme colors</p>
         <p fxLayout="row wrap" fxLayoutAlign="start center"
           fxLayoutGap="3px"
           #themeColorPicker>
-
           <button mat-icon-button *ngFor="let x of ThemeColors; let i=
             index"
             [value]="x.value" (click)="ColorChoose(x.colorName, i);"
-            [ngStyle]="{'background-color':
-            x.value}"><mat-icon class="mat-18">{{x.choosen?'check':''}}</mat-icon></button>
+            [class]="x.bg"><mat-icon class="mat-18">{{x.colorName===ChoosenThemeColor.colorName?'check':''}}</mat-icon></button>
         </p>
       </div>
       <div>
         <h3>Layout settings</h3>
-        <mat-slide-toggle color="primary" disableRipple (click)="RTLToggle()">RTL</mat-slide-toggle>
+        <mat-button-toggle-group name="DocumentDirection"
+          aria-label="Document Direction" dir="ltr"
+          (change)="DocumentDirectionToggle(this.DocumentDirection.value)"
+          [formControl]="DocumentDirection">
+          <mat-button-toggle value="ltr" disableRipple><mat-icon class="mat-18"><span
+                class="material-icons-outlined">
+                align_horizontal_left
+              </span></mat-icon></mat-button-toggle>
+          <mat-button-toggle value="rtl" disableRipple><mat-icon class="mat-18"><span
+                class="material-icons-outlined">
+                align_horizontal_right
+              </span></mat-icon></mat-button-toggle>
+        </mat-button-toggle-group>
       </div>
     </mat-nav-list>
   </mat-sidenav>
@@ -81,14 +109,27 @@
      ----------------------------------- Content -----------------------------------------
      ------------------------------------------------------------------------------------->
   <mat-sidenav-content
-    [class]="SideNav_Content_class">
+    [class]="SideNav_Content_class + ' ' + BodyThemeClass">
 
     <!-- Toolbar -->
-    <mat-toolbar class="{{Constants.CSS_light_White_bg}} mat-elevation-z3"
-      fxLayout="row" [class]="ToolbarThemeClass"
-      fxLayoutAlign="space-between center">
+    <mat-toolbar [class]="ToolbarThemeClass + ' ' + 'mat-elevation-z3'"
+      fxLayout="row" fxLayoutAlign="space-between center">
+      <!-- First Div -->
       <div fxLayoutAlign="center center">
-        <button mat-raised-button color="primary">Add new</button>
+        <button mat-raised-button [ngClass]="ChoosenThemeColor.bg"
+          [class]="ChoosenThemeColor.colorName==='organge'||ChoosenThemeColor.colorName==='amber'?Constants.CSS_dark_color:
+          Constants.CSS_light_color">Add new</button>
+        <!-- Language selector -->
+        <button mat-icon-button aria-label="menu toggle"
+          [matMenuTriggerFor]="LangSelector" dir="ltr">
+          <mat-icon>language</mat-icon>
+          <mat-menu #LangSelector>
+            <a mat-menu-item *ngFor="let code of translate.getLangs()"
+              (click)="switchLang(code)">
+              {{ translate.NameByCode(code) | titlecase }}
+            </a>
+          </mat-menu>
+        </button>
       </div>
       <!-- second Div -->
       <div fxLayoutAlign="center center" fxLayoutGap="3px">
