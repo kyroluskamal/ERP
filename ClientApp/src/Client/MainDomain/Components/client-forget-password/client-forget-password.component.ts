@@ -51,11 +51,13 @@ export class ClientForgetPasswordComponent implements OnInit, OnDestroy {
     }
     this.AccountService.ClientForgetPassord(ForgetPasswordModel).subscribe(
       () => {
-        this.Notifications.success(this.Constants.PasswordResetEmail_success)
+        this.Notifications.success(this.translate.GetTranslation(this.Constants.PasswordResetEmail_success),
+          this.translate.isRightToLeft(this.selected) ? "rtl" : "ltr")
         this.dialogHandler.CloseDialog();
       },
       (error) => {
-        this.Notifications.error(this.Constants.PasswordResetEmail_Error, "");
+        this.Notifications.error(this.translate.GetTranslation(this.Constants.PasswordResetEmail_Error), "",
+          this.translate.isRightToLeft(this.selected) ? "rtl" : "ltr");
         this.ValidationErrors = error;
       }
     );

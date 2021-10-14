@@ -7,14 +7,16 @@ import { DialogHandlerService } from '../../../CommonServices/DialogHandler/dial
 import { NotificationsService } from '../../../CommonServices/NotificationService/notifications.service';
 import { ClientAccountService } from '../Authentication/client-account-service.service';
 import { ConstantsService } from '../../../CommonServices/constants.service';
+import { TranslationService } from '../../../CommonServices/translation-service.service';
 @Injectable({
   providedIn: 'root'
 })
 export class ClientAdminGuard implements CanActivate {
   InLocalStorage: any;
   InSessionStorage: any;
+  currentLang = this.translate.GetCurrentLang();
   constructor(private accountService: ClientAccountService, private Notifications: NotificationsService,
-    public Constants: ConstantsService) {
+    public Constants: ConstantsService, private translate: TranslationService) {
     this.InLocalStorage = localStorage.getItem(this.Constants.Client);
     this.InSessionStorage = sessionStorage.getItem(this.Constants.Client);
   }
@@ -30,7 +32,8 @@ export class ClientAdminGuard implements CanActivate {
             if (role == this.Constants.Admin_Role) return true
           }
         }
-        this.Notifications.error(this.Constants.UnAuthorizedAdmin, "");
+        this.Notifications.error(this.translate.GetTranslation(this.Constants.UnAuthorizedAdmin), "",
+          this.translate.isRightToLeft(this.currentLang) ? "rtl" : "ltr");
         return false
       })
     );

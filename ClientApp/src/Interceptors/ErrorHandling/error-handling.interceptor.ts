@@ -10,9 +10,11 @@ import { Router, NavigationExtras } from '@angular/router';
 import { catchError } from 'rxjs/operators';
 import { NotificationsService } from '../../CommonServices/NotificationService/notifications.service';
 import { DialogHandlerService } from '../../CommonServices/DialogHandler/dialog-handler.service';
+import { TranslationService } from 'src/CommonServices/translation-service.service';
+import { ConstantsService } from 'src/CommonServices/constants.service';
 @Injectable()
 export class ErrorHandlingInterceptor implements HttpInterceptor {
-  
+
   constructor(private router: Router, private Notification: NotificationsService,
     private dialogHandler: DialogHandlerService) { }
 
@@ -24,16 +26,16 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
           switch (error.status) {
             case 400:
               if (error.error.errors) {
-                
+
                 for (const key in error.error.errors) {
                   if (error.error.errors[key]) {
                     modalStateErrors.push(error.error.errors[key]);
                   }
                 }
-                this.Notification.error("Please correct the errors and try agaid", error.status);
+                this.Notification.error("Please correct the errors and try again", error.status, "ltr");
                 throw modalStateErrors.flat();
               } else if (error.error) {
-                
+
                 if (Array.isArray(error.error)) {
                   for (let i = 0; i < error.error.length; i++) {
                     if (error.error[i].description) {
@@ -42,19 +44,19 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
                   }
                 } else {
                   modalStateErrors.push(error.error);
-                  this.Notification.error(error.error.error, error.status);
+                  this.Notification.error(error.error.error, error.status, "");
                   throw modalStateErrors.flat();
                 }
-                this.Notification.error("Please correct the errors and try again", error.status);
+                this.Notification.error("Please correct the errors and try again", error.status, "ltr");
                 throw modalStateErrors.flat();
 
               } else {
-                this.Notification.error(error.statusText, error.status);
+                this.Notification.error(error.statusText, error.status, "ltr");
               }
               break;
             case 401:
               modalStateErrors.push(error.error);
-              this.Notification.error(error.error.error, error.status);
+              this.Notification.error(error.error.error, error.status, "ltr");
               console.log(error.error.error);
               throw modalStateErrors.flat();
               break;
@@ -67,7 +69,7 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
               this.router.navigateByUrl('/server-error', navigationExtras);
               break;
             default:
-              this.Notification.error('Something unexpected went wrong', "");
+              this.Notification.error('Something unexpected went wrong', "", "ltr");
               break;
           }
         }

@@ -10,8 +10,10 @@
       <a [class]="Constants.CSS_Dashboard_Sidenav_CompmanyName + ' ' + Display"
         fxFlex="1 2 90%"
         [routerLink]="['','app']">KH-ERP</a>
-      <button [matTooltip]="pinned?'Close sidebar':'Fix sidebar'"
-        matTooltipPosition="right"
+      <button
+        [matTooltip]="pinned?translate.GetTranslation(Constants.CloseSidebar):
+        translate.GetTranslation(Constants.FixSidebar)"
+        [matTooltipPosition]="dir==='ltr'?'right':'left'"
         [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
         mat-icon-button
         (click)="PinSideNav()"
@@ -36,48 +38,48 @@
     </button>
     <mat-nav-list [class]="Constants.CSS_padding_10">
       <div mat-list-item>
-        <h3>Theme settings</h3>
-        <p>Theme appearance:</p>
+        <h3>{{"Theme settings"|translate}}</h3>
+        <p>{{"General appearance"|translate}}</p>
         <p>
           <mat-button-toggle-group [formControl]="ThemeAppearence"
             name="ThemeAppearence"
             (change)="AllThemeDarkOrLight(ThemeAppearence.value)"
             aria-label="Theme Appearence">
-            <mat-button-toggle value="light" disableRipple>Light</mat-button-toggle>
-            <mat-button-toggle value="dark" disableRipple>Dark</mat-button-toggle>
+            <mat-button-toggle value="light" disableRipple>{{"Light"|translate}}</mat-button-toggle>
+            <mat-button-toggle value="dark" disableRipple>{{"Dark"|translate}}</mat-button-toggle>
           </mat-button-toggle-group>
         </p>
-        <p>Sidebar appeareance:</p>
+        <p>{{"Sidebar appeareance"|translate}}</p>
         <p>
           <mat-button-toggle-group name="SidebarAppeareance"
             aria-label="Sidebar appeareance"
             (change)="SidebarAppeareanceToggle(SidebarAppeareance.value)"
             [formControl]="SidebarAppeareance">
-            <mat-button-toggle value="light" disableRipple>Light</mat-button-toggle>
-            <mat-button-toggle value="dark" disableRipple>Dark</mat-button-toggle>
+            <mat-button-toggle value="light" disableRipple>{{"Light"|translate}}</mat-button-toggle>
+            <mat-button-toggle value="dark" disableRipple>{{"Dark"|translate}}</mat-button-toggle>
           </mat-button-toggle-group>
         </p>
-        <p>Toolbar appeareance:</p>
+        <p>{{"Toolbar appeareance"|translate}}</p>
         <p>
           <mat-button-toggle-group name="ToolbarAppeareance"
             aria-label="Toolbar appeareance"
             (change)="ToolbarAppeareanceToggle(ToolbarAppeareance.value)"
             [formControl]="ToolbarAppeareance">
-            <mat-button-toggle value="light" disableRipple>Light</mat-button-toggle>
-            <mat-button-toggle value="dark" disableRipple>Dark</mat-button-toggle>
+            <mat-button-toggle value="light" disableRipple>{{"Light"|translate}}</mat-button-toggle>
+            <mat-button-toggle value="dark" disableRipple>{{"Dark"|translate}}</mat-button-toggle>
           </mat-button-toggle-group>
         </p>
-        <p>Body appeareance:</p>
+        <p>{{"Content appeareance"|translate}}</p>
         <p>
           <mat-button-toggle-group name="Body Appeareance"
-            aria-label="Body appeareance"
+            aria-label="Content appeareance"
             (change)="BodyAppeareanceToggle(BodyAppeareance.value)"
             [formControl]="BodyAppeareance">
-            <mat-button-toggle value="light" disableRipple>Light</mat-button-toggle>
-            <mat-button-toggle value="dark" disableRipple>Dark</mat-button-toggle>
+            <mat-button-toggle value="light" disableRipple>{{"Light"|translate}}</mat-button-toggle>
+            <mat-button-toggle value="dark" disableRipple>{{"Dark"|translate}}</mat-button-toggle>
           </mat-button-toggle-group>
         </p>
-        <p>Theme colors</p>
+        <p>{{"Theme colors"|translate}}</p>
         <p fxLayout="row wrap" fxLayoutAlign="start center"
           fxLayoutGap="3px"
           #themeColorPicker>
@@ -88,16 +90,24 @@
         </p>
       </div>
       <div>
-        <h3>Layout settings</h3>
+        <h3>{{"Layout settings"|translate}}</h3>
         <mat-button-toggle-group name="DocumentDirection"
           aria-label="Document Direction" dir="ltr"
           (change)="DocumentDirectionToggle(this.DocumentDirection.value)"
           [formControl]="DocumentDirection">
-          <mat-button-toggle value="ltr" disableRipple><mat-icon class="mat-18"><span
+          <mat-button-toggle value="ltr" disableRipple
+            [matTooltip]="translate.GetTranslation(Constants.Layout_LTR)"
+            [matTooltipPosition]="dir==='ltr'?'right':'left'"
+            [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"><mat-icon
+              class="mat-18"><span
                 class="material-icons-outlined">
                 align_horizontal_left
               </span></mat-icon></mat-button-toggle>
-          <mat-button-toggle value="rtl" disableRipple><mat-icon class="mat-18"><span
+          <mat-button-toggle value="rtl" disableRipple
+            [matTooltip]="translate.GetTranslation(Constants.Layout_RTL)"
+            [matTooltipPosition]="dir==='ltr'?'right':'left'"
+            [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"><mat-icon
+              class="mat-18"><span
                 class="material-icons-outlined">
                 align_horizontal_right
               </span></mat-icon></mat-button-toggle>
@@ -118,9 +128,12 @@
       <div fxLayoutAlign="center center">
         <button mat-raised-button [ngClass]="ChoosenThemeColor.bg"
           [class]="ChoosenThemeColor.colorName==='organge'||ChoosenThemeColor.colorName==='amber'?Constants.CSS_dark_color:
-          Constants.CSS_light_color">Add new</button>
+          Constants.CSS_text_white">{{"Add New"|translate}}</button>
         <!-- Language selector -->
         <button mat-icon-button aria-label="menu toggle"
+          [matTooltip]="translate.GetTranslation(Constants.ChooseYourLang)"
+          [matTooltipPosition]="dir==='ltr'?'right':'left'"
+          [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
           [matMenuTriggerFor]="LangSelector" dir="ltr">
           <mat-icon>language</mat-icon>
           <mat-menu #LangSelector>
@@ -133,7 +146,11 @@
       </div>
       <!-- second Div -->
       <div fxLayoutAlign="center center" fxLayoutGap="3px">
-        <button mat-icon-button (click)="ToggleFullscreen()">
+        <button mat-icon-button (click)="ToggleFullscreen()"
+          [matTooltip]="FullscreenEnabled?translate.GetTranslation(Constants.FullscreenMode_exit):
+          translate.GetTranslation(Constants.FullscreenMode_enable)"
+          [matTooltipPosition]="dir==='ltr'?'right':'left'"
+          [matTooltipClass]="Constants.CSS_Dashboard_ToolTip">
           <mat-icon><span class="material-icons-outlined">
               {{FullscreenEnabled?'fullscreen_exit':'fullscreen'}}
             </span></mat-icon>

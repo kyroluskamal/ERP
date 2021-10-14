@@ -143,7 +143,8 @@ export class ClientAppDashboardComponent implements OnInit {
 
   ToggleFullscreen() {
     if (!document.fullscreenEnabled)
-      this.Notifications.error("Your browser doesn't support fullscreen mode. Use latest version of Chrome.", "");
+      this.Notifications.error(this.translate.GetTranslation(this.Constants.BrowserDontSupportFullscreen), "",
+        this.translate.isRightToLeft(this.SelectedLanguage) ? "rtl" : "ltr");
     else if (!document.fullscreenElement) document.documentElement.requestFullscreen()
     else { document.exitFullscreen() }
   }

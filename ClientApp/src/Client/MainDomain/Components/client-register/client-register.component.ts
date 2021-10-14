@@ -91,7 +91,8 @@ export class ClientRegisterComponent implements OnInit, OnDestroy {
         this.clientWithToken = response;
         console.log(response);
         this.ValidationErrors = [];
-        this.Notifications.success("Your registered Successfully. Please Confirm your email");
+        this.Notifications.success(this.translate.GetTranslation(this.Constants.SuccessfulRegistration),
+          this.translate.isRightToLeft(this.selected) ? "rtl" : "ltr");
         this.dialogHandler.CloseDialog();
       },
       (error) => {

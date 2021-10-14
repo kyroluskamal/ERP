@@ -6,6 +6,24 @@ import { Injectable } from '@angular/core';
 export class ConstantsService {
 
   constructor() { }
+  isRightToLeft(lang: any) {
+    switch (lang) {
+      case 'ar': return true;
+      case 'arc': return true;
+      case 'dv': return true;
+      case 'fa': return true;
+      case 'ha': return true;
+      case 'he': return true;
+      case 'khw': return true;
+      case 'ks': return true;
+      case 'ku': return true;
+      case 'ps': return true;
+      case 'ur': return true;
+      case 'yi': return true;
+      default: return false;
+    }
+  }
+  CurrentLang = localStorage.getItem("lang");
   Owners: string = "owners";
   Owner: string = "Owner";
   Client: string = "Client";
@@ -17,15 +35,37 @@ export class ConstantsService {
   lang: string = "lang";
 
   //Notifications Messages
-  LoggedInSuccessfully: string = "You have logged in successfully";
-  EmilConfirmationResnding: string = "Email confirmation resended agian";
-  EmilConfirmationResnding_success: string = "Email confirmation resended agian";
-  PasswordResetEmail_success: string = "Password Email link have been sent successfully";
-  EmilConfirmationResnding_Error: string = "Can't resend Email confirmation again. Please contact us";
-  PasswordResetEmail_Error: string = "Failed to sent password link. Please try again or contact us";
-  ResetPassword_Error: string = "Failed to reset password";
-  ResetPassword_Success: string = "Password reset is successful";
+  LoggedInSuccessfully: string = "LoggedInSuccessfully";
+  EmilConfirmationResnding = "EmilConfirmationResnding";
+  EmilConfirmationResnding_success = "EmilConfirmationResnding_success";
+  PasswordResetEmail_success = "PasswordResetEmail_success";
+  EmilConfirmationResnding_Error = "EmilConfirmationResnding_Error"
+  PasswordResetEmail_Error = "PasswordResetEmail_Error;"
+  ResetPassword_Error = "ResetPassword_Error";
+  ResetPassword_Success = "ResetPassword_Success";
+  BrowserDontSupportFullscreen = "BrowserDon'tSupportFullscreen";
+  SuccessfulRegistration = "SuccessfulRegistration";
 
+  //Tooltip translation
+  CloseSidebar = "Close sidebar";
+  FixSidebar = "Fix sidebar";
+  FullscreenMode_enable = "FullscreenMode_enable";
+  FullscreenMode_exit = "FullscreenMode_exit";
+  ChooseYourLang = "ChooseYourLang";
+  Dark = "Dark";
+  Ligh = "Light";
+  Layout_LTR = "Layout_LTR";
+  Layout_RTL = "Layout_RTL";
+  //Interceptor Notigication translations
+
+  PleaseCorrectErrors = "PleaseCorrectErrors";
+  Something_nexpected_went_wrong = "Something unexpected went wrong"
+
+  PleaseCorrectErrors_En = "Please correct the errors and try again";
+  Something_nexpected_went_wrong_EN = "Something unexpected went wrong";
+
+  PleaseCorrectErrors_AR_translation = "من فضلك صحح الاخطاء وحاول مرة اخرى.";
+  Something_nexpected_went_wrong_Arabic = "حدث خطأ غير متوقع";
   //Static Functions
   ClientUrl(url: string): string {
     return "https://" + window.location.host + "/" + url;
@@ -35,8 +75,8 @@ export class ConstantsService {
   Admin_Role = "Admin";
 
   //Guards Error Messages
-  UnAuthorizedAdmin = "Your are not admin to access this area";
-  NotLoggedInUser = "You are not logged in. Please login to access this page";
+  UnAuthorizedAdmin = "UnAuthorizedAdmin";
+  NotLoggedInUser = "NotLoggedInUser";
 
   //Animations Name
   FadeUp = "FadeUp"; FadeUp_Class = "animated fadeInUp";

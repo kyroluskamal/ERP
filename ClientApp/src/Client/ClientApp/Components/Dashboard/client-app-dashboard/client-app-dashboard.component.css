@@ -83,3 +83,18 @@ p button mat-icon {
 mat-toolbar {
   transform: translate(0, -1px);
 }
+[dir="rtl"] .mat-drawer.mat-drawer-end {
+  font-size: 1rem;
+}
+[dir="rtl"] .mat-drawer.mat-drawer-end h3 {
+  font-size: 1.2rem;
+  font-family: var(--Hacen);
+}
+button {
+  font-family: var(--Almarai);
+  font-weight: bold;
+}
+.mat-button-toggle-label-content {
+  font-family: var(--calibri) !important;
+  font-weight: bold !important;
+}

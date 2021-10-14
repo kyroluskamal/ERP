@@ -86,7 +86,8 @@ export class ClientResetPasswordComponent implements OnInit, OnDestroy {
     this.accountService.ClientResetPassword(this.ClientResetPasswordModel).subscribe(
       (Response: any) => {
         this.Success = true;
-        this.Notifications.success(this.Constants.ResetPassword_Success);
+        this.Notifications.success(this.translate.GetTranslation(this.Constants.ResetPassword_Success),
+          this.translate.isRightToLeft(this.selected) ? "rtl" : "ltr");
         this.router.navigateByUrl("/");
         this.dialogHandler.CloseDialog();
       },
@@ -94,7 +95,8 @@ export class ClientResetPasswordComponent implements OnInit, OnDestroy {
         this.Fail = true;
         this.Success = false;
         this.ValidationErrors = error
-        this.Notifications.error(this.Constants.ResetPassword_Error, "");
+        this.Notifications.error(this.translate.GetTranslation(this.Constants.ResetPassword_Error),"",
+          this.translate.isRightToLeft(this.selected) ? "rtl" : "ltr");
       }
     );
   }
@@ -106,12 +108,14 @@ export class ClientResetPasswordComponent implements OnInit, OnDestroy {
     }
     this.accountService.ClientForgetPassord(ForgetPasswordModel).subscribe(
       () => {
-        this.Notifications.success(this.Constants.PasswordResetEmail_success)
+        this.Notifications.success(this.translate.GetTranslation(this.Constants.PasswordResetEmail_success),
+          this.translate.isRightToLeft(this.selected) ? "rtl" : "ltr")
         this.router.navigateByUrl("/");
         this.dialogHandler.CloseDialog();
       },
       (error) => {
-        this.Notifications.error(this.Constants.PasswordResetEmail_Error, "");
+        this.Notifications.error(this.translate.GetTranslation(this.Constants.PasswordResetEmail_Error), "",
+          this.translate.isRightToLeft(this.selected) ? "rtl" : "ltr");
         this.ValidationErrors = error;
       }
     );

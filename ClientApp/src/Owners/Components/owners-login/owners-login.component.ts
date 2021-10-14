@@ -59,7 +59,8 @@ export class OwnersLoginComponent implements OnInit, OnDestroy {
     this.accountService.login(this.OwnerLogin, RememberMe).subscribe(
       response => {
         console.log(response);
-        this.Notifications.success(this.Constants.LoggedInSuccessfully);
+        this.Notifications.success(this.translate.GetTranslation(this.Constants.LoggedInSuccessfully),
+          this.translate.isRightToLeft(this.selected) ? "rtl" : "ltr");
         this.dialogHandler.CloseDialog();
         this.loading = false;
       },
@@ -79,12 +80,14 @@ export class OwnersLoginComponent implements OnInit, OnDestroy {
     }
     this.accountService.SendConfirmationAgain(sendEmailConfirmationAgian).subscribe(
       (response: any) => {
-        this.Notifications.success(this.Constants.EmilConfirmationResnding_success);
+        this.Notifications.success(this.translate.GetTranslation(this.Constants.EmilConfirmationResnding_success),
+          this.translate.isRightToLeft(this.selected) ? "rtl" : "ltr");
         this.loading = false;
       },
       (error) => {
         this.loading = false;
-        this.Notifications.error(this.Constants.EmilConfirmationResnding_Error, "");
+        this.Notifications.error(this.translate.GetTranslation(this.Constants.EmilConfirmationResnding_Error), "",
+          this.translate.isRightToLeft(this.selected) ? "rtl" : "ltr");
         console.log(error);
       }
     );

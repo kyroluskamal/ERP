@@ -77,7 +77,8 @@ export class OwnerRegisterComponent implements OnInit, OnDestroy {
     if (this.RegisterForm.invalid) return;
     this.OwnerAuth.Register(this.OwnerRegisterModel).subscribe(
       (response) => {
-        this.Notifications.success("Your registered Successfully. Please Confirm your email");
+        this.Notifications.success(this.translate.GetTranslation(this.Constants.SuccessfulRegistration),
+          this.translate.isRightToLeft(this.selected) ? "rtl" : "ltr");
         console.log(response);
         this.ValidationErrors = [];
         this.dialogHandler.CloseDialog();

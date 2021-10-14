@@ -24,7 +24,7 @@
 @import url("./assets/Fonts/HacenCasablancaHeavy/stylesheet.css");
 :root {
   /*.....................................Fonts.........................*/
-  --Almarai : "Almarai"
+  --Almarai: "Almarai";
   --Chewy: "Chewy";
   --Fredoka: "Fredoka One";
   --Jomhuria: "Jomhuria";
@@ -33,16 +33,16 @@
   --Paytone: "Paytone One";
   --Titan: "Titan One";
   --NotoSansArabic: "Noto Sans Arabic";
-  --Lalezar:"Lalezar";
-  --Calibri : "Calibri";
+  --Lalezar: "Lalezar";
+  --Calibri: "Calibri";
   --Hacen: "Hacen Casablanca";
   /*......................................colors..........................*/
   --sucessColor: #2dce89;
   --infoColor: #11cdef;
-  --WarningCOlor:#fa3a0e;
+  --WarningCOlor: #fa3a0e;
   --DangerColor: #f5365c;
   --PrimaryColor_Active: #324cdd;
-  --PrimaryColor:#5e72e4;
+  --PrimaryColor: #5e72e4;
 }
 
 html,
@@ -73,32 +73,32 @@ body {
 .pointerCursor {
   cursor: pointer;
 }
-.justify-Content-Center{
+.justify-Content-Center {
   justify-content: center !important;
 }
-.text-info{
-  color:var(--infoColor) !important;
+.text-info {
+  color: var(--infoColor) !important;
 }
-.text-success{
+.text-success {
   color: var(--sucessColor) !important;
 }
 
-.text-warning{
+.text-warning {
   color: var(--WarningCOlor) !important;
 }
-.text-primary{
+.text-primary {
   color: var(--PrimaryColor) !important;
 }
-.text-danger{
+.text-danger {
   color: var(--DangerColor) !important;
 }
-.text-white{
+.text-white {
   color: white !important;
 }
 .Overflow-x-hidden {
   overflow-x: hidden !important;
 }
-.bg-grey{
+.bg-grey {
   background-color: rgb(203, 203, 203);
 }
 /* ----------------------------------------------------------------------------------------
@@ -124,7 +124,6 @@ form p {
   align-items: stretch;
   justify-items: center;
 }
-
 
 .OwnerRegisterDialog {
   min-width: 100vw !important;
@@ -339,7 +338,7 @@ form p {
   min-height: 100vh;
   padding: 1.5rem;
 }
-.bg-white{
+.bg-white {
   background-color: white;
 }
 /*................................Fonts ..................*/
@@ -364,31 +363,31 @@ form p {
 [dir="rtl"] {
   font-family: Calibri !important;
 }
-.Calibri-font{
+.Calibri-font {
   font-family: Calibri !important;
 }
-.LelezarFont{
+.LelezarFont {
   font-family: Lalezar !important;
 }
-.font-size-1-5rem{
+.font-size-1-5rem {
   font-size: 1.5rem !important;
 }
 
-.font-size-1-2rem{
+.font-size-1-2rem {
   font-size: 1.2rem !important;
 }
-.bg-transparent{
+.bg-transparent {
   background: transparent !important;
 }
 
-.btn{
+.btn {
   position: relative;
-  transition: all .15s ease;
+  transition: all 0.15s ease;
   will-change: transform;
-  letter-spacing: .025em;
-  font-size: .875rem;
-  margin-top: .7rem;
-  margin-bottom: .7rem;
+  letter-spacing: 0.025em;
+  font-size: 0.875rem;
+  margin-top: 0.7rem;
+  margin-bottom: 0.7rem;
   padding: 5px !important;
 }
 .btn-primary {
@@ -474,7 +473,7 @@ form p {
   top: 0; /* Sets the sticky toolbar to be on top */
   z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
   background: #ffffff;
-    color: rgba(0,0,0,.87);
+  color: rgba(0, 0, 0, 0.87);
 }
 
 .logo {
@@ -493,23 +492,23 @@ form p {
 
 @keyframes fadeInUp {
   from {
-      transform: translate3d(0,40px,0)
+    transform: translate3d(0, 40px, 0);
   }
 
   to {
-      transform: translate3d(0,0,0);
-      opacity: 1
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
   }
 }
 
 @-webkit-keyframes fadeInUp {
   from {
-      transform: translate3d(0,40px,0)
+    transform: translate3d(0, 40px, 0);
   }
 
   to {
-      transform: translate3d(0,0,0);
-      opacity: 1
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
   }
 }
 
@@ -517,7 +516,7 @@ form p {
   animation-duration: 1s;
   animation-fill-mode: both;
   -webkit-animation-duration: 1s;
-  -webkit-animation-fill-mode: both
+  -webkit-animation-fill-mode: both;
 }
 
 .fadeInUp {
@@ -528,24 +527,25 @@ form p {
 form[dir="rtl"] *:not(mat-icon) {
   font-family: Calibri !important;
 }
-.Dashboard-ToolTip{
+.Dashboard-ToolTip {
   background-color: rgb(133, 0, 0);
   color: white;
   font-size: 0.9rem !important;
+  font-family: val(--Calibri);
 }
 
-.text-center{
+.text-center {
   text-align: center !important;
 }
-.Dashboard-Sidenav-CompmanyName{
+.Dashboard-Sidenav-CompmanyName {
   text-align: center !important;
-  font-size: 2.0rem;
+  font-size: 2rem;
   font-weight: bold;
 }
 .mat-drawer-inner-container {
   overflow-x: hidden !important;
 }
-.userIconImage{
+.userIconImage {
   border-radius: 50%;
   border: 2px solid white;
 }
@@ -567,27 +567,26 @@ form[dir="rtl"] *:not(mat-icon) {
   color:#e6e6e6;
   transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 } */
-.smallCloseIcone{
-  margin: 0!important;
-  padding: 0!important;
+.smallCloseIcone {
+  margin: 0 !important;
+  padding: 0 !important;
   min-width: 0 !important;
-  line-height: 0!important;
-  height: 0!important;
-  width: 0!important;
+  line-height: 0 !important;
+  height: 0 !important;
+  width: 0 !important;
 }
-.smallCloseIcone span{
+.smallCloseIcone span {
   font-size: 20px;
   color: var(--DangerColor);
 }
 
-.padding-10{
+.padding-10 {
   padding: 10px;
 }
-.dark-for-others{
+.dark-for-others {
   background-color: #1a202e !important;
-  color:#e6e6e6 !important;
+  color: #e6e6e6 !important;
   transition: all 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-
 }
 
 .light-for-others {
@@ -595,32 +594,100 @@ form[dir="rtl"] *:not(mat-icon) {
   color: #333 !important;
   transition: all 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-.dark-color{
+.dark-color {
   color: #333 !important;
 }
-.light-color{
-  color:#e6e6e6 !important;
+.light-color {
+  color: #e6e6e6 !important;
 }
-.blue-bg{background-color: #5c77ff;}
-.amber-bg{ background-color: #ffc107 }
-.cyan-bg{background-color: #00bcd4}
-.deep_organge-bg{background-color: #ff5722 }
-.deep_purple-bg{background-color: #673ab7 }
-.green-bg{background-color:#4caf50 }
-.organge-bg{background-color:#ff9800}
-.pink-bg{background-color:#e91e63}
-.purple-bg{background-color:#9c27b0}
-.red-bg{background-color:#f44336}
-.teal-bg{background-color:#009688 }
+.blue-bg {
+  background-color: #5c77ff;
+}
+.amber-bg {
+  background-color: #ffc107;
+}
+.cyan-bg {
+  background-color: #00bcd4;
+}
+.deep_organge-bg {
+  background-color: #ff5722;
+}
+.deep_purple-bg {
+  background-color: #673ab7;
+}
+.green-bg {
+  background-color: #4caf50;
+}
+.organge-bg {
+  background-color: #ff9800;
+}
+.pink-bg {
+  background-color: #e91e63;
+}
+.purple-bg {
+  background-color: #9c27b0;
+}
+.red-bg {
+  background-color: #f44336;
+}
+.teal-bg {
+  background-color: #009688;
+}
 
-.blue{color: #5c77ff;}
-.amber{ color: #ffc107 }
-.cyan{color: #00bcd4}
-.deep_organge{color: #ff5722 }
-.deep_purple{color: #673ab7 }
-.green{color:#4caf50 }
-.organge{color:#ff9800}
-.pink{color:#e91e63}
-.purple{color:#9c27b0}
-.red{color:#f44336}
-.teal{color:#009688 }
+.blue {
+  color: #5c77ff;
+}
+.amber {
+  color: #ffc107;
+}
+.cyan {
+  color: #00bcd4;
+}
+.deep_organge {
+  color: #ff5722;
+}
+.deep_purple {
+  color: #673ab7;
+}
+.green {
+  color: #4caf50;
+}
+.organge {
+  color: #ff9800;
+}
+.pink {
+  color: #e91e63;
+}
+.purple {
+  color: #9c27b0;
+}
+.red {
+  color: #f44336;
+}
+.teal {
+  color: #009688;
+}
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #5c77ff;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #2c41a9;
+}
+.mat-button-toggle-label-content {
+  font-family: var(--calibri) !important;
+  font-weight: bold !important;
+}
