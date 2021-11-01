@@ -94,7 +94,3 @@ button {
   font-family: var(--Almarai);
   font-weight: bold;
 }
-.mat-button-toggle-label-content {
-  font-family: var(--calibri) !important;
-  font-weight: bold !important;
-}

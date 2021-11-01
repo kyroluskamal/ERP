@@ -150,7 +150,12 @@ export class ClientAppDashboardComponent implements OnInit {
   }
 
   //Only to toggle fullscreen ICON ...........................................................................
-  @HostListener("window:resize") ToggleFullScreenIcon() { this.FullscreenEnabled = !this.FullscreenEnabled; }
+  @HostListener("window:resize") ToggleFullScreenIcon() {
+    if (document.fullscreenElement)
+      this.FullscreenEnabled = true;
+    else
+      this.FullscreenEnabled = false;
+  }
 
   ColorChoose(colorName: string, index: number) {
     for (let x of this.ThemeColors) {

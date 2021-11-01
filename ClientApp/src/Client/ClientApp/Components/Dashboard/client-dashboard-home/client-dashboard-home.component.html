@@ -1,1 +1,46 @@
-<p>client-dashboard-home works!</p>
+<mat-grid-list [cols]="gridCols" rowHeight="200px" gutterSize="10px">
+  <mat-grid-tile [class]="Constants.CSS_deep_purple_bg + ' ' +
+    Constants.CSS_text_white">
+    <div fxLayout="column" fxFill="100%" fxLayoutAlign="center">
+      <h2>Orders Received</h2>
+      <h3 fxLayout="row" fxLayoutAlign="space-between center"><mat-icon><span
+            class="material-icons-outlined">
+            add_shopping_cart
+          </span></mat-icon> 2365</h3>
+      <p>18% Higher Then Last Month</p>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [class]="Constants.CSS_organge_bg + ' ' +
+    Constants.CSS_text_white">
+    <div fxLayout="column" fxFill="100%" fxLayoutAlign="center">
+      <h2>Delivered</h2>
+      <h3 fxLayout="row" fxLayoutAlign="space-between center"><mat-icon><span
+            class="material-icons-outlined">
+            shopping_bag
+          </span></mat-icon> 865</h3>
+      <p>18% Higher Then Last Month</p>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [class]="Constants.CSS_pink_bg + ' ' +
+    Constants.CSS_text_white">
+    <div fxLayout="column" fxFill="100%" fxLayoutAlign="center">
+      <h2>New Orders</h2>
+      <h3 fxLayout="row" fxLayoutAlign="space-between center"><mat-icon><span
+            class="material-icons-outlined">
+            add_circle
+          </span></mat-icon> 2365</h3>
+      <p>18% Higher Then Last Month</p>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [class]="Constants.CSS_cyan_bg + ' ' +
+    Constants.CSS_text_white">
+    <div fxLayout="column" fxFill="100%" fxLayoutAlign="center">
+      <h2>Total Earning</h2>
+      <h3 fxLayout="row" fxLayoutAlign="space-between center"><mat-icon><span
+            class="material-icons-outlined">
+            attach_money
+          </span></mat-icon> 2365</h3>
+      <p>18% Higher Then Last Month</p>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>

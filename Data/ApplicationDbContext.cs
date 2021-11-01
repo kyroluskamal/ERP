@@ -1,7 +1,7 @@
-﻿using ERP.Areas.Tenants.Models;
-using ERP.Areas.Tenants.Services;
-using ERP.Data.Identity;
+﻿using ERP.Data.Identity;
 using ERP.Models;
+using ERP.Models.Employee;
+using ERP.Models.Employee.Shifts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -13,9 +13,11 @@ namespace ERP.Data
     IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
+        {  
         }
-
+        public DbSet<Employees> Employees { get; set; }
+        public DbSet<EmployeeNote> EmployeeNotes { get; set; }
+        public DbSet<EmployeeShifts> EmployeeShifts { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);

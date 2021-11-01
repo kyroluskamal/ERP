@@ -7,11 +7,12 @@ namespace ERP.Models
 {
     public class ApplicationUser : IdentityUser<int>
     {
-        [Required(ErrorMessage = "You first name is required")]
+        [Required(ErrorMessage = "Your first name is required")]
         public string FirstName { get; set; }
-        [Required(ErrorMessage = "You last name is required")]
+        [Required(ErrorMessage = "Your last name is required")]
         public string LastName { get; set; }
-
+        [Required]
+        public bool IsClientOrStaff { get; set; }
         public ICollection<ApplicationUserUserRoles> UserRole { get; set; }
 
     }

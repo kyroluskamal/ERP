@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERP.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210918001308_AppUserInitial")]
-    partial class AppUserInitial
+    [Migration("20211101005337_AppUserDb")]
+    partial class AppUserDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -90,6 +90,9 @@ namespace ERP.Migrations.ApplicationDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsClientOrStaff")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -149,6 +152,186 @@ namespace ERP.Migrations.ApplicationDb
                         .HasFilter("[PhoneNumber] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("ERP.Models.Employee.EmployeeAddress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AddressLine_1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressLine_2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BuildingNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FlatNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PermanentOrPresent")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("EmployeeAddress");
+                });
+
+            modelBuilder.Entity("ERP.Models.Employee.EmployeeImages", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("Image")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("PaperImages");
+                });
+
+            modelBuilder.Entity("ERP.Models.Employee.EmployeeNote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("EmployeeNotes");
+                });
+
+            modelBuilder.Entity("ERP.Models.Employee.Employees", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("Date");
+
+                    b.Property<int?>("EmployeeShiftsId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Gender")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("JoinDate")
+                        .HasColumnType("Date");
+
+                    b.Property<string>("MiddleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MobilePhone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PersonalEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("ProfileIMage")
+                        .HasColumnType("varbinary(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeShiftsId");
+
+                    b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("ERP.Models.Employee.Shifts.EmployeeShifts", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("StandardOrAdvanced")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EmployeeShifts");
+                });
+
+            modelBuilder.Entity("ERP.Models.Employee.Shifts.ShiftsTimeDetails", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<TimeSpan>("BeginningIn")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan>("BeginningOut")
+                        .HasColumnType("time");
+
+                    b.Property<string>("DaysOfWeeks")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<TimeSpan>("EndingIn")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan>("EndingOut")
+                        .HasColumnType("time");
+
+                    b.Property<byte>("LateTime")
+                        .HasMaxLength(3)
+                        .HasColumnType("tinyint");
+
+                    b.Property<TimeSpan>("OffDutyTime")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan>("OnDutyTime")
+                        .HasColumnType("time");
+
+                    b.Property<int>("ShiftId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShiftId");
+
+                    b.ToTable("ShiftsTimeDetails");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -256,6 +439,57 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("ERP.Models.Employee.EmployeeAddress", b =>
+                {
+                    b.HasOne("ERP.Models.Employee.Employees", "Employees")
+                        .WithMany("EmpAddress")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("ERP.Models.Employee.EmployeeImages", b =>
+                {
+                    b.HasOne("ERP.Models.Employee.Employees", "Employees")
+                        .WithMany("PaperImages")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("ERP.Models.Employee.EmployeeNote", b =>
+                {
+                    b.HasOne("ERP.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+                });
+
+            modelBuilder.Entity("ERP.Models.Employee.Employees", b =>
+                {
+                    b.HasOne("ERP.Models.Employee.Shifts.EmployeeShifts", null)
+                        .WithMany("Employees")
+                        .HasForeignKey("EmployeeShiftsId");
+                });
+
+            modelBuilder.Entity("ERP.Models.Employee.Shifts.ShiftsTimeDetails", b =>
+                {
+                    b.HasOne("ERP.Models.Employee.Shifts.EmployeeShifts", "EmployeeShifts")
+                        .WithMany("ShiftsTimeDetails")
+                        .HasForeignKey("ShiftId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EmployeeShifts");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("ERP.Data.Identity.ApplicationUserRole", null)
@@ -300,6 +534,20 @@ namespace ERP.Migrations.ApplicationDb
             modelBuilder.Entity("ERP.Models.ApplicationUser", b =>
                 {
                     b.Navigation("UserRole");
+                });
+
+            modelBuilder.Entity("ERP.Models.Employee.Employees", b =>
+                {
+                    b.Navigation("EmpAddress");
+
+                    b.Navigation("PaperImages");
+                });
+
+            modelBuilder.Entity("ERP.Models.Employee.Shifts.EmployeeShifts", b =>
+                {
+                    b.Navigation("Employees");
+
+                    b.Navigation("ShiftsTimeDetails");
                 });
 #pragma warning restore 612, 618
         }

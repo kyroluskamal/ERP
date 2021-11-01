@@ -30,6 +30,7 @@ export class EmailConfirmationClientComponent implements OnInit, OnDestroy {
   }
   //ngOnInit
   ngOnInit(): void {
+    console.log("Called");
     this.LangSubscibtion = this.translate.SelectedLangSubject.subscribe(
       (response) => {
         this.selected = response;
@@ -37,6 +38,7 @@ export class EmailConfirmationClientComponent implements OnInit, OnDestroy {
     );
     const email = this.route.snapshot.queryParamMap.get(this.Constants.email);
     const token = this.route.snapshot.queryParamMap.get(this.Constants.token);
+    console.log(email);
     if (email && token) {
       this.EmailConfirmationModel = { email: email, token: token }
       console.log(this.EmailConfirmationModel);
@@ -48,7 +50,9 @@ export class EmailConfirmationClientComponent implements OnInit, OnDestroy {
 
   emailConfirmation(emailConfimationModel: EmailConfirmationModel) {
     this.accountService.confirmEmail(emailConfimationModel).subscribe(
-      (Response: any) => { this.Success = true },
+      (Response: any) => {
+        this.Success = true,
+          console.log(Response)},
       (error: any) => { this.Fail = true; this.Error = error[0].error; console.log(error) }
     );
   }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ERP.Migrations.ApplicationDb
 {
-    public partial class AppUserInitial : Migration
+    public partial class AppUserDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -30,6 +30,7 @@ namespace ERP.Migrations.ApplicationDb
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsClientOrStaff = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -48,6 +49,20 @@ namespace ERP.Migrations.ApplicationDb
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EmployeeShifts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StandardOrAdvanced = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeShifts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -156,6 +171,124 @@ namespace ERP.Migrations.ApplicationDb
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "EmployeeNotes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeNotes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EmployeeNotes_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Employees",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PersonalEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "Date", nullable: false),
+                    Gender = table.Column<bool>(type: "bit", nullable: false),
+                    MobilePhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    JoinDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    ProfileIMage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    EmployeeShiftsId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employees", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Employees_EmployeeShifts_EmployeeShiftsId",
+                        column: x => x.EmployeeShiftsId,
+                        principalTable: "EmployeeShifts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ShiftsTimeDetails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OnDutyTime = table.Column<TimeSpan>(type: "time", nullable: false),
+                    OffDutyTime = table.Column<TimeSpan>(type: "time", nullable: false),
+                    BeginningIn = table.Column<TimeSpan>(type: "time", nullable: false),
+                    EndingIn = table.Column<TimeSpan>(type: "time", nullable: false),
+                    BeginningOut = table.Column<TimeSpan>(type: "time", nullable: false),
+                    EndingOut = table.Column<TimeSpan>(type: "time", nullable: false),
+                    LateTime = table.Column<byte>(type: "tinyint", maxLength: 3, nullable: false),
+                    DaysOfWeeks = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ShiftId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShiftsTimeDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShiftsTimeDetails_EmployeeShifts_ShiftId",
+                        column: x => x.ShiftId,
+                        principalTable: "EmployeeShifts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EmployeeAddress",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BuildingNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FlatNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AddressLine_1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AddressLine_2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PermanentOrPresent = table.Column<bool>(type: "bit", nullable: false),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeAddress", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EmployeeAddress_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PaperImages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaperImages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PaperImages_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -214,6 +347,31 @@ namespace ERP.Migrations.ApplicationDb
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmployeeAddress_EmployeeId",
+                table: "EmployeeAddress",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmployeeNotes_UserId",
+                table: "EmployeeNotes",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_EmployeeShiftsId",
+                table: "Employees",
+                column: "EmployeeShiftsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PaperImages_EmployeeId",
+                table: "PaperImages",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShiftsTimeDetails_ShiftId",
+                table: "ShiftsTimeDetails",
+                column: "ShiftId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -234,10 +392,28 @@ namespace ERP.Migrations.ApplicationDb
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "EmployeeAddress");
+
+            migrationBuilder.DropTable(
+                name: "EmployeeNotes");
+
+            migrationBuilder.DropTable(
+                name: "PaperImages");
+
+            migrationBuilder.DropTable(
+                name: "ShiftsTimeDetails");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Employees");
+
+            migrationBuilder.DropTable(
+                name: "EmployeeShifts");
         }
     }
 }

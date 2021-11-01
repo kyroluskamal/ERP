@@ -40,6 +40,9 @@ namespace ERP.Utilities
         public string Email_Is_Confirmed_ErrorMessage = "Email is already confirmed";
         public string RolenameAddtion_ErrorMessage = "Your account is add but we can't assign role to you. Please Contact us";
 
+        //ValidationErrorMessages
+       
+
         //Email Constants
         public string ConfirmationEmail_Subject = "Please confirm your email";
         public string ResetPassword_Subject = "Password Reset";
