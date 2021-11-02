@@ -7,14 +7,15 @@ using System.Threading.Tasks;
 
 namespace ERP.Models.COC
 {
-    public class Business_COC
+    public class ClientStatus
     {
         public int Id { get; set; }
-        [Required(ErrorMessage ="You must enter the buisness name")]
-        public string BusinessName { get; set; }
-        public string BusinessPhone { get; set; }
-        public string TaxRecordId { get; set; }
-        public string CR { get; set; }//السجل التجاري
+        [Required(ErrorMessage ="Please, write a status name")]
+        [MaxLength(10)]
+        public string StatusName { get; set; }
+        [Required(ErrorMessage = "Please, select a color")]
+        [MaxLength(7)]
+        public string Color { get; set; }
         [ForeignKey(nameof(COCId))]
         public COC COC { get; set; }
         public int COCId { get; set; }

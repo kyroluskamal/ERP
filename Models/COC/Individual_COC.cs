@@ -11,7 +11,9 @@ namespace ERP.Models.COC
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "Your first name is required")]
+        [MaxLength(10)]
         public string FirstName { get; set; }
+        [MaxLength(10)]
         [Required(ErrorMessage = "Your last name is required")]
         public string LastName { get; set; }
         

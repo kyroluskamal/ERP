@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERP.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211102000840_ApplicationDb")]
+    [Migration("20211102072406_ApplicationDb")]
     partial class ApplicationDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -146,6 +146,268 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("ERP.Models.COC.Business_COC", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("BusinessName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusinessPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("COCId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CR")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TaxRecordId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("COCId");
+
+                    b.ToTable("Business_COCs");
+                });
+
+            modelBuilder.Entity("ERP.Models.COC.COC", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("Money");
+
+                    b.Property<DateTime>("BalanceStartDate")
+                        .HasColumnType("Date");
+
+                    b.Property<bool>("ClientType")
+                        .HasColumnType("bool");
+
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CreditLimit")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CreditPeriodLimit")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CurrencyId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("HasCategory")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("HasEstimates")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("HasNote")
+                        .HasColumnType("bit");
+
+                    b.Property<byte>("InvoicingMethod")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MobilePhone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NationalId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("ProfileImage")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("Telephone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("CurrencyId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("COCs");
+                });
+
+            modelBuilder.Entity("ERP.Models.COC.COCAddress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AddressLine_1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressLine_2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BuildingNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("COCId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FlatNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("COCId");
+
+                    b.ToTable("COCAddresses");
+                });
+
+            modelBuilder.Entity("ERP.Models.COC.COC_ContactList", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("MobilePhone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Telephone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("COC_ContactList");
+                });
+
+            modelBuilder.Entity("ERP.Models.COC.ClientNotes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("COCId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("COCId");
+
+                    b.ToTable("ClientNotes");
+                });
+
+            modelBuilder.Entity("ERP.Models.COC.ClientStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("COCId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasMaxLength(7)
+                        .HasColumnType("nvarchar(7)");
+
+                    b.Property<string>("StatusName")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("COCId");
+
+                    b.ToTable("ClientStatuses");
+                });
+
+            modelBuilder.Entity("ERP.Models.COC.ConstactList_PerCOC", b =>
+                {
+                    b.Property<int>("COCId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("COC_ContactListId")
+                        .HasColumnType("int");
+
+                    b.HasKey("COCId", "COC_ContactListId");
+
+                    b.HasIndex("COC_ContactListId");
+
+                    b.ToTable("ConstactList_PerCOC");
+                });
+
+            modelBuilder.Entity("ERP.Models.COC.Individual_COC", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("COCId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("Date");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<byte>("Gender")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("COCId");
+
+                    b.ToTable("Individual_COCs");
+                });
+
             modelBuilder.Entity("ERP.Models.Employee.EmployeeAddress", b =>
                 {
                     b.Property<int>("Id")
@@ -241,8 +503,8 @@ namespace ERP.Migrations.ApplicationDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Gender")
-                        .HasColumnType("bool");
+                    b.Property<byte>("Gender")
+                        .HasColumnType("tinyint");
 
                     b.Property<DateTime>("JoinDate")
                         .HasColumnType("Date");
@@ -337,6 +599,135 @@ namespace ERP.Migrations.ApplicationDb
                     b.HasIndex("ShiftId");
 
                     b.ToTable("ShiftsTimeDetails");
+                });
+
+            modelBuilder.Entity("ERP.Models.Generals.Actions", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Actions");
+                });
+
+            modelBuilder.Entity("ERP.Models.Generals.AutomaticReminders", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("EmailTemplateId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WhenOptionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmailTemplateId");
+
+                    b.HasIndex("WhenOptionId");
+
+                    b.ToTable("AutomaticReminders");
+                });
+
+            modelBuilder.Entity("ERP.Models.Generals.Country", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Countries");
+                });
+
+            modelBuilder.Entity("ERP.Models.Generals.Currency", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Currencies");
+                });
+
+            modelBuilder.Entity("ERP.Models.Generals.EmailsTemplates", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("TemplateContent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TemplateName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EmailsTemplates");
+                });
+
+            modelBuilder.Entity("ERP.Models.Generals.Status", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("OpenedOrClosed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("StatusName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Statuses");
+                });
+
+            modelBuilder.Entity("ERP.Models.Generals.WhenRemidersSent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("WhenOption")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WhenRemidersSents");
                 });
 
             modelBuilder.Entity("ERP.Models.TreasuriesAndBankAccount.BankAccount_Description", b =>
@@ -535,6 +926,107 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("ERP.Models.COC.Business_COC", b =>
+                {
+                    b.HasOne("ERP.Models.COC.COC", "COC")
+                        .WithMany()
+                        .HasForeignKey("COCId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("COC");
+                });
+
+            modelBuilder.Entity("ERP.Models.COC.COC", b =>
+                {
+                    b.HasOne("ERP.Models.Generals.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Models.Generals.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Country");
+
+                    b.Navigation("Currency");
+                });
+
+            modelBuilder.Entity("ERP.Models.COC.COCAddress", b =>
+                {
+                    b.HasOne("ERP.Models.COC.COC", "COC")
+                        .WithMany()
+                        .HasForeignKey("COCId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("COC");
+                });
+
+            modelBuilder.Entity("ERP.Models.COC.ClientNotes", b =>
+                {
+                    b.HasOne("ERP.Models.COC.COC", "COC")
+                        .WithMany()
+                        .HasForeignKey("COCId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("COC");
+                });
+
+            modelBuilder.Entity("ERP.Models.COC.ClientStatus", b =>
+                {
+                    b.HasOne("ERP.Models.COC.COC", "COC")
+                        .WithMany()
+                        .HasForeignKey("COCId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("COC");
+                });
+
+            modelBuilder.Entity("ERP.Models.COC.ConstactList_PerCOC", b =>
+                {
+                    b.HasOne("ERP.Models.COC.COC", "COC")
+                        .WithMany("COC_Contacts")
+                        .HasForeignKey("COCId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Models.COC.COC_ContactList", "COC_ContactList")
+                        .WithMany("COC_Contacts")
+                        .HasForeignKey("COC_ContactListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("COC");
+
+                    b.Navigation("COC_ContactList");
+                });
+
+            modelBuilder.Entity("ERP.Models.COC.Individual_COC", b =>
+                {
+                    b.HasOne("ERP.Models.COC.COC", "COC")
+                        .WithMany()
+                        .HasForeignKey("COCId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("COC");
+                });
+
             modelBuilder.Entity("ERP.Models.Employee.EmployeeAddress", b =>
                 {
                     b.HasOne("ERP.Models.Employee.Employees", "Employees")
@@ -592,6 +1084,25 @@ namespace ERP.Migrations.ApplicationDb
                         .IsRequired();
 
                     b.Navigation("EmployeeShifts");
+                });
+
+            modelBuilder.Entity("ERP.Models.Generals.AutomaticReminders", b =>
+                {
+                    b.HasOne("ERP.Models.Generals.EmailsTemplates", "EmailsTemplates")
+                        .WithMany()
+                        .HasForeignKey("EmailTemplateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Models.Generals.WhenRemidersSent", "WhenRemidersSent")
+                        .WithMany()
+                        .HasForeignKey("WhenOptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EmailsTemplates");
+
+                    b.Navigation("WhenRemidersSent");
                 });
 
             modelBuilder.Entity("ERP.Models.TreasuriesAndBankAccount.BankAccount_Description", b =>
@@ -656,6 +1167,16 @@ namespace ERP.Migrations.ApplicationDb
             modelBuilder.Entity("ERP.Models.ApplicationUser", b =>
                 {
                     b.Navigation("UserRole");
+                });
+
+            modelBuilder.Entity("ERP.Models.COC.COC", b =>
+                {
+                    b.Navigation("COC_Contacts");
+                });
+
+            modelBuilder.Entity("ERP.Models.COC.COC_ContactList", b =>
+                {
+                    b.Navigation("COC_Contacts");
                 });
 
             modelBuilder.Entity("ERP.Models.Employee.Employees", b =>

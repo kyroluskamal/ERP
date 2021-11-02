@@ -58,7 +58,6 @@
     <Folder Include="ClientApp\src\Interceptors\ErrorHandling\" />
     <Folder Include="ClientApp\src\Interceptors\TokenInterceptor\" />
     <Folder Include="ClientApp\src\Owners\Dashboard\Employers\" />
-    <Folder Include="Models\Generals\" />
     <Folder Include="UnitOfWork\IRepository\ApplicationUser\" />
     <Folder Include="Utilities\Helpers\" />
   </ItemGroup>

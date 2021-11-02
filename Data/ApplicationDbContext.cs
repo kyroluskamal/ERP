@@ -3,6 +3,8 @@ using ERP.Models;
 using ERP.Models.COC;
 using ERP.Models.Employee;
 using ERP.Models.Employee.Shifts;
+using ERP.Models.Generals;
+using ERP.Models.OrganizationalStructure;
 using ERP.Models.TreasuriesAndBankAccount;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -31,6 +33,29 @@ namespace ERP.Data
         public DbSet<COC> COCs { get; set; }
         public DbSet<Business_COC> Business_COCs { get; set; }
         public DbSet<Individual_COC> Individual_COCs { get; set; }
+        public DbSet<COCAddress> COCAddresses { get; set; }
+        public DbSet<COC_ContactList> COC_ContactList { get; set; }
+        public DbSet<ClientNotes> ClientNotes { get; set; }
+        public DbSet<ClientStatus> ClientStatuses { get; set; }
+
+        //Generals dbsets
+        public DbSet<Actions> Actions { get; set; }
+        public DbSet<AutomaticReminders> AutomaticReminders { get; set; }
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<Currency> Currencies { get; set; }
+        public DbSet<EmailsTemplates> EmailsTemplates { get; set; }
+        public DbSet<Status> Statuses { get; set; }
+        public DbSet<WhenRemidersSent> WhenRemidersSents { get; set; }
+
+        //Organizational structure
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<Department_description> Department_Descriptions { get; set; }
+        public DbSet<Designation> Designations { get; set; }
+        public DbSet<Designation_description> Designation_Descriptions { get; set; }
+        public DbSet<EmployeeLevel> EmployeeLevels { get; set; }
+        public DbSet<EmployeeLevel_desc> EmployeeLevel_descs { get; set; }
+        public DbSet<EmployeeTypes_desc> EmployeeTypes_descs { get; set; }
+        public DbSet<EmployeeTypes> EmployeeTypes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -73,6 +98,11 @@ namespace ERP.Data
                 .Property(o => o.Id).ValueGeneratedOnAdd();
             builder.Entity<ApplicationUser>()
                 .Property(o => o.Id).ValueGeneratedOnAdd();
+
+            builder.Entity<ConstactList_PerCOC>()
+                .HasKey(p => new { p.COCId, p.COC_ContactListId }).IsClustered(); 
+            builder.Entity<Category_PerClient>()
+                .HasKey(p => new { p.COCId, p.COC_categoryId }).IsClustered();
         }
     }
 }

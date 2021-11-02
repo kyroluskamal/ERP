@@ -8,6 +8,19 @@ namespace ERP.Migrations.ApplicationDb
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Actions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Actions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -65,6 +78,63 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
+                name: "COC_ContactList",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    MobilePhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Telephone = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_COC_ContactList", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Countries",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Countries", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Currencies",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Currencies", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EmailsTemplates",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TemplateName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TemplateContent = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmailsTemplates", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "EmployeeShifts",
                 columns: table => new
                 {
@@ -79,6 +149,21 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
+                name: "Statuses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StatusName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OpenedOrClosed = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Statuses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Treasuries",
                 columns: table => new
                 {
@@ -90,6 +175,19 @@ namespace ERP.Migrations.ApplicationDb
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Treasuries", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WhenRemidersSents",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    WhenOption = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WhenRemidersSents", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -220,6 +318,53 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
+                name: "COCs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ClientType = table.Column<bool>(type: "bool", nullable: false),
+                    CreditLimit = table.Column<int>(type: "int", nullable: false),
+                    CreditPeriodLimit = table.Column<int>(type: "int", nullable: false),
+                    Balance = table.Column<decimal>(type: "Money", nullable: false),
+                    BalanceStartDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    HasEstimates = table.Column<bool>(type: "bit", nullable: false),
+                    HasCategory = table.Column<bool>(type: "bit", nullable: false),
+                    HasNote = table.Column<bool>(type: "bit", nullable: false),
+                    NationalId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MobilePhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Telephone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProfileImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    CurrencyId = table.Column<int>(type: "int", nullable: false),
+                    InvoicingMethod = table.Column<byte>(type: "tinyint", nullable: false),
+                    CountryId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_COCs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_COCs_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_COCs_Countries_CountryId",
+                        column: x => x.CountryId,
+                        principalTable: "Countries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_COCs_Currencies_CurrencyId",
+                        column: x => x.CurrencyId,
+                        principalTable: "Currencies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Employees",
                 columns: table => new
                 {
@@ -230,7 +375,7 @@ namespace ERP.Migrations.ApplicationDb
                     MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PersonalEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "Date", nullable: false),
-                    Gender = table.Column<int>(type: "bool", nullable: false),
+                    Gender = table.Column<byte>(type: "tinyint", nullable: false),
                     MobilePhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     JoinDate = table.Column<DateTime>(type: "Date", nullable: false),
                     ProfileIMage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
@@ -300,6 +445,167 @@ namespace ERP.Migrations.ApplicationDb
                         principalTable: "Treasuries",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AutomaticReminders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EmailTemplateId = table.Column<int>(type: "int", nullable: false),
+                    WhenOptionId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AutomaticReminders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AutomaticReminders_EmailsTemplates_EmailTemplateId",
+                        column: x => x.EmailTemplateId,
+                        principalTable: "EmailsTemplates",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AutomaticReminders_WhenRemidersSents_WhenOptionId",
+                        column: x => x.WhenOptionId,
+                        principalTable: "WhenRemidersSents",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Business_COCs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BusinessName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BusinessPhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TaxRecordId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CR = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    COCId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Business_COCs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Business_COCs_COCs_COCId",
+                        column: x => x.COCId,
+                        principalTable: "COCs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ClientNotes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    COCId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClientNotes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ClientNotes_COCs_COCId",
+                        column: x => x.COCId,
+                        principalTable: "COCs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ClientStatuses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StatusName = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Color = table.Column<string>(type: "nvarchar(7)", maxLength: 7, nullable: false),
+                    COCId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClientStatuses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ClientStatuses_COCs_COCId",
+                        column: x => x.COCId,
+                        principalTable: "COCs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "COCAddresses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BuildingNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FlatNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AddressLine_1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AddressLine_2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    COCId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_COCAddresses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_COCAddresses_COCs_COCId",
+                        column: x => x.COCId,
+                        principalTable: "COCs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ConstactList_PerCOC",
+                columns: table => new
+                {
+                    COCId = table.Column<int>(type: "int", nullable: false),
+                    COC_ContactListId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ConstactList_PerCOC", x => new { x.COCId, x.COC_ContactListId });
+                    table.ForeignKey(
+                        name: "FK_ConstactList_PerCOC_COC_ContactList_COC_ContactListId",
+                        column: x => x.COC_ContactListId,
+                        principalTable: "COC_ContactList",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ConstactList_PerCOC_COCs_COCId",
+                        column: x => x.COCId,
+                        principalTable: "COCs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Individual_COCs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    DateOfBirth = table.Column<DateTime>(type: "Date", nullable: false),
+                    Gender = table.Column<byte>(type: "tinyint", nullable: false),
+                    COCId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Individual_COCs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Individual_COCs_COCs_COCId",
+                        column: x => x.COCId,
+                        principalTable: "COCs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -427,9 +733,59 @@ namespace ERP.Migrations.ApplicationDb
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AutomaticReminders_EmailTemplateId",
+                table: "AutomaticReminders",
+                column: "EmailTemplateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AutomaticReminders_WhenOptionId",
+                table: "AutomaticReminders",
+                column: "WhenOptionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BankAccount_Descriptions_BankAccountsId",
                 table: "BankAccount_Descriptions",
                 column: "BankAccountsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Business_COCs_COCId",
+                table: "Business_COCs",
+                column: "COCId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClientNotes_COCId",
+                table: "ClientNotes",
+                column: "COCId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClientStatuses_COCId",
+                table: "ClientStatuses",
+                column: "COCId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_COCAddresses_COCId",
+                table: "COCAddresses",
+                column: "COCId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_COCs_CountryId",
+                table: "COCs",
+                column: "CountryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_COCs_CurrencyId",
+                table: "COCs",
+                column: "CurrencyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_COCs_UserId",
+                table: "COCs",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ConstactList_PerCOC_COC_ContactListId",
+                table: "ConstactList_PerCOC",
+                column: "COC_ContactListId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmployeeAddress_EmployeeId",
@@ -452,6 +808,11 @@ namespace ERP.Migrations.ApplicationDb
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Individual_COCs_COCId",
+                table: "Individual_COCs",
+                column: "COCId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PaperImages_EmployeeId",
                 table: "PaperImages",
                 column: "EmployeeId");
@@ -470,6 +831,9 @@ namespace ERP.Migrations.ApplicationDb
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Actions");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
@@ -485,7 +849,25 @@ namespace ERP.Migrations.ApplicationDb
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "AutomaticReminders");
+
+            migrationBuilder.DropTable(
                 name: "BankAccount_Descriptions");
+
+            migrationBuilder.DropTable(
+                name: "Business_COCs");
+
+            migrationBuilder.DropTable(
+                name: "ClientNotes");
+
+            migrationBuilder.DropTable(
+                name: "ClientStatuses");
+
+            migrationBuilder.DropTable(
+                name: "COCAddresses");
+
+            migrationBuilder.DropTable(
+                name: "ConstactList_PerCOC");
 
             migrationBuilder.DropTable(
                 name: "EmployeeAddress");
@@ -494,10 +876,16 @@ namespace ERP.Migrations.ApplicationDb
                 name: "EmployeeNotes");
 
             migrationBuilder.DropTable(
+                name: "Individual_COCs");
+
+            migrationBuilder.DropTable(
                 name: "PaperImages");
 
             migrationBuilder.DropTable(
                 name: "ShiftsTimeDetails");
+
+            migrationBuilder.DropTable(
+                name: "Statuses");
 
             migrationBuilder.DropTable(
                 name: "Treasury_Descriptions");
@@ -506,13 +894,31 @@ namespace ERP.Migrations.ApplicationDb
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "EmailsTemplates");
+
+            migrationBuilder.DropTable(
+                name: "WhenRemidersSents");
+
+            migrationBuilder.DropTable(
                 name: "BankAccounts");
+
+            migrationBuilder.DropTable(
+                name: "COC_ContactList");
+
+            migrationBuilder.DropTable(
+                name: "COCs");
 
             migrationBuilder.DropTable(
                 name: "Employees");
 
             migrationBuilder.DropTable(
                 name: "Treasuries");
+
+            migrationBuilder.DropTable(
+                name: "Countries");
+
+            migrationBuilder.DropTable(
+                name: "Currencies");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

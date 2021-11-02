@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ERP.Models.Generals;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -40,5 +41,21 @@ namespace ERP.Models.COC
 
         public string Telephone { get; set; }
         public byte[] ProfileImage { get; set; }
+        [ForeignKey(nameof(CurrencyId))]
+        public Currency Currency { get; set; }
+        public int CurrencyId { get; set; }
+
+        [Column(TypeName ="tinyint")]
+        public int InvoicingMethod { get; set; }
+
+        [ForeignKey(nameof(CountryId))]
+        public Country Country { get; set; }
+        public int CountryId { get; set; }
+
+        [ForeignKey(nameof(UserId))]
+        public ApplicationUser ApplicationUser { get; set; }
+        public int UserId { get; set; }
+
+        public ICollection<ConstactList_PerCOC> COC_Contacts { get; set; }
     }
 }

@@ -50,6 +50,8 @@ namespace ERP.Utilities
         public int Client_BusinessType = 1;
         public int Male = 1;
         public int Female = 0;
+        public int InvoicingMethod_Email = 0;
+        public int InvoicingMethod_Print = 1;
         public bool Shift_standardType = false;
         public bool Shift_AdvancedType = true;
         public bool Active = true;
@@ -60,6 +62,8 @@ namespace ERP.Utilities
         public bool HasCategory_No = false;
         public bool HasNote_Yes = true;
         public bool HasNote_No = false;
+        public bool StautOpened = true;
+        public bool StautClosed = false;
 
         //Email Constants
         public string ConfirmationEmail_Subject = "Please confirm your email";
