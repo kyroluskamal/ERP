@@ -64,8 +64,6 @@ export class ClientRegisterComponent implements OnInit, OnDestroy {
       CompanyName: [null, [Validators.required, CustomValidators.patternValidator(/[A-Za-z]/, { EnglishName: true })]],
       Subdomain: [null, [Validators.required]],
       Username: [null, [Validators.required]],
-      FirstName: [null, [Validators.required]],
-      LastName: [null, [Validators.required]]
     },
       {
         validator: CustomValidators.passwordMatchValidator
@@ -81,9 +79,7 @@ export class ClientRegisterComponent implements OnInit, OnDestroy {
       CompanyName: this.RegisterForm.get("CompanyName")?.value,
       ConfirmPassword: this.RegisterForm.get("ConfirmPassword")?.value,
       UserName: this.RegisterForm.get("Username")?.value,
-      ClientUrl: "https://" + window.location.host + "/" + RouterConstants.Client_EmailConfirmationUrl,
-      FirstName: this.RegisterForm.get("FirstName")?.value,
-      LastName: this.RegisterForm.get("LastName")?.value,
+      ClientUrl: "https://" + window.location.host + "/" + RouterConstants.Client_EmailConfirmationUrl
     };
     if (this.RegisterForm.invalid) return;
     this.ClientAuth.Register(this.ClientRegisterModel).subscribe(

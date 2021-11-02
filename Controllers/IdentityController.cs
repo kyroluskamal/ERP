@@ -136,9 +136,9 @@ namespace ERP.Controllers
                  
                  ClientUnitOfWork.SetConnectionString(Tenant.ConnectionString);
 
-                var User = new ApplicationUser() { 
+                var User = new ApplicationUser() {
                     Email = clientRegister.Email, UserName = clientRegister.UserName,
-                    FirstName = clientRegister.FirstName, LastName=clientRegister.LastName
+                    IsClientOrStaffOrBoth = Constants.Client_COC
                 };
                 var result = await UserManager.CreateAsync(User, clientRegister.Password);
                 if (result.Succeeded)

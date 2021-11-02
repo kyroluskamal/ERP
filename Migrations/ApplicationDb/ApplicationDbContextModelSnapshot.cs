@@ -84,16 +84,8 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsClientOrStaff")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<byte>("IsClientOrStaffOrBoth")
+                        .HasColumnType("tinyint");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -189,7 +181,27 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("EmployeeAddress");
                 });
 
-            modelBuilder.Entity("ERP.Models.Employee.EmployeeImages", b =>
+            modelBuilder.Entity("ERP.Models.Employee.EmployeeNote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("EmployeeNotes");
+                });
+
+            modelBuilder.Entity("ERP.Models.Employee.EmployeePaperImages", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -210,26 +222,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("PaperImages");
                 });
 
-            modelBuilder.Entity("ERP.Models.Employee.EmployeeNote", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Note")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("EmployeeNotes");
-                });
-
             modelBuilder.Entity("ERP.Models.Employee.Employees", b =>
                 {
                     b.Property<int>("Id")
@@ -243,11 +235,19 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<int?>("EmployeeShiftsId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Gender")
-                        .HasColumnType("bit");
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("bool");
 
                     b.Property<DateTime>("JoinDate")
                         .HasColumnType("Date");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MiddleName")
                         .IsRequired()
@@ -263,9 +263,14 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<byte[]>("ProfileIMage")
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeShiftsId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Employees");
                 });
@@ -330,6 +335,97 @@ namespace ERP.Migrations.ApplicationDb
                     b.HasIndex("ShiftId");
 
                     b.ToTable("ShiftsTimeDetails");
+                });
+
+            modelBuilder.Entity("ERP.Models.TreasuriesAndBankAccount.BankAccount_Description", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BankAccountId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BankAccountsId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BankAccountsId");
+
+                    b.ToTable("BankAccount_Descriptions");
+                });
+
+            modelBuilder.Entity("ERP.Models.TreasuriesAndBankAccount.BankAccounts", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("BankAccountNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BankName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BankAccounts");
+                });
+
+            modelBuilder.Entity("ERP.Models.TreasuriesAndBankAccount.Treasuries", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Treasuries");
+                });
+
+            modelBuilder.Entity("ERP.Models.TreasuriesAndBankAccount.Treasury_description", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TreasuriesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TreasuryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TreasuriesId");
+
+                    b.ToTable("Treasury_Descriptions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -448,7 +544,18 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Employees");
                 });
 
-            modelBuilder.Entity("ERP.Models.Employee.EmployeeImages", b =>
+            modelBuilder.Entity("ERP.Models.Employee.EmployeeNote", b =>
+                {
+                    b.HasOne("ERP.Models.Employee.Employees", "Employees")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("ERP.Models.Employee.EmployeePaperImages", b =>
                 {
                     b.HasOne("ERP.Models.Employee.Employees", "Employees")
                         .WithMany("PaperImages")
@@ -459,8 +566,12 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Employees");
                 });
 
-            modelBuilder.Entity("ERP.Models.Employee.EmployeeNote", b =>
+            modelBuilder.Entity("ERP.Models.Employee.Employees", b =>
                 {
+                    b.HasOne("ERP.Models.Employee.Shifts.EmployeeShifts", null)
+                        .WithMany("Employees")
+                        .HasForeignKey("EmployeeShiftsId");
+
                     b.HasOne("ERP.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -468,13 +579,6 @@ namespace ERP.Migrations.ApplicationDb
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
-                });
-
-            modelBuilder.Entity("ERP.Models.Employee.Employees", b =>
-                {
-                    b.HasOne("ERP.Models.Employee.Shifts.EmployeeShifts", null)
-                        .WithMany("Employees")
-                        .HasForeignKey("EmployeeShiftsId");
                 });
 
             modelBuilder.Entity("ERP.Models.Employee.Shifts.ShiftsTimeDetails", b =>
@@ -486,6 +590,24 @@ namespace ERP.Migrations.ApplicationDb
                         .IsRequired();
 
                     b.Navigation("EmployeeShifts");
+                });
+
+            modelBuilder.Entity("ERP.Models.TreasuriesAndBankAccount.BankAccount_Description", b =>
+                {
+                    b.HasOne("ERP.Models.TreasuriesAndBankAccount.BankAccounts", "BankAccounts")
+                        .WithMany()
+                        .HasForeignKey("BankAccountsId");
+
+                    b.Navigation("BankAccounts");
+                });
+
+            modelBuilder.Entity("ERP.Models.TreasuriesAndBankAccount.Treasury_description", b =>
+                {
+                    b.HasOne("ERP.Models.TreasuriesAndBankAccount.Treasuries", "Treasuries")
+                        .WithMany()
+                        .HasForeignKey("TreasuriesId");
+
+                    b.Navigation("Treasuries");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

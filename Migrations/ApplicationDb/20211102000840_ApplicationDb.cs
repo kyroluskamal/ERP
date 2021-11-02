@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ERP.Migrations.ApplicationDb
 {
-    public partial class AppUserDb : Migration
+    public partial class ApplicationDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,9 +28,7 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsClientOrStaff = table.Column<bool>(type: "bit", nullable: false),
+                    IsClientOrStaffOrBoth = table.Column<byte>(type: "tinyint", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -52,6 +50,21 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
+                name: "BankAccounts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BankName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BankAccountNo = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BankAccounts", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "EmployeeShifts",
                 columns: table => new
                 {
@@ -63,6 +76,20 @@ namespace ERP.Migrations.ApplicationDb
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EmployeeShifts", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Treasuries",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Treasuries", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -172,23 +199,24 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
-                name: "EmployeeNotes",
+                name: "BankAccount_Descriptions",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BankAccountsId = table.Column<int>(type: "int", nullable: true),
+                    BankAccountId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmployeeNotes", x => x.Id);
+                    table.PrimaryKey("PK_BankAccount_Descriptions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EmployeeNotes_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        name: "FK_BankAccount_Descriptions_BankAccounts_BankAccountsId",
+                        column: x => x.BankAccountsId,
+                        principalTable: "BankAccounts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -197,18 +225,27 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PersonalEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "Date", nullable: false),
-                    Gender = table.Column<bool>(type: "bit", nullable: false),
+                    Gender = table.Column<int>(type: "bool", nullable: false),
                     MobilePhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     JoinDate = table.Column<DateTime>(type: "Date", nullable: false),
                     ProfileIMage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     EmployeeShiftsId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Employees", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Employees_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Employees_EmployeeShifts_EmployeeShiftsId",
                         column: x => x.EmployeeShiftsId,
@@ -245,6 +282,27 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
+                name: "Treasury_Descriptions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TreasuriesId = table.Column<int>(type: "int", nullable: true),
+                    TreasuryId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Treasury_Descriptions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Treasury_Descriptions_Treasuries_TreasuriesId",
+                        column: x => x.TreasuriesId,
+                        principalTable: "Treasuries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "EmployeeAddress",
                 columns: table => new
                 {
@@ -263,6 +321,26 @@ namespace ERP.Migrations.ApplicationDb
                     table.PrimaryKey("PK_EmployeeAddress", x => x.Id);
                     table.ForeignKey(
                         name: "FK_EmployeeAddress_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EmployeeNotes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeNotes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EmployeeNotes_Employees_EmployeeId",
                         column: x => x.EmployeeId,
                         principalTable: "Employees",
                         principalColumn: "Id",
@@ -349,19 +427,29 @@ namespace ERP.Migrations.ApplicationDb
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BankAccount_Descriptions_BankAccountsId",
+                table: "BankAccount_Descriptions",
+                column: "BankAccountsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EmployeeAddress_EmployeeId",
                 table: "EmployeeAddress",
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmployeeNotes_UserId",
+                name: "IX_EmployeeNotes_EmployeeId",
                 table: "EmployeeNotes",
-                column: "UserId");
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_EmployeeShiftsId",
                 table: "Employees",
                 column: "EmployeeShiftsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_UserId",
+                table: "Employees",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PaperImages_EmployeeId",
@@ -372,6 +460,11 @@ namespace ERP.Migrations.ApplicationDb
                 name: "IX_ShiftsTimeDetails_ShiftId",
                 table: "ShiftsTimeDetails",
                 column: "ShiftId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Treasury_Descriptions_TreasuriesId",
+                table: "Treasury_Descriptions",
+                column: "TreasuriesId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -392,6 +485,9 @@ namespace ERP.Migrations.ApplicationDb
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "BankAccount_Descriptions");
+
+            migrationBuilder.DropTable(
                 name: "EmployeeAddress");
 
             migrationBuilder.DropTable(
@@ -404,13 +500,22 @@ namespace ERP.Migrations.ApplicationDb
                 name: "ShiftsTimeDetails");
 
             migrationBuilder.DropTable(
+                name: "Treasury_Descriptions");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "BankAccounts");
 
             migrationBuilder.DropTable(
                 name: "Employees");
+
+            migrationBuilder.DropTable(
+                name: "Treasuries");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "EmployeeShifts");

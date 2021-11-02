@@ -41,7 +41,25 @@ namespace ERP.Utilities
         public string RolenameAddtion_ErrorMessage = "Your account is add but we can't assign role to you. Please Contact us";
 
         //ValidationErrorMessages
-       
+
+        //ModelsConstants
+        public int Client_COC = 0;
+        public int Employee_COC = 1;
+        public int ClientAndEmp_COC = 2;
+        public int Client_IndividualType = 0;
+        public int Client_BusinessType = 1;
+        public int Male = 1;
+        public int Female = 0;
+        public bool Shift_standardType = false;
+        public bool Shift_AdvancedType = true;
+        public bool Active = true;
+        public bool NotActive = false;
+        public bool HasEstimates_Yes = true;
+        public bool HasEstimates_No = false;
+        public bool HasCategory_Yes = true;
+        public bool HasCategory_No = false;
+        public bool HasNote_Yes = true;
+        public bool HasNote_No = false;
 
         //Email Constants
         public string ConfirmationEmail_Subject = "Please confirm your email";

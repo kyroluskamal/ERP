@@ -5,15 +5,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ERP.Models.Employee
+namespace ERP.Models.TreasuriesAndBankAccount
 {
-    public class EmployeeNote
+    public class Treasury_description
     {
-        [Key]
         public int Id { get; set; }
-        public string Note { get; set; }
-        [ForeignKey(nameof(EmployeeId))]
-        public Employees Employees { get; set; }
-        public int EmployeeId { get; set; }
+        [Required]
+        public string Description { get; set; }
+        public Treasuries Treasuries { get; set; }
+        public int TreasuryId { get; set; }
     }
 }

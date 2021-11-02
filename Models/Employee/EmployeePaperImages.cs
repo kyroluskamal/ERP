@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ERP.Models.Employee
 {
     [Table("PaperImages")]
-    public class EmployeeImages
+    public class EmployeePaperImages
     {
         public int Id { get; set; }
         [Required(ErrorMessage ="You have to add one image at least")]

@@ -1,7 +1,9 @@
 ﻿using ERP.Data.Identity;
 using ERP.Models;
+using ERP.Models.COC;
 using ERP.Models.Employee;
 using ERP.Models.Employee.Shifts;
+using ERP.Models.TreasuriesAndBankAccount;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -15,9 +17,21 @@ namespace ERP.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {  
         }
+        //Employees datasets
         public DbSet<Employees> Employees { get; set; }
         public DbSet<EmployeeNote> EmployeeNotes { get; set; }
         public DbSet<EmployeeShifts> EmployeeShifts { get; set; }
+        //Treasuries and Bank accounts dbsets
+        public DbSet<Treasuries> Treasuries { get; set; }
+        public DbSet<Treasury_description> Treasury_Descriptions { get; set; }
+        public DbSet<BankAccounts> BankAccounts { get; set; }
+        public DbSet<BankAccount_Description> BankAccount_Descriptions { get; set; }
+
+        //COC dbsets
+        public DbSet<COC> COCs { get; set; }
+        public DbSet<Business_COC> Business_COCs { get; set; }
+        public DbSet<Individual_COC> Individual_COCs { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
