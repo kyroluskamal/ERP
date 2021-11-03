@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ERP.Models.Generals;
+using ERP.Models.OrganizationalStructure;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -48,5 +50,17 @@ namespace ERP.Models.Employee
         [ForeignKey(nameof(UserId))]
         public ApplicationUser ApplicationUser { get; set; }
         public int UserId { get; set; }
+
+        
+        public Country Country { get; set; }
+        public int? CountryId { get; set; }
+        public Department Department { get; set; }
+        public int? DepartmentId { get; set; }
+        public Designation Designation { get; set; }
+        public int? DesignationId { get; set; }
+        public EmployeeLevel EmployeeLevel { get; set; }
+        public int? EmployeeLevelId { get; set; }
+        public EmployeeType EmployeeType { get; set; }
+        public int? EmployeeTypeId { get; set; }
     }
 }

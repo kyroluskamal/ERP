@@ -1,10 +1,13 @@
 ﻿using ERP.Data.Identity;
 using ERP.Models;
 using ERP.Models.COC;
+using ERP.Models.CutomFields;
 using ERP.Models.Employee;
 using ERP.Models.Employee.Shifts;
 using ERP.Models.Generals;
+using ERP.Models.Items;
 using ERP.Models.OrganizationalStructure;
+using ERP.Models.SystemsInErp;
 using ERP.Models.TreasuriesAndBankAccount;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -55,7 +58,36 @@ namespace ERP.Data
         public DbSet<EmployeeLevel> EmployeeLevels { get; set; }
         public DbSet<EmployeeLevel_desc> EmployeeLevel_descs { get; set; }
         public DbSet<EmployeeTypes_desc> EmployeeTypes_descs { get; set; }
-        public DbSet<EmployeeTypes> EmployeeTypes { get; set; }
+        public DbSet<EmployeeType> EmployeeTypes { get; set; }
+
+        //Items
+        public DbSet<Brands> Brands { get; set; }
+        public DbSet<Item> Items { get; set; }
+        public DbSet<Item_Units> Item_Units { get; set; }
+        public DbSet<ItemBrands> ItemBrands { get; set; }
+        public DbSet<ItemDescription> ItemDescriptions { get; set; }
+        public DbSet<ItemMainCategory> ItemMainCategories { get; set; }
+        public DbSet<ItemNotes> ItemNotes { get; set; }
+        public DbSet<ItemSubCategory> ItemSubCategories { get; set; }
+        public DbSet<ItemsVariant_RetailPrice> ItemsVariant_RetailPrices { get; set; }
+        public DbSet<ItemVariant_WholeSalePrice> ItemVariant_WholeSalePrices { get; set; }
+        public DbSet<ItemVariants> ItemVariants { get; set; }
+        public DbSet<ItemTaxSettings> ItemTaxSettings { get; set; }
+        public DbSet<Units> Units { get; set; }
+        public DbSet<Item_Per_Subcategory> Item_Per_Subcategories { get; set; }
+
+        //Custom Fields
+        public DbSet<Field_Choices> Field_Choices { get; set; }
+        public DbSet<Fields_layout> Fields_layouts { get; set; }
+        public DbSet<Fields_Per_Service> Fields_Per_Service { get; set; }
+        public DbSet<Fields_Properties> Fields_Properties { get; set; }
+        public DbSet<Fields_validation_Foreach_Service> Fields_validation_Foreach_Services { get; set; }
+        public DbSet<FieldsInSystem> FieldsInSystem { get; set; }
+        public DbSet<MinAndMaxDate> MinAndMaxDate { get; set; }
+        public DbSet<MinAndMaxNumbers> MinAndMaxNumbers { get; set; }
+
+        //Systems In ERP
+        public DbSet<SystemsInERP> SystemsInERP { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

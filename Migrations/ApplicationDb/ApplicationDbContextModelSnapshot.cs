@@ -311,6 +311,39 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("COC_ContactList");
                 });
 
+            modelBuilder.Entity("ERP.Models.COC.COC_category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("COC_category");
+                });
+
+            modelBuilder.Entity("ERP.Models.COC.Category_PerClient", b =>
+                {
+                    b.Property<int>("COCId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("COC_categoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("COCId", "COC_categoryId")
+                        .IsClustered();
+
+                    b.HasIndex("COC_categoryId");
+
+                    b.ToTable("Category_PerClient");
+                });
+
             modelBuilder.Entity("ERP.Models.COC.ClientNotes", b =>
                 {
                     b.Property<int>("Id")
@@ -366,7 +399,8 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<int>("COC_ContactListId")
                         .HasColumnType("int");
 
-                    b.HasKey("COCId", "COC_ContactListId");
+                    b.HasKey("COCId", "COC_ContactListId")
+                        .IsClustered();
 
                     b.HasIndex("COC_ContactListId");
 
@@ -491,6 +525,9 @@ namespace ERP.Migrations.ApplicationDb
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("CountryId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("Date");
 
@@ -529,6 +566,8 @@ namespace ERP.Migrations.ApplicationDb
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
 
                     b.HasIndex("EmployeeShiftsId");
 
@@ -726,6 +765,180 @@ namespace ERP.Migrations.ApplicationDb
                     b.HasKey("Id");
 
                     b.ToTable("WhenRemidersSents");
+                });
+
+            modelBuilder.Entity("ERP.Models.OrganizationalStructure.Department", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Abbreviation")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("DepartmentName")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("EmployeesId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeesId");
+
+                    b.ToTable("Departments");
+                });
+
+            modelBuilder.Entity("ERP.Models.OrganizationalStructure.Department_description", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.ToTable("Department_Descriptions");
+                });
+
+            modelBuilder.Entity("ERP.Models.OrganizationalStructure.Designation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("DesignationName")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Designations");
+                });
+
+            modelBuilder.Entity("ERP.Models.OrganizationalStructure.Designation_description", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DesignationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DesignationId");
+
+                    b.ToTable("Designation_Descriptions");
+                });
+
+            modelBuilder.Entity("ERP.Models.OrganizationalStructure.EmployeeLevel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("EmployeeLevelName")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EmployeeLevels");
+                });
+
+            modelBuilder.Entity("ERP.Models.OrganizationalStructure.EmployeeLevel_desc", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EmployessLevelId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployessLevelId");
+
+                    b.ToTable("EmployeeLevel_descs");
+                });
+
+            modelBuilder.Entity("ERP.Models.OrganizationalStructure.EmployeeTypes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("EmployeeTypeName")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EmployeeTypes");
+                });
+
+            modelBuilder.Entity("ERP.Models.OrganizationalStructure.EmployeeTypes_desc", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EmployeeTypesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeTypesId");
+
+                    b.ToTable("EmployeeTypes_descs");
                 });
 
             modelBuilder.Entity("ERP.Models.TreasuriesAndBankAccount.BankAccount_Description", b =>
@@ -973,6 +1186,25 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("COC");
                 });
 
+            modelBuilder.Entity("ERP.Models.COC.Category_PerClient", b =>
+                {
+                    b.HasOne("ERP.Models.COC.COC", "COC")
+                        .WithMany()
+                        .HasForeignKey("COCId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Models.COC.COC_category", "COC_category")
+                        .WithMany()
+                        .HasForeignKey("COC_categoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("COC");
+
+                    b.Navigation("COC_category");
+                });
+
             modelBuilder.Entity("ERP.Models.COC.ClientNotes", b =>
                 {
                     b.HasOne("ERP.Models.COC.COC", "COC")
@@ -1060,6 +1292,10 @@ namespace ERP.Migrations.ApplicationDb
 
             modelBuilder.Entity("ERP.Models.Employee.Employees", b =>
                 {
+                    b.HasOne("ERP.Models.Generals.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId");
+
                     b.HasOne("ERP.Models.Employee.Shifts.EmployeeShifts", null)
                         .WithMany("Employees")
                         .HasForeignKey("EmployeeShiftsId");
@@ -1071,6 +1307,8 @@ namespace ERP.Migrations.ApplicationDb
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
+
+                    b.Navigation("Country");
                 });
 
             modelBuilder.Entity("ERP.Models.Employee.Shifts.ShiftsTimeDetails", b =>
@@ -1101,6 +1339,61 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("EmailsTemplates");
 
                     b.Navigation("WhenRemidersSent");
+                });
+
+            modelBuilder.Entity("ERP.Models.OrganizationalStructure.Department", b =>
+                {
+                    b.HasOne("ERP.Models.Employee.Employees", "Employees")
+                        .WithMany()
+                        .HasForeignKey("EmployeesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("ERP.Models.OrganizationalStructure.Department_description", b =>
+                {
+                    b.HasOne("ERP.Models.OrganizationalStructure.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("ERP.Models.OrganizationalStructure.Designation_description", b =>
+                {
+                    b.HasOne("ERP.Models.OrganizationalStructure.Designation", "Designation")
+                        .WithMany()
+                        .HasForeignKey("DesignationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Designation");
+                });
+
+            modelBuilder.Entity("ERP.Models.OrganizationalStructure.EmployeeLevel_desc", b =>
+                {
+                    b.HasOne("ERP.Models.OrganizationalStructure.EmployeeLevel", "EmployeeLevel")
+                        .WithMany()
+                        .HasForeignKey("EmployessLevelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EmployeeLevel");
+                });
+
+            modelBuilder.Entity("ERP.Models.OrganizationalStructure.EmployeeTypes_desc", b =>
+                {
+                    b.HasOne("ERP.Models.OrganizationalStructure.EmployeeTypes", "EmployeeTypes")
+                        .WithMany()
+                        .HasForeignKey("EmployeeTypesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EmployeeTypes");
                 });
 
             modelBuilder.Entity("ERP.Models.TreasuriesAndBankAccount.BankAccount_Description", b =>

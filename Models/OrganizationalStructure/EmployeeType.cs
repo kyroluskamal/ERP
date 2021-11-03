@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace ERP.Models.OrganizationalStructure
 {
-    public class Designation
+    public class EmployeeType
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, Write a designation")]
+        [Required(ErrorMessage = "Please, Write a level")]
         [MaxLength(20)]
-        public string DesignationName { get; set; }
-        public bool HasDescription { get; set; }
+        public string EmployeeTypeName { get; set; }
         public bool IsActive { get; set; }
+        public bool HasDescription { get; set; }
     }
 }

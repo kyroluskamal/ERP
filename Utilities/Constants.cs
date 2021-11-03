@@ -52,19 +52,42 @@ namespace ERP.Utilities
         public int Female = 0;
         public int InvoicingMethod_Email = 0;
         public int InvoicingMethod_Print = 1;
-        public bool Shift_standardType = false;
-        public bool Shift_AdvancedType = true;
+        public int Shift_standardType = 1;
+        public int Shift_AdvancedType = 0;
         public bool Active = true;
-        public bool NotActive = false;
-        public bool HasEstimates_Yes = true;
-        public bool HasEstimates_No = false;
-        public bool HasCategory_Yes = true;
-        public bool HasCategory_No = false;
-        public bool HasNote_Yes = true;
-        public bool HasNote_No = false;
+        public bool HasEstimates = true;
+        public bool HasCategory = true;
+        public bool HasNote = true;
         public bool StautOpened = true;
         public bool StautClosed = false;
-
+        public bool HasExpire = true;
+        public bool HasDescription = true;
+        public bool HasSpecialOffer = true;
+        public bool Online = true;
+        public int Inclusive = 0;
+        public int Exclusive = 1;
+        public int Percent_Type = 0;
+        public int Value_Type = 1;
+        public bool HasWholeSalePrice = true;
+        public bool HasRetailPrice = true;
+        public bool HasMinAndMaxDate = true;
+        public bool HasMinAndMaxNumber = true;
+        public int Required = 1;
+        public int NotRequired = 0;
+        public int Unique = 1;
+        public int NotUnique = 0;
+        public int NotApplicable = -1;
+        public int Digit = 0;
+        public int Value = 1;
+        public enum FieldsLayoutSize
+        {
+            X_small = 0,
+            small = 1,
+            Medium = 2,
+            Large = 3,
+            X_large = 4,
+        }
+        
         //Email Constants
         public string ConfirmationEmail_Subject = "Please confirm your email";
         public string ResetPassword_Subject = "Password Reset";

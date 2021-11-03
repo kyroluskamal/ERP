@@ -18,6 +18,8 @@ namespace ERP.Models.OrganizationalStructure
         [Required(ErrorMessage = "Please, an abbreviation for the department")]
         [MaxLength(10)]
         public string Abbreviation { get; set; }
+        public bool HasDescription { get; set; }
+
         [ForeignKey(nameof(EmployeesId))]
         public Employees Employees { get; set; }
         public int EmployeesId { get; set; }

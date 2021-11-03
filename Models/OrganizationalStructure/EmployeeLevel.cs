@@ -13,6 +13,7 @@ namespace ERP.Models.OrganizationalStructure
         [MaxLength(20)]
         public string EmployeeLevelName { get; set; }
         public bool IsActive { get; set; }
+        public bool HasDescription { get; set; }
+
     }
-}
 }
