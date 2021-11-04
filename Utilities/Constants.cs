@@ -64,21 +64,23 @@ namespace ERP.Utilities
         public bool HasDescription = true;
         public bool HasSpecialOffer = true;
         public bool Online = true;
-        public int Inclusive = 0;
-        public int Exclusive = 1;
-        public int Percent_Type = 0;
-        public int Value_Type = 1;
+
+        public enum TaxType {Inclusive = 0, Exclusive = 1}
+
+        public enum DiscountType {Percent = 0, Value_Type = 1}
+
         public bool HasWholeSalePrice = true;
         public bool HasRetailPrice = true;
         public bool HasMinAndMaxDate = true;
         public bool HasMinAndMaxNumber = true;
-        public int Required = 1;
-        public int NotRequired = 0;
-        public int Unique = 1;
-        public int NotUnique = 0;
-        public int NotApplicable = -1;
-        public int Digit = 0;
-        public int Value = 1;
+
+        public enum IsRequired {Required = 1, NotRequired = 0, NotApplicable = -1}
+
+        public enum IsUnique {Unique = 1, NotUnique = 0, NotApplicable = -1}
+
+        public enum MaxAndMinNumberType { Digit = 0, Value = 1 }
+        public enum PermissionType { Vacation = 0, Delay = 1 }
+
         public enum FieldsLayoutSize
         {
             X_small = 0,
@@ -87,7 +89,7 @@ namespace ERP.Utilities
             Large = 3,
             X_large = 4,
         }
-        
+        public enum AttendanceStatus { present = 0, onleave = 1, Absense = 2 }
         //Email Constants
         public string ConfirmationEmail_Subject = "Please confirm your email";
         public string ResetPassword_Subject = "Password Reset";

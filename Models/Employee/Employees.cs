@@ -1,4 +1,5 @@
-﻿using ERP.Models.Generals;
+﻿using ERP.Models.Attendance.AttendenceSettings;
+using ERP.Models.Generals;
 using ERP.Models.OrganizationalStructure;
 using System;
 using System.Collections.Generic;
@@ -51,7 +52,6 @@ namespace ERP.Models.Employee
         public ApplicationUser ApplicationUser { get; set; }
         public int UserId { get; set; }
 
-        
         public Country Country { get; set; }
         public int? CountryId { get; set; }
         public Department Department { get; set; }
@@ -62,5 +62,11 @@ namespace ERP.Models.Employee
         public int? EmployeeLevelId { get; set; }
         public EmployeeType EmployeeType { get; set; }
         public int? EmployeeTypeId { get; set; }
+
+        public HolidayLists HolidayLists { get; set; }
+        public int HolidayListsId { get; set; }
+
+        public VacationsPolicy_LeavePolicy VacationsPolicy_LeavePolicy { get; set; }
+        public int VacationsPolicy_LeavePolicyId { get; set; }
     }
 }

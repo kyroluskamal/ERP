@@ -1,5 +1,7 @@
 ﻿using ERP.Data.Identity;
 using ERP.Models;
+using ERP.Models.Attendance;
+using ERP.Models.Attendance.AttendenceSettings;
 using ERP.Models.COC;
 using ERP.Models.CutomFields;
 using ERP.Models.Employee;
@@ -26,6 +28,8 @@ namespace ERP.Data
         public DbSet<Employees> Employees { get; set; }
         public DbSet<EmployeeNote> EmployeeNotes { get; set; }
         public DbSet<EmployeeShifts> EmployeeShifts { get; set; }
+        public DbSet<Employees_customFields> Employees_customFields { get; set; }
+
         //Treasuries and Bank accounts dbsets
         public DbSet<Treasuries> Treasuries { get; set; }
         public DbSet<Treasury_description> Treasury_Descriptions { get; set; }
@@ -85,6 +89,26 @@ namespace ERP.Data
         public DbSet<FieldsInSystem> FieldsInSystem { get; set; }
         public DbSet<MinAndMaxDate> MinAndMaxDate { get; set; }
         public DbSet<MinAndMaxNumbers> MinAndMaxNumbers { get; set; }
+
+        //Attendance
+        public DbSet<AttendanceDaysPerEmp> AttendanceDaysPerEmps { get; set; }
+        public DbSet<AttendancePermission> AttendancePermissions { get; set; }
+        public DbSet<AttendancePermission_DelayPermissions> AttendancePermission_DelayPermissions { get; set; }
+        public DbSet<AttendancePermission_notes> AttendancePermission_notes { get; set; }
+        public DbSet<AttendancePermission_VacationPerm> AttendancePermission_VacationPerms { get; set; }
+        public DbSet<AttendanceSheet> AttendanceSheets { get; set; }
+        public DbSet<ManualAttendanceEachDay> ManualAttendanceEachDays { get; set; }
+        public DbSet<ManualAttendanceEachDay_notes> ManualAttendanceEachDay_notes { get; set; }
+        public DbSet<ManualAttandanceEachDay_PresentStatus> ManualAttandanceEachDay_PresentStatuses { get; set; }
+        public DbSet<ManualAttendanceEachDay_VacationStatus> ManualAttendanceEachDay_VacationStatus { get; set; }
+        //Attendance settings
+        public DbSet<AttendanceFlag> AttendanceFlags { get; set; }
+        public DbSet<AttendanceSettings> AttendanceSettings { get; set; }
+        public DbSet<DaysOff_HolidayLists> DaysOff_HolidayLists { get; set; }
+        public DbSet<HolidayLists> HolidayLists { get; set; }
+        public DbSet<VacationPolicy_Type> VacationPolicy_Types { get; set; }
+        public DbSet<VacationsPolicy_LeavePolicy> VacationsPolicy_LeavePolicies { get; set; }
+        public DbSet<VacationsType_LeaveType> VacationsType_LeaveTypes { get; set; }
 
         //Systems In ERP
         public DbSet<SystemsInERP> SystemsInERP { get; set; }

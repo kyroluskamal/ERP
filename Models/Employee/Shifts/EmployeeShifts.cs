@@ -13,7 +13,7 @@ namespace ERP.Models.Employee.Shifts
         public int Id { get; set; }
         [Required(ErrorMessage ="You need to add shift Name")]
         public string Name { get; set; }
-        [Column(TypeName ="bit")]
+        [Column(TypeName ="tinyint")]
         public int StandardOrAdvanced { get; set; }
         public ICollection<Employees> Employees { get; set; }
         public ICollection<ShiftsTimeDetails> ShiftsTimeDetails { get; set; }

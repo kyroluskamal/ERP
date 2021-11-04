@@ -25,7 +25,7 @@ namespace ERP.Models.Items
         [Required]
         [Column(TypeName = "smallint")]
         public int ProfitMargin { get; set; }
-        [Column(TypeName = "bit")]
+        [Column(TypeName = "tinyint")]
         public int ProfitMarginType { get; set; }
         [Required]
         public int Barcode { get; set; }

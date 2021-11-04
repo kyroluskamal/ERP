@@ -17,7 +17,7 @@ namespace ERP.Models.Generals
         [Column(TypeName ="tinyint")]
         public int Percent { get; set; }
         [Required(ErrorMessage ="Please, choose the type of the tax value")]
-        [Column(TypeName ="bit")]
+        [Column(TypeName = "tinyint")]
         public int InclusiveOrExclusive { get; set; }
     }
 }
