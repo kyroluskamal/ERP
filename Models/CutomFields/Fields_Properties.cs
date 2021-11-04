@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,8 +20,11 @@ namespace ERP.Models.CutomFields
         [Required]
         [MaxLength(30)]
         public string Placeholder { get; set; }
+        [Column(TypeName = "bit")]
         public bool EnableAutocomplete { get; set; }
+        [Column(TypeName = "bit")]
         public bool HasChoices { get; set; }
+        [Column(TypeName = "bit")]
         public bool EnableQuickSearch { get; set; }
         public Fields_validation_Foreach_Service Fields_validation_Foreach_Service { get; set; }
         public int Fields_validation_Foreach_ServiceId { get; set; }

@@ -14,10 +14,12 @@ namespace ERP.Models.OrganizationalStructure
         [Required(ErrorMessage ="Please, Write the department name")]
         [MaxLength(20)]
         public string DepartmentName { get; set; }
+        [Column(TypeName = "bit")]
         public bool IsActive { get; set; }
         [Required(ErrorMessage = "Please, an abbreviation for the department")]
         [MaxLength(10)]
         public string Abbreviation { get; set; }
+        [Column(TypeName = "bit")]
         public bool HasDescription { get; set; }
 
         [ForeignKey(nameof(EmployeesId))]

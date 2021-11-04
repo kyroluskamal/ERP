@@ -22,6 +22,7 @@ namespace ERP.Models.Attendance.AttendenceSettings
         public int MaximumContinuousDaysApplicable { get; set; }
         [Column(TypeName ="tinyint")]
         public int ApplicableAfter_HowManyDays { get; set; }
+        [Column(TypeName = "bit")]
         public bool IsNeedPermission { get; set; }
     }
 }

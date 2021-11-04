@@ -4,14 +4,15 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ERP.Models.Service
+namespace ERP.Models.Inventory
 {
-    public class ServiceNotes
+    public class TransferBetweenInvent_notes
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, write a note")]
+        [Required]
         public string Notes { get; set; }
-        public Services Service { get; set; }
-        public int ServiceId { get; set; }
+
+        public TransferBetweenInvent TransferBetweenInvent { get; set; }
+        public int TransferBetweenInventId { get; set; }
     }
 }

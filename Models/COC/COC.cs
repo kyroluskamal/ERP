@@ -12,7 +12,7 @@ namespace ERP.Models.COC
     {
         public int Id { get; set; }
         [Required(ErrorMessage ="You need to choose your account type")]
-        [Column(TypeName ="bool")]
+        [Column(TypeName ="bit")]
         public bool ClientType { get; set; }
 
         [Required(ErrorMessage = "You need to specify the client credit limit or write 0")]
@@ -27,9 +27,14 @@ namespace ERP.Models.COC
         [Column(TypeName ="Date")]
         public DateTime BalanceStartDate { get; set; }
         
+        [Column(TypeName ="bit")]
         public bool HasEstimates { get; set; }
+        [Column(TypeName ="bit")]
         public bool HasCategory { get; set; }
+        [Column(TypeName ="bit")]
         public bool HasNote { get; set; }
+        [Column(TypeName ="bit")]
+        public bool HasCustomFields { get; set; }
         public string NationalId { get; set; }
 
         public string Location { get; set; }

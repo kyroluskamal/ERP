@@ -2,13 +2,17 @@
 using ERP.Models;
 using ERP.Models.Attendance;
 using ERP.Models.Attendance.AttendenceSettings;
+using ERP.Models.Branches;
 using ERP.Models.COC;
 using ERP.Models.CutomFields;
 using ERP.Models.Employee;
 using ERP.Models.Employee.Shifts;
 using ERP.Models.Generals;
+using ERP.Models.Inventory;
 using ERP.Models.Items;
 using ERP.Models.OrganizationalStructure;
+using ERP.Models.PriceLists;
+using ERP.Models.Service;
 using ERP.Models.SystemsInErp;
 using ERP.Models.TreasuriesAndBankAccount;
 using Microsoft.AspNetCore.Identity;
@@ -44,6 +48,7 @@ namespace ERP.Data
         public DbSet<COC_ContactList> COC_ContactList { get; set; }
         public DbSet<ClientNotes> ClientNotes { get; set; }
         public DbSet<ClientStatus> ClientStatuses { get; set; }
+        public DbSet<COC_CustomFields> COC_CustomFields { get; set; }
 
         //Generals dbsets
         public DbSet<Actions> Actions { get; set; }
@@ -79,6 +84,16 @@ namespace ERP.Data
         public DbSet<ItemTaxSettings> ItemTaxSettings { get; set; }
         public DbSet<Units> Units { get; set; }
         public DbSet<Item_Per_Subcategory> Item_Per_Subcategories { get; set; }
+        public DbSet<Items_CustomFields> Items_CustomFields { get; set; }
+
+        //Services Dbsets
+        public DbSet<Services> Services { get; set; }
+        public DbSet<Service_CustomFields> Service_CustomFields { get; set; }
+        public DbSet<ServiceDescription> ServiceDescriptions { get; set; }
+        public DbSet<ServiceMainCategory> ServiceMainCategories { get; set; }
+        public DbSet<ServiceNotes> ServiceNotes { get; set; }
+        public DbSet<ServiceSubCategory> ServiceSubCategories { get; set; }
+        public DbSet<ServiceTaxSettings> ServiceTaxSettings { get; set; }
 
         //Custom Fields
         public DbSet<Field_Choices> Field_Choices { get; set; }
@@ -110,9 +125,34 @@ namespace ERP.Data
         public DbSet<VacationsPolicy_LeavePolicy> VacationsPolicy_LeavePolicies { get; set; }
         public DbSet<VacationsType_LeaveType> VacationsType_LeaveTypes { get; set; }
 
+        //Branches
+        public DbSet<BusinessBranches> BusinessBranches { get; set; }
+        public DbSet<BranchesSettings> BranchesSettings { get; set; }
+        public DbSet<BranchesAddress> BranchesAddresses { get; set; }
+
         //Systems In ERP
         public DbSet<SystemsInERP> SystemsInERP { get; set; }
 
+        //Inventories
+        public DbSet<Addition_NoExpire> Addition_NoExpires { get; set; }
+        public DbSet<Addition_WithExpire> Addition_WithExpire { get; set; }
+        public DbSet<Inbound_Invent_Requisitions> Inbound_Invent_Requisitions { get; set; }
+        public DbSet<InboundNotes> InboundNotes { get; set; }
+        public DbSet<Inventory> Inventories { get; set; }
+        public DbSet<InventoryAddress> InventoryAddresses { get; set; }
+        public DbSet<Items_NoEpire> Items_NoEpires { get; set; }
+        public DbSet<Items_withEpire> Items_withEpires { get; set; }
+        public DbSet<Outbound_Invent_Requisitions> Outbound_Invent_Requisitions { get; set; }
+        public DbSet<OutboundNotes> OutboundNotes { get; set; }
+        public DbSet<TransferBetweenInvent> TransferBetweenInvents { get; set; }
+        public DbSet<TransferBetweenInvent_notes> TransferBetweenInvent_notes { get; set; }
+        public DbSet<Withdraw_NoExpire> Withdraw_NoExpires { get; set; }
+        public DbSet<Withdraw_WithExpire> Withdraw_WithExpires { get; set; }
+
+        //PriceLists
+        public DbSet<PriceList> PriceLists { get; set; }
+        public DbSet<PriceList_items> PriceList_Items { get; set; }
+        public DbSet<PriceList_Services> priceList_Services { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
@@ -159,6 +199,9 @@ namespace ERP.Data
                 .HasKey(p => new { p.COCId, p.COC_ContactListId }).IsClustered(); 
             builder.Entity<Category_PerClient>()
                 .HasKey(p => new { p.COCId, p.COC_categoryId }).IsClustered();
+
+            builder.Entity<Employees_In_Branch>()
+                .HasKey(p => new { p.EmployeeId, p.BranchId });
         }
     }
 }

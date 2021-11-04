@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Castle.MicroKernel.SubSystems.Conversion;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,6 +18,7 @@ namespace ERP.Models.Attendance.AttendenceSettings
         public string Color { get; set; }
 
         public string Description { get; set; }
+        [Column(TypeName = "bit")]
         public bool IsActive { get; set; }
         public string Conditions { get; set; }
         public string Formula { get; set; }

@@ -1,4 +1,5 @@
 ﻿using ERP.Models.Attendance.AttendenceSettings;
+using ERP.Models.Branches;
 using ERP.Models.Generals;
 using ERP.Models.OrganizationalStructure;
 using System;
@@ -44,6 +45,8 @@ namespace ERP.Models.Employee
         public DateTime JoinDate { get; set; }
 
         public byte[] ProfileIMage { get; set; }
+        [Column(TypeName = "bit")]
+        public bool HasCustomFields { get; set; }
 
         public ICollection<EmployeePaperImages> PaperImages { get; set; }
         public ICollection<EmployeeAddress> EmpAddress { get; set; }
@@ -68,5 +71,7 @@ namespace ERP.Models.Employee
 
         public VacationsPolicy_LeavePolicy VacationsPolicy_LeavePolicy { get; set; }
         public int VacationsPolicy_LeavePolicyId { get; set; }
+
+        public ICollection<Employees_In_Branch> Employees_In_Branch { get; set; }
     }
 }

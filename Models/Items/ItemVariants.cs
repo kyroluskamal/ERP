@@ -31,7 +31,9 @@ namespace ERP.Models.Items
         public int Barcode { get; set; }
         public Item Item { get; set; }
         public int ItemId { get; set; }
+        [Column(TypeName = "bit")]
         public bool HasWholeSalePrice { get; set; }
+        [Column(TypeName = "bit")]
         public bool HasRetailPrice { get; set; }
     }
 }

@@ -14,6 +14,8 @@ namespace ERP.Models.Attendance
         [DataType(DataType.Date)]
         [Column(TypeName = "Date")]
         public DateTime AttendanceDate { get; set; }
+        
+        [Column(TypeName = "bit")]
         public bool HasNotes { get; set; }
         public Employees Employees { get; set; }
         public int EmployeesId { get; set; }

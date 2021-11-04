@@ -43,38 +43,57 @@ namespace ERP.Utilities
         //ValidationErrorMessages
 
         //ModelsConstants
-        public int Client_COC = 0;
-        public int Employee_COC = 1;
-        public int ClientAndEmp_COC = 2;
-        public int Client_IndividualType = 0;
-        public int Client_BusinessType = 1;
+        public enum IsClientOrStaffOrBoth { Client_COC = 0, Employee_COC = 1, both = 2 }
+        public enum ClientType { Individual = 0, BusinessType = 1 }
         public int Male = 1;
         public int Female = 0;
         public int InvoicingMethod_Email = 0;
         public int InvoicingMethod_Print = 1;
-        public int Shift_standardType = 1;
-        public int Shift_AdvancedType = 0;
-        public bool Active = true;
-        public bool HasEstimates = true;
-        public bool HasCategory = true;
-        public bool HasNote = true;
-        public bool StautOpened = true;
-        public bool StautClosed = false;
-        public bool HasExpire = true;
-        public bool HasDescription = true;
-        public bool HasSpecialOffer = true;
-        public bool Online = true;
+        public enum Shift_Type { standardType = 1, AdvancedType = 0 }
+        public enum IsActive { No = 0, Yes = 1 }
+        public enum HasEstimates { No = 0, Yes = 1 }
+        public enum HasCategory { No = 0, Yes = 1 }
+        public enum HasCustomFields { No = 0, Yes = 1 }
+        public enum HideField { No = 0, Yes = 1 }
+        public enum EnableAutocomplete { No = 0, Yes = 1 }
+        public enum HasChoices { No = 0, Yes = 1 }
+        public enum EnableQuickSearch { No = 0, Yes = 1 }
+        public enum HasMinAndMaxNumber { No = 0, Yes = 1 }
+        public enum HasMinAndMaxDate { No = 0, Yes = 1 }
+        public enum AddressType { permenant = 0, Present = 1 }
+        public enum Status_OpenedOrClosed { closed = 0, opened = 1 }
+        public enum IsMainInventory { closed = 0, opened = 1 }
+        public enum HasExpire { closed = 0, opened = 1 }
+        public enum HasDescription { closed = 0, opened = 1 }
+        public enum HasSpecialOffer { closed = 0, opened = 1 }
+        public enum IsOnline { closed = 0, opened = 1 }
 
         public enum TaxType {Inclusive = 0, Exclusive = 1}
 
         public enum DiscountType {Percent = 0, Value_Type = 1}
-
-        public bool HasWholeSalePrice = true;
-        public bool HasRetailPrice = true;
-        public bool HasMinAndMaxDate = true;
-        public bool HasMinAndMaxNumber = true;
+        public enum HasWholeSalePrice { Percent = 0, Value_Type = 1}
+        public enum HasRetailPrice { Percent = 0, Value_Type = 1}
 
         public enum IsRequired {Required = 1, NotRequired = 0, NotApplicable = -1}
+        public enum EnableSecondryShift { No = 0, Yes = 1 }
+        public enum IsNeedPermission { No = 0, Yes = 1 }
+        public enum HasNotes { No = 0, Yes = 1 }
+        public enum IsApproved { No = 0, Yes = 1 }
+        public enum IsCostCentersShared { No = 0, Yes = 1 }
+        public enum IsClientShared { No = 0, Yes = 1 }
+        public enum IsProducShared { No = 0, Yes = 1 }
+        public enum IsSupplierShared { No = 0, Yes = 1 }
+        public enum SpcifyAccountbranches { No = 0, Yes = 1 }
+        public enum CanViewProfile { No = 0, Yes = 1 }
+        public enum CanEditProfile { No = 0, Yes = 1 }
+        public enum CanViewNotesOrAttachments { No = 0, Yes = 1 }
+        public enum CanViewAndPayInvoices { No = 0, Yes = 1 }
+        public enum CanViewAndApproveEstimates { No = 0, Yes = 1 }
+        public enum CanViewWorkOrders { No = 0, Yes = 1 }
+        public enum CanViewAppoinments { No = 0, Yes = 1 }
+        public enum DiableBooking { No = 0, Yes = 1 }
+        public enum DisableBookingCancelation { No = 0, Yes = 1 }
+        public enum DisableClientOnlineAccess { No = 0, Yes = 1 }
 
         public enum IsUnique {Unique = 1, NotUnique = 0, NotApplicable = -1}
 

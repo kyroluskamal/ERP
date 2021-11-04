@@ -35,6 +35,8 @@ namespace ERP.Models.Attendance
         public int Actual_WorkingHours { get; set; }
         [Column(TypeName = "smallint")]
         public int Total_Vacations { get; set; }
+
+        [Column(TypeName = "bit")]
         public bool IsApproved { get; set; }
         [DataType(DataType.Date)]
         [Column(TypeName = "Date")]
