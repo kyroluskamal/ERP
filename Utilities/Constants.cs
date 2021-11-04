@@ -62,11 +62,12 @@ namespace ERP.Utilities
         public enum HasMinAndMaxDate { No = 0, Yes = 1 }
         public enum AddressType { permenant = 0, Present = 1 }
         public enum Status_OpenedOrClosed { closed = 0, opened = 1 }
-        public enum IsMainInventory { closed = 0, opened = 1 }
-        public enum HasExpire { closed = 0, opened = 1 }
-        public enum HasDescription { closed = 0, opened = 1 }
-        public enum HasSpecialOffer { closed = 0, opened = 1 }
-        public enum IsOnline { closed = 0, opened = 1 }
+        public enum IsMainInventory { No = 0, Yes = 1 }
+        public enum HasExpire { No = 0, Yes = 1 }
+        public enum HasDescription { No = 0, Yes = 1 }
+        public enum HasSpecialOffer { No = 0, Yes = 1 }
+        public enum IsOnline { No = 0, Yes = 1 }
+        public enum IsEndorsed { No = 0, Yes = 1 }
 
         public enum TaxType {Inclusive = 0, Exclusive = 1}
 
@@ -94,6 +95,7 @@ namespace ERP.Utilities
         public enum DiableBooking { No = 0, Yes = 1 }
         public enum DisableBookingCancelation { No = 0, Yes = 1 }
         public enum DisableClientOnlineAccess { No = 0, Yes = 1 }
+        public enum HasAttachments { No = 0, Yes = 1 }
 
         public enum IsUnique {Unique = 1, NotUnique = 0, NotApplicable = -1}
 

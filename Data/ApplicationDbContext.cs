@@ -3,6 +3,7 @@ using ERP.Models;
 using ERP.Models.Attendance;
 using ERP.Models.Attendance.AttendenceSettings;
 using ERP.Models.Branches;
+using ERP.Models.Checks;
 using ERP.Models.COC;
 using ERP.Models.CutomFields;
 using ERP.Models.Employee;
@@ -153,6 +154,20 @@ namespace ERP.Data
         public DbSet<PriceList> PriceLists { get; set; }
         public DbSet<PriceList_items> PriceList_Items { get; set; }
         public DbSet<PriceList_Services> priceList_Services { get; set; }
+
+        //Checks
+        public DbSet<CheckBook> CheckBooks { get; set; }
+        public DbSet<CheckBook_Notes> CheckBook_Notes { get; set; }
+        public DbSet<PayableCheck> PayableChecks { get; set; }
+        public DbSet<PayableCheck_Attachments> PayableCheck_Attachments { get; set; }
+        public DbSet<PayableCheck_Description> PayableCheck_Descriptions { get; set; }
+        public DbSet<ReceivableCheck> ReceivableChecks { get; set; }
+        public DbSet<ReceivableCheck_Attachments> ReceivableCheck_Attachments { get; set; }
+        public DbSet<ReceivableCheck_Description> ReceivableCheck_Descriptions { get; set; }
+        public DbSet<ReceivableCheck_Endorsement> ReceivableCheck_Endorsements { get; set; }
+        
+        
+        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
