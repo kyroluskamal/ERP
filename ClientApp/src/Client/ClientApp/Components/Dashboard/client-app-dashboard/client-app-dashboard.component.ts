@@ -5,7 +5,7 @@ import { ConstantsService } from '../../../../../CommonServices/constants.servic
 import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { ThisReceiver } from '@angular/compiler';
-
+import { MatSidenavModule } from '@angular/material/sidenav';
 @Component({
   selector: 'app-client-app-dashboard',
   templateUrl: './client-app-dashboard.component.html',

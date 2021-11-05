@@ -32,7 +32,7 @@ export class EmailConfirmationClientComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     console.log("Called");
     this.LangSubscibtion = this.translate.SelectedLangSubject.subscribe(
-      (response) => {
+      (response: any) => {
         this.selected = response;
       }
     );
@@ -52,7 +52,8 @@ export class EmailConfirmationClientComponent implements OnInit, OnDestroy {
     this.accountService.confirmEmail(emailConfimationModel).subscribe(
       (Response: any) => {
         this.Success = true,
-          console.log(Response)},
+          console.log(Response)
+      },
       (error: any) => { this.Fail = true; this.Error = error[0].error; console.log(error) }
     );
   }

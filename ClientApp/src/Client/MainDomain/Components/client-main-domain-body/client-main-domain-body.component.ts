@@ -64,7 +64,7 @@ export class ClientMainDomainBodyComponent implements OnInit, OnDestroy {
       }
     );
     this.LangSubscibtion = this.translate.SelectedLangSubject.subscribe(
-      (response) => {
+      (response:any) => {
         this.selected = response;
       }
     );

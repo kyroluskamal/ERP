@@ -24,7 +24,7 @@ export class CommoneResetPasswordComponent implements OnInit {
     const token = this.route.snapshot.queryParamMap.get(this.Constants.token);
     if (email && token) {
       this.route.url.subscribe(
-        (response) => {
+        (response: any) => {
           if (response[0].path === this.Constants.Owner) {
             this.dialogHandler.OpenOwnerResetPassword();
           } else if (response[0].path === this.Constants.Client) {
@@ -35,7 +35,7 @@ export class CommoneResetPasswordComponent implements OnInit {
     } else {
       this.router.navigateByUrl("/");
     }
-    
+
   }
 
 }
