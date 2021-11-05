@@ -96,10 +96,15 @@ namespace ERP.Utilities
         public enum DisableBookingCancelation { No = 0, Yes = 1 }
         public enum DisableClientOnlineAccess { No = 0, Yes = 1 }
         public enum HasAttachments { No = 0, Yes = 1 }
+        public enum IsForClient { No = 0, Yes = 1 }
+        public enum HashShippingFees { No = 0, Yes = 1 }
+        public enum IsForCategory { No = 0, Yes = 1 }
+        public enum IsForSubCatategory { No = 0, Yes = 1 }
 
         public enum IsUnique {Unique = 1, NotUnique = 0, NotApplicable = -1}
 
         public enum MaxAndMinNumberType { Digit = 0, Value = 1 }
+        public enum EstimateFor { Services = 0, Items = 1 }
         public enum PermissionType { Vacation = 0, Delay = 1 }
 
         public enum FieldsLayoutSize

@@ -138,7 +138,7 @@ namespace ERP.Controllers
 
                 var User = new ApplicationUser() {
                     Email = clientRegister.Email, UserName = clientRegister.UserName,
-                    IsClientOrStaffOrBoth = Constants.Client_COC
+                    IsClientOrStaffOrBoth = (int)Constants.IsClientOrStaffOrBoth.Client_COC
                 };
                 var result = await UserManager.CreateAsync(User, clientRegister.Password);
                 if (result.Succeeded)

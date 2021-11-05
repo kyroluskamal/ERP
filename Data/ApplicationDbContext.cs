@@ -8,9 +8,11 @@ using ERP.Models.COC;
 using ERP.Models.CutomFields;
 using ERP.Models.Employee;
 using ERP.Models.Employee.Shifts;
+using ERP.Models.Estimates;
 using ERP.Models.Generals;
 using ERP.Models.Inventory;
 using ERP.Models.Items;
+using ERP.Models.NumberingSystem;
 using ERP.Models.OrganizationalStructure;
 using ERP.Models.PriceLists;
 using ERP.Models.Service;
@@ -165,9 +167,22 @@ namespace ERP.Data
         public DbSet<ReceivableCheck_Attachments> ReceivableCheck_Attachments { get; set; }
         public DbSet<ReceivableCheck_Description> ReceivableCheck_Descriptions { get; set; }
         public DbSet<ReceivableCheck_Endorsement> ReceivableCheck_Endorsements { get; set; }
-        
-        
-        
+
+        //Estimates
+        public DbSet<Estimate> Estimates { get; set; }
+        public DbSet<EstimatesAttachments> EstimatesAttachments { get; set; }
+        public DbSet<EstimatesShippingFees> EstimatesShippingFees { get; set; }
+        public DbSet<EstimatesNotes> EstimatesNotes { get; set; }
+        public DbSet<Estimates_Client> Estimates_Clients { get; set; }
+        public DbSet<Estimates_Items> Estimates_Items { get; set; }
+        public DbSet<Estimates_Services> Estimates_Services { get; set; }
+        public DbSet<EstimatesStatus> EstimatesStatuses { get; set; }
+
+
+        //NumberingSystem
+        public DbSet<NumberingSettings> NumberingSettings { get; set; }
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
