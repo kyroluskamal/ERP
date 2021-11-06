@@ -1,14 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
-using MimeKit;
 //using MailKit.Net.Smtp;
-using MailKit.Security;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Net.Mail;
 using System.Net;
+using System.Net.Mail;
 
 namespace ERP.Utilities.Services.EmailService
 {
@@ -19,11 +13,11 @@ namespace ERP.Utilities.Services.EmailService
         {
             _mailSettings = mailSettings.Value;
         }
-        public  void SendEmail(MailRequest mailRequest)
+        public void SendEmail(MailRequest mailRequest)
         {
             MailMessage msgMail = new MailMessage();
 
-            MailMessage myMessage = new MailMessage( );
+            MailMessage myMessage = new MailMessage();
             myMessage.From = new MailAddress(_mailSettings.Mail, _mailSettings.DisplayName);
             myMessage.To.Add(mailRequest.ToEmail);
             myMessage.Subject = mailRequest.Subject;
@@ -52,7 +46,7 @@ namespace ERP.Utilities.Services.EmailService
             NetworkCredential myCredential = new NetworkCredential(_mailSettings.Mail, _mailSettings.Password);
             mySmtpClient.Host = _mailSettings.Host;
             mySmtpClient.Port = _mailSettings.Port;
-            
+
             mySmtpClient.UseDefaultCredentials = false;
             mySmtpClient.Credentials = myCredential;
             mySmtpClient.ServicePoint.MaxIdleTime = 1;

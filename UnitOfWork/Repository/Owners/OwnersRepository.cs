@@ -1,9 +1,9 @@
 ﻿using ERP.Areas.Owners.Data;
 using ERP.UnitOfWork.IRepository;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace ERP.UnitOfWork.Repository.Owners

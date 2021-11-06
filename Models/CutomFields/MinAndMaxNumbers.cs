@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ERP.Models.CutomFields
 {
     public class MinAndMaxNumbers
     {
         public int Id { get; set; }
-        [Column(TypeName ="smallint")]
+        [Column(TypeName = "smallint")]
         public int MinNumber { get; set; }
-        [Column(TypeName ="smallint")]
+        [Column(TypeName = "smallint")]
         public int MaxNumber { get; set; }
-        [Column(TypeName ="tinyint")]
+        [Column(TypeName = "tinyint")]
         //0 = Digit, 1 = Value, -1= type is not applacable
         public int Digit_Value_NotApplicable { get; set; }
 

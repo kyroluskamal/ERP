@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ERP.Models.Employee.Shifts
 {
     public class ShiftsTimeDetails
     {
         public int Id { get; set; }
-        [Column(TypeName ="time")]
+        [Column(TypeName = "time")]
         public TimeSpan OnDutyTime { get; set; }
         [Column(TypeName = "time")]
         public TimeSpan OffDutyTime { get; set; }

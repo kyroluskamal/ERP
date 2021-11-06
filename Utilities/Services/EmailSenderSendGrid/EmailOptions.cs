@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ERP.Utilities.Services.EmailSenderSendGrid
+﻿namespace ERP.Utilities.Services.EmailSenderSendGrid
 {
     public class EmailOptions
     {

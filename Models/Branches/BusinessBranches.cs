@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ERP.Models.Branches
 {
@@ -19,7 +16,7 @@ namespace ERP.Models.Branches
         public string MobilePhone { get; set; }
         public string Terlephone { get; set; }
         public int WorkingHours { get; set; }
-        public string Description{ get; set; }
+        public string Description { get; set; }
         public string Location { get; set; }
         public ICollection<Employees_In_Branch> Employees_In_Branch { get; set; }
     }

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ERP.Models.Attendance.AttendenceSettings
 {
@@ -20,7 +16,7 @@ namespace ERP.Models.Attendance.AttendenceSettings
         public int MaxDaysAllowedPerYear { get; set; }
         [Column(TypeName = "tinyint")]
         public int MaximumContinuousDaysApplicable { get; set; }
-        [Column(TypeName ="tinyint")]
+        [Column(TypeName = "tinyint")]
         public int ApplicableAfter_HowManyDays { get; set; }
         [Column(TypeName = "bit")]
         public bool IsNeedPermission { get; set; }

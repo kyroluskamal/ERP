@@ -6,7 +6,6 @@ using ERP.UnitOfWork;
 using ERP.Utilities;
 using ERP.Utilities.Services;
 using ERP.Utilities.Services.EmailService;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
@@ -68,20 +67,23 @@ namespace ERP.Areas.Owners.Controllers
         {
             if (ModelState.IsValid)
             {
-                var Owner = new Owner() { 
-                    Email = Register.Email, UserName = Register.UserName,
-                    FirstName = Register.FirstName, LastName= Register.LastName
+                var Owner = new Owner()
+                {
+                    Email = Register.Email,
+                    UserName = Register.UserName,
+                    FirstName = Register.FirstName,
+                    LastName = Register.LastName
                 };
                 var result = await OwnerManager.CreateAsync(Owner, Register.Password);
                 if (result.Succeeded)
                 {
                     var User = await OwnerManager.FindByEmailAsync(Register.Email);
-                    if (!await RoleManager.RoleExistsAsync(Constants.Employee_Role)) 
+                    if (!await RoleManager.RoleExistsAsync(Constants.Employee_Role))
                         await RoleManager.CreateAsync(new OwnerRole(Constants.Employee_Role));
-                    
+
                     var roleResult = await OwnerManager.AddToRoleAsync(User, Constants.Employee_Role);
-                    if (!roleResult.Succeeded) 
-                        return BadRequest(new { status= Constants.RolenameAddtion_statuCode, error = Constants.RolenameAddtion_ErrorMessage });
+                    if (!roleResult.Succeeded)
+                        return BadRequest(new { status = Constants.RolenameAddtion_statuCode, error = Constants.RolenameAddtion_ErrorMessage });
                     var code = await OwnerManager.GenerateEmailConfirmationTokenAsync(User);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var param = new Dictionary<string, string>
@@ -90,17 +92,17 @@ namespace ERP.Areas.Owners.Controllers
                         {"email", Register.Email }
                     };
                     var callbackUrl = QueryHelpers.AddQueryString(Register.ClientUrl, param);
-                    
+
                     var mailRequest = new MailRequest();
                     mailRequest.ToEmail = Register.Email;
                     mailRequest.Subject = Constants.ConfirmationEmail_Subject;
                     mailRequest.Body = Constants.ConfirmationEmail_Body(HtmlEncoder.Default.Encode(callbackUrl));
                     MailService.SendEmail(mailRequest);
 
-                    
+
                     return Ok();
                 }
-                return BadRequest(new { status= Constants.ResultStatus_statuCode, error = result.Errors });
+                return BadRequest(new { status = Constants.ResultStatus_statuCode, error = result.Errors });
             }
             return BadRequest(new { status = Constants.ModelState_statuCode, error = ModelState });
         }
@@ -119,9 +121,10 @@ namespace ERP.Areas.Owners.Controllers
                 if (!ConfimEmailResult) return Unauthorized(new { status = Constants.EmailConfirmation_StatusCode, error = Constants.Emailconfirmation_ErrorMessage });
                 var result = await OwnerSigninManager.CheckPasswordSignInAsync(user, ownerLogin.Password, false);
 
-                if (result.Succeeded) 
-                    return new OwnerWithToken { 
-                        Username = user.UserName, 
+                if (result.Succeeded)
+                    return new OwnerWithToken
+                    {
+                        Username = user.UserName,
                         Token = TokenService.CreateOwnerToken(user),
                         Roles = (List<string>)await OwnerManager.GetRolesAsync(user)
                     };
@@ -146,7 +149,7 @@ namespace ERP.Areas.Owners.Controllers
         // Post api/<AccountController>/SendConfirmationAgain
         [HttpPost(nameof(SendConfirmationAgain))]
         public async Task<IActionResult> SendConfirmationAgain([FromBody] SendEmailConfirmationAgian sendEmailConfirmationAgian)
-        { 
+        {
             var user = await OwnerManager.FindByEmailAsync(sendEmailConfirmationAgian.Email);
             if (user == null)
                 return BadRequest(new { status = Constants.NullUser_statuCode, error = Constants.NullUser_ErrorMessage });

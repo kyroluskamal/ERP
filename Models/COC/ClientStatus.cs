@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ERP.Models.COC
 {
     public class ClientStatus
     {
         public int Id { get; set; }
-        [Required(ErrorMessage ="Please, write a status name")]
+        [Required(ErrorMessage = "Please, write a status name")]
         [MaxLength(10)]
         public string StatusName { get; set; }
         [Required(ErrorMessage = "Please, select a color")]

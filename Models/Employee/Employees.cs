@@ -6,8 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ERP.Models.Employee
 {
@@ -32,7 +30,7 @@ namespace ERP.Models.Employee
         public DateTime DateOfBirth { get; set; }
 
         [Required(ErrorMessage = "Employee gender is required ")]
-        [Column(TypeName ="tinyint")]
+        [Column(TypeName = "tinyint")]
         public int Gender { get; set; }
 
         [Required(ErrorMessage = "You must provide a phone number")]

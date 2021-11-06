@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ERP.Models.Inventory
 {
@@ -18,7 +13,7 @@ namespace ERP.Models.Inventory
         [Required(ErrorMessage = "Add the postal code")]
         public string PostalCode { get; set; }
 
-        public Inventory Inventory { get; set; }
+        public Inventories Inventory { get; set; }
         public int InventoryId { get; set; }
     }
 }

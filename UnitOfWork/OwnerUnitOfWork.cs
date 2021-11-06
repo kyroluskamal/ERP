@@ -1,12 +1,6 @@
 ﻿using ERP.Areas.Owners.Data;
-using ERP.Data;
 using ERP.UnitOfWork.IRepository.Owners;
 using ERP.UnitOfWork.Repository.Owners;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ERP.UnitOfWork
 {

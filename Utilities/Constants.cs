@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ERP.Utilities
+﻿namespace ERP.Utilities
 {
     public class Constants
     {
@@ -68,14 +63,19 @@ namespace ERP.Utilities
         public enum HasSpecialOffer { No = 0, Yes = 1 }
         public enum IsOnline { No = 0, Yes = 1 }
         public enum IsEndorsed { No = 0, Yes = 1 }
+        public enum HasDeposits { No = 0, Yes = 1 }
 
-        public enum TaxType {Inclusive = 0, Exclusive = 1}
 
-        public enum DiscountType {Percent = 0, Value_Type = 1}
-        public enum HasWholeSalePrice { Percent = 0, Value_Type = 1}
-        public enum HasRetailPrice { Percent = 0, Value_Type = 1}
+        public enum ServiceOrItem { service = 0, Item = 1 }
 
-        public enum IsRequired {Required = 1, NotRequired = 0, NotApplicable = -1}
+        public enum TaxType { Inclusive = 0, Exclusive = 1 }
+
+        public enum DiscountType { Percent = 0, Value_Type = 1 }
+        public enum DepositsType { Percent = 0, Value_Type = 1 }
+        public enum HasWholeSalePrice { Percent = 0, Value_Type = 1 }
+        public enum HasRetailPrice { Percent = 0, Value_Type = 1 }
+
+        public enum IsRequired { Required = 1, NotRequired = 0, NotApplicable = -1 }
         public enum EnableSecondryShift { No = 0, Yes = 1 }
         public enum IsNeedPermission { No = 0, Yes = 1 }
         public enum HasNotes { No = 0, Yes = 1 }
@@ -100,8 +100,14 @@ namespace ERP.Utilities
         public enum HashShippingFees { No = 0, Yes = 1 }
         public enum IsForCategory { No = 0, Yes = 1 }
         public enum IsForSubCatategory { No = 0, Yes = 1 }
+        public enum HasPrefix { No = 0, Yes = 1 }
+        public enum HasPymentTerms { No = 0, Yes = 1 }
+        public enum HasDiscount { No = 0, Yes = 1 }
+        public enum IsRecieved { No = 0, Yes = 1 }
+        public enum IsPartiallyPaid { No = 0, Yes = 1 }
+        public enum IsAlreadyPaid { No = 0, Yes = 1 }
 
-        public enum IsUnique {Unique = 1, NotUnique = 0, NotApplicable = -1}
+        public enum IsUnique { Unique = 1, NotUnique = 0, NotApplicable = -1 }
 
         public enum MaxAndMinNumberType { Digit = 0, Value = 1 }
         public enum EstimateFor { Services = 0, Items = 1 }
@@ -113,7 +119,22 @@ namespace ERP.Utilities
             small = 1,
             Medium = 2,
             Large = 3,
-            X_large = 4,
+            X_large = 4
+        }
+        public enum NumberingStyle
+        {
+            Lowercase_HexNumbers = 0,
+            Lppercase_HexNumbers = 1,
+            Lowercase_Letters = 2,
+            Uppercase_Letters = 3,
+            Lowercase_Letters_followed_by_NumericDigits = 4,
+            Uppercase_Letters_followed_by_NumericDigits = 5,
+        }
+        public enum NumberingPrefixMode
+        {
+            Continue_onLastNumber = 0,
+            Create_SeparateSerial_For_Each_prefix = 1,
+            Start_From_Beginning = 3
         }
         public enum AttendanceStatus { present = 0, onleave = 1, Absense = 2 }
         //Email Constants

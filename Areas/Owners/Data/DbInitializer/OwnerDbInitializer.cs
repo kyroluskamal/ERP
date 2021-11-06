@@ -3,9 +3,7 @@ using ERP.Areas.Owners.Models.Identity;
 using ERP.Utilities;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ERP.Areas.Owners.Data.DbInitializer
 {
@@ -27,7 +25,7 @@ namespace ERP.Areas.Owners.Data.DbInitializer
         }
 
 
-        public void  Initialize()
+        public void Initialize()
         {
             try
             {
@@ -43,9 +41,9 @@ namespace ERP.Areas.Owners.Data.DbInitializer
 
             if (OwnerDbContext.Roles.Any(r => r.Name == Constants.SuperAdmin_Role)) return;
 
-            if(!RoleManager.RoleExistsAsync(Constants.Admin_Role).GetAwaiter().GetResult()) 
+            if (!RoleManager.RoleExistsAsync(Constants.Admin_Role).GetAwaiter().GetResult())
                 RoleManager.CreateAsync(new OwnerRole(Constants.Admin_Role)).GetAwaiter().GetResult();
-            if (!RoleManager.RoleExistsAsync(Constants.SuperAdmin_Role).GetAwaiter().GetResult()) 
+            if (!RoleManager.RoleExistsAsync(Constants.SuperAdmin_Role).GetAwaiter().GetResult())
                 RoleManager.CreateAsync(new OwnerRole(Constants.SuperAdmin_Role)).GetAwaiter().GetResult();
             if (!RoleManager.RoleExistsAsync(Constants.Moderator_Role).GetAwaiter().GetResult())
                 RoleManager.CreateAsync(new OwnerRole(Constants.Moderator_Role)).GetAwaiter().GetResult();
@@ -53,9 +51,10 @@ namespace ERP.Areas.Owners.Data.DbInitializer
                 RoleManager.CreateAsync(new OwnerRole(Constants.Employee_Role)).GetAwaiter().GetResult();
             if (!RoleManager.RoleExistsAsync(Constants.CustomerService_Role).GetAwaiter().GetResult())
                 RoleManager.CreateAsync(new OwnerRole(Constants.CustomerService_Role)).GetAwaiter().GetResult();
-            
+
             Owner Admin = OwnerDbContext.Users.Where(u => u.Email == "kyroluskamal@gmail.com").FirstOrDefault();
-                if (Admin == null) { 
+            if (Admin == null)
+            {
                 UserManager.CreateAsync(new Owner
                 {
                     UserName = "KyrolusKamal",
@@ -67,7 +66,7 @@ namespace ERP.Areas.Owners.Data.DbInitializer
 
                 Owner user = OwnerDbContext.Users.Where(u => u.Email == "kyroluskamal@gmail.com").FirstOrDefault();
 
-                if(! UserManager.IsInRoleAsync(user, Constants.SuperAdmin_Role).GetAwaiter().GetResult()) 
+                if (!UserManager.IsInRoleAsync(user, Constants.SuperAdmin_Role).GetAwaiter().GetResult())
                     UserManager.AddToRoleAsync(user, Constants.SuperAdmin_Role);
             }
         }

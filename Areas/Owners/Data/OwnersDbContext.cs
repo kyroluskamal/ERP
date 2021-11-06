@@ -33,18 +33,18 @@ namespace ERP.Areas.Owners.Data
                 .HasIndex(u => u.Id)
                 .IsUnique();
             modelBuilder.Entity<Owner>()
-                .HasMany(x=>x.UserRole)
-                .WithOne(x=>x.Owner)
-                .HasForeignKey(x=>x.UserId).IsRequired();
+                .HasMany(x => x.UserRole)
+                .WithOne(x => x.Owner)
+                .HasForeignKey(x => x.UserId).IsRequired();
             modelBuilder.Entity<OwnerRole>()
                 .HasMany(x => x.UserRole)
                 .WithOne(x => x.Role)
                 .HasForeignKey(x => x.RoleId).IsRequired();
-            
+
             modelBuilder.Entity<OwnerUserRole>().HasKey(p => new { p.UserId, p.RoleId });
 
             modelBuilder.Entity<OwnerRole>()
-                .HasKey(o=>o.Id);
+                .HasKey(o => o.Id);
             modelBuilder.Entity<Owner>()
                 .HasKey(o => o.Id);
             modelBuilder.Entity<OwnerRole>()

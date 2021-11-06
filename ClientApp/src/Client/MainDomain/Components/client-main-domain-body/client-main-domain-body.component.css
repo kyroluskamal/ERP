@@ -2,7 +2,7 @@ span.bubble {
   z-index: 1;
 }
 main * {
-  z-index: 2;
+  z-index: 3;
 }
 .bubble {
   position: absolute;
@@ -359,9 +359,7 @@ article p {
 mat-grid-list {
   max-height: 100% !important;
 }
-main {
-  min-width: 100vw;
-}
+
 footer {
   background-color: #131628;
   min-height: 100vh;

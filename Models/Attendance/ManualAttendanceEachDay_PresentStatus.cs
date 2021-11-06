@@ -15,7 +15,7 @@ namespace ERP.Models.Attendance
 
         [Column(TypeName = "time")]
         public TimeSpan SignInTime { get; set; }
-        
+
         [Column(TypeName = "time")]
         public TimeSpan SignOutTime { get; set; }
 

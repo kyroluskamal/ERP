@@ -33,14 +33,14 @@ export class ClientMainDomainBodyComponent implements OnInit, OnDestroy {
   //constructor
   constructor(public translate: TranslationService, private viewportScroller: ViewportScroller,
     private mediaObserver: MediaObserver, public dialogHandler: DialogHandlerService,
-    public Constants: ConstantsService, private router: Router, public accountService: ClientAccountService,) {
+    public Constants: ConstantsService, private router: Router, public accountService: ClientAccountService) {
     this.selected = localStorage.getItem(this.Constants.lang);
 
   }
 
   ngOnInit(): void {
-    this.accountService.currentUserOvservable.subscribe(
-      user => {
+    this.accountService.currentUserOvservable.subscribe({
+      next: (user) => {
         if (user) {
           this.currentUserName = user.username;
           this.UrlWithSubdomain = `https://${user.subdomain}.${window.location.host}`;
@@ -48,8 +48,8 @@ export class ClientMainDomainBodyComponent implements OnInit, OnDestroy {
           this.currentUserName == null;
         }
       },
-      error => console.log(error)
-    );
+      error: (error) => console.log(error)
+    });
     this.MediaSubscription = this.mediaObserver.asObservable().subscribe(
       (response: MediaChange[]) => {
         if (response.some(x => x.mqAlias === 'xs')) {
@@ -64,7 +64,7 @@ export class ClientMainDomainBodyComponent implements OnInit, OnDestroy {
       }
     );
     this.LangSubscibtion = this.translate.SelectedLangSubject.subscribe(
-      (response:any) => {
+      (response: any) => {
         this.selected = response;
       }
     );

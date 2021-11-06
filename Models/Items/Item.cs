@@ -1,10 +1,5 @@
-﻿using ERP.Models.Generals;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ERP.Models.Items
 {
@@ -12,7 +7,7 @@ namespace ERP.Models.Items
     {
         public int Id { get; set; }
         public int DefaultInventoryId { get; set; }
-        [Required(ErrorMessage ="Please, Write the item's name")]
+        [Required(ErrorMessage = "Please, Write the item's name")]
         [MaxLength(30)]
         public string Name { get; set; }
         [Column(TypeName = "bit")]
@@ -28,6 +23,6 @@ namespace ERP.Models.Items
         public int ItemSKU { get; set; }
         [Required]
         public int AddByUserId { get; set; }
-        
+
     }
 }

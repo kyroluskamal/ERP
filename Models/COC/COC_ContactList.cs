@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ERP.Models.COC
 {
@@ -20,7 +19,7 @@ namespace ERP.Models.COC
         public string MobilePhone { get; set; }
         [EmailAddress]
         public string Email { get; set; }
-        [Required(ErrorMessage ="You need to add a telephone number")]
+        [Required(ErrorMessage = "You need to add a telephone number")]
         public string Telephone { get; set; }
         public ICollection<ConstactList_PerCOC> COC_Contacts { get; set; }
     }

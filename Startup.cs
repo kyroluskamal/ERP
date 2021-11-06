@@ -1,11 +1,22 @@
+using API.Middleware.ErrorsHandling;
+using ERP.Areas.Owners.CustomTokenProviders.EmailConfirmation;
 using ERP.Areas.Owners.Data;
+using ERP.Areas.Owners.Data.DbInitializer;
 using ERP.Areas.Owners.Models;
 using ERP.Areas.Owners.Models.Identity;
+using ERP.Areas.Tenants.Data;
+using ERP.Areas.Tenants.Services;
 using ERP.Data;
+using ERP.Data.Identity;
 using ERP.Models;
+using ERP.UnitOfWork;
+using ERP.Utilities;
+using ERP.Utilities.Services;
+using ERP.Utilities.Services.EmailService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
@@ -13,23 +24,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using ERP.Data.Identity;
-using ERP.Areas.Tenants.Data;
-using ERP.Areas.Tenants.Services;
-using Microsoft.AspNetCore.Http;
-using ERP.Utilities.Services;
-using API.Middleware.ErrorsHandling;
-using ERP.UnitOfWork;
-using ERP.Utilities.Services.EmailService;
-using ERP.Utilities.Services.EmailSenderSendGrid;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using ERP.Utilities;
-using ERP.Areas.Owners.CustomTokenProviders.EmailConfirmation;
 using System;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
-using ERP.Areas.Owners.Data.DbInitializer;
+using System.Text;
 
 namespace ERP
 {
@@ -48,7 +44,7 @@ namespace ERP
             services.AddScoped<TenantProvider>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<ITokenService, TokenService>();
-           
+
             //services.AddEntityFrameworkSqlServer().AddDbContext<OwnersDbContext>(options =>
             //        options.UseSqlServer());
             //Add Owner Identity DbContext
@@ -69,15 +65,15 @@ namespace ERP
                 .AddRoleManager<OwnerRoleManager>().AddRoleValidator<RoleValidator<OwnerRole>>()
                 .AddRoleStore<OwnerRoleStore>().AddUserManager<OwnerUserManager>()
                 .AddUserStore<OwnerUserStore>().AddSignInManager<OwnerSignInManager>();
-                //.AddTokenProvider<CustomEmailConfirmationTokenProvider<Owner>>("OwnerCustomEmailConfirmation");
+            //.AddTokenProvider<CustomEmailConfirmationTokenProvider<Owner>>("OwnerCustomEmailConfirmation");
 
 
             services.AddScoped<OwnerRoleStore>();
             services.AddScoped<OwnerUserStore>();
-            
-            
+
+
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer()); 
+                options.UseSqlServer());
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddTransient<IRoleStore<ApplicationUserRole>, ApplicationUserRoleStore>();
             services.AddTransient<UserManager<ApplicationUser>, ApplicationUserManager>();
@@ -93,7 +89,7 @@ namespace ERP
                 .AddRoleValidator<RoleValidator<ApplicationUserRole>>().AddRoleStore<ApplicationUserRoleStore>()
                 .AddUserManager<ApplicationUserManager>().AddUserStore<ApplicationUserStore>()
                 .AddSignInManager<ApplicationUserSignIngManager>().AddDefaultTokenProviders();
-                //.AddTokenProvider<CustomEmailConfirmationTokenProvider<ApplicationUser>>("ClientCustomEmailConfirmation");
+            //.AddTokenProvider<CustomEmailConfirmationTokenProvider<ApplicationUser>>("ClientCustomEmailConfirmation");
 
             services.AddScoped<ApplicationUserRoleStore>();
             services.AddScoped<ApplicationUserStore>();

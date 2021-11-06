@@ -6,13 +6,14 @@ import { ConstantsService } from 'src/CommonServices/constants.service';
 })
 export class AnimateOnScrollDirective {
 
-  @Input('animName') animationName = "";
+  @Input() animationName = "";
   @HostBinding('class') class = "";
 
   constructor(public elementRef: ElementRef, public Constants: ConstantsService) { }
 
   @HostListener('window:scroll')
   onWindowScroll() {
+    console.log("Scrolled")
     const rect = this.elementRef.nativeElement.getBoundingClientRect();
     if (
       rect.top >= 0 &&

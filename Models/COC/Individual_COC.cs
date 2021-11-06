@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ERP.Models.COC
 {
@@ -16,9 +13,9 @@ namespace ERP.Models.COC
         [MaxLength(10)]
         [Required(ErrorMessage = "Your last name is required")]
         public string LastName { get; set; }
-        
+
         [DataType(DataType.Date)]
-        [Column(TypeName ="Date")]
+        [Column(TypeName = "Date")]
         public DateTime DateOfBirth { get; set; }
 
         [Required(ErrorMessage = "Employee gender is required ")]

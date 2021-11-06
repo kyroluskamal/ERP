@@ -9,7 +9,7 @@ namespace ERP.Models
     public class ApplicationUser : IdentityUser<int>
     {
         [Required]
-        [Column(TypeName ="tinyint")]
+        [Column(TypeName = "tinyint")]
         public int IsClientOrStaffOrBoth { get; set; }
         public ICollection<ApplicationUserUserRoles> UserRole { get; set; }
     }

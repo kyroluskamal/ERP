@@ -20,7 +20,7 @@ import { OwnerWithToken } from '../../Models/owner-with-token.model';
 export class OwnerAccountService {
 
   constructor(private httpClient: HttpClient, public Constants: ConstantsService) { }
-  private currentUserSource = new ReplaySubject<OwnerWithToken>(1);
+  private currentUserSource = new ReplaySubject<OwnerWithToken | any>(1);
   currentUserOvservable = this.currentUserSource.asObservable();
 
   Register(ownerRegisterModel: OwnerRegister): Observable<any> {
@@ -56,7 +56,7 @@ export class OwnerAccountService {
   logout() {
     sessionStorage.removeItem(this.Constants.Owner);
     localStorage.removeItem(this.Constants.Owner);
-    this.currentUserSource.next(undefined);
+    this.currentUserSource.next(null);
   }
 
   confirmEmail(emailConfirmationModel: EmailConfirmationModel) {

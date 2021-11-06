@@ -1,17 +1,13 @@
 ﻿using ERP.Models.Employee;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ERP.Models.OrganizationalStructure
 {
     public class Department
     {
         public int Id { get; set; }
-        [Required(ErrorMessage ="Please, Write the department name")]
+        [Required(ErrorMessage = "Please, Write the department name")]
         [MaxLength(20)]
         public string DepartmentName { get; set; }
         [Column(TypeName = "bit")]

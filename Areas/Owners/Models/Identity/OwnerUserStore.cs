@@ -1,7 +1,6 @@
 ﻿using ERP.Areas.Owners.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 
 namespace ERP.Areas.Owners.Models.Identity
 {

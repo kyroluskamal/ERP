@@ -3,16 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ERP.Models.COC
 {
     public class COC
     {
         public int Id { get; set; }
-        [Required(ErrorMessage ="You need to choose your account type")]
-        [Column(TypeName ="bit")]
+        [Required(ErrorMessage = "You need to choose your account type")]
+        [Column(TypeName = "bit")]
         public bool ClientType { get; set; }
 
         [Required(ErrorMessage = "You need to specify the client credit limit or write 0")]
@@ -24,16 +22,16 @@ namespace ERP.Models.COC
         public decimal Balance { get; set; }
 
         [DataType(DataType.Date)]
-        [Column(TypeName ="Date")]
+        [Column(TypeName = "Date")]
         public DateTime BalanceStartDate { get; set; }
-        
-        [Column(TypeName ="bit")]
+
+        [Column(TypeName = "bit")]
         public bool HasEstimates { get; set; }
-        [Column(TypeName ="bit")]
+        [Column(TypeName = "bit")]
         public bool HasCategory { get; set; }
-        [Column(TypeName ="bit")]
+        [Column(TypeName = "bit")]
         public bool HasNote { get; set; }
-        [Column(TypeName ="bit")]
+        [Column(TypeName = "bit")]
         public bool HasCustomFields { get; set; }
         public string NationalId { get; set; }
 
@@ -50,7 +48,7 @@ namespace ERP.Models.COC
         public Currency Currency { get; set; }
         public int CurrencyId { get; set; }
 
-        [Column(TypeName ="tinyint")]
+        [Column(TypeName = "tinyint")]
         public int InvoicingMethod { get; set; }
 
         [ForeignKey(nameof(CountryId))]

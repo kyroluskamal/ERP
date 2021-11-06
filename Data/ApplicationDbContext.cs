@@ -15,13 +15,17 @@ using ERP.Models.Items;
 using ERP.Models.NumberingSystem;
 using ERP.Models.OrganizationalStructure;
 using ERP.Models.PriceLists;
+using ERP.Models.Purchases;
+using ERP.Models.Purchases.PurphaseRefund;
 using ERP.Models.Service;
+using ERP.Models.Supplier;
 using ERP.Models.SystemsInErp;
 using ERP.Models.TreasuriesAndBankAccount;
+using ERP.Models.WorkOrder;
+using ERP.Models.WorkOrder.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
 
 namespace ERP.Data
 {
@@ -29,7 +33,7 @@ namespace ERP.Data
     IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {  
+        {
         }
         //Employees datasets
         public DbSet<Employees> Employees { get; set; }
@@ -141,7 +145,7 @@ namespace ERP.Data
         public DbSet<Addition_WithExpire> Addition_WithExpire { get; set; }
         public DbSet<Inbound_Invent_Requisitions> Inbound_Invent_Requisitions { get; set; }
         public DbSet<InboundNotes> InboundNotes { get; set; }
-        public DbSet<Inventory> Inventories { get; set; }
+        public DbSet<Inventories> Inventories { get; set; }
         public DbSet<InventoryAddress> InventoryAddresses { get; set; }
         public DbSet<Items_NoEpire> Items_NoEpires { get; set; }
         public DbSet<Items_withEpire> Items_withEpires { get; set; }
@@ -181,8 +185,48 @@ namespace ERP.Data
 
         //NumberingSystem
         public DbSet<NumberingSettings> NumberingSettings { get; set; }
+        public DbSet<NumberSettings_Prefixes> NumberSettings_Prefixes { get; set; }
 
+        //WorkOrders
+        public DbSet<WorkOrders> WorkOrders { get; set; }
+        public DbSet<WorkOrders_Attachments> WorkOrders_Attachments { get; set; }
+        public DbSet<WorkOrders_Description> WorkOrders_Descriptions { get; set; }
+        public DbSet<WorkOrdersClients> WorkOrdersClients { get; set; }
+        public DbSet<WorkOrdersEmployees> WorkOrdersEmployees { get; set; }
+        public DbSet<WorkOrdersActions> WorkOrdersActions { get; set; }
+        public DbSet<WorkOrderStatus> WorkOrderStatuses { get; set; }
 
+        //Suppliers
+        #region Suppliers
+        public DbSet<Suppliers> Suppliers { get; set; }
+        public DbSet<SupplierAddresses> SupplierAddresses { get; set; }
+        public DbSet<Supplier_notes> Supplier_notes { get; set; }
+        public DbSet<Supplier_CustomFields> Supplier_CustomFields { get; set; }
+        public DbSet<Supplier_ContactList> Supplier_ContactLists { get; set; }
+        #endregion
+
+        //Purchases
+        #region Purchases
+        public DbSet<Purchase_invoices> Purchase_invoices { get; set; }
+        public DbSet<Purchases_discount> Purchases_discounts { get; set; }
+        public DbSet<Purchases_paymentTerms> Purchases_paymentTerms { get; set; }
+        public DbSet<Purchases_shippingFees> Purchases_shippingFees { get; set; }
+        public DbSet<Purchase_Attachments> Purchase_Attachments { get; set; }
+        public DbSet<Purchases_Deposits> Purchases_Deposits { get; set; }
+        public DbSet<PurchasePaymentMethods> PurchasePaymentMethods { get; set; }
+        public DbSet<Purchase_Payments> Purchase_Payments { get; set; }
+        public DbSet<PurchaseStatus> PurchaseStatuses { get; set; }
+        public DbSet<Items_In_PurchaseInvoice> Items_In_PurchaseInvoices { get; set; }
+        public DbSet<PurchasesInvoice_Services> PurchasesInvoice_Services { get; set; }
+        //PurchasesFunds
+        public DbSet<Purchase_RefundRequests> Purchase_RefundRequests { get; set; }
+        public DbSet<Items_in_Refund> Items_in_Refunds { get; set; }
+        public DbSet<Refunds_Notes> Refunds_Notes { get; set; }
+        public DbSet<Purchase_RefundedServices> Purchase_RefundedServices { get; set; }
+        public DbSet<Refunds_Attachments> Refunds_Attachments { get; set; }
+        public DbSet<Refunds_items_ShippingFees> Refunds_items_ShippingFees { get; set; }
+        public DbSet<RefundsStatus> RefundsStatuses { get; set; }
+        #endregion
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
@@ -226,7 +270,7 @@ namespace ERP.Data
                 .Property(o => o.Id).ValueGeneratedOnAdd();
 
             builder.Entity<ConstactList_PerCOC>()
-                .HasKey(p => new { p.COCId, p.COC_ContactListId }).IsClustered(); 
+                .HasKey(p => new { p.COCId, p.COC_ContactListId }).IsClustered();
             builder.Entity<Category_PerClient>()
                 .HasKey(p => new { p.COCId, p.COC_categoryId }).IsClustered();
 

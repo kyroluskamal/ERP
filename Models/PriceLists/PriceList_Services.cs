@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ERP.Models.Service;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-using ERP.Models.Service;
 
 namespace ERP.Models.PriceLists
 {

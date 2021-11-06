@@ -1,10 +1,10 @@
-﻿using ERP.UnitOfWork.IRepository;
+﻿using ERP.Areas.Tenants.Data;
+using ERP.UnitOfWork.IRepository;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using ERP.Areas.Tenants.Data;
 
 namespace ERP.UnitOfWork.Repository.Tenants
 {

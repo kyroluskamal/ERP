@@ -1,30 +1,19 @@
-﻿using ERP.Data;
+﻿using ERP.Areas.Tenants.Models;
+using ERP.Data;
+using ERP.Data.Identity;
 using ERP.Models;
+using ERP.UnitOfWork;
+using ERP.Utilities;
 using ERP.Utilities.Services;
+using ERP.Utilities.Services.EmailService;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Text.Json;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using ERP.Data.Identity;
-using ERP.Areas.Tenants.Models;
-using ERP.Areas.Tenants.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using System.Data.Entity;
-using System.Diagnostics;
-using ERP.UnitOfWork;
-using ERP.Utilities.Services.EmailService;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 using System.Text.Encodings.Web;
-using ERP.Utilities;
-using System.Security.Claims;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -87,35 +76,37 @@ namespace ERP.Controllers
                 if (tenantbyEmail != null && tenantbySubdomain != null && tenantbyUsername != null)
                     return BadRequest(new
                     {
-                        status = "Exsiting_Subdomain_Mail_UserName", 
-                        error= "Do you try to create an account with the same Email, Username and Subdomain?. " +
+                        status = "Exsiting_Subdomain_Mail_UserName",
+                        error = "Do you try to create an account with the same Email, Username and Subdomain?. " +
                         "you can login or reset your password if you have forgetton it"
                     });
-                else if(tenantbyEmail != null && tenantbySubdomain != null && tenantbyUsername == null)
+                else if (tenantbyEmail != null && tenantbySubdomain != null && tenantbyUsername == null)
                     return BadRequest(new
                     {
                         status = "Exsiting_Subdomain_Mail",
                         error = "Email and Subdomain both are already exists"
                     });
-                else if(tenantbyEmail != null && tenantbySubdomain == null && tenantbyUsername != null)
+                else if (tenantbyEmail != null && tenantbySubdomain == null && tenantbyUsername != null)
                     return BadRequest(new
                     {
                         status = "Exsiting_Mail_Username",
                         error = "Email and Username both are already exists"
                     });
-                else if(tenantbyEmail == null && tenantbySubdomain != null && tenantbyUsername != null)
+                else if (tenantbyEmail == null && tenantbySubdomain != null && tenantbyUsername != null)
                     return BadRequest(new
                     {
                         status = "Exsiting_Subdomain_Username",
                         error = "subdomain and Username both are already exists"
                     });
                 else if (tenantbyEmail != null && tenantbySubdomain == null && tenantbyUsername == null)
-                    return BadRequest(new {
-                        status = "Exsiting_Mail", 
+                    return BadRequest(new
+                    {
+                        status = "Exsiting_Mail",
                         error = "This Email is already taken"
                     });
                 else if (tenantbyEmail == null && tenantbySubdomain == null && tenantbyUsername != null)
-                    return BadRequest(new {
+                    return BadRequest(new
+                    {
                         status = "Exsiting_Username",
                         error = "This Username Is already taken"
                     });
@@ -125,19 +116,22 @@ namespace ERP.Controllers
                         status = "Exsiting_Subdomain",
                         error = "Subdomain name is already taken.Please,Choose another one"
                     });
-                var Tenant = new TenantsInfo() {
+                var Tenant = new TenantsInfo()
+                {
                     CompanyName = clientRegister.CompanyName,
                     Subdomain = clientRegister.Subdomain.ToLower(),
                     Username = clientRegister.UserName,
                     Email = clientRegister.Email,
                     ConnectionString = $"Server=(localdb)\\mssqllocaldb;Database={clientRegister.Subdomain};Trusted_Connection=True;MultipleActiveResultSets=true"
-                };      
-                 TenantsUnitOfWork.Tenants.Add(Tenant);
-                 
-                 ClientUnitOfWork.SetConnectionString(Tenant.ConnectionString);
+                };
+                TenantsUnitOfWork.Tenants.Add(Tenant);
 
-                var User = new ApplicationUser() {
-                    Email = clientRegister.Email, UserName = clientRegister.UserName,
+                ClientUnitOfWork.SetConnectionString(Tenant.ConnectionString);
+
+                var User = new ApplicationUser()
+                {
+                    Email = clientRegister.Email,
+                    UserName = clientRegister.UserName,
                     IsClientOrStaffOrBoth = (int)Constants.IsClientOrStaffOrBoth.Client_COC
                 };
                 var result = await UserManager.CreateAsync(User, clientRegister.Password);
@@ -145,12 +139,12 @@ namespace ERP.Controllers
                 {
                     TenantsUnitOfWork.Save();
                     var user = await UserManager.FindByEmailAsync(clientRegister.Email);
-                    if (!await RoleManager.RoleExistsAsync(Constants.Admin_Role)) 
+                    if (!await RoleManager.RoleExistsAsync(Constants.Admin_Role))
                         await RoleManager.CreateAsync(new ApplicationUserRole(Constants.Admin_Role));
-                    
+
                     var roleResult = await UserManager.AddToRoleAsync(user, Constants.Admin_Role);
-                    if (!roleResult.Succeeded) 
-                        return BadRequest(new { status= Constants.RolenameAddtion_statuCode, error = Constants.RolenameAddtion_ErrorMessage });
+                    if (!roleResult.Succeeded)
+                        return BadRequest(new { status = Constants.RolenameAddtion_statuCode, error = Constants.RolenameAddtion_ErrorMessage });
                     var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var param = new Dictionary<string, string>
@@ -164,7 +158,7 @@ namespace ERP.Controllers
                     mailRequest.Subject = Constants.ConfirmationEmail_Subject;
                     mailRequest.Body = Constants.ConfirmationEmail_Body(HtmlEncoder.Default.Encode(callbackUrl));
                     MailService.SendEmail(mailRequest);
-                    
+
                     return Ok();
                 }
                 return BadRequest(new { status = Constants.ResultStatus_statuCode, error = result.Errors });
@@ -175,11 +169,12 @@ namespace ERP.Controllers
         [HttpPost(nameof(LoginMainDomain))]
         public async Task<ActionResult<UserWithToken>> LoginMainDomain([FromBody] ClientLogin clientLogin)
         {
-            if (ModelState.IsValid) { 
+            if (ModelState.IsValid)
+            {
                 //Get ConnectionString From Tenant Db
                 var tenant = TenantsUnitOfWork.Tenants.TenantByEmail(clientLogin.Email);
 
-                if (tenant == null) return BadRequest(new { status = Constants.NullTenant_ErrorMessage, error = Constants.NullTenant_ErrorMessage});
+                if (tenant == null) return BadRequest(new { status = Constants.NullTenant_ErrorMessage, error = Constants.NullTenant_ErrorMessage });
                 //Connect to the correct Db based on the Connectionstring
                 ClientUnitOfWork.SetConnectionString(tenant.ConnectionString);
                 //Get user From Users table
@@ -190,14 +185,15 @@ namespace ERP.Controllers
                 var result = await ApplicationUserSignIngManager.CheckPasswordSignInAsync(user, clientLogin.Password, false);
                 if (result.Succeeded)
                 {
-                    return new UserWithToken {
+                    return new UserWithToken
+                    {
                         Username = user.UserName,
                         Token = TokenService.CreateClientToken(user),
                         Roles = (List<string>)await UserManager.GetRolesAsync(user),
                         Subdomain = tenant.Subdomain
                     };
                 }
-                else return Unauthorized(new { status = Constants.WrongPassword_StatusCode, error = Constants.WrongPassword_ErrorMessage});
+                else return Unauthorized(new { status = Constants.WrongPassword_StatusCode, error = Constants.WrongPassword_ErrorMessage });
             }
             return BadRequest(new { status = Constants.ModelState_statuCode, error = ModelState });
         }
@@ -207,7 +203,7 @@ namespace ERP.Controllers
         {
             var tenantbyEmail = TenantsUnitOfWork.Tenants.TenantByEmail(emailConfirmationModel.email);
             if (tenantbyEmail == null) return BadRequest(new { status = Constants.NullTenant_ErrorMessage, error = Constants.NullTenant_ErrorMessage });
-            ClientUnitOfWork .SetConnectionString(tenantbyEmail.ConnectionString);
+            ClientUnitOfWork.SetConnectionString(tenantbyEmail.ConnectionString);
             var user = await UserManager.FindByEmailAsync(emailConfirmationModel.email);
             if (user == null)
                 return BadRequest(new { status = Constants.NullUser_statuCode, error = Constants.NullUser_ErrorMessage });
@@ -228,7 +224,7 @@ namespace ERP.Controllers
             ClientUnitOfWork.SetConnectionString(tenantbyEmail.ConnectionString);
             var user = await UserManager.FindByEmailAsync(sendEmailConfirmationAgian.Email);
             if (user == null)
-                return BadRequest(new { status= Constants.NullUser_statuCode, error=Constants.NullUser_ErrorMessage});
+                return BadRequest(new { status = Constants.NullUser_statuCode, error = Constants.NullUser_ErrorMessage });
             if (await UserManager.IsEmailConfirmedAsync(user))
                 return BadRequest(new { status = Constants.Email_Is_Confirmed_statuCode, error = Constants.Email_Is_Confirmed_ErrorMessage });
             var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
@@ -298,9 +294,9 @@ namespace ERP.Controllers
             return BadRequest(new { status = Constants.ModelState_statuCode, error = ModelState });
         }
 
-        
-    // PUT api/<IdentityController>/5
-    [HttpPut("{id}")]
+
+        // PUT api/<IdentityController>/5
+        [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }

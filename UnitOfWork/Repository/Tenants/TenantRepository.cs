@@ -1,11 +1,7 @@
 ﻿using ERP.Areas.Tenants.Data;
 using ERP.Areas.Tenants.Models;
 using ERP.UnitOfWork.IRepository.Tenants;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace ERP.UnitOfWork.Repository.Tenants
 {
@@ -31,7 +27,7 @@ namespace ERP.UnitOfWork.Repository.Tenants
 
         public TenantsInfo TenantBySubdomain(string subdomain)
         {
-            return  TenantsDbContext.Tenants.FirstOrDefault(x => x.Subdomain == subdomain);
+            return TenantsDbContext.Tenants.FirstOrDefault(x => x.Subdomain == subdomain);
 
         }
 

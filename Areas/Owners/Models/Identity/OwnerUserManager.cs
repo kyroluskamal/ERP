@@ -1,11 +1,8 @@
-﻿using ERP.Areas.Owners.CustomTokenProviders.EmailConfirmation;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 
 namespace ERP.Areas.Owners.Models.Identity
 {
@@ -14,7 +11,7 @@ namespace ERP.Areas.Owners.Models.Identity
         public OwnerUserManager(IUserStore<Owner> store, IOptions<IdentityOptions> optionsAccessor,
             IPasswordHasher<Owner> passwordHasher, IEnumerable<IUserValidator<Owner>> userValidators,
             IEnumerable<IPasswordValidator<Owner>> passwordValidators, ILookupNormalizer keyNormalizer,
-            IdentityErrorDescriber errors, IServiceProvider services, 
+            IdentityErrorDescriber errors, IServiceProvider services,
             ILogger<UserManager<Owner>> logger) : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
         {
             RegisterTokenProvider(TokenOptions.DefaultProvider, new EmailTokenProvider<Owner>());

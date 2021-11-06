@@ -1,11 +1,8 @@
 ﻿using ERP.Models.Employee;
 using ERP.Models.Generals;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ERP.Models.Estimates
 {
@@ -14,7 +11,7 @@ namespace ERP.Models.Estimates
         public int Id { get; set; }
         [Required]
         public string CurrentNumber { get; set; }
-        
+
         [Required(ErrorMessage = "Please, write a name")]
         [MaxLength(30)]
         public string Name { get; set; }
@@ -37,10 +34,10 @@ namespace ERP.Models.Estimates
 
         [Column(TypeName = "bit")]
         public bool HashNotes { get; set; }
-        
+
         [Column(TypeName = "bit")]
-        public bool IsForCategory { get; set; } 
-        
+        public bool IsForCategory { get; set; }
+
         [Column(TypeName = "bit")]
         public bool IsForSubCatategory { get; set; }
 

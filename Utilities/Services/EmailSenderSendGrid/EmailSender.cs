@@ -2,9 +2,6 @@
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ERP.Utilities.Services.EmailSenderSendGrid
@@ -21,7 +18,7 @@ namespace ERP.Utilities.Services.EmailSenderSendGrid
         {
             return Execute(emailOptions.SendGridKey, subject, htmlMessage, email);
         }
-        private Task Execute(string sendGridKEy, string subject,string message, string email)
+        private Task Execute(string sendGridKEy, string subject, string message, string email)
         {
             var client = new SendGridClient(sendGridKEy);
             var from = new EmailAddress("admin@coding-bible.com", "KHERP");

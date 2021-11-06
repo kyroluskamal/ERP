@@ -23,7 +23,7 @@ export class ClientAccountService {
   constructor(private httpClient: HttpClient, public Constants: ConstantsService,
     private router: Router) {
   }
-  private currentUserSource = new ReplaySubject<ClientWithToken>(1);
+  private currentUserSource = new ReplaySubject<ClientWithToken | any>(1);
   currentUserOvservable = this.currentUserSource.asObservable();
 
   Register(clientRegisterModel: ClientRegister): Observable<any> {
@@ -61,7 +61,7 @@ export class ClientAccountService {
   logout() {
     sessionStorage.removeItem(this.Constants.Client);
     localStorage.removeItem(this.Constants.Client);
-    this.currentUserSource.next(undefined);
+    this.currentUserSource.next(null);
   }
   confirmEmail(emailConfirmationModel: EmailConfirmationModel) {
     return this.httpClient.post(RouterConstants.Client_EmailConfirmationUrl_APIURL, emailConfirmationModel, { responseType: "json" });
