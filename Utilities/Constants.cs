@@ -106,10 +106,24 @@
         public enum IsRecieved { No = 0, Yes = 1 }
         public enum IsPartiallyPaid { No = 0, Yes = 1 }
         public enum IsAlreadyPaid { No = 0, Yes = 1 }
+        public enum IsSharedWithClient { No = 0, Yes = 1 }
+        public enum IsRepeated { No = 0, Yes = 1 }
+        public enum IsAssignedToStaff { No = 0, Yes = 1 }
+        public enum IsOnlyOneService { No = 0, Yes = 1 }
+        public enum DisplayDateFromAndTo { No = 0, Yes = 1 }
+        public enum EnableAutomaticPayment { No = 0, Yes = 1 }
+        public enum SendViaEmail { No = 0, Yes = 1 }
+        public enum HasTerms { No = 0, Yes = 1 }
+        public enum DetuctionOrEarning { No = 0, Yes = 1 }
+        public enum AmountOrFormula { No = 0, Yes = 1 }
 
         public enum IsUnique { Unique = 1, NotUnique = 0, NotApplicable = -1 }
 
         public enum MaxAndMinNumberType { Digit = 0, Value = 1 }
+        public enum PackageType { Membership = 0, CreditCharge = 1 }
+        public enum BookingPaymentSettings { Disabled = 0, Enabled = 1, Optional = 2 }
+        public enum Subscription_GenerateEvery { Days = 0, Weeks = 1, Monthes = 2, Years = 3 }
+        public enum PeriodType { Weekly = 0, Monthly = 1, Yearly = 2 }
         public enum EstimateFor { Services = 0, Items = 1 }
         public enum PermissionType { Vacation = 0, Delay = 1 }
 

@@ -2,22 +2,30 @@
 using ERP.Models;
 using ERP.Models.Attendance;
 using ERP.Models.Attendance.AttendenceSettings;
+using ERP.Models.Bookings;
 using ERP.Models.Branches;
 using ERP.Models.Checks;
 using ERP.Models.COC;
+using ERP.Models.CRMSystem;
 using ERP.Models.CutomFields;
 using ERP.Models.Employee;
 using ERP.Models.Employee.Shifts;
 using ERP.Models.Estimates;
 using ERP.Models.Generals;
+using ERP.Models.Insurance;
 using ERP.Models.Inventory;
 using ERP.Models.Items;
+using ERP.Models.Membership;
 using ERP.Models.NumberingSystem;
 using ERP.Models.OrganizationalStructure;
+using ERP.Models.Payroll;
+using ERP.Models.PointsAndCredits;
+using ERP.Models.PointsAndCredits.Settings;
 using ERP.Models.PriceLists;
 using ERP.Models.Purchases;
 using ERP.Models.Purchases.PurphaseRefund;
 using ERP.Models.Service;
+using ERP.Models.Subscription;
 using ERP.Models.Supplier;
 using ERP.Models.SystemsInErp;
 using ERP.Models.TreasuriesAndBankAccount;
@@ -188,6 +196,7 @@ namespace ERP.Data
         public DbSet<NumberSettings_Prefixes> NumberSettings_Prefixes { get; set; }
 
         //WorkOrders
+        #region WorkOrders
         public DbSet<WorkOrders> WorkOrders { get; set; }
         public DbSet<WorkOrders_Attachments> WorkOrders_Attachments { get; set; }
         public DbSet<WorkOrders_Description> WorkOrders_Descriptions { get; set; }
@@ -195,6 +204,7 @@ namespace ERP.Data
         public DbSet<WorkOrdersEmployees> WorkOrdersEmployees { get; set; }
         public DbSet<WorkOrdersActions> WorkOrdersActions { get; set; }
         public DbSet<WorkOrderStatus> WorkOrderStatuses { get; set; }
+        #endregion
 
         //Suppliers
         #region Suppliers
@@ -227,6 +237,68 @@ namespace ERP.Data
         public DbSet<Refunds_items_ShippingFees> Refunds_items_ShippingFees { get; set; }
         public DbSet<RefundsStatus> RefundsStatuses { get; set; }
         #endregion
+
+        //CRP System
+        #region CRM System
+        public DbSet<Appointments> Appointments { get; set; }
+        public DbSet<BookingSettings_AssignedEmployee> Appointments_AssignedEmployees { get; set; }
+        public DbSet<Appointments_Notes> Appointments_Notes { get; set; }
+        public DbSet<Appointments_Actions> Appointments_Actions { get; set; }
+        #endregion
+
+        //Insurance
+        #region Insurance
+        public DbSet<InsuranceAgent> InsuranceAgents { get; set; }
+        public DbSet<Insurance_description> Insurance_descriptions { get; set; }
+        public DbSet<Insurance_Attachments> Insurance_Attachments { get; set; }
+        #endregion
+
+        //Bookings
+        #region Bookings
+        public DbSet<Booking> Bookings { get; set; }
+        public DbSet<Booking_Services> Booking_Services { get; set; }
+        public DbSet<Booking_Clients> Booking_Clients { get; set; }
+        public DbSet<Booking_settings> Booking_settings { get; set; }
+        public DbSet<BookingSettings_AssignedEmployee> BookingSettings_AssignedEmployees { get; set; }
+        #endregion
+
+        //Points&Credits
+        #region Points&Credits
+        public DbSet<Packages> Packages { get; set; }
+        public DbSet<Packages_Description> Packages_Descriptions { get; set; }
+        public DbSet<CreditUsage> CreditUsages { get; set; }
+        public DbSet<CreditUsage_description> CreditUsage_descriptions { get; set; }
+        public DbSet<Packages_CreditType> Packages_CreditType { get; set; }
+        public DbSet<CreditCharge> CreditCharges { get; set; }
+        public DbSet<CreditCharge_description> CreditCharge_descriptions { get; set; }
+        //Settings
+        public DbSet<CreditTypes> CreditTypes { get; set; }
+        public DbSet<CreditTypeDescriptions> CreditTypeDescriptions { get; set; }
+        #endregion
+
+        //Membership
+        #region Membership
+        public DbSet<Memberships> Memberships { get; set; }
+        public DbSet<MembershipDescription> MembershipDescriptions { get; set; }
+        #endregion
+
+        //Subscriptions
+        #region Subscriptions
+        public DbSet<Subscriptions> Subscriptions { get; set; }
+        public DbSet<SubscriptionAttachments> SubscriptionAttachments { get; set; }
+        public DbSet<Subscription_Terms> Subscription_Terms { get; set; }
+        public DbSet<Subscription_Notes> Subscription_Notes { get; set; }
+        public DbSet<Subscription_Invoices> Subscription_Invoices { get; set; }
+        public DbSet<Subscription_AutomaticReminders> Subscription_AutomaticReminders { get; set; }
+        #endregion
+
+        //Payroll
+        #region Payroll
+        public DbSet<Payslips> Payslips { get; set; }
+        public DbSet<SallaryComponents> SallaryComponents { get; set; }
+
+        #endregion
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);

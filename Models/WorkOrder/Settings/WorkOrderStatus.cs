@@ -11,7 +11,7 @@ namespace ERP.Models.WorkOrder.Settings
         public int Id { get; set; }
         [Required(ErrorMessage = "Please, add a status")]
         [MaxLength(30)]
-        public string Staus { get; set; }
+        public string Status { get; set; }
         public WorkOrders WorkOrders { get; set; }
         public int WorkOrdersId { get; set; }
     }
