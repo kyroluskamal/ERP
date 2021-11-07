@@ -64,6 +64,8 @@
         public enum IsOnline { No = 0, Yes = 1 }
         public enum IsEndorsed { No = 0, Yes = 1 }
         public enum HasDeposits { No = 0, Yes = 1 }
+        public enum HasSubscription { No = 0, Yes = 1 }
+        public enum HasShippingDetails { No = 0, Yes = 1 }
 
 
         public enum ServiceOrItem { service = 0, Item = 1 }
@@ -76,6 +78,7 @@
         public enum HasRetailPrice { Percent = 0, Value_Type = 1 }
 
         public enum IsRequired { Required = 1, NotRequired = 0, NotApplicable = -1 }
+        public enum ShowingInInvoiceOptions { ShowFirstAddress = 1, DontShow = 0, ShowSecondAddress = 2 }
         public enum EnableSecondryShift { No = 0, Yes = 1 }
         public enum IsNeedPermission { No = 0, Yes = 1 }
         public enum HasNotes { No = 0, Yes = 1 }
@@ -116,16 +119,45 @@
         public enum HasTerms { No = 0, Yes = 1 }
         public enum DetuctionOrEarning { No = 0, Yes = 1 }
         public enum AmountOrFormula { No = 0, Yes = 1 }
+        public enum IsPaidFromPaySlip { No = 0, Yes = 1 }
+        public enum IsPaid { No = 0, Yes = 1 }
+        public enum IsConfirmed { No = 0, Yes = 1 }
+        public enum Disable_Edit_PerItem_InInvoice { No = 0, Yes = 1 }
+        public enum DisableEstimateModule { No = 0, Yes = 1 }
+        public enum IsManualInvoiceNumber { No = 0, Yes = 1 }
+        public enum EnableInvoiceManualStatus { No = 0, Yes = 1 }
+        public enum EnableEstimateManualStatus { No = 0, Yes = 1 }
+        public enum EnableMaximumDiscount { No = 0, Yes = 1 }
+        public enum AutoPayFromBalance { No = 0, Yes = 1 }
 
         public enum IsUnique { Unique = 1, NotUnique = 0, NotApplicable = -1 }
 
         public enum MaxAndMinNumberType { Digit = 0, Value = 1 }
+        public enum SentToClientMethod { Mail = 0, Print = 1 }
         public enum PackageType { Membership = 0, CreditCharge = 1 }
         public enum BookingPaymentSettings { Disabled = 0, Enabled = 1, Optional = 2 }
         public enum Subscription_GenerateEvery { Days = 0, Weeks = 1, Monthes = 2, Years = 3 }
         public enum PeriodType { Weekly = 0, Monthly = 1, Yearly = 2 }
+        public enum PeriodOfInstallment { Monthly = 0, Quarterly = 1, Yearly = 2 }
+        public enum CommissionPeriod { Monthly = 0, Quarterly = 1, Yearly = 2 }
         public enum EstimateFor { Services = 0, Items = 1 }
         public enum PermissionType { Vacation = 0, Delay = 1 }
+        public enum DurationOrEndDate { Duration = 0, EndDate = 1 }
+        public enum MonthOrYear { Month = 0, Year = 1 }
+        public enum CalculationType
+        {
+            Fully_Paid_Invoices = 0,
+            Partially_Paid_Invoices = 1
+        }
+        public enum ForCatOrItemOrService
+        {
+            Itemcat = 0, Item = 1, Service_Cat = 2, Service = 3
+        }
+        public enum TargetType
+        {
+            Revenue = 0, Volume = 1
+        }
+
 
         public enum FieldsLayoutSize
         {
@@ -135,6 +167,15 @@
             Large = 3,
             X_large = 4
         }
+        public enum PayrollFrequency
+        {
+            Annually = 0,
+            Bi_Weekly = 1,
+            Monthly = 2,
+            Quarterly = 3,
+            Semi_annual = 4,
+            Weekly = 5
+        }
         public enum NumberingStyle
         {
             Lowercase_HexNumbers = 0,
@@ -143,6 +184,13 @@
             Uppercase_Letters = 3,
             Lowercase_Letters_followed_by_NumericDigits = 4,
             Uppercase_Letters_followed_by_NumericDigits = 5,
+        }
+        public enum PaymentStatus
+        {
+            Incomplete = 0,
+            Completed = 1,
+            Pending = 2,
+            Failed = 3
         }
         public enum NumberingPrefixMode
         {

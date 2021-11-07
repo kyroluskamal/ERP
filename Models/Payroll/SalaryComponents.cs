@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ERP.Models.Payroll
 {
-    public class SallaryComponents
+    public class SalaryComponents
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "Please, write a name")]
