@@ -2174,7 +2174,7 @@ namespace ERP.Migrations.ApplicationDb
                     TotalValue = table.Column<decimal>(type: "Money", nullable: false),
                     ServiceOrItem = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy_UserId = table.Column<int>(type: "int", nullable: false),
-                    COCId = table.Column<int>(type: "int", nullable: false)
+                    COCId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -2190,7 +2190,7 @@ namespace ERP.Migrations.ApplicationDb
                         column: x => x.COCId,
                         principalTable: "COCs",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -2213,7 +2213,7 @@ namespace ERP.Migrations.ApplicationDb
                     HasAttachments = table.Column<bool>(type: "bit", nullable: false),
                     HasTerms = table.Column<bool>(type: "bit", nullable: false),
                     COCId = table.Column<int>(type: "int", nullable: false),
-                    CurrencyId = table.Column<int>(type: "int", nullable: false)
+                    CurrencyId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -2229,7 +2229,7 @@ namespace ERP.Migrations.ApplicationDb
                         column: x => x.CurrencyId,
                         principalTable: "Currencies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -2614,7 +2614,7 @@ namespace ERP.Migrations.ApplicationDb
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     COCId = table.Column<int>(type: "int", nullable: false),
-                    CreditNoteId = table.Column<int>(type: "int", nullable: false)
+                    CreditNoteId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -2630,7 +2630,7 @@ namespace ERP.Migrations.ApplicationDb
                         column: x => x.CreditNoteId,
                         principalTable: "CreditNotes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -3698,7 +3698,7 @@ namespace ERP.Migrations.ApplicationDb
                     HasDescription = table.Column<bool>(type: "bit", nullable: false),
                     COCId = table.Column<int>(type: "int", nullable: false),
                     PackagesId = table.Column<int>(type: "int", nullable: false),
-                    SalesInvoicesId = table.Column<int>(type: "int", nullable: false)
+                    SalesInvoicesId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -3720,7 +3720,7 @@ namespace ERP.Migrations.ApplicationDb
                         column: x => x.SalesInvoicesId,
                         principalTable: "SalesInvoices",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -3926,7 +3926,7 @@ namespace ERP.Migrations.ApplicationDb
                     FromDate = table.Column<DateTime>(type: "Date", nullable: false),
                     ToDate = table.Column<DateTime>(type: "Date", nullable: false),
                     SalesInvoicesId = table.Column<int>(type: "int", nullable: false),
-                    SubscriptionsId = table.Column<int>(type: "int", nullable: false)
+                    SubscriptionsId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -3942,7 +3942,7 @@ namespace ERP.Migrations.ApplicationDb
                         column: x => x.SubscriptionsId,
                         principalTable: "Subscriptions",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -4237,7 +4237,7 @@ namespace ERP.Migrations.ApplicationDb
                     SubtotalPerItem = table.Column<decimal>(type: "Money", nullable: false),
                     Decriptions = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ServicesId = table.Column<int>(type: "int", nullable: false),
-                    SalesInvoicesId = table.Column<int>(type: "int", nullable: false)
+                    SalesInvoicesId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -4247,7 +4247,7 @@ namespace ERP.Migrations.ApplicationDb
                         column: x => x.SalesInvoicesId,
                         principalTable: "SalesInvoices",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ServicesInSalesInvices_Services_ServicesId",
                         column: x => x.ServicesId,
@@ -4498,7 +4498,7 @@ namespace ERP.Migrations.ApplicationDb
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CommissionsId = table.Column<int>(type: "int", nullable: false),
-                    EmployeesId = table.Column<int>(type: "int", nullable: false)
+                    EmployeesId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -4514,7 +4514,7 @@ namespace ERP.Migrations.ApplicationDb
                         column: x => x.EmployeesId,
                         principalTable: "Employees",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -4678,7 +4678,7 @@ namespace ERP.Migrations.ApplicationDb
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ValidFromDate = table.Column<DateTime>(type: "Date", nullable: false),
                     ValidToDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    EstimateId = table.Column<int>(type: "int", nullable: false),
+                    EstimateId = table.Column<int>(type: "int", nullable: true),
                     COCId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -4695,7 +4695,7 @@ namespace ERP.Migrations.ApplicationDb
                         column: x => x.EstimateId,
                         principalTable: "Estimates",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -5066,8 +5066,8 @@ namespace ERP.Migrations.ApplicationDb
                     SubtotalPerItem = table.Column<decimal>(type: "Money", nullable: false),
                     Decriptions = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ItemVariantsId = table.Column<int>(type: "int", nullable: false),
-                    SalesInvoicesId = table.Column<int>(type: "int", nullable: false),
-                    InventoriesId = table.Column<int>(type: "int", nullable: false)
+                    SalesInvoicesId = table.Column<int>(type: "int", nullable: true),
+                    InventoriesId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -5077,7 +5077,7 @@ namespace ERP.Migrations.ApplicationDb
                         column: x => x.InventoriesId,
                         principalTable: "Inventories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ItemsInSalesInvoices_ItemVariants_ItemVariantsId",
                         column: x => x.ItemVariantsId,
@@ -5089,7 +5089,7 @@ namespace ERP.Migrations.ApplicationDb
                         column: x => x.SalesInvoicesId,
                         principalTable: "SalesInvoices",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -5148,7 +5148,7 @@ namespace ERP.Migrations.ApplicationDb
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AttendanceSheetId = table.Column<int>(type: "int", nullable: false),
-                    ManualAttendenceEachDayId = table.Column<int>(type: "int", nullable: false)
+                    ManualAttendenceEachDayId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -5164,7 +5164,7 @@ namespace ERP.Migrations.ApplicationDb
                         column: x => x.ManualAttendenceEachDayId,
                         principalTable: "ManualAttendanceEachDays",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -5500,7 +5500,7 @@ namespace ERP.Migrations.ApplicationDb
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Reason = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ServicesInSalesInvicesId = table.Column<int>(type: "int", nullable: false),
+                    ServicesInSalesInvicesId = table.Column<int>(type: "int", nullable: true),
                     CreditNote_ServicesId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -5517,7 +5517,7 @@ namespace ERP.Migrations.ApplicationDb
                         column: x => x.ServicesInSalesInvicesId,
                         principalTable: "ServicesInSalesInvices",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -5699,7 +5699,7 @@ namespace ERP.Migrations.ApplicationDb
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Reason = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ItemsInSalesInvoicesId = table.Column<int>(type: "int", nullable: false),
+                    ItemsInSalesInvoicesId = table.Column<int>(type: "int", nullable: true),
                     CreditNote_ItemsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -5716,7 +5716,7 @@ namespace ERP.Migrations.ApplicationDb
                         column: x => x.ItemsInSalesInvoicesId,
                         principalTable: "ItemsInSalesInvoices",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(

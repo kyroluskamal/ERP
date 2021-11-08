@@ -12,6 +12,6 @@ namespace ERP.Models.CreditNotes
         public int COCId { get; set; }
 
         public CreditNote CreditNote { get; set; }
-        public int CreditNoteId { get; set; }
+        public int? CreditNoteId { get; set; }
     }
 }

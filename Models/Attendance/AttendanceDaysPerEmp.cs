@@ -7,6 +7,6 @@
         public AttendanceSheet AttendanceSheet { get; set; }
         public int AttendanceSheetId { get; set; }
         public ManualAttendanceEachDay ManualAttendenceEachDay { get; set; }
-        public int ManualAttendenceEachDayId { get; set; }
+        public int? ManualAttendenceEachDayId { get; set; }
     }
 }

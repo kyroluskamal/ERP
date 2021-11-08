@@ -12,6 +12,6 @@ namespace ERP.Models.Sales.SalesCommissions
         public Commissions Commissions { get; set; }
         public int CommissionsId { get; set; }
         public Employees Employees { get; set; }
-        public int EmployeesId { get; set; }
+        public int? EmployeesId { get; set; }
     }
 }

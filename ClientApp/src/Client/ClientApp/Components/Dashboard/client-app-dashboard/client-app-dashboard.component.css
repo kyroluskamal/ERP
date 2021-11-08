@@ -94,3 +94,27 @@ button {
   font-family: var(--Almarai);
   font-weight: bold;
 }
+@media screen and (max-width: 599.98px) {
+  .WidthForSmallScreens {
+    width: 80vw !important;
+  }
+  .menuSideNav {
+    display: none;
+    width: 80vw !important;
+  }
+  .sideNavContent {
+    margin: 0 !important;
+  }
+  .FullscreenButton {
+    display: none !important;
+  }
+}
+@media screen and (min-width: 600px) {
+  .menuSideNav {
+    display: flex !important;
+    visibility: visible !important;
+  }
+  .FullscreenButton {
+    display: inline-block;
+  }
+}

@@ -154,7 +154,7 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<int>("AttendanceSheetId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ManualAttendenceEachDayId")
+                    b.Property<int?>("ManualAttendenceEachDayId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -1613,7 +1613,7 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<int>("COCId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CreditNoteId")
+                    b.Property<int?>("CreditNoteId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -2256,7 +2256,7 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<int>("COCId")
                         .HasColumnType("int");
 
-                    b.Property<int>("EstimateId")
+                    b.Property<int?>("EstimateId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ValidFromDate")
@@ -3387,7 +3387,7 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<int>("PackagesId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SalesInvoicesId")
+                    b.Property<int?>("SalesInvoicesId")
                         .HasColumnType("int");
 
                     b.Property<int>("ToleranceDays")
@@ -4984,7 +4984,7 @@ namespace ERP.Migrations.ApplicationDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("InventoriesId")
+                    b.Property<int?>("InventoriesId")
                         .HasColumnType("int");
 
                     b.Property<int>("ItemVariantsId")
@@ -4996,7 +4996,7 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("SalesInvoicesId")
+                    b.Property<int?>("SalesInvoicesId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("SubtotalPerItem")
@@ -5023,7 +5023,7 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<int>("CreditNote_ItemsId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ItemsInSalesInvoicesId")
+                    b.Property<int?>("ItemsInSalesInvoicesId")
                         .HasColumnType("int");
 
                     b.Property<string>("Reason")
@@ -5053,7 +5053,7 @@ namespace ERP.Migrations.ApplicationDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ServicesInSalesInvicesId")
+                    b.Property<int?>("ServicesInSalesInvicesId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -5169,7 +5169,7 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<int>("CommissionsId")
                         .HasColumnType("int");
 
-                    b.Property<int>("EmployeesId")
+                    b.Property<int?>("EmployeesId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -5426,7 +5426,7 @@ namespace ERP.Migrations.ApplicationDb
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("COCId")
+                    b.Property<int?>("COCId")
                         .HasColumnType("int");
 
                     b.Property<int>("CreatedBy_UserId")
@@ -5556,7 +5556,7 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("SalesInvoicesId")
+                    b.Property<int?>("SalesInvoicesId")
                         .HasColumnType("int");
 
                     b.Property<int>("ServicesId")
@@ -6001,7 +6001,7 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<int>("SalesInvoicesId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SubscriptionsId")
+                    b.Property<int?>("SubscriptionsId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ToDate")
@@ -6071,7 +6071,7 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("Date");
 
-                    b.Property<int>("CurrencyId")
+                    b.Property<int?>("CurrencyId")
                         .HasColumnType("int");
 
                     b.Property<string>("CurrentNumber")
@@ -6711,9 +6711,7 @@ namespace ERP.Migrations.ApplicationDb
 
                     b.HasOne("ERP.Models.Attendance.ManualAttendanceEachDay", "ManualAttendenceEachDay")
                         .WithMany()
-                        .HasForeignKey("ManualAttendenceEachDayId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ManualAttendenceEachDayId");
 
                     b.Navigation("AttendanceSheet");
 
@@ -7315,9 +7313,7 @@ namespace ERP.Migrations.ApplicationDb
 
                     b.HasOne("ERP.Models.CreditNotes.CreditNote", "CreditNote")
                         .WithMany()
-                        .HasForeignKey("CreditNoteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CreditNoteId");
 
                     b.Navigation("COC");
 
@@ -7610,9 +7606,7 @@ namespace ERP.Migrations.ApplicationDb
 
                     b.HasOne("ERP.Models.Estimates.Estimate", "Estimate")
                         .WithMany()
-                        .HasForeignKey("EstimateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EstimateId");
 
                     b.Navigation("COC");
 
@@ -8069,9 +8063,7 @@ namespace ERP.Migrations.ApplicationDb
 
                     b.HasOne("ERP.Models.Sales.SalesInvoices", "SalesInvoices")
                         .WithMany()
-                        .HasForeignKey("SalesInvoicesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SalesInvoicesId");
 
                     b.Navigation("COC");
 
@@ -8837,9 +8829,7 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.HasOne("ERP.Models.Inventory.Inventories", "Inventories")
                         .WithMany()
-                        .HasForeignKey("InventoriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("InventoriesId");
 
                     b.HasOne("ERP.Models.Items.ItemVariants", "ItemVariants")
                         .WithMany()
@@ -8849,9 +8839,7 @@ namespace ERP.Migrations.ApplicationDb
 
                     b.HasOne("ERP.Models.Sales.SalesInvoices", "SalesInvoices")
                         .WithMany()
-                        .HasForeignKey("SalesInvoicesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SalesInvoicesId");
 
                     b.Navigation("Inventories");
 
@@ -8870,9 +8858,7 @@ namespace ERP.Migrations.ApplicationDb
 
                     b.HasOne("ERP.Models.Sales.ItemsInSalesInvoices", "ItemsInSalesInvoices")
                         .WithMany()
-                        .HasForeignKey("ItemsInSalesInvoicesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ItemsInSalesInvoicesId");
 
                     b.Navigation("CreditNote_Items");
 
@@ -8889,9 +8875,7 @@ namespace ERP.Migrations.ApplicationDb
 
                     b.HasOne("ERP.Models.Sales.ServicesInSalesInvices", "ServicesInSalesInvices")
                         .WithMany()
-                        .HasForeignKey("ServicesInSalesInvicesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ServicesInSalesInvicesId");
 
                     b.Navigation("CreditNote_Services");
 
@@ -8957,9 +8941,7 @@ namespace ERP.Migrations.ApplicationDb
 
                     b.HasOne("ERP.Models.Employee.Employees", "Employees")
                         .WithMany()
-                        .HasForeignKey("EmployeesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EmployeesId");
 
                     b.Navigation("Commissions");
 
@@ -9125,9 +9107,7 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.HasOne("ERP.Models.COC.COC", "COC")
                         .WithMany()
-                        .HasForeignKey("COCId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("COCId");
 
                     b.HasOne("ERP.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
@@ -9155,9 +9135,7 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.HasOne("ERP.Models.Sales.SalesInvoices", "SalesInvoices")
                         .WithMany()
-                        .HasForeignKey("SalesInvoicesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SalesInvoicesId");
 
                     b.HasOne("ERP.Models.Service.Services", "Services")
                         .WithMany()
@@ -9405,9 +9383,7 @@ namespace ERP.Migrations.ApplicationDb
 
                     b.HasOne("ERP.Models.Subscription.Subscriptions", "Subscriptions")
                         .WithMany()
-                        .HasForeignKey("SubscriptionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SubscriptionsId");
 
                     b.Navigation("SalesInvoices");
 
@@ -9446,9 +9422,7 @@ namespace ERP.Migrations.ApplicationDb
 
                     b.HasOne("ERP.Models.Generals.Currency", "Currency")
                         .WithMany()
-                        .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CurrencyId");
 
                     b.Navigation("COC");
 

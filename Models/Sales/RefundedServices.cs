@@ -15,7 +15,7 @@ namespace ERP.Models.Sales
         public string Reason { get; set; }
 
         public ServicesInSalesInvices ServicesInSalesInvices { get; set; }
-        public int ServicesInSalesInvicesId { get; set; }
+        public int? ServicesInSalesInvicesId { get; set; }
 
         public CreditNote_Services CreditNote_Services { get; set; }
         public int CreditNote_ServicesId { get; set; }

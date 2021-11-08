@@ -30,9 +30,9 @@ namespace ERP.Models.Sales
         public int ItemVariantsId { get; set; }
 
         public SalesInvoices SalesInvoices { get; set; }
-        public int SalesInvoicesId { get; set; }
+        public int? SalesInvoicesId { get; set; }
 
         public Inventories Inventories { get; set; }
-        public int InventoriesId { get; set; }
+        public int? InventoriesId { get; set; }
     }
 }

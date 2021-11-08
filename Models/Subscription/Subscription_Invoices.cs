@@ -23,6 +23,6 @@ namespace ERP.Models.Subscription
         public SalesInvoices SalesInvoices { get; set; }
         public int SalesInvoicesId { get; set; }
         public Subscriptions Subscriptions { get; set; }
-        public int SubscriptionsId { get; set; }
+        public int? SubscriptionsId { get; set; }
     }
 }

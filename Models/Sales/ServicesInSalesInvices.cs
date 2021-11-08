@@ -29,6 +29,6 @@ namespace ERP.Models.Sales
         public int ServicesId { get; set; }
 
         public SalesInvoices SalesInvoices { get; set; }
-        public int SalesInvoicesId { get; set; }
+        public int? SalesInvoicesId { get; set; }
     }
 }

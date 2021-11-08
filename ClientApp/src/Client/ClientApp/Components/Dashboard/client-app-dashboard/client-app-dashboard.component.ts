@@ -1,17 +1,19 @@
-import { Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, RendererStyleFlags2, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NotificationsService } from 'src/CommonServices/NotificationService/notifications.service';
 import { ConstantsService } from '../../../../../CommonServices/constants.service';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { ThisReceiver } from '@angular/compiler';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { HtmlTagDefinition, ThisReceiver } from '@angular/compiler';
+import { MatDrawerMode, MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
+import { Subscription } from 'rxjs';
+import { MediaChange, MediaObserver } from '@angular/flex-layout';
 @Component({
   selector: 'app-client-app-dashboard',
   templateUrl: './client-app-dashboard.component.html',
   styleUrls: ['./client-app-dashboard.component.css']
 })
-export class ClientAppDashboardComponent implements OnInit {
+export class ClientAppDashboardComponent implements OnInit, AfterContentInit, OnDestroy {
   //Properties ............................................................................
   pinned: boolean;
   dir: 'rtl' | 'ltr';
@@ -21,6 +23,10 @@ export class ClientAppDashboardComponent implements OnInit {
   ToggleClass: string;
   preventMouseLeave: boolean;
   choosenColor: boolean = false;
+  SideNav_openingStatus: boolean = true;
+  SideNav_mode: MatDrawerMode = "side";
+
+  hasBackDrop: boolean = false;
   /** Subscription to the Directionality change EventEmitter. */
   ThemeColors = [
     { colorName: "blue", value: "#5c77ff", choosen: false, bg: this.Constants.CSS_blue_bg, color: this.Constants.CSS_blue },
@@ -45,9 +51,15 @@ export class ClientAppDashboardComponent implements OnInit {
   BodyThemeClass: any;
   SelectedLanguage: any;
   ChoosenThemeColor: any;
+  MediaSubscription: Subscription = new Subscription();
+  @ViewChild("SideNavToggleButtonOnSmallScreen", { read: ElementRef }) SideNavToggleButtonOnSmallScreen: ElementRef<HTMLButtonElement> = {} as ElementRef<HTMLButtonElement>;
+  @ViewChild("pinButton", { read: ElementRef }) pinButton: ElementRef<HTMLButtonElement> = {} as ElementRef<HTMLButtonElement>;
+  @ViewChild("FullscreenButton", { read: ElementRef }) FullscreenButton: ElementRef<HTMLButtonElement> = {} as ElementRef<HTMLButtonElement>;
+
   //Constructor............................................................................
   constructor(public Constants: ConstantsService, public translate: TranslationService,
-    private Notifications: NotificationsService) {
+    private Notifications: NotificationsService, private mediaObserver: MediaObserver,
+    private elementRef: ElementRef, private renderer: Renderer2) {
     if (localStorage.getItem(this.Constants.ChoosenThemeColors)) {
       let temp: any = localStorage.getItem(this.Constants.ChoosenThemeColors)
       this.ChoosenThemeColor = JSON.parse(temp);
@@ -118,6 +130,7 @@ export class ClientAppDashboardComponent implements OnInit {
     }
     this.setThemeAppearence(this.BodyAppeareance.value, this.ToolbarAppeareance.value, this.SidebarAppeareance.value);
   }
+
   //NgOn it .....................................................................
   ngOnInit(): void {
 
@@ -246,5 +259,36 @@ export class ClientAppDashboardComponent implements OnInit {
       this.ThemeAppearence.setValue('dark');
       localStorage.setItem(this.Constants.ThemeAppearence, this.ThemeAppearence.value)
     }
+  }
+  /****************************************************************************************
+  * ..................................... SidNav at small screens......................
+  ****************************************************************************************/
+  ngAfterContentInit(): void {
+    const flags = RendererStyleFlags2.DashCase | RendererStyleFlags2.Important;
+    this.MediaSubscription = this.mediaObserver.asObservable().subscribe(
+      (response: MediaChange[]) => {
+        console.log(response)
+        if (response.some(x => x.mqAlias === 'lt-sm')) {
+          this.SideNavToggleButtonOnSmallScreen.nativeElement.style.display = "flex";
+          this.pinButton.nativeElement.style.display = "none";
+          this.FullscreenButton.nativeElement.style.display = "none";
+
+          this.SideNav_mode = "over";
+          this.hasBackDrop = true;
+          this.SideNav_openingStatus = false
+        } else {
+          this.FullscreenButton.nativeElement.style.display = "flex";
+
+          this.pinButton.nativeElement.style.display = "flex";
+          this.SideNavToggleButtonOnSmallScreen.nativeElement.style.display = "none";
+          this.SideNav_mode = "side";
+          this.hasBackDrop = false;
+          this.SideNav_openingStatus = true;
+
+        };
+      });
+  }
+  ngOnDestroy(): void {
+    this.MediaSubscription.unsubscribe();
   }
 }

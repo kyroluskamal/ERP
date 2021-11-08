@@ -46,6 +46,6 @@ namespace ERP.Models.Sales
         public int CreatedBy_UserId { get; set; }
 
         public ERP.Models.COC.COC COC { get; set; }
-        public int COCId { get; set; }
+        public int? COCId { get; set; }
     }
 }

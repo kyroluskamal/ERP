@@ -34,6 +34,6 @@ namespace ERP.Models.Membership
         public int PackagesId { get; set; }
 
         public SalesInvoices SalesInvoices { get; set; }
-        public int SalesInvoicesId { get; set; }
+        public int? SalesInvoicesId { get; set; }
     }
 }

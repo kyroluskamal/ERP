@@ -17,7 +17,7 @@ namespace ERP.Models.Estimates
         public DateTime ValidToDate { get; set; }
 
         public Estimate Estimate { get; set; }
-        public int EstimateId { get; set; }
+        public int? EstimateId { get; set; }
 
         public ERP.Models.COC.COC COC { get; set; }
         public int COCId { get; set; }
