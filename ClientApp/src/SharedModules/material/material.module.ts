@@ -23,10 +23,10 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 const MaterialComponents = [
   MatButtonModule, MatToolbarModule, MatIconModule, MatDialogModule, MatListModule,
-  MatBottomSheetModule, MatInputModule, MatFormFieldModule, CommonModule,
-  MatSnackBarModule, MatCheckboxModule, MatProgressSpinnerModule, MatGridListModule,
-  MatSidenavModule, FlexLayoutModule, MatSelectModule, MatMenuModule, MatExpansionModule,
-  MatTooltipModule, MatButtonToggleModule, MatSlideToggleModule
+  MatBottomSheetModule, MatInputModule, MatFormFieldModule, CommonModule, MatSnackBarModule,
+  MatCheckboxModule, MatProgressSpinnerModule, MatGridListModule, MatSidenavModule,
+  FlexLayoutModule, MatSelectModule, MatMenuModule, MatExpansionModule, MatTooltipModule,
+  MatButtonToggleModule, MatSlideToggleModule
 ];
 @NgModule({
   declarations: [],

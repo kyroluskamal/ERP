@@ -93,6 +93,7 @@
   "Dark":"Dark",
   "Ligh" : "Light",
   "Layout_LTR":"Left to right layout",
-  "Layout_RTL":"Right to left layout"
+  "Layout_RTL":"Right to left layout",
+  "Products" : "Products"
 
 }

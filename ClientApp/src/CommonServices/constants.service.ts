@@ -198,4 +198,10 @@ export class ConstantsService {
   ToolbarAppeareance = "ToolbarAppeareance";
   dir = "dir";
   ChoosenThemeColors = "ChoosenThemeColors";
+
+  //ClientAppUrls
+  public App_login = "login";
+  public App_main = "app";
+  public App_register = "register";
+  public App_Items = "items";
 }

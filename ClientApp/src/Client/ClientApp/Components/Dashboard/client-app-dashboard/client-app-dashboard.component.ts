@@ -1,19 +1,31 @@
-import { AfterContentInit, Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, RendererStyleFlags2, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, RendererStyleFlags2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NotificationsService } from 'src/CommonServices/NotificationService/notifications.service';
 import { ConstantsService } from '../../../../../CommonServices/constants.service';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { HtmlTagDefinition, ThisReceiver } from '@angular/compiler';
+import { routerAnimation } from '../DashboardAnimations/Animations'
 import { MatDrawerMode, MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { Subscription } from 'rxjs';
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
+import { RouterOutlet } from '@angular/router';
+import { SideNav_items } from '.././SideNavItems'
+
+interface ExpansionPanel {
+  title: string;
+  expanded: boolean;
+  links: { link: string; state: boolean }[];
+  iconName: string;
+}
+
 @Component({
   selector: 'app-client-app-dashboard',
   templateUrl: './client-app-dashboard.component.html',
-  styleUrls: ['./client-app-dashboard.component.css']
+  styleUrls: ['./client-app-dashboard.component.css'],
+  encapsulation: ViewEncapsulation.None,
+  animations: [routerAnimation]
 })
 export class ClientAppDashboardComponent implements OnInit, AfterContentInit, OnDestroy {
+  //#region Properties
   //Properties ............................................................................
   pinned: boolean;
   dir: 'rtl' | 'ltr';
@@ -27,7 +39,10 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
   SideNav_mode: MatDrawerMode = "side";
 
   hasBackDrop: boolean = false;
+  //#endregion
   /** Subscription to the Directionality change EventEmitter. */
+
+  //#region ThemeColors
   ThemeColors = [
     { colorName: "blue", value: "#5c77ff", choosen: false, bg: this.Constants.CSS_blue_bg, color: this.Constants.CSS_blue },
     { colorName: "amber", value: "#ffc107", choosen: false, bg: this.Constants.CSS_amber_bg, color: this.Constants.CSS_amber },
@@ -41,6 +56,7 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
     { colorName: "red", value: "#f44336", choosen: false, bg: this.Constants.CSS_red_bg, color: this.Constants.CSS_red },
     { colorName: "teal", value: "#009688", choosen: false, bg: this.Constants.CSS_teal_bg, color: this.Constants.CSS_teal }
   ];
+  //#endregion
   ThemeAppearence: FormControl = new FormControl();
   SidebarAppeareance: FormControl = new FormControl();
   BodyAppeareance: FormControl = new FormControl();
@@ -55,11 +71,12 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
   @ViewChild("SideNavToggleButtonOnSmallScreen", { read: ElementRef }) SideNavToggleButtonOnSmallScreen: ElementRef<HTMLButtonElement> = {} as ElementRef<HTMLButtonElement>;
   @ViewChild("pinButton", { read: ElementRef }) pinButton: ElementRef<HTMLButtonElement> = {} as ElementRef<HTMLButtonElement>;
   @ViewChild("FullscreenButton", { read: ElementRef }) FullscreenButton: ElementRef<HTMLButtonElement> = {} as ElementRef<HTMLButtonElement>;
+  SideNavItems: ExpansionPanel[] = SideNav_items;
 
+  //#region Constructor
   //Constructor............................................................................
   constructor(public Constants: ConstantsService, public translate: TranslationService,
-    private Notifications: NotificationsService, private mediaObserver: MediaObserver,
-    private elementRef: ElementRef, private renderer: Renderer2) {
+    private Notifications: NotificationsService, private mediaObserver: MediaObserver) {
     if (localStorage.getItem(this.Constants.ChoosenThemeColors)) {
       let temp: any = localStorage.getItem(this.Constants.ChoosenThemeColors)
       this.ChoosenThemeColor = JSON.parse(temp);
@@ -130,10 +147,18 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
     }
     this.setThemeAppearence(this.BodyAppeareance.value, this.ToolbarAppeareance.value, this.SidebarAppeareance.value);
   }
+  //#endregion
 
   //NgOn it .....................................................................
   ngOnInit(): void {
-
+    // this.SideNavItems = [
+    //   {
+    //     title: "Products",
+    //     expanded: false,
+    //     links: [{ link: this.Constants.App_Items, state: false }, { link: this.Constants.App_Items, state: false }],
+    //     iconName: "inventory_2"
+    //   }
+    // ]
   }
 
   //Events to toggle the left sidenav
@@ -145,6 +170,9 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
     if (!this.preventMouseLeave) {
       this.ToggleClass = this.Constants.CSS_SideNav_HalfClosed;
       this.Display = this.Constants.CSS_displayNone;
+      for (let item of this.SideNavItems) {
+        item.expanded = false;
+      }
     }
   }
 
@@ -152,6 +180,12 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
     this.pinned = !this.pinned;
     localStorage.setItem(this.Constants.FixedSidnav, String(this.pinned))
     this.pinnedRTLClassSettings();
+
+    if (this.pinned === false) {
+      for (let item of this.SideNavItems) {
+        item.expanded = false;
+      }
+    }
   }
 
   ToggleFullscreen() {
@@ -290,5 +324,35 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
   }
   ngOnDestroy(): void {
     this.MediaSubscription.unsubscribe();
+  }
+
+  getRouterState(DashBoardOutlet: RouterOutlet) {
+    return DashBoardOutlet.isActivated ? DashBoardOutlet.activatedRoute.snapshot.url[0].path : "none";
+  }
+
+  OpenExpAndCloseAll(index: number) {
+    for (let i = 0; i < this.SideNavItems.length; i++) {
+      if (i === index) {
+        if (this.SideNavItems[i].expanded == true)
+          this.SideNavItems[i].expanded = false;
+        else this.SideNavItems[i].expanded = true;
+      }
+      else {
+        this.SideNavItems[i].expanded = false
+
+      };
+    }
+  }
+
+  SetLinkActive(MainArrayIndex: number, innerArray: number) {
+    for (let i = 0; i < this.SideNavItems.length; i++) {
+      for (let j = 0; j < this.SideNavItems[i].links.length; j++)
+        if (i === MainArrayIndex && j === innerArray) {
+          this.SideNavItems[i].links[j].state = true;
+        }
+        else
+          this.SideNavItems[i].links[j].state = false;
+    }
+    console.log(MainArrayIndex + ' ' + innerArray);
   }
 }

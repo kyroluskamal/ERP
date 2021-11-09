@@ -8,7 +8,7 @@
     <mat-nav-list fxLayout="row" fxLayoutAlign="space-between center">
       <a [class]="Constants.CSS_Dashboard_Sidenav_CompmanyName + ' ' + Display" fxFlex="1 2 90%"
         [routerLink]="['','app']">KH-ERP</a>
-      <button [matTooltip]="pinned?translate.GetTranslation(Constants.CloseSidebar):
+      <button fxLayout="column" fxLayoutAlign="center center" [matTooltip]="pinned?translate.GetTranslation(Constants.CloseSidebar):
         translate.GetTranslation(Constants.FixSidebar)" [matTooltipPosition]="dir==='ltr'?'right':'left'"
         [matTooltipClass]="Constants.CSS_Dashboard_ToolTip" mat-icon-button (click)="PinSideNav()"
         [class]="pinned?'':Constants.CSS_Openned_pin" #pinButton>
@@ -17,6 +17,28 @@
         </mat-icon>
       </button>
     </mat-nav-list>
+    <!-- ------------------------------------------------------------------------------------
+    ----------------------------- Menus of the sidebar -------------------------------------
+    ------------------------------------------------------------------------------------- -->
+    <mat-accordion multi>
+      <mat-expansion-panel hideToggle *ngFor="let item of SideNavItems let i = index" [expanded]="item.expanded">
+        <mat-expansion-panel-header (click)="OpenExpAndCloseAll(i)" [ngClass]="{'expansionIsExpanded': item.expanded}">
+          <mat-panel-title>
+            <mat-icon><span class=" material-icons-outlined">
+                {{item.iconName}}
+              </span></mat-icon>
+            <span [class]="Display">{{item.title |translate}}</span>
+          </mat-panel-title>
+
+
+          <mat-icon [class]="Display">add</mat-icon>
+        </mat-expansion-panel-header>
+
+        <a *ngFor="let link of item.links let x = index" [routerLink]="link.link"
+          [ngClass]="{'expansionIsExpanded':link.state}" (click)="SetLinkActive(i, x)">{{link.link}}</a>
+
+      </mat-expansion-panel>
+    </mat-accordion>
   </mat-sidenav>
   <!-- --------------------------------------------------------------------------------------
      ----------------------------------- Settings nav ---------------------------------------
@@ -146,6 +168,8 @@
 
       </div>
     </mat-toolbar>
-    <router-outlet [class]="BodyThemeClass"></router-outlet>
+    <div [@DashboardRouterAnimation]="getRouterState(DashBoardOutlet)">
+      <router-outlet [class]="BodyThemeClass" #DashBoardOutlet="outlet"></router-outlet>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

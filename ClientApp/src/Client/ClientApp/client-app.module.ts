@@ -10,6 +10,8 @@ import { ClientAppRegisterComponent } from './Components/client-app-register/cli
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { CLientAppHomeComponent } from './Components/ClientAppHome/client-app-home/client-app-home.component';
 import { ClientDashboardHomeComponent } from './Components/Dashboard/client-dashboard-home/client-dashboard-home.component';
+import { ItemsComponentComponent } from './Components/Dashboard/items-component/items-component.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -18,9 +20,10 @@ const Commponents = [
   ClientAppLoginComponent, ClientAppRegisterComponent
 ]
 @NgModule({
-  declarations: [Commponents, ClientDashboardHomeComponent],
+  declarations: [Commponents, ClientDashboardHomeComponent, ItemsComponentComponent],
   imports: [
-    SharedModule, MaterialModule, ClientAppRoutingModule, CommonModule, AppRoutingModule
+    SharedModule, MaterialModule, ClientAppRoutingModule, CommonModule, AppRoutingModule,
+    BrowserAnimationsModule
   ],
   exports: [Commponents]
 })

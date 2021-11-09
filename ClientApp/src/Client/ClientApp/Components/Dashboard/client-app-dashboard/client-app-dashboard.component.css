@@ -88,10 +88,10 @@ mat-toolbar {
 }
 [dir="rtl"] .mat-drawer.mat-drawer-end h3 {
   font-size: 1.2rem;
-  font-family: var(--Hacen);
+  font-family: var(--Hacen) !important;
 }
 button {
-  font-family: var(--Almarai);
+  font-family: var(--Almarai) !important;
   font-weight: bold;
 }
 @media screen and (max-width: 599.98px) {
@@ -117,4 +117,105 @@ button {
   .FullscreenButton {
     display: inline-block;
   }
+}
+/*........................................................................................
+...............................Expansion Stypes .......................................
+........................................................................................*/
+mat-accordion,
+mat-accordion *:not(mat-icon) {
+  background-color: inherit !important;
+  color: inherit !important;
+  font: inherit !important;
+}
+mat-panel-title {
+  align-items: center;
+}
+
+mat-panel-title mat-icon {
+  margin-left: 7px;
+  margin-right: 7px;
+}
+mat-expansion-panel-header {
+  padding: 0 5px 0 5px !important;
+  font-weight: bold !important;
+  border-radius: 0 !important;
+}
+
+.mat-expansion-panel-spacing {
+  margin: 0 !important;
+}
+.mat-expansion-panel:not([class*="mat-elevation-z"]) {
+  box-shadow: none !important;
+}
+.light-for-others .mat-expansion-panel-content {
+  background-color: #f1f1f1 !important;
+  -webkit-box-shadow: 0 0 13px 2px rgba(0, 0, 0, 0.62) inset !important;
+  -moz-box-shadow: 0 0 13px 2px rgba(0, 0, 0, 0.62) inset !important;
+  -o-box-shadow: 0 0 13px 2px rgba(0, 0, 0, 0.62) inset !important;
+  box-shadow: 0 0 13px 2px rgba(0, 0, 0, 0.62) inset !important;
+}
+.dark-for-others .mat-expansion-panel-content {
+  background-color: #232b3e !important;
+}
+
+.mat-expansion-panel-body {
+  padding: 0px 10px !important;
+}
+.light-for-others .mat-expansion-panel-body {
+  -webkit-box-shadow: 0 0 8px -5px rgba(0, 0, 0, 0.62) inset !important;
+  -moz-box-shadow: 0 0 8px -5px rgba(0, 0, 0, 0.62) inset !important;
+  -o-box-shadow: 0 0 8px -5px rgba(0, 0, 0, 0.62) inset !important;
+  box-shadow: 0 0 8px -5px rgba(0, 0, 0, 0.62) inset !important;
+}
+.dark-for-others .mat-expansion-panel-body {
+  -webkit-box-shadow: 0 0 8px -5px rgba(255, 255, 255, 0.62) inset !important;
+  -moz-box-shadow: 0 0 8px -5px rgba(255, 255, 255, 0.62) inset !important;
+  -o-box-shadow: 0 0 8px -5px rgba(255, 255, 255, 0.62) inset !important;
+  box-shadow: 0 0 8px -5px rgba(255, 255, 255, 0.62) inset !important;
+}
+
+.dark-for-others mat-expansion-panel-header {
+  box-shadow: 0 0 6px 1px rgb(255 255 255 / 62%) !important;
+  -webkit-box-shadow: 0 0 6px 1px rgb(255 255 255 / 62%) !important;
+  -moz-box-shadow: 0 0 6px 1px rgb(255 255 255 / 62%) !important;
+  -o-box-shadow: 0 0 6px 1px rgb(255 255 255 / 62%) !important;
+}
+.light-for-others mat-expansion-panel-header {
+  box-shadow: 0 0 6px 1px rgb(12 12 12 / 62%) !important;
+  -webkit-box-shadow: 0 0 6px 1px rgb(12 12 12 / 62%) !important;
+  -moz-box-shadow: 0 0 6px 1px rgb(12 12 12 / 62%) !important;
+  -o-box-shadow: 0 0 6px 1px rgb(12 12 12 / 62%) !important;
+}
+.dark-for-others mat-expansion-panel-header:hover,
+.dark-for-others .expansionIsExpanded,
+.dark-for-others .mat-expansion-panel-body a:hover {
+  color: white !important;
+  background-color: #11151e !important;
+  font-weight: bold !important;
+}
+.light-for-others mat-expansion-panel-header:hover,
+.light-for-others .expansionIsExpanded,
+.light-for-others .mat-expansion-panel-body a:hover {
+  color: black !important;
+  background-color: #fafafa !important;
+  font-weight: bold !important;
+}
+
+.mat-expansion-panel-body a {
+  display: block;
+  text-decoration: none;
+  padding: 5px 0px !important;
+  max-width: 100vw;
+}
+[dir="ltr"] .mat-expansion-panel-body a {
+  padding: 15px 0px 15px 25px !important;
+}
+[dir="rtl"] .mat-expansion-panel-body a {
+  padding: 15px 15px 15px 0px !important;
+}
+
+[dir="rtl"] .mat-expansion-panel-header-title,
+[dir="rtl"] .mat-expansion-panel-header-description {
+  font-family: var(--Almarai) !important;
+  font-size: 1.2rem !important;
 }
