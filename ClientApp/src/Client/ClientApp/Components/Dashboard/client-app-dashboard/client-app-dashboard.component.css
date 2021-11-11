@@ -219,3 +219,6 @@ mat-expansion-panel-header {
   font-family: var(--Almarai) !important;
   font-size: 1.2rem !important;
 }
+::-webkit-scrollbar-thumb {
+  background: #9d9d9d;
+}

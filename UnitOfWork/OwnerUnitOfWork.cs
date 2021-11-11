@@ -1,6 +1,7 @@
 ﻿using ERP.Areas.Owners.Data;
 using ERP.UnitOfWork.IRepository.Owners;
 using ERP.UnitOfWork.Repository.Owners;
+using System.Threading.Tasks;
 
 namespace ERP.UnitOfWork
 {
@@ -22,9 +23,9 @@ namespace ERP.UnitOfWork
             await OwnersDbContext.DisposeAsync();
         }
 
-        public async void Save()
+        public async Task<int> Save()
         {
-            await OwnersDbContext.SaveChangesAsync();
+            return await OwnersDbContext.SaveChangesAsync();
         }
     }
 }

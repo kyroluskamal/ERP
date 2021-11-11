@@ -10,17 +10,19 @@ import { ClientAppRegisterComponent } from './Components/client-app-register/cli
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { CLientAppHomeComponent } from './Components/ClientAppHome/client-app-home/client-app-home.component';
 import { ClientDashboardHomeComponent } from './Components/Dashboard/client-dashboard-home/client-dashboard-home.component';
-import { ItemsComponentComponent } from './Components/Dashboard/items-component/items-component.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ItemMainCategoriesComponent } from './Components/Dashboard/Items/item-main-categories/item-main-categories.component';
+import { ItemsComponentComponent } from './Components/Dashboard/Items/items-component/items-component.component';
 
 
 
 const Commponents = [
   ClientAppDashboardComponent, ClientAppHomeNavbarComponent, CLientAppHomeComponent,
-  ClientAppLoginComponent, ClientAppRegisterComponent
+  ClientAppLoginComponent, ClientAppRegisterComponent, ClientDashboardHomeComponent,
+  ItemMainCategoriesComponent, ItemsComponentComponent
 ]
 @NgModule({
-  declarations: [Commponents, ClientDashboardHomeComponent, ItemsComponentComponent],
+  declarations: [Commponents],
   imports: [
     SharedModule, MaterialModule, ClientAppRoutingModule, CommonModule, AppRoutingModule,
     BrowserAnimationsModule

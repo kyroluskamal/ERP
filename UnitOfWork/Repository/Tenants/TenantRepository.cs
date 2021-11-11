@@ -1,11 +1,13 @@
 ﻿using ERP.Areas.Tenants.Data;
 using ERP.Areas.Tenants.Models;
 using ERP.UnitOfWork.IRepository.Tenants;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ERP.UnitOfWork.Repository.Tenants
 {
-    public class TenantRepository : TenantsRepository<TenantsInfo>, ITenantsRepository
+    public class TenantRepository : TenantsRepositoryAsync<TenantsInfo>, ITenantsRepositoryAsync
     {
         public TenantRepository(TenantsDbContext tenantsDbContext) : base(tenantsDbContext)
         {
@@ -14,9 +16,9 @@ namespace ERP.UnitOfWork.Repository.Tenants
 
         public TenantsDbContext TenantsDbContext { get; }
 
-        public bool IsSubdomainExist(string subdomain)
+        public async Task<bool> IsSubdomainExistAsync(string subdomain)
         {
-            var tenant = TenantsDbContext.Tenants.FirstOrDefault(x => x.Subdomain == subdomain);
+            var tenant = await TenantsDbContext.Tenants.FirstOrDefaultAsync(x => x.Subdomain == subdomain);
             return tenant != null;
         }
 
@@ -25,20 +27,19 @@ namespace ERP.UnitOfWork.Repository.Tenants
             TenantsDbContext.Update(TenantsInfo);
         }
 
-        public TenantsInfo TenantBySubdomain(string subdomain)
+        public async Task<TenantsInfo> TenantBySubdomainAsync(string subdomain)
         {
-            return TenantsDbContext.Tenants.FirstOrDefault(x => x.Subdomain == subdomain);
-
+            return await TenantsDbContext.Tenants.FirstOrDefaultAsync(x => x.Subdomain == subdomain);
         }
 
-        public TenantsInfo TenantByUsername(string username)
+        public async Task<TenantsInfo> TenantByUsernameAsync(string username)
         {
-            return TenantsDbContext.Tenants.FirstOrDefault(x => x.Username == username);
+            return await TenantsDbContext.Tenants.FirstOrDefaultAsync(x => x.Username == username);
         }
 
-        public TenantsInfo TenantByEmail(string Email)
+        public async Task<TenantsInfo> TenantByEmailAsync(string Email)
         {
-            return TenantsDbContext.Tenants.FirstOrDefault(x => x.Email == Email);
+            return await TenantsDbContext.Tenants.FirstOrDefaultAsync(x => x.Email == Email);
         }
     }
 }

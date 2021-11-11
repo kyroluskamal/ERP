@@ -1,7 +1,12 @@
 ﻿using ERP.Data;
 using ERP.Data.Identity;
+using ERP.Models.Items;
+using ERP.UnitOfWork.IRepository.ApplicationUser.Items;
+using ERP.UnitOfWork.Repository.ApplicationUser.Items;
 using ERP.Utilities;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ERP.UnitOfWork
 {
@@ -9,6 +14,9 @@ namespace ERP.UnitOfWork
     {
         public ApplicationDbContext ApplicationDbContext { get; }
         public ApplicationUserRoleManager RoleManager { get; set; }
+
+        public IItemMainCatRepoAsync ItemMainCategory { get; private set; }
+
         public Constants Constants;
         public ApplicationUserUnitOfWork(ApplicationDbContext applicationDbContext,
             ApplicationUserRoleManager roleManager, Constants constants)
@@ -16,6 +24,7 @@ namespace ERP.UnitOfWork
             ApplicationDbContext = applicationDbContext;
             RoleManager = roleManager;
             Constants = constants;
+            ItemMainCategory = new ItemsMainCatRepoAsync(applicationDbContext);
         }
 
 
@@ -24,12 +33,16 @@ namespace ERP.UnitOfWork
             await ApplicationDbContext.DisposeAsync();
         }
 
-        public async void Save()
+        public async Task<int> SaveAsync()
         {
-            await ApplicationDbContext.SaveChangesAsync();
+            return await ApplicationDbContext.SaveChangesAsync();
         }
 
-        public void SetConnectionString(string ConnectionString)
+        public void Save()
+        {
+            ApplicationDbContext.SaveChanges();
+        }
+        public async Task SetConnectionStringAsync(string ConnectionString)
         {
             ApplicationDbContext.Database.SetConnectionString(ConnectionString);
             ApplicationDbContext.Database.Migrate();
@@ -44,6 +57,15 @@ namespace ERP.UnitOfWork
                 RoleManager.CreateAsync(new ApplicationUserRole(Constants.CustomerService_Role)).GetAwaiter().GetResult();
             if (!RoleManager.RoleExistsAsync(Constants.Client_Role).GetAwaiter().GetResult())
                 RoleManager.CreateAsync(new ApplicationUserRole(Constants.Client_Role)).GetAwaiter().GetResult();
+            //Check if the Item Main Category is empty, then add a defaul uncategorized Main Category
+            if (ItemMainCategory.GetAllAsync().GetAwaiter().GetResult().Count() == 0)
+            {
+                await ItemMainCategory.AddAsync(new ItemMainCategory
+                {
+                    Name = "Uncategorized"
+                });
+            }
         }
+
     }
 }

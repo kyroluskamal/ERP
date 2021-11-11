@@ -1,6 +1,6 @@
 import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { RouterConstants } from 'src/Helpers/RouterConstants';
 import { ConstantsService } from '../../../../CommonServices/constants.service';
@@ -50,23 +50,23 @@ export class ClientRegisterComponent implements OnInit, OnDestroy {
         this.selected = response;
       }
     );
-    this.RegisterForm = this.formBuilder.group({
-      Email: [null, [Validators.required, Validators.email, CustomValidators.patternValidator(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, { pattern: true })]],
-      Password: [null, Validators.compose([
+    this.RegisterForm = new FormGroup({
+      Email: new FormControl(null, [Validators.required, Validators.email, CustomValidators.patternValidator(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, { pattern: true })]),
+      Password: new FormControl(null, Validators.compose([
         Validators.required,
         CustomValidators.patternValidator(/\d/, { hasNumber: true }),
         CustomValidators.patternValidator(/[A-Z]/, { hasCapitalCase: true }),
         CustomValidators.patternValidator(/[a-z]/, { hasSmallCase: true }),
         CustomValidators.patternValidator(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/, { hasSpecialCharacters: true }),
         Validators.minLength(8)])
-      ],
-      ConfirmPassword: [null, [Validators.required]],
-      CompanyName: [null, [Validators.required, CustomValidators.patternValidator(/[A-Za-z]/, { EnglishName: true })]],
-      Subdomain: [null, [Validators.required]],
-      Username: [null, [Validators.required]],
+      ),
+      ConfirmPassword: new FormControl(null, [Validators.required]),
+      CompanyName: new FormControl(null, [Validators.required, CustomValidators.patternValidator(/[A-Za-z]/, { EnglishName: true })]),
+      Subdomain: new FormControl(null, [Validators.required]),
+      Username: new FormControl(null, [Validators.required]),
     },
       {
-        validator: CustomValidators.passwordMatchValidator
+        validators: CustomValidators.passwordMatchValidator
       });
   }
   //Register Function
@@ -82,8 +82,8 @@ export class ClientRegisterComponent implements OnInit, OnDestroy {
       ClientUrl: "https://" + window.location.host + "/" + RouterConstants.Client_EmailConfirmationUrl
     };
     if (this.RegisterForm.invalid) return;
-    this.ClientAuth.Register(this.ClientRegisterModel).subscribe(
-      (response: ClientWithToken) => {
+    this.ClientAuth.Register(this.ClientRegisterModel).subscribe({
+      next: (response: ClientWithToken) => {
         this.clientWithToken = response;
         console.log(response);
         this.ValidationErrors = [];
@@ -91,12 +91,12 @@ export class ClientRegisterComponent implements OnInit, OnDestroy {
           this.translate.isRightToLeft(this.selected) ? "rtl" : "ltr");
         this.dialogHandler.CloseDialog();
       },
-      (error) => {
+      error: (error) => {
         console.log(error);
         this.loading = false;
         this.ValidationErrors = error;
       }
-    );
+    });
 
 
   }

@@ -5,10 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace ERP.UnitOfWork.Repository.Tenants
 {
-    public class TenantsRepository<T> : IRepository<T> where T : class
+    public class TenantsRepository<T> : IRepositoryAsync<T> where T : class
     {
 
         private readonly TenantsDbContext TenantsDbContext;
@@ -20,17 +21,17 @@ namespace ERP.UnitOfWork.Repository.Tenants
             this.dbSet = TenantsDbContext.Set<T>();
         }
 
-        public void Add(T entity)
+        public async Task AddAsync(T entity)
         {
-            dbSet.Add(entity);
+            await dbSet.AddAsync(entity);
         }
 
-        public T Get(int id)
+        public async Task<T> GetAsync(int id)
         {
-            return dbSet.Find(id);
+            return await dbSet.FindAsync(id);
         }
 
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = null)
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = null)
         {
             IQueryable<T> query = dbSet;
 
@@ -49,17 +50,17 @@ namespace ERP.UnitOfWork.Repository.Tenants
 
             if (orderBy != null)
             {
-                return orderBy(query).ToList();
+                return await orderBy(query).ToListAsync();
             }
-            return query.ToList();
+            return await query.ToListAsync();
         }
 
-        public T GetByStringId(string id, string loginProvider, string name)
+        public async Task<T> GetByStringIdASync(string id, string loginProvider, string name)
         {
-            return dbSet.Find(id);
+            return await dbSet.FindAsync(id);
         }
 
-        public T GetFirstOrDefault(Expression<Func<T, bool>> filter = null, string includeProperties = null)
+        public async Task<T> GetFirstOrDefaultAsync(Expression<Func<T, bool>> filter = null, string includeProperties = null)
         {
             IQueryable<T> query = dbSet;
 
@@ -77,12 +78,12 @@ namespace ERP.UnitOfWork.Repository.Tenants
             }
 
 
-            return query.FirstOrDefault();
+            return await query.FirstOrDefaultAsync();
         }
 
-        public void Remove(int id)
+        public async Task RemoveAsync(int id)
         {
-            T entity = dbSet.Find(id);
+            T entity = await dbSet.FindAsync(id);
             Remove(entity);
         }
 
@@ -94,6 +95,16 @@ namespace ERP.UnitOfWork.Repository.Tenants
         public void RemoveRange(IEnumerable<T> entity)
         {
             dbSet.RemoveRange(entity);
+        }
+
+        public async Task<List<T>> GetAllAsync()
+        {
+            return await dbSet.ToListAsync();
+        }
+
+        public async Task<T> GetLastAsync()
+        {
+            return await dbSet.LastAsync();
         }
     }
 }

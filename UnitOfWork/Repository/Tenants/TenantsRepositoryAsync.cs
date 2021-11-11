@@ -79,17 +79,22 @@ namespace ERP.UnitOfWork.Repository.Tenants
         public async Task RemoveAsync(int id)
         {
             T entity = await dbSet.FindAsync(id);
-            await RemoveAsync(entity);
+            Remove(entity);
         }
 
-        public async Task RemoveAsync(T entity)
+        public void Remove(T entity)
         {
             dbSet.Remove(entity);
         }
 
-        public async Task RemoveRangeAsync(IEnumerable<T> entity)
+        public void RemoveRange(IEnumerable<T> entity)
         {
             dbSet.RemoveRange(entity);
+        }
+
+        public async Task<List<T>> GetAllAsync()
+        {
+            return await dbSet.ToListAsync();
         }
     }
 }

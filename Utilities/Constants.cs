@@ -25,15 +25,20 @@
         public string ResetPassword_statuCode = "ResetPassword";
         public string Email_Is_Confirmed_statuCode = "Email_Confirmed";
         public string RolenameAddtion_statuCode = "AddingRoleName";
+        public string Required_field = "Required_field";
+        public string Can_Not_Save_To_Db = "Can_Not_Save_To_Db";
+
 
         //error Messages
         public string NullUser_ErrorMessage = "We can't find a user with this email. Check your email and try again";
-        public string NullTenant_ErrorMessage = "There is no account registered by this mail";
+        public string NullTenant_ErrorMessage = "There are no user associated with this link";
         public string NullOwner_ErrorMessage = "There is no account registered by this mail";
         public string Emailconfirmation_ErrorMessage = "You need to confirm your email.";
         public string WrongPassword_ErrorMessage = "Wrong Password";
         public string Email_Is_Confirmed_ErrorMessage = "Email is already confirmed";
         public string RolenameAddtion_ErrorMessage = "Your account is add but we can't assign role to you. Please Contact us";
+        public string Required_field_ErrorMessage = "This Field is required";
+        public string Can_Not_Save_To_Db_ErrorMessage = "Error: Data is not saved to database. Try again.";
 
         //ValidationErrorMessages
 

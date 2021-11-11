@@ -45,7 +45,11 @@ export class ConstantsService {
   ResetPassword_Success = "ResetPassword_Success";
   BrowserDontSupportFullscreen = "BrowserDon'tSupportFullscreen";
   SuccessfulRegistration = "SuccessfulRegistration";
-
+  DataAddtionStatus_Success = "DataAddtionStatus_Success";
+  DataAddtionStatus_error = "DataAddtionStatus_Error";
+  NullTenant = "NullTenant";
+  Required_field = "Required_field";
+  Can_Not_Save_To_Db = "Can_Not_Save_To_Db";
   //Tooltip translation
   CloseSidebar = "Close sidebar";
   FixSidebar = "Fix sidebar";
@@ -64,8 +68,10 @@ export class ConstantsService {
   PleaseCorrectErrors_En = "Please correct the errors and try again";
   Something_nexpected_went_wrong_EN = "Something unexpected went wrong";
 
-  PleaseCorrectErrors_AR_translation = "من فضلك صحح الاخطاء وحاول مرة اخرى.";
+  PleaseCorrectErrors_AR = "من فضلك صحح الاخطاء وحاول مرة اخرى.";
   Something_nexpected_went_wrong_Arabic = "حدث خطأ غير متوقع";
+  NullTenant_errorMessage_Ar = "لا يوجد حساب خاص بهذا الرابط.";
+  NullTenant_errorMessage_En = "There are no user associated with this link";
   //Static Functions
   ClientUrl(url: string): string {
     return "https://" + window.location.host + "/" + url;
@@ -203,5 +209,8 @@ export class ConstantsService {
   public App_login = "login";
   public App_main = "app";
   public App_register = "register";
-  public App_Items = "items";
+  public App_Items = "All Items";
+  public App_ItemsMainCat = "Main Categories";
+
+
 }

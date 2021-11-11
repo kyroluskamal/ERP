@@ -1,0 +1,63 @@
+<ng-container *ngIf="ErrorGettingAllMainCats.length !==0">
+  <div class="errorsIn_The_center_Screen">
+    <ul>
+      <li *ngFor="let error of ErrorGettingAllMainCats">
+        {{error.status|translate}}
+      </li>
+    </ul>
+  </div>
+</ng-container>
+<ng-container *ngIf="ErrorGettingAllMainCats.length === 0">
+  <mat-grid-list cols="2" rowHeight="4rem">
+
+    <mat-grid-tile colspan="1" rowspan="7">
+
+      <mat-form-field appearance="outline" class="Width100">
+        <mat-label>Search table</mat-label>
+        <input #MainCatSearch matInput type="search" name="MainCatTableFilter" id="MainCatTableFilter"
+          (input)="externalFilterChanged(MainCatSearch)">
+        <mat-icon matSuffix><span class="material-icons-outlined">
+            search
+          </span></mat-icon>
+      </mat-form-field>
+
+      <ag-grid-angular style="width: 100%; height: 450px;" class="ag-theme-alpine"
+        [rowData]="ItemsMainCategories | async" [columnDefs]="columnDefs" [getRowNodeId]="GetMainCatId"
+        (gridReady)="OnGridReady($event)" [defaultColDef]="defaultColDef" [animateRows]="true" deltaRowDataMode>
+      </ag-grid-angular>
+    </mat-grid-tile>
+
+    <mat-grid-tile colspan="1" rowspan="7">2</mat-grid-tile>
+
+    <mat-grid-tile class="diaplayblock" colspan="1" rowspan="4">
+      <form [formGroup]="AddMainCatForm" (ngSubmit)="AddMainCatForm.valid">
+        <!-- Category Name -->
+        <mat-form-field appearance="outline" class="Width100">
+          <mat-label [ngClass]="ValidationErrorMessage.getFormControl('CatName', AddMainCatForm)
+          .valid?'valid-green':''">{{'MainCatName' | translate}}</mat-label>
+          <input matInput type="text" value="" formControlName="CatName"
+            [errorStateMatcher]="customErrorStateMatcher" />
+          <mat-icon matSuffix><span class="material-icons-outlined">
+              category
+            </span></mat-icon>
+          <mat-error *ngIf="ValidationErrorMessage.getFormControl('CatName',AddMainCatForm)
+          .hasError('required')&& selected==='en'"
+            [innerHtml]="ValidationErrorMessage.getErrorMessage('CatName', 'required')">
+          </mat-error>
+          <mat-error *ngIf="ValidationErrorMessage.getFormControl('CatName', AddMainCatForm)
+          .hasError('required') && selected==='ar'">{{'NameIsRequired' | translate}}</mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="primary" (submit)="AddMainCatForm.valid" [disabled]="AddMainCatForm.invalid"
+          class="Width100" aria-label="register
+    button" (click)="AddMainCategory()">
+          <mat-icon>
+            <mat-spinner diameter="20" color="warn" *ngIf="loading"></mat-spinner><span
+              *ngIf="!loading">app_registration</span>
+          </mat-icon>
+          {{'Add'|translate}}
+        </button>
+      </form>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="1" rowspan="1">4</mat-grid-tile>
+  </mat-grid-list>
+</ng-container>

@@ -29,16 +29,16 @@ export class CustomValidators {
     };
   }
 
-  static ServerErrorValidations(validationError: any, FormGroup:FormGroup) {
+  static ServerErrorValidations(validationError: any, FormGroup: FormGroup) {
     if (validationError.length > 0) {
       validationError = JSON.stringify(validationError);
       for (let key in validationError) {
         FormGroup.get(key)?.setErrors({ key: true });
       }
     }
-}
+  }
   static BadRequestCustomValidation(validationError: any, controlName: string,
-    error: ValidationErrors): ValidatorFn{
+    error: ValidationErrors): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
       if (!control.value) {
         // if control is empty return no error
@@ -52,14 +52,16 @@ export class CustomValidators {
     };
   }
 
-  static passwordMatchValidator(control: AbstractControl) {
+  static passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
     const password: string = control.get('Password')?.value; // get password from our password form control
     const confirmPassword: string = control.get('ConfirmPassword')?.value; // get password from our confirmPassword form control
     // compare is the password math
     if (password !== confirmPassword) {
       // if they don't match, set an error in our confirmPassword form control
       control.get('ConfirmPassword')?.setErrors({ NoPassswordMatch: true });
+      return null
     }
+    return { 'NoPassswordMatch': true };
   }
 
   getFormControl(controlName: string, formGroup: FormGroup): FormControl {

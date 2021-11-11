@@ -1,6 +1,7 @@
 ﻿using ERP.Areas.Tenants.Data;
 using ERP.UnitOfWork.IRepository.Tenants;
 using ERP.UnitOfWork.Repository.Tenants;
+using System.Threading.Tasks;
 
 namespace ERP.UnitOfWork
 {
@@ -8,7 +9,7 @@ namespace ERP.UnitOfWork
     {
         public TenantsDbContext TenantsDbContext { get; }
 
-        public ITenantsRepository Tenants { get; private set; }
+        public ITenantsRepositoryAsync Tenants { get; private set; }
 
         public TenantsUnitOfWork(TenantsDbContext tenantsDbContext)
         {
@@ -22,9 +23,9 @@ namespace ERP.UnitOfWork
             await TenantsDbContext.DisposeAsync();
         }
 
-        public async void Save()
+        public async Task<int> SaveAsync()
         {
-            await TenantsDbContext.SaveChangesAsync();
+            return await TenantsDbContext.SaveChangesAsync();
         }
 
     }

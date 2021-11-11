@@ -70,9 +70,9 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var tenantbyEmail = TenantsUnitOfWork.Tenants.TenantByEmail(clientRegister.Email);
-                var tenantbyUsername = TenantsUnitOfWork.Tenants.TenantByUsername(clientRegister.UserName);
-                var tenantbySubdomain = TenantsUnitOfWork.Tenants.TenantBySubdomain(clientRegister.Subdomain.ToLower());
+                var tenantbyEmail = await TenantsUnitOfWork.Tenants.TenantByEmailAsync(clientRegister.Email);
+                var tenantbyUsername = await TenantsUnitOfWork.Tenants.TenantByUsernameAsync(clientRegister.UserName);
+                var tenantbySubdomain = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(clientRegister.Subdomain.ToLower());
                 if (tenantbyEmail != null && tenantbySubdomain != null && tenantbyUsername != null)
                     return BadRequest(new
                     {
@@ -124,9 +124,9 @@ namespace ERP.Controllers
                     Email = clientRegister.Email,
                     ConnectionString = $"Server=(localdb)\\mssqllocaldb;Database={clientRegister.Subdomain};Trusted_Connection=True;MultipleActiveResultSets=true"
                 };
-                TenantsUnitOfWork.Tenants.Add(Tenant);
+                await TenantsUnitOfWork.Tenants.AddAsync(Tenant);
 
-                ClientUnitOfWork.SetConnectionString(Tenant.ConnectionString);
+                await ClientUnitOfWork.SetConnectionStringAsync(Tenant.ConnectionString);
 
                 var User = new ApplicationUser()
                 {
@@ -137,7 +137,7 @@ namespace ERP.Controllers
                 var result = await UserManager.CreateAsync(User, clientRegister.Password);
                 if (result.Succeeded)
                 {
-                    TenantsUnitOfWork.Save();
+                    await TenantsUnitOfWork.SaveAsync();
                     var user = await UserManager.FindByEmailAsync(clientRegister.Email);
                     if (!await RoleManager.RoleExistsAsync(Constants.Admin_Role))
                         await RoleManager.CreateAsync(new ApplicationUserRole(Constants.Admin_Role));
@@ -172,11 +172,11 @@ namespace ERP.Controllers
             if (ModelState.IsValid)
             {
                 //Get ConnectionString From Tenant Db
-                var tenant = TenantsUnitOfWork.Tenants.TenantByEmail(clientLogin.Email);
+                var tenant = await TenantsUnitOfWork.Tenants.TenantByEmailAsync(clientLogin.Email);
 
                 if (tenant == null) return BadRequest(new { status = Constants.NullTenant_ErrorMessage, error = Constants.NullTenant_ErrorMessage });
                 //Connect to the correct Db based on the Connectionstring
-                ClientUnitOfWork.SetConnectionString(tenant.ConnectionString);
+                await ClientUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
                 //Get user From Users table
                 var user = UserManager.Users.SingleOrDefault(x => x.Email == clientLogin.Email);
                 if (user == null) return Unauthorized(new { status = Constants.NullUser_statuCode, error = Constants.NullUser_ErrorMessage });
@@ -201,9 +201,9 @@ namespace ERP.Controllers
         [HttpPost(nameof(EmailConfirmation))]
         public async Task<IActionResult> EmailConfirmation([FromBody] EmailConfirmationModel emailConfirmationModel)
         {
-            var tenantbyEmail = TenantsUnitOfWork.Tenants.TenantByEmail(emailConfirmationModel.email);
+            var tenantbyEmail = await TenantsUnitOfWork.Tenants.TenantByEmailAsync(emailConfirmationModel.email);
             if (tenantbyEmail == null) return BadRequest(new { status = Constants.NullTenant_ErrorMessage, error = Constants.NullTenant_ErrorMessage });
-            ClientUnitOfWork.SetConnectionString(tenantbyEmail.ConnectionString);
+            await ClientUnitOfWork.SetConnectionStringAsync(tenantbyEmail.ConnectionString);
             var user = await UserManager.FindByEmailAsync(emailConfirmationModel.email);
             if (user == null)
                 return BadRequest(new { status = Constants.NullUser_statuCode, error = Constants.NullUser_ErrorMessage });
@@ -219,9 +219,9 @@ namespace ERP.Controllers
         [HttpPost(nameof(SendConfirmationAgain))]
         public async Task<IActionResult> SendConfirmationAgain([FromBody] SendEmailConfirmationAgian sendEmailConfirmationAgian)
         {
-            var tenantbyEmail = TenantsUnitOfWork.Tenants.TenantByEmail(sendEmailConfirmationAgian.Email);
+            var tenantbyEmail = await TenantsUnitOfWork.Tenants.TenantByEmailAsync(sendEmailConfirmationAgian.Email);
             if (tenantbyEmail == null) return BadRequest(new { status = Constants.NullTenant_ErrorMessage, error = Constants.NullTenant_ErrorMessage });
-            ClientUnitOfWork.SetConnectionString(tenantbyEmail.ConnectionString);
+            await ClientUnitOfWork.SetConnectionStringAsync(tenantbyEmail.ConnectionString);
             var user = await UserManager.FindByEmailAsync(sendEmailConfirmationAgian.Email);
             if (user == null)
                 return BadRequest(new { status = Constants.NullUser_statuCode, error = Constants.NullUser_ErrorMessage });
@@ -251,9 +251,9 @@ namespace ERP.Controllers
         [HttpPost(nameof(ForgetPassword))]
         public async Task<IActionResult> ForgetPassword([FromBody] ClientForgetPasswordModel ForgetPasswordModel)
         {
-            var tenantbyEmail = TenantsUnitOfWork.Tenants.TenantByEmail(ForgetPasswordModel.Email);
+            var tenantbyEmail = TenantsUnitOfWork.Tenants.TenantByEmailAsync(ForgetPasswordModel.Email);
             if (tenantbyEmail == null) return BadRequest(new { status = Constants.NullTenant_ErrorMessage, error = Constants.NullTenant_ErrorMessage });
-            ClientUnitOfWork.SetConnectionString(tenantbyEmail.ConnectionString);
+            await ClientUnitOfWork.SetConnectionStringAsync(tenantbyEmail.GetAwaiter().GetResult().ConnectionString);
             var user = await UserManager.FindByEmailAsync(ForgetPasswordModel.Email);
             if (user == null)
                 return BadRequest(new { status = Constants.NullUser_statuCode, error = Constants.NullUser_ErrorMessage });
@@ -279,9 +279,9 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var tenantbyEmail = TenantsUnitOfWork.Tenants.TenantByEmail(ResetPasswordModel.email);
+                var tenantbyEmail = await TenantsUnitOfWork.Tenants.TenantByEmailAsync(ResetPasswordModel.email);
                 if (tenantbyEmail == null) return BadRequest(new { status = Constants.NullTenant_ErrorMessage, error = Constants.NullTenant_ErrorMessage });
-                ClientUnitOfWork.SetConnectionString(tenantbyEmail.ConnectionString);
+                await ClientUnitOfWork.SetConnectionStringAsync(tenantbyEmail.ConnectionString);
                 var user = await UserManager.FindByEmailAsync(ResetPasswordModel.email);
                 if (user == null)
                     return BadRequest(new { status = Constants.NullUser_statuCode, error = Constants.NullUser_ErrorMessage });
@@ -294,6 +294,14 @@ namespace ERP.Controllers
             return BadRequest(new { status = Constants.ModelState_statuCode, error = ModelState });
         }
 
+        [HttpPost(nameof(IsTenantFound))]
+        public async Task<IActionResult> IsTenantFound(string subdomain)
+        {
+            var Tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(subdomain);
+            if (Tenant == null)
+                return BadRequest(new { status = Constants.NullTenant_statuCode, error = Constants.NullTenant_ErrorMessage });
+            return StatusCode((int)System.Net.HttpStatusCode.OK);
+        }
 
         // PUT api/<IdentityController>/5
         [HttpPut("{id}")]

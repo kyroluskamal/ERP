@@ -6,7 +6,8 @@ import { ClientAppLoginComponent } from './Components/client-app-login/client-ap
 import { ClientAppRegisterComponent } from './Components/client-app-register/client-app-register.component';
 import { ClientAppDashboardComponent } from './Components/Dashboard/client-app-dashboard/client-app-dashboard.component';
 import { ClientDashboardHomeComponent } from './Components/Dashboard/client-dashboard-home/client-dashboard-home.component';
-import { ItemsComponentComponent } from './Components/Dashboard/items-component/items-component.component';
+import { ItemMainCategoriesComponent } from './Components/Dashboard/Items/item-main-categories/item-main-categories.component';
+import { ItemsComponentComponent } from './Components/Dashboard/Items/items-component/items-component.component';
 
 
 
@@ -16,11 +17,14 @@ const routes: Routes = [
       [
         { path: RouterConstants.App_login, component: ClientAppLoginComponent },
         { path: RouterConstants.App_register, component: ClientAppRegisterComponent },
-        { path: RouterConstants.App_Items, component: ItemsComponentComponent },
-
+        {
+          path: RouterConstants.App_Items, children: [
+            { path: '', component: ItemsComponentComponent },
+            { path: RouterConstants.App_ItemMainCategories, component: ItemMainCategoriesComponent }
+          ]
+        },
       ]
   }
-
 ];
 
 @NgModule({

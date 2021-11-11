@@ -1,6 +1,6 @@
 export abstract class RouterConstants {
 
-  //API URLS
+  //API URLS for Identity
   public static ClientLoginMainDomain_APIurl: string = "/api/Identity/loginMainDomain";
   public static OwnerLogin_APIurl: string = "/api/Owners/Account/OwnerLogin";
   public static ClientRegister_APIurl: string = "/api/Identity/";
@@ -14,6 +14,12 @@ export abstract class RouterConstants {
   public static Owner_ResetPassword_APIURL: string = "/api/Owners/Account/ResetPassword";
   public static Client_ResetPassword_APIURL: string = "/api/Identity/ResetPassword";
   public static Client_SocialLogins_APIURL: string = "/api/Identity/SoicalLogin";
+  public static IsTenantFound_APIURL: string = "/api/Identity/IsTenantFound";
+
+  //APIURLS for Items
+  public static ItemMainCategory_GetAll_API = "/api/items/allcategories";
+  public static ItemMainCategory_AddMainCat_API = "/api/items/AddMainGategory";
+
   //Client URLs
   public static Client_EmailConfirmationUrl: string = "client/emailconfirmation";
   public static Owner_EmailConfirmationUrl: string = "owners/emailconfirmation";
@@ -27,6 +33,6 @@ export abstract class RouterConstants {
   public static App_main = "app";
   public static App_register = "register";
   public static App_Items = "items";
-  public App_Items = "items";
+  public static App_ItemMainCategories = "itemsCategories";
 
 }

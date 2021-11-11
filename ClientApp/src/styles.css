@@ -197,6 +197,17 @@ form p {
   background-color: #f8d7da;
   border-color: #f5c6cb;
 }*/
+.errorsIn_The_center_Screen{
+  background: #f8d7da;
+    border: 2px  solid #fd132a;
+    width: 70%;
+    margin: auto;
+    color: #842029;
+    border-radius: 15px;
+font-size: 1.2rem;
+transform: translateY(40vh);
+}
+
 .container {
   padding-right: 15px;
   padding-left: 15px;

@@ -20,13 +20,15 @@ import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTableModule } from '@angular/material/table';
+import { AgGridModule } from 'ag-grid-angular';
 
 const MaterialComponents = [
   MatButtonModule, MatToolbarModule, MatIconModule, MatDialogModule, MatListModule,
   MatBottomSheetModule, MatInputModule, MatFormFieldModule, CommonModule, MatSnackBarModule,
   MatCheckboxModule, MatProgressSpinnerModule, MatGridListModule, MatSidenavModule,
   FlexLayoutModule, MatSelectModule, MatMenuModule, MatExpansionModule, MatTooltipModule,
-  MatButtonToggleModule, MatSlideToggleModule
+  MatButtonToggleModule, MatSlideToggleModule, MatTableModule, AgGridModule.withComponents([]),
 ];
 @NgModule({
   declarations: [],

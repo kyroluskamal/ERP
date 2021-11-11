@@ -15,9 +15,51 @@ import { ConstantsService } from 'src/CommonServices/constants.service';
 @Injectable()
 export class ErrorHandlingInterceptor implements HttpInterceptor {
 
+  current_lang: any;
   constructor(private router: Router, private Notification: NotificationsService,
-    private dialogHandler: DialogHandlerService) { }
+    private dialogHandler: DialogHandlerService, private Constants: ConstantsService) {
+    this.current_lang = localStorage.getItem('lang');
+  }
+  TempTranslation_Ar(key: string) {
+    switch (key) {
+      case this.Constants.NullTenant: return this.Constants.NullTenant_errorMessage_Ar;
+      default: return this.Constants.Something_nexpected_went_wrong_Arabic;
+    }
+  }
 
+  TempTranslation_En(key: string) {
+    switch (key) {
+      case this.Constants.NullTenant: return this.Constants.NullTenant_errorMessage_En;
+
+      default: return this.Constants.Something_nexpected_went_wrong_EN;
+    }
+  }
+
+  TranslatedError(key: string, lang: any) {
+    switch (lang) {
+      case "ar": return this.TempTranslation_Ar(key);
+      case "en": return this.TempTranslation_En(key);
+      default: return "";
+    }
+  }
+
+  isRightToLeft(lang: any) {
+    switch (lang) {
+      case 'ar': return true;
+      case 'arc': return true;
+      case 'dv': return true;
+      case 'fa': return true;
+      case 'ha': return true;
+      case 'he': return true;
+      case 'khw': return true;
+      case 'ks': return true;
+      case 'ku': return true;
+      case 'ps': return true;
+      case 'ur': return true;
+      case 'yi': return true;
+      default: return false;
+    }
+  }
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       catchError(error => {
@@ -32,26 +74,27 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
                     modalStateErrors.push(error.error.errors[key]);
                   }
                 }
-                this.Notification.error("Please correct the errors and try again", error.status, "ltr");
+                this.Notification.error(this.TranslatedError(this.Constants.PleaseCorrectErrors, this.current_lang),
+                  error.status, this.isRightToLeft(this.current_lang));
                 throw modalStateErrors.flat();
               } else if (error.error) {
-
                 if (Array.isArray(error.error)) {
                   for (let i = 0; i < error.error.length; i++) {
-                    if (error.error[i].description) {
-                      modalStateErrors.push(error.error[i].description);
+                    if (error.error[i].status) {
+                      modalStateErrors.push(error.error[i].status);
                     }
                   }
                 } else {
                   modalStateErrors.push(error.error);
-                  this.Notification.error(error.error.error, error.status, "");
+                  this.Notification.error(this.TranslatedError(error.error.status, this.current_lang),
+                    error.status, this.isRightToLeft(this.current_lang) ? 'rtl' : 'ltr');
                   throw modalStateErrors.flat();
                 }
-                this.Notification.error("Please correct the errors and try again", error.status, "ltr");
+                this.Notification.error(this.TranslatedError(this.Constants.PleaseCorrectErrors, this.current_lang), error.status, this.isRightToLeft(this.current_lang));
                 throw modalStateErrors.flat();
 
               } else {
-                this.Notification.error(error.statusText, error.status, "ltr");
+                this.Notification.error(this.TranslatedError(error.error.status, this.current_lang), error.status, this.isRightToLeft(this.current_lang) ? 'rtl' : 'ltr');
               }
               break;
             case 401:
@@ -69,11 +112,11 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
               this.router.navigateByUrl('/server-error', navigationExtras);
               break;
             default:
-              this.Notification.error('Something unexpected went wrong', "", "ltr");
+              this.Notification.error(this.TranslatedError(this.Constants.Something_nexpected_went_wrong, this.current_lang), "", this.isRightToLeft(this.current_lang));
               break;
           }
         }
-        return throwError(error);
+        return throwError(() => error);
       })
     )
   }

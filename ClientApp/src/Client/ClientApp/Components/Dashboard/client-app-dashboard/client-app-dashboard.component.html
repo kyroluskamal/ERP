@@ -35,7 +35,7 @@
         </mat-expansion-panel-header>
 
         <a *ngFor="let link of item.links let x = index" [routerLink]="link.link"
-          [ngClass]="{'expansionIsExpanded':link.state}" (click)="SetLinkActive(i, x)">{{link.link}}</a>
+          [ngClass]="{'expansionIsExpanded':link.state}" (click)="SetLinkActive(i, x)">{{link.LinkText}}</a>
 
       </mat-expansion-panel>
     </mat-accordion>

@@ -1,0 +1,17 @@
+::ng-deep mat-grid-list .mat-grid-tile:nth-child(3) .mat-grid-tile-content,
+::ng-deep mat-grid-list .mat-grid-tile:nth-child(3),
+::ng-deep mat-grid-list .mat-grid-tile:nth-child(4) .mat-grid-tile-content,
+::ng-deep mat-grid-list .mat-grid-tile:nth-child(4){
+  display: block !important;
+  height:calc(7rem + 3px) !important;
+}
+::ng-deep .mat-grid-list{
+  max-height: 100vh;
+  height: 100vh !important;
+}
+::ng-deep mat-grid-list .mat-grid-tile:nth-child(1) .mat-grid-tile-content, ::ng-deep mat-grid-list .mat-grid-tile:nth-child(2) .mat-grid-tile-content{
+  flex-direction: column;
+}
+::ng-deep .ag-header-container, .ag-center-cols-container, .ag-center-cols-container{
+  width: 100% !important;
+}

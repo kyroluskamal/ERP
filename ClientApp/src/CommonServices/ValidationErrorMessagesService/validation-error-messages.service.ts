@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +8,7 @@ export class ValidationErrorMessagesService {
 
   constructor() { }
 
-  getFormControl(controlName: string, formGroup: FormGroup): FormControl {
+  getFormControl(controlName: string, formGroup: FormGroup): AbstractControl {
     return formGroup.get(controlName) as FormControl;
   }
 
@@ -56,6 +56,10 @@ export class ValidationErrorMessagesService {
         if (errorType == "required") return "<strong>Username</strong> is required";
         if (errorType == "UserName") return "<strong>Username</strong> is required";
         break;
+      }
+      case "CatName": {
+        if (errorType == "required") return "This field is required";
+
       }
     }
     return "";

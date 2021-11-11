@@ -77,4 +77,10 @@ export class ClientAccountService {
   ClientResetPassword(clientResetPasswordModel: ClientResetPasswordModel) {
     return this.httpClient.post(RouterConstants.Client_ResetPassword_APIURL, clientResetPasswordModel, { responseType: "json" });
   }
+
+  IsTenantFound(): Observable<any> {
+    let subdomain = window.location.hostname.split('.')[0];
+    console.log(subdomain)
+    return this.httpClient.post(RouterConstants.IsTenantFound_APIURL, subdomain);
+  }
 }

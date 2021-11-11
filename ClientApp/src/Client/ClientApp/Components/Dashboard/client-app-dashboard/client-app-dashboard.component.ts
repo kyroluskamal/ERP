@@ -13,7 +13,7 @@ import { SideNav_items } from '.././SideNavItems'
 interface ExpansionPanel {
   title: string;
   expanded: boolean;
-  links: { link: string; state: boolean }[];
+  links: { link: string, LinkText: string, state: boolean }[];
   iconName: string;
 }
 

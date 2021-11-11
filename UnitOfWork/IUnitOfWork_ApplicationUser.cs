@@ -1,10 +1,14 @@
-﻿using System;
+﻿using ERP.UnitOfWork.IRepository.ApplicationUser.Items;
+using System;
+using System.Threading.Tasks;
 
 namespace ERP.UnitOfWork
 {
     public interface IUnitOfWork_ApplicationUser : IDisposable
     {
-        void SetConnectionString(string ConnectionString);
+        IItemMainCatRepoAsync ItemMainCategory { get; }
+        Task SetConnectionStringAsync(string ConnectionString);
+        Task<int> SaveAsync();
         void Save();
     }
 }
