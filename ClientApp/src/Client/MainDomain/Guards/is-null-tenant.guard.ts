@@ -11,15 +11,21 @@ export class IsNullTenantGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    this.accountservice.IsTenantFound().subscribe({
+    this.accountservice.IsTenantFound(window.location.hostname.split('.')[0]).subscribe({
+      next: r => {
+        console.log(window.location.protocol + window.location.hostname.split("0").shift())
+        return true;
+      },
       error: error => {
+        console.log(error);
         if (error != null) {
-          return true;
+          window.history.back();
+          return false;
         }
-        return false;
+        return true;
       }
     });
-    return false;
+    return true;
   }
 
 }

@@ -13,13 +13,13 @@ import { ClientDashboardHomeComponent } from './Components/Dashboard/client-dash
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ItemMainCategoriesComponent } from './Components/Dashboard/Items/item-main-categories/item-main-categories.component';
 import { ItemsComponentComponent } from './Components/Dashboard/Items/items-component/items-component.component';
-
+import { IconButtonRendererComponent } from './Components/Dashboard/AgFrameworkComponents/button-renderer-component/Icon-button-renderer.component';
 
 
 const Commponents = [
   ClientAppDashboardComponent, ClientAppHomeNavbarComponent, CLientAppHomeComponent,
   ClientAppLoginComponent, ClientAppRegisterComponent, ClientDashboardHomeComponent,
-  ItemMainCategoriesComponent, ItemsComponentComponent
+  ItemMainCategoriesComponent, ItemsComponentComponent, IconButtonRendererComponent
 ]
 @NgModule({
   declarations: [Commponents],

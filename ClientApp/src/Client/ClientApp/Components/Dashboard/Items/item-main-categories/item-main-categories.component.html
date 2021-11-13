@@ -8,56 +8,181 @@
   </div>
 </ng-container>
 <ng-container *ngIf="ErrorGettingAllMainCats.length === 0">
-  <mat-grid-list cols="2" rowHeight="4rem">
+  <div fxLayout="row wrap" fxLayoutGap="16px" fxFlexAlign="center center">
+    <mat-card class="example-card" fxFlex="49%" fxFlex.xs="100%" fxFlex.sm="48%"
+      [class]="DarkOrLight===Constants.dark?'dark-for-Child-Component':''">
+      <mat-card-title
+        [style.font-family]="!this.translate.isRightToLeft(this.translate.GetCurrentLang())? 'cursive !important':'Hacen Casablanca'+' !important'"
+        [dir]="this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'rtl':
+      !this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'ltr':'ltr'">
+        {{Constants.Main_Categories|translate}}</mat-card-title>
+      <mat-card-subtitle [dir]="this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'rtl':
+      !this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'ltr':'ltr'">
+        {{this.Constants.Add_Edit_Delete | translate}} {{Constants.Main_Categories|translate}}
+      </mat-card-subtitle>
+      <mat-card-content>
+        <mat-form-field appearance="outline" class="Width100">
+          <mat-label>{{Constants.Search_table|translate}}</mat-label>
+          <input #MainCatSearch matInput type="search" name="MainCatTableFilter" id="MainCatTableFilter"
+            (input)="externalFilterChanged(MainCatSearch)">
+          <mat-icon matSuffix><span class="material-icons-outlined">
+              search
+            </span></mat-icon>
+        </mat-form-field>
+        <ng-template [ngIf]="AgGridDir === 'rtl'" [ngIfElse]="LeftGrid" #Withbutton>
+          <ag-grid-angular style="width: 100%; height: 450px;"
+            [dir]="this.translate.isRightToLeft(this.translate.GetCurrentLang())?'rtl':'ltr'"
+            [class]="Table_Color_mode===Constants.light || Theme_dir===Constants.light?'ag-theme-alpine':'ag-theme-alpine-dark'"
+            [rowData]="ItemsMainCategories | async" [columnDefs]="columnDefs" (gridReady)="OnGridReady($event)"
+            [defaultColDef]="defaultColDef" [overlayLoadingTemplate]="overlayLoadingTemplate" [animateRows]="true"
+            [enableRtl]="true" [frameworkComponents]="agFrameworks" rowSelection="single"
+            (rowSelected)="ItemMainCatRowSelect($event)" (cellValueChanged)="UpdateItemMainCat($event)">
+          </ag-grid-angular>
+        </ng-template>
+        <ng-template #LeftGrid>
+          <ag-grid-angular style="width: 100%; height: 450px;"
+            [dir]="this.translate.isRightToLeft(this.translate.GetCurrentLang())?'rtl':'ltr'"
+            [class]="Table_Color_mode===Constants.light || Theme_dir===Constants.light?'ag-theme-alpine':'ag-theme-alpine-dark'"
+            [rowData]="ItemsMainCategories | async" [columnDefs]="columnDefs" (gridReady)="OnGridReady($event)"
+            [defaultColDef]="defaultColDef" [overlayLoadingTemplate]="overlayLoadingTemplate" [animateRows]="true"
+            [enableRtl]="false" [frameworkComponents]="agFrameworks" rowSelection="single"
+            (rowEditingStarted)="ItemMainCatRowSelect($event)" (cellValueChanged)="UpdateItemMainCat($event)">
+          </ag-grid-angular>
+        </ng-template>
+
+      </mat-card-content>
+      <mat-progress-bar mode="indeterminate" *ngIf="ShowProgressBar"></mat-progress-bar>
+      <mat-divider inset></mat-divider>
+      <mat-card-actions>
+        <form [formGroup]="AddMainCatForm" (ngSubmit)="AddMainCatForm.valid">
+          <!-- Category Name -->
+          <mat-form-field appearance="outline" class="Width100">
+            <mat-label [ngClass]="ValidationErrorMessage.getFormControl('CatName', AddMainCatForm)
+            .valid?'valid-green':''">{{'MainCatName' | translate}}</mat-label>
+            <input matInput type="text" value="" formControlName="CatName"
+              [errorStateMatcher]="customErrorStateMatcher" />
+            <mat-icon matSuffix><span class="material-icons-outlined">
+                category
+              </span></mat-icon>
+            <mat-error *ngIf="ValidationErrorMessage.getFormControl('CatName',AddMainCatForm)
+            .hasError('required')&& selected==='en'"
+              [innerHtml]="ValidationErrorMessage.getErrorMessage('CatName', 'required')">
+            </mat-error>
+            <mat-error *ngIf="ValidationErrorMessage.getFormControl('CatName', AddMainCatForm)
+            .hasError('required') && selected==='ar'">{{Constants.MainCatNameIsRequired | translate}}</mat-error>
+          </mat-form-field>
+          <button mat-raised-button color="primary" (submit)="AddMainCatForm.valid" [disabled]="AddMainCatForm.invalid"
+            class="Width100 {{ThemeColors.bg}}" aria-label="register
+      button" (click)="AddMainCategory()">
+            <mat-icon>
+              <mat-spinner diameter="20" color="warn" *ngIf="loading"></mat-spinner><span *ngIf="!loading"
+                class="material-icons-outlined">
+                add_circle
+              </span>
+            </mat-icon>
+            {{'Add'|translate}}
+          </button>
+        </form>
+      </mat-card-actions>
+    </mat-card>
+    <!-- --------------------------------------------------------------------------------------------
+-----------------------------------------SubCategories --------------------------------------
+-------------------------------------------------------------------------------------------- -->
+    <mat-card class="example-card" fxFlex="49%" fxFlex.xs="100%" fxFlex.sm="48%"
+      [class]="DarkOrLight===Constants.dark?'dark-for-Child-Component':''">
+      <mat-card-title
+        [style.font-family]="!this.translate.isRightToLeft(this.translate.GetCurrentLang())? 'cursive !important':'Hacen Casablanca'+' !important'"
+        [dir]="this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'rtl':
+      !this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'ltr':'ltr'">
+        {{Constants.Main_Categories|translate}}</mat-card-title>
+      <mat-card-subtitle [dir]="this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'rtl':
+      !this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'ltr':'ltr'">
+        {{this.Constants.Add_Edit_Delete | translate}} {{Constants.Main_Categories|translate}}
+      </mat-card-subtitle>
+      <mat-card-content>
+        <mat-form-field appearance="outline" class="Width100">
+          <mat-label>{{Constants.Search_table|translate}}</mat-label>
+          <input #MainCatSearch matInput type="search" name="MainCatTableFilter" id="MainCatTableFilter"
+            (input)="externalFilterChanged(MainCatSearch)">
+          <mat-icon matSuffix><span class="material-icons-outlined">
+              search
+            </span></mat-icon>
+        </mat-form-field>
+        <ng-template [ngIf]="AgGridDir === 'rtl'" [ngIfElse]="LeftGrid" #Withbutton>
+          <ag-grid-angular style="width: 100%; height: 450px;"
+            [dir]="this.translate.isRightToLeft(this.translate.GetCurrentLang())?'rtl':'ltr'"
+            [class]="Table_Color_mode===Constants.light || Theme_dir===Constants.light?'ag-theme-alpine':'ag-theme-alpine-dark'"
+            [rowData]="ItemsMainCategories | async" [columnDefs]="columnDefs" (gridReady)="OnGridReady($event)"
+            [defaultColDef]="defaultColDef" [overlayLoadingTemplate]="overlayLoadingTemplate" [animateRows]="true"
+            [enableRtl]="true" [frameworkComponents]="agFrameworks" rowSelection="single"
+            (rowSelected)="ItemMainCatRowSelect($event)" (cellValueChanged)="UpdateItemMainCat($event)">
+          </ag-grid-angular>
+        </ng-template>
+        <ng-template #LeftGrid>
+          <ag-grid-angular style="width: 100%; height: 450px;"
+            [dir]="this.translate.isRightToLeft(this.translate.GetCurrentLang())?'rtl':'ltr'"
+            [class]="Table_Color_mode===Constants.light || Theme_dir===Constants.light?'ag-theme-alpine':'ag-theme-alpine-dark'"
+            [rowData]="ItemsMainCategories | async" [columnDefs]="columnDefs" (gridReady)="OnGridReady($event)"
+            [defaultColDef]="defaultColDef" [overlayLoadingTemplate]="overlayLoadingTemplate" [animateRows]="true"
+            [enableRtl]="false" [frameworkComponents]="agFrameworks" rowSelection="single"
+            (rowEditingStarted)="ItemMainCatRowSelect($event)" (cellValueChanged)="UpdateItemMainCat($event)">
+          </ag-grid-angular>
+        </ng-template>
+
+      </mat-card-content>
+      <mat-progress-bar mode="indeterminate" *ngIf="ShowProgressBar"></mat-progress-bar>
+      <mat-divider inset></mat-divider>
+      <mat-card-actions>
+        <form [formGroup]="AddMainCatForm" (ngSubmit)="AddMainCatForm.valid">
+          <!-- Category Name -->
+          <mat-form-field appearance="outline" class="Width100">
+            <mat-label [ngClass]="ValidationErrorMessage.getFormControl('CatName', AddMainCatForm)
+            .valid?'valid-green':''">{{'MainCatName' | translate}}</mat-label>
+            <input matInput type="text" value="" formControlName="CatName"
+              [errorStateMatcher]="customErrorStateMatcher" />
+            <mat-icon matSuffix><span class="material-icons-outlined">
+                category
+              </span></mat-icon>
+            <mat-error *ngIf="ValidationErrorMessage.getFormControl('CatName',AddMainCatForm)
+            .hasError('required')&& selected==='en'"
+              [innerHtml]="ValidationErrorMessage.getErrorMessage('CatName', 'required')">
+            </mat-error>
+            <mat-error *ngIf="ValidationErrorMessage.getFormControl('CatName', AddMainCatForm)
+            .hasError('required') && selected==='ar'">{{Constants.MainCatNameIsRequired | translate}}</mat-error>
+          </mat-form-field>
+          <button mat-raised-button color="primary" (submit)="AddMainCatForm.valid" [disabled]="AddMainCatForm.invalid"
+            class="Width100 {{ThemeColors.bg}}" aria-label="register
+      button" (click)="AddMainCategory()">
+            <mat-icon>
+              <mat-spinner diameter="20" color="warn" *ngIf="loading"></mat-spinner>
+              <span *ngIf="!loading" class="material-icons-outlined">
+                add_circle
+              </span>
+
+            </mat-icon>
+            {{'Add'|translate}}
+          </button>
+        </form>
+      </mat-card-actions>
+    </mat-card>
+
+
+
+  </div>
+  <!-- <mat-grid-list cols="2" rowHeight="4rem" [class]="DarkOrLight==='light'?
+  'Light-for-Child-Component': 'dark-for-Child-Component'">
 
     <mat-grid-tile colspan="1" rowspan="7">
 
-      <mat-form-field appearance="outline" class="Width100">
-        <mat-label>Search table</mat-label>
-        <input #MainCatSearch matInput type="search" name="MainCatTableFilter" id="MainCatTableFilter"
-          (input)="externalFilterChanged(MainCatSearch)">
-        <mat-icon matSuffix><span class="material-icons-outlined">
-            search
-          </span></mat-icon>
-      </mat-form-field>
 
-      <ag-grid-angular style="width: 100%; height: 450px;" class="ag-theme-alpine"
-        [rowData]="ItemsMainCategories | async" [columnDefs]="columnDefs" [getRowNodeId]="GetMainCatId"
-        (gridReady)="OnGridReady($event)" [defaultColDef]="defaultColDef" [animateRows]="true" deltaRowDataMode>
-      </ag-grid-angular>
     </mat-grid-tile>
 
-    <mat-grid-tile colspan="1" rowspan="7">2</mat-grid-tile>
+    <mat-grid-tile colspan=" 1" rowspan="7">2
+    </mat-grid-tile>
 
     <mat-grid-tile class="diaplayblock" colspan="1" rowspan="4">
-      <form [formGroup]="AddMainCatForm" (ngSubmit)="AddMainCatForm.valid">
-        <!-- Category Name -->
-        <mat-form-field appearance="outline" class="Width100">
-          <mat-label [ngClass]="ValidationErrorMessage.getFormControl('CatName', AddMainCatForm)
-          .valid?'valid-green':''">{{'MainCatName' | translate}}</mat-label>
-          <input matInput type="text" value="" formControlName="CatName"
-            [errorStateMatcher]="customErrorStateMatcher" />
-          <mat-icon matSuffix><span class="material-icons-outlined">
-              category
-            </span></mat-icon>
-          <mat-error *ngIf="ValidationErrorMessage.getFormControl('CatName',AddMainCatForm)
-          .hasError('required')&& selected==='en'"
-            [innerHtml]="ValidationErrorMessage.getErrorMessage('CatName', 'required')">
-          </mat-error>
-          <mat-error *ngIf="ValidationErrorMessage.getFormControl('CatName', AddMainCatForm)
-          .hasError('required') && selected==='ar'">{{'NameIsRequired' | translate}}</mat-error>
-        </mat-form-field>
-        <button mat-raised-button color="primary" (submit)="AddMainCatForm.valid" [disabled]="AddMainCatForm.invalid"
-          class="Width100" aria-label="register
-    button" (click)="AddMainCategory()">
-          <mat-icon>
-            <mat-spinner diameter="20" color="warn" *ngIf="loading"></mat-spinner><span
-              *ngIf="!loading">app_registration</span>
-          </mat-icon>
-          {{'Add'|translate}}
-        </button>
-      </form>
+
     </mat-grid-tile>
     <mat-grid-tile colspan="1" rowspan="1">4</mat-grid-tile>
-  </mat-grid-list>
+  </mat-grid-list> -->
 </ng-container>

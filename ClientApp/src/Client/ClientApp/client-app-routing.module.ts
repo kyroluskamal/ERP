@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RouterConstants } from 'src/Helpers/RouterConstants';
 import { EmailConfirmationClientComponent } from '../MainDomain/Components/email-confirmation-client/email-confirmation-client.component';
+import { IsNullTenantGuard } from '../MainDomain/Guards/is-null-tenant.guard';
 import { ClientAppLoginComponent } from './Components/client-app-login/client-app-login.component';
 import { ClientAppRegisterComponent } from './Components/client-app-register/client-app-register.component';
 import { ClientAppDashboardComponent } from './Components/Dashboard/client-app-dashboard/client-app-dashboard.component';
@@ -21,7 +22,8 @@ const routes: Routes = [
           path: RouterConstants.App_Items, children: [
             { path: '', component: ItemsComponentComponent },
             { path: RouterConstants.App_ItemMainCategories, component: ItemMainCategoriesComponent }
-          ]
+          ],
+          canActivate: [IsNullTenantGuard]
         },
       ]
   }

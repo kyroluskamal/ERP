@@ -22,6 +22,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableModule } from '@angular/material/table';
 import { AgGridModule } from 'ag-grid-angular';
+import { MatCardModule } from '@angular/material/card';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 const MaterialComponents = [
   MatButtonModule, MatToolbarModule, MatIconModule, MatDialogModule, MatListModule,
@@ -29,6 +31,7 @@ const MaterialComponents = [
   MatCheckboxModule, MatProgressSpinnerModule, MatGridListModule, MatSidenavModule,
   FlexLayoutModule, MatSelectModule, MatMenuModule, MatExpansionModule, MatTooltipModule,
   MatButtonToggleModule, MatSlideToggleModule, MatTableModule, AgGridModule.withComponents([]),
+  MatCardModule, MatProgressBarModule
 ];
 @NgModule({
   declarations: [],

@@ -23,6 +23,11 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
   TempTranslation_Ar(key: string) {
     switch (key) {
       case this.Constants.NullTenant: return this.Constants.NullTenant_errorMessage_Ar;
+      case this.Constants.DataAddtionStatus_error: return this.Constants.DataAddtionStatus_Error_Message_Ar;
+      case this.Constants.Required_field_Error: return this.Constants.Required_field_Error_Message_Ar;
+      case this.Constants.Data_Deleted_ERROR_status: return this.Constants.Data_Deleted_ERROR_Message_Ar;
+      case this.Constants.Data_NOTFOUND_ERROR_status: return this.Constants.Data_NOTFOUND_ERROR_Message_Ar;
+      case this.Constants.HackTrying_Error: return this.Constants.HackTrying_Error_message_Ar;
       default: return this.Constants.Something_nexpected_went_wrong_Arabic;
     }
   }
@@ -30,6 +35,11 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
   TempTranslation_En(key: string) {
     switch (key) {
       case this.Constants.NullTenant: return this.Constants.NullTenant_errorMessage_En;
+      case this.Constants.DataAddtionStatus_error: return this.Constants.DataAddtionStatus_Error_Message_En;
+      case this.Constants.Required_field_Error: return this.Constants.Required_field_Error_Message_En;
+      case this.Constants.Data_Deleted_ERROR_status: return this.Constants.Data_Deleted_ERROR_Message_En;
+      case this.Constants.Data_NOTFOUND_ERROR_status: return this.Constants.Data_NOTFOUND_ERROR_Message_EN;
+      case this.Constants.HackTrying_Error: return this.Constants.HackTrying_Error_message_EN;
 
       default: return this.Constants.Something_nexpected_went_wrong_EN;
     }
@@ -68,12 +78,12 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
           switch (error.status) {
             case 400:
               if (error.error.errors) {
-
-                for (const key in error.error.errors) {
-                  if (error.error.errors[key]) {
-                    modalStateErrors.push(error.error.errors[key]);
-                  }
-                }
+                modalStateErrors.push(error.error);
+                // for (const key in error.error.errors) {
+                //   if (error.error.errors[key]) {
+                //     modalStateErrors.push(error.error.errors[key]);
+                //   }
+                // }
                 this.Notification.error(this.TranslatedError(this.Constants.PleaseCorrectErrors, this.current_lang),
                   error.status, this.isRightToLeft(this.current_lang));
                 throw modalStateErrors.flat();

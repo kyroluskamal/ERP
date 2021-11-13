@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaderResponse, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { ConstantsService } from 'src/CommonServices/constants.service';
@@ -22,6 +22,14 @@ export class ItemsService {
   AddMainCat(CatName: string): Observable<ItemMainGategory> {
     let subdomain = window.location.hostname.split('.')[0];
     return this.httpClient.get<ItemMainGategory>(`${RouterConstants.ItemMainCategory_AddMainCat_API}?CatName=${CatName}&subdomain=${subdomain}`);
+  }
+
+  DeleteMainCat(id: number): Observable<any> {
+    let subdomain = window.location.hostname.split(".")[0];
+    return this.httpClient.delete(`${RouterConstants.ItemMainCategory_DELETE_MainCat_API}?Subdomain=${subdomain}&id=${id}`)
+  }
+  UpdateMainCat(ItemMainCat: ItemMainGategory): Observable<any> {
+    return this.httpClient.put<ItemMainGategory>(RouterConstants.ItemMainCategory_UPDATE_MainCat_API, ItemMainCat, { responseType: 'json' });
   }
   //#endregion
 }

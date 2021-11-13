@@ -43,45 +43,53 @@
   <!-- --------------------------------------------------------------------------------------
      ----------------------------------- Settings nav ---------------------------------------
      ---------------------------------------------------------------------------------------->
-  <mat-sidenav mode="over" #sideNav position="end" [dir]="translate.isRightToLeft(SelectedLanguage)?'rtl':'ltr'"
-    fxLayout="column" [class]="Constants.CSS_SideNav_FullOpened + ' '
+  <mat-sidenav mode="over" #sideNav position="end" fxLayout="column" [class]="Constants.CSS_SideNav_FullOpened + ' '
     + SidenavThemeClass + ' ' + 'WidthForSmallScreens'">
     <button mat-icon-button [class]="Constants.CSS_smallCloseIcone" [disableRipple]="true">
       <mat-icon (click)="sideNav.toggle()"><span class="material-icons-outlined">cancel</span></mat-icon>
     </button>
     <mat-nav-list [class]="Constants.CSS_padding_10">
       <div mat-list-item>
-        <h3>{{"Theme settings"|translate}}</h3>
+        <h3 [ngStyle]="(this.translate.isRightToLeft(this.translate.GetCurrentLang()) && dir==='ltr')?{'font': '1.2rem Hacen Casablanca'}:
+        {'font-family': 'inherit'}">{{"Theme settings"|translate}}</h3>
         <p>{{"General appearance"|translate}}</p>
         <p>
           <mat-button-toggle-group [formControl]="ThemeAppearence" name="ThemeAppearence"
             (change)="AllThemeDarkOrLight(ThemeAppearence.value)" aria-label="Theme Appearence">
-            <mat-button-toggle value="light" disableRipple>{{"Light"|translate}}</mat-button-toggle>
-            <mat-button-toggle value="dark" disableRipple>{{"Dark"|translate}}</mat-button-toggle>
+            <mat-button-toggle value="{{this.Constants.light}}" disableRipple>{{this.Constants.light|translate}}
+            </mat-button-toggle>
+            <mat-button-toggle value="{{this.Constants.dark}}" disableRipple>{{this.Constants.dark|translate}}
+            </mat-button-toggle>
           </mat-button-toggle-group>
         </p>
         <p>{{"Sidebar appeareance"|translate}}</p>
         <p>
           <mat-button-toggle-group name="SidebarAppeareance" aria-label="Sidebar appeareance"
             (change)="SidebarAppeareanceToggle(SidebarAppeareance.value)" [formControl]="SidebarAppeareance">
-            <mat-button-toggle value="light" disableRipple>{{"Light"|translate}}</mat-button-toggle>
-            <mat-button-toggle value="dark" disableRipple>{{"Dark"|translate}}</mat-button-toggle>
+            <mat-button-toggle value="{{this.Constants.light}}" disableRipple>{{this.Constants.light|translate}}
+            </mat-button-toggle>
+            <mat-button-toggle value="{{this.Constants.dark}}" disableRipple>{{this.Constants.dark|translate}}
+            </mat-button-toggle>
           </mat-button-toggle-group>
         </p>
         <p>{{"Toolbar appeareance"|translate}}</p>
         <p>
           <mat-button-toggle-group name="ToolbarAppeareance" aria-label="Toolbar appeareance"
             (change)="ToolbarAppeareanceToggle(ToolbarAppeareance.value)" [formControl]="ToolbarAppeareance">
-            <mat-button-toggle value="light" disableRipple>{{"Light"|translate}}</mat-button-toggle>
-            <mat-button-toggle value="dark" disableRipple>{{"Dark"|translate}}</mat-button-toggle>
+            <mat-button-toggle value="{{this.Constants.light}}" disableRipple>{{this.Constants.light|translate}}
+            </mat-button-toggle>
+            <mat-button-toggle value="{{this.Constants.dark}}" disableRipple>{{this.Constants.dark|translate}}
+            </mat-button-toggle>
           </mat-button-toggle-group>
         </p>
         <p>{{"Content appeareance"|translate}}</p>
         <p>
           <mat-button-toggle-group name="Body Appeareance" aria-label="Content appeareance"
             (change)="BodyAppeareanceToggle(BodyAppeareance.value)" [formControl]="BodyAppeareance">
-            <mat-button-toggle value="light" disableRipple>{{"Light"|translate}}</mat-button-toggle>
-            <mat-button-toggle value="dark" disableRipple>{{"Dark"|translate}}</mat-button-toggle>
+            <mat-button-toggle value="{{this.Constants.light}}" disableRipple>{{this.Constants.light|translate}}
+            </mat-button-toggle>
+            <mat-button-toggle value="{{this.Constants.dark}}" disableRipple>{{this.Constants.dark|translate}}
+            </mat-button-toggle>
           </mat-button-toggle-group>
         </p>
         <p>{{"Theme colors"|translate}}</p>
@@ -93,9 +101,10 @@
         </p>
       </div>
       <div>
-        <h3>{{"Layout settings"|translate}}</h3>
+        <h3 [ngStyle]="(this.translate.isRightToLeft(this.translate.GetCurrentLang()) && dir==='ltr')?{'font': '1.2rem Hacen Casablanca'}:
+        {'font-family': 'inherit'}">{{"Layout settings"|translate}}</h3>
         <mat-button-toggle-group name="DocumentDirection" aria-label="Document Direction" dir="ltr"
-          (change)="DocumentDirectionToggle(this.DocumentDirection.value)" [formControl]="DocumentDirection">
+          (change)="DocumentDirectionToggle()" [formControl]="DocumentDirection">
           <mat-button-toggle value="ltr" disableRipple [matTooltip]="translate.GetTranslation(Constants.Layout_LTR)"
             [matTooltipPosition]="dir==='ltr'?'right':'left'" [matTooltipClass]="Constants.CSS_Dashboard_ToolTip">
             <mat-icon class="mat-18"><span class="material-icons-outlined">
@@ -107,6 +116,35 @@
             <mat-icon class="mat-18"><span class="material-icons-outlined">
                 align_horizontal_right
               </span></mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+      <div>
+        <h3 [ngStyle]="(this.translate.isRightToLeft(this.translate.GetCurrentLang()) && dir==='ltr')?{'font': '1.2rem Hacen Casablanca'}:
+        {'font-family': 'inherit'}">{{Constants.Table_Settings|translate}}</h3>
+        <p>{{Constants.Table_direction | translate}}</p>
+        <mat-button-toggle-group aria-label="Document Direction" dir="ltr" (change)="agGridTableDirectionToggle()"
+          [formControl]="agGridTableDirection">
+          <mat-button-toggle value="ltr" disableRipple [matTooltip]="translate.GetTranslation(Constants.Table_LTR)"
+            [matTooltipPosition]="dir==='ltr'?'right':'left'" [matTooltipClass]="Constants.CSS_Dashboard_ToolTip">
+            <mat-icon class="mat-18"><span class="material-icons-outlined">
+                align_horizontal_left
+              </span></mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle value="rtl" disableRipple [matTooltip]="translate.GetTranslation(Constants.Table_RTL)"
+            [matTooltipPosition]="dir==='ltr'?'right':'left'" [matTooltipClass]="Constants.CSS_Dashboard_ToolTip">
+            <mat-icon class="mat-18"><span class="material-icons-outlined">
+                align_horizontal_right
+              </span></mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+        <!-- Table Dark Mode -->
+        <p>{{Constants.Table_Color_mode|translate}}</p>
+        <mat-button-toggle-group [formControl]="TableAppearence" name="ThemeAppearence"
+          (change)="TableTheme(TableAppearence.value)" aria-label="Theme Appearence">
+          <mat-button-toggle value="{{this.Constants.light}}" disableRipple>{{this.Constants.light|translate}}
+          </mat-button-toggle>
+          <mat-button-toggle value="{{this.Constants.dark}}" disableRipple>{{this.Constants.dark|translate}}
           </mat-button-toggle>
         </mat-button-toggle-group>
       </div>
@@ -168,7 +206,7 @@
 
       </div>
     </mat-toolbar>
-    <div [@DashboardRouterAnimation]="getRouterState(DashBoardOutlet)">
+    <div class="BodyPadding">
       <router-outlet [class]="BodyThemeClass" #DashBoardOutlet="outlet"></router-outlet>
     </div>
   </mat-sidenav-content>

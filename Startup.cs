@@ -49,7 +49,13 @@ namespace ERP
             //        options.UseSqlServer());
             //Add Owner Identity DbContext
             services.AddDbContext<OwnersDbContext>(options =>
-                options.UseSqlServer());
+            {
+                options.UseSqlServer(builder =>
+                {
+                    builder.EnableRetryOnFailure();
+                });
+
+            });
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddTransient<IRoleStore<OwnerRole>, OwnerRoleStore>();
             services.AddTransient<UserManager<Owner>, OwnerUserManager>();
@@ -73,7 +79,11 @@ namespace ERP
 
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer());
+                options.UseSqlServer(builder =>
+                {
+                    builder.EnableRetryOnFailure();
+                })
+                );
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddTransient<IRoleStore<ApplicationUserRole>, ApplicationUserRoleStore>();
             services.AddTransient<UserManager<ApplicationUser>, ApplicationUserManager>();
@@ -96,7 +106,10 @@ namespace ERP
 
             //Add TenantDB
             services.AddDbContext<TenantsDbContext>(options =>
-                    options.UseSqlServer());
+                    options.UseSqlServer(builder =>
+                    {
+                        builder.EnableRetryOnFailure();
+                    }));
 
             //Email service
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));

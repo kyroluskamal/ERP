@@ -9,12 +9,21 @@ import { Subscription } from 'rxjs';
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
 import { RouterOutlet } from '@angular/router';
 import { SideNav_items } from '.././SideNavItems'
+import { LightDarkThemeConverterService } from '../light-dark-theme-converter.service';
 
-interface ExpansionPanel {
+export interface ExpansionPanel {
   title: string;
   expanded: boolean;
   links: { link: string, LinkText: string, state: boolean }[];
   iconName: string;
+}
+
+export interface ThemeColor {
+  colorName: string
+  value: string;
+  choosen: boolean;
+  bg: string;
+  color: string;
 }
 
 @Component({
@@ -29,6 +38,7 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
   //Properties ............................................................................
   pinned: boolean;
   dir: 'rtl' | 'ltr';
+  agGridTable_dir: 'rtl' | 'ltr';
   FullscreenEnabled: boolean = false;
   Display: string;
   SideNav_Content_class: string;
@@ -43,7 +53,7 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
   /** Subscription to the Directionality change EventEmitter. */
 
   //#region ThemeColors
-  ThemeColors = [
+  ThemeColors: ThemeColor[] = [
     { colorName: "blue", value: "#5c77ff", choosen: false, bg: this.Constants.CSS_blue_bg, color: this.Constants.CSS_blue },
     { colorName: "amber", value: "#ffc107", choosen: false, bg: this.Constants.CSS_amber_bg, color: this.Constants.CSS_amber },
     { colorName: "cyan", value: "#00bcd4", choosen: false, bg: this.Constants.CSS_cyan_bg, color: this.Constants.CSS_cyan },
@@ -58,16 +68,19 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
   ];
   //#endregion
   ThemeAppearence: FormControl = new FormControl();
+  TableAppearence: FormControl = new FormControl();
   SidebarAppeareance: FormControl = new FormControl();
   BodyAppeareance: FormControl = new FormControl();
   ToolbarAppeareance: FormControl = new FormControl();
   DocumentDirection: FormControl = new FormControl();
+  agGridTableDirection: FormControl = new FormControl();
   SidenavThemeClass: any;
   ToolbarThemeClass: any;
   BodyThemeClass: any;
   SelectedLanguage: any;
   ChoosenThemeColor: any;
   MediaSubscription: Subscription = new Subscription();
+  Table_color_mode: string;
   @ViewChild("SideNavToggleButtonOnSmallScreen", { read: ElementRef }) SideNavToggleButtonOnSmallScreen: ElementRef<HTMLButtonElement> = {} as ElementRef<HTMLButtonElement>;
   @ViewChild("pinButton", { read: ElementRef }) pinButton: ElementRef<HTMLButtonElement> = {} as ElementRef<HTMLButtonElement>;
   @ViewChild("FullscreenButton", { read: ElementRef }) FullscreenButton: ElementRef<HTMLButtonElement> = {} as ElementRef<HTMLButtonElement>;
@@ -76,7 +89,8 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
   //#region Constructor
   //Constructor............................................................................
   constructor(public Constants: ConstantsService, public translate: TranslationService,
-    private Notifications: NotificationsService, private mediaObserver: MediaObserver) {
+    private Notifications: NotificationsService, private mediaObserver: MediaObserver,
+    private LightDarkThemeConverter: LightDarkThemeConverterService) {
     if (localStorage.getItem(this.Constants.ChoosenThemeColors)) {
       let temp: any = localStorage.getItem(this.Constants.ChoosenThemeColors)
       this.ChoosenThemeColor = JSON.parse(temp);
@@ -91,32 +105,56 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
       this.dir = 'ltr';
       localStorage.setItem(this.Constants.dir, this.dir);
     }
+    this.LightDarkThemeConverter.PassThemeDir(this.dir);
     this.DocumentDirection.setValue(this.dir);
-    this.SelectedLanguage = localStorage.getItem('lang');
+    //Set Ag-grid table direction
+    if (localStorage.getItem(this.Constants.Table_direction)) {
+      this.agGridTable_dir = localStorage.getItem(this.Constants.Table_direction) === 'rtl' ? 'rtl' : 'ltr';
+    } else {
+      this.agGridTable_dir = 'ltr';
+      localStorage.setItem(this.Constants.Table_direction, this.agGridTable_dir);
+    }
+    this.agGridTableDirection.setValue(this.agGridTable_dir);
+    this.LightDarkThemeConverter.ChangeAgGridTable_dir(this.agGridTable_dir);
+
+    //Set Ag-grid dark or light mode
+    if (localStorage.getItem(this.Constants.Table_Color_mode)) {
+      this.Table_color_mode = localStorage.getItem(this.Constants.Table_Color_mode) === this.Constants.light ?
+        this.Constants.light : this.Constants.dark;
+      this.TableAppearence.setValue(this.Table_color_mode);
+
+    } else {
+      this.Table_color_mode = this.Constants.light;
+      localStorage.setItem(this.Constants.Table_Color_mode, this.Table_color_mode);
+    }
+    this.TableAppearence.setValue(this.Table_color_mode);
+    this.LightDarkThemeConverter.ChangeTableTheme(this.Table_color_mode);
+    //get selected language
+    this.SelectedLanguage = localStorage.getItem(this.Constants.lang);
     if (!this.SelectedLanguage) {
       this.SelectedLanguage = 'en';
     } else {
-      this.SelectedLanguage = localStorage.getItem('lang')
+      this.SelectedLanguage = localStorage.getItem(this.Constants.lang)
     }
     //All theme color
     if (localStorage.getItem(this.Constants.ThemeAppearence)) {
       this.ThemeAppearence.setValue(localStorage.getItem(this.Constants.ThemeAppearence));
     } else {
-      this.ThemeAppearence.setValue('light');
+      this.ThemeAppearence.setValue(this.Constants.light);
       localStorage.setItem(this.Constants.ThemeAppearence, this.ThemeAppearence.value);
     }
     //set the .............. sidenav .......... dark or light themes
     if (localStorage.getItem(this.Constants.SidebarAppeareance)) {
       this.SidebarAppeareance.setValue(localStorage.getItem(this.Constants.SidebarAppeareance));
     } else {
-      this.SidebarAppeareance.setValue('dark');
+      this.SidebarAppeareance.setValue(this.Constants.dark);
       localStorage.setItem(this.Constants.SidebarAppeareance, this.SidebarAppeareance.value);
     }
     //set the ........ toolabar .......... dark or ligt theme
     if (localStorage.getItem(this.Constants.ToolbarAppeareance)) {
       this.ToolbarAppeareance.setValue(localStorage.getItem(this.Constants.ToolbarAppeareance));
     } else {
-      this.ToolbarAppeareance.setValue('dark');
+      this.ToolbarAppeareance.setValue(this.Constants.dark);
       localStorage.setItem(this.Constants.ToolbarAppeareance, this.ToolbarAppeareance.value);
     }
 
@@ -124,7 +162,7 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
     if (localStorage.getItem(this.Constants.BodyAppeareance)) {
       this.BodyAppeareance.setValue(localStorage.getItem(this.Constants.BodyAppeareance));
     } else {
-      this.BodyAppeareance.setValue('dark');
+      this.BodyAppeareance.setValue(this.Constants.dark);
       localStorage.setItem(this.Constants.BodyAppeareance, this.BodyAppeareance.value);
     }
     //set the fixed ot non fixed sidenav
@@ -210,6 +248,7 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
       else x.choosen = false
     }
     this.ChoosenThemeColor = this.ThemeColors[index];
+    this.LightDarkThemeConverter.ChangeCurrentColor(this.ChoosenThemeColor);
     localStorage.setItem(this.Constants.ChoosenThemeColors, JSON.stringify(this.ChoosenThemeColor));
   }
 
@@ -241,9 +280,10 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
     }
   }
 
-  DocumentDirectionToggle(DocumentDirection: string) {
+  DocumentDirectionToggle() {
     this.dir = this.DocumentDirection.value;
     localStorage.setItem(this.Constants.dir, this.dir);
+    this.LightDarkThemeConverter.PassThemeDir(this.dir);
     this.pinnedRTLClassSettings();
   }
   /****************************************************************************************
@@ -259,24 +299,26 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
     this.setThemeAppearence(this.BodyAppeareance.value, this.ToolbarAppeareance.value, SidebarAppeareance);
   }
   BodyAppeareanceToggle(BodyAppeareance: string) {
+    this.LightDarkThemeConverter.ChangeTheme(BodyAppeareance);
     localStorage.setItem(this.Constants.BodyAppeareance, BodyAppeareance);
     this.setThemeAppearence(BodyAppeareance, this.ToolbarAppeareance.value, this.SidebarAppeareance.value);
   }
   AllThemeDarkOrLight(ThemeAppearence: string) {
+    this.LightDarkThemeConverter.ChangeTheme(ThemeAppearence);
     localStorage.setItem(this.Constants.ThemeAppearence, ThemeAppearence)
     this.setThemeAppearence(ThemeAppearence, ThemeAppearence, ThemeAppearence);
   }
   setThemeAppearence(BodyAppeareance: string, ToolbarAppeareance: string, SidebarAppeareance: string) {
+    // this.LightDarkThemeConverter.ChangeTheme(BodyAppeareance);
+    this.BodyThemeClass = BodyAppeareance === this.Constants.light ? this.Constants.CSS_light_for_body :
+      BodyAppeareance === this.Constants.dark ? this.Constants.CSS_Dark_for_body : this.Constants.CSS_light_for_body; localStorage.setItem(this.Constants.BodyThemeClass, this.BodyThemeClass);
 
-    this.BodyThemeClass = BodyAppeareance === "light" ? this.Constants.CSS_light_for_body :
-      BodyAppeareance === "dark" ? this.Constants.CSS_Dark_for_body : this.Constants.CSS_light_for_body; localStorage.setItem(this.Constants.BodyThemeClass, this.BodyThemeClass);
-
-    this.ToolbarThemeClass = ToolbarAppeareance === "light" ? this.Constants.CSS_light_for_others :
-      ToolbarAppeareance === "dark" ? this.Constants.CSS_dark_for_others : this.Constants.CSS_light_for_others;
+    this.ToolbarThemeClass = ToolbarAppeareance === this.Constants.light ? this.Constants.CSS_light_for_others :
+      ToolbarAppeareance === this.Constants.dark ? this.Constants.CSS_dark_for_others : this.Constants.CSS_light_for_others;
     localStorage.setItem(this.Constants.ToolbarThemeClass, this.ToolbarThemeClass);
 
-    this.SidenavThemeClass = SidebarAppeareance === "light" ? this.Constants.CSS_light_for_others :
-      SidebarAppeareance === "dark" ? this.Constants.CSS_dark_for_others : this.Constants.CSS_light_for_others;
+    this.SidenavThemeClass = SidebarAppeareance === this.Constants.light ? this.Constants.CSS_light_for_others :
+      SidebarAppeareance === this.Constants.dark ? this.Constants.CSS_dark_for_others : this.Constants.CSS_light_for_others;
     localStorage.setItem(this.Constants.ToolbarAppeareance, ToolbarAppeareance);
     localStorage.setItem(this.Constants.BodyAppeareance, BodyAppeareance);
     localStorage.setItem(this.Constants.SidebarAppeareance, SidebarAppeareance);
@@ -284,13 +326,13 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
     this.SidebarAppeareance.setValue(SidebarAppeareance);
     this.ToolbarAppeareance.setValue(ToolbarAppeareance);
 
-    if (ToolbarAppeareance === 'light' && BodyAppeareance === "light"
-      && (SidebarAppeareance === "dark" || SidebarAppeareance === "light")) {
-      this.ThemeAppearence.setValue('light');
+    if (ToolbarAppeareance === this.Constants.light && BodyAppeareance === this.Constants.light
+      && (SidebarAppeareance === this.Constants.dark || SidebarAppeareance === this.Constants.light)) {
+      this.ThemeAppearence.setValue(this.Constants.light);
       localStorage.setItem(this.Constants.ThemeAppearence, this.ThemeAppearence.value)
-    } else if (BodyAppeareance === "dark" || (ToolbarAppeareance === 'dark'
-      && BodyAppeareance === "dark" && SidebarAppeareance === "dark")) {
-      this.ThemeAppearence.setValue('dark');
+    } else if (BodyAppeareance === this.Constants.dark || (ToolbarAppeareance === this.Constants.dark
+      && BodyAppeareance === this.Constants.dark && SidebarAppeareance === this.Constants.dark)) {
+      this.ThemeAppearence.setValue(this.Constants.dark);
       localStorage.setItem(this.Constants.ThemeAppearence, this.ThemeAppearence.value)
     }
   }
@@ -354,5 +396,16 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
           this.SideNavItems[i].links[j].state = false;
     }
     console.log(MainArrayIndex + ' ' + innerArray);
+  }
+
+  agGridTableDirectionToggle() {
+    this.agGridTable_dir = this.agGridTableDirection.value;
+    localStorage.setItem(this.Constants.Table_direction, this.agGridTable_dir);
+    this.LightDarkThemeConverter.ChangeAgGridTable_dir(this.agGridTable_dir);
+  }
+
+  TableTheme(colorMode: string) {
+    this.LightDarkThemeConverter.ChangeTableTheme(colorMode);
+    localStorage.setItem(this.Constants.Table_Color_mode, colorMode);
   }
 }

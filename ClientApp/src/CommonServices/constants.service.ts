@@ -6,23 +6,7 @@ import { Injectable } from '@angular/core';
 export class ConstantsService {
 
   constructor() { }
-  isRightToLeft(lang: any) {
-    switch (lang) {
-      case 'ar': return true;
-      case 'arc': return true;
-      case 'dv': return true;
-      case 'fa': return true;
-      case 'ha': return true;
-      case 'he': return true;
-      case 'khw': return true;
-      case 'ks': return true;
-      case 'ku': return true;
-      case 'ps': return true;
-      case 'ur': return true;
-      case 'yi': return true;
-      default: return false;
-    }
-  }
+
   CurrentLang = localStorage.getItem("lang");
   Owners: string = "owners";
   Owner: string = "Owner";
@@ -34,6 +18,13 @@ export class ConstantsService {
   OwnerRememberMe: string = "OwnerRememberMe";
   lang: string = "lang";
 
+  /*******************************************************************************
+  ............................. Treanslation Keys ................................
+  ********************************************************************************/
+  //Form Keys
+  Main_Categories = "Main_Categories";
+  Add_Edit_Delete = "Add_Edit_Delete";
+  Search_table = "Search table";
   //Notifications Messages
   LoggedInSuccessfully: string = "LoggedInSuccessfully";
   EmilConfirmationResnding = "EmilConfirmationResnding";
@@ -48,20 +39,36 @@ export class ConstantsService {
   DataAddtionStatus_Success = "DataAddtionStatus_Success";
   DataAddtionStatus_error = "DataAddtionStatus_Error";
   NullTenant = "NullTenant";
-  Required_field = "Required_field";
-  Can_Not_Save_To_Db = "Can_Not_Save_To_Db";
+  Required_field_Error = "Required_field";
+  Data_Deleted_ERROR_status = "Data_Deleted_ERROR";
+  Data_NOTFOUND_ERROR_status = "Data_NOTFOUND_ERROR";
+  Data_Deleted_success_status = "Data_Deleted_success";
+  Data_SAVED_success_status = "Data_SAVE_success";
+  Data_SAVED_ERROR_status = "Data_SAVE_ERROR";
+  MainCatNameIsRequired = "MainCatNameIsRequired";
+  UnCategorized_Can_tDeleted_Or_Updated = "UnCategorized_Can'tDeleted_Or_Updated";
+  Uncategorized = "Uncategorized";
+  HackTrying_Error = "HackTrying_Error";
+  Unique_Field_ERROR = "Unique_Field_ERROR";
+  Model_state_errors = "One or more validation errors occurred.";
+  RequiredMainCat_name = "Please, write the name of the category";
   //Tooltip translation
   CloseSidebar = "Close sidebar";
   FixSidebar = "Fix sidebar";
   FullscreenMode_enable = "FullscreenMode_enable";
   FullscreenMode_exit = "FullscreenMode_exit";
   ChooseYourLang = "ChooseYourLang";
-  Dark = "Dark";
-  Ligh = "Light";
+  dark = "Dark";
+  light = "Light";
   Layout_LTR = "Layout_LTR";
   Layout_RTL = "Layout_RTL";
-  //Interceptor Notigication translations
+  Table_Settings = "Table_Settings";
+  Table_direction = "Table_direction";
+  Table_Color_mode = "Table_Color_mode";
+  Table_RTL = "Table_RTL";
+  Table_LTR = "Table_LTR";
 
+  //Interceptor Notigication translations
   PleaseCorrectErrors = "PleaseCorrectErrors";
   Something_nexpected_went_wrong = "Something unexpected went wrong"
 
@@ -72,6 +79,30 @@ export class ConstantsService {
   Something_nexpected_went_wrong_Arabic = "حدث خطأ غير متوقع";
   NullTenant_errorMessage_Ar = "لا يوجد حساب خاص بهذا الرابط.";
   NullTenant_errorMessage_En = "There are no user associated with this link";
+
+  Data_Deleted_ERROR_Message_En = "Error: Faild to delete data from database.";
+  Data_Deleted_ERROR_Message_Ar = "خطأ: فشل في حذف الباينات من قاعدة البيانات.";
+
+  Data_NOTFOUND_ERROR_Message_EN = "Error: Data is not found in database.";
+  Data_NOTFOUND_ERROR_Message_Ar = "خطا: لم يتم العثور على الباينات في قاعدة الباينات.";
+
+  Data_Deleted_success_Message_En = "Data is deleted from databse successfully";
+  Data_Deleted_success_Message_Ar = "تم حذف البيانات بنجاح";
+
+  DataAddtionStatus_Error_Message_En = "Error: Data is not added to database. Try again.";
+  DataAddtionStatus_Error_Message_Ar = "خطأ : ليم يتم اضافة البيانات في قاعدة البيانات. حاول مرة اخرى.";
+
+  Required_field_Error_Message_Ar = "هذا الحقل مطلوب.";
+  Required_field_Error_Message_En = "This field is required.";
+
+  Data_SAVED_success_message_EN = "Data is saved successfully";
+  Data_SAVED_success_message_Ar = "تم حفظ البيانات بنجاح";
+
+  HackTrying_Error_message_EN = "You are trying to enter the subdomain manually. This is forbidden."
+  HackTrying_Error_message_Ar = "انت تحاول اداخل الدومين الفرعي يدويا. هذا غير مسموح."
+  //ValidatioErrorMessages
+
+
   //Static Functions
   ClientUrl(url: string): string {
     return "https://" + window.location.host + "/" + url;

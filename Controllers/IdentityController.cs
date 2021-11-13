@@ -294,25 +294,23 @@ namespace ERP.Controllers
             return BadRequest(new { status = Constants.ModelState_statuCode, error = ModelState });
         }
 
-        [HttpPost(nameof(IsTenantFound))]
+        [HttpGet(nameof(IsTenantFound))]
         public async Task<IActionResult> IsTenantFound(string subdomain)
         {
+            if (!CheckManuallyChanged_Subdomain(subdomain))
+            {
+                return BadRequest(new { status = Constants.HackTrying_Error, error = Constants.HackTrying_Error_message });
+            }
             var Tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(subdomain);
             if (Tenant == null)
                 return BadRequest(new { status = Constants.NullTenant_statuCode, error = Constants.NullTenant_ErrorMessage });
-            return StatusCode((int)System.Net.HttpStatusCode.OK);
+            return Ok();
         }
 
-        // PUT api/<IdentityController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        //HelperMedthod
+        private bool CheckManuallyChanged_Subdomain(string subdomain)
         {
-        }
-
-        // DELETE api/<IdentityController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return subdomain == HttpContext.Request.Host.Host.Split('.')[0];
         }
     }
 }

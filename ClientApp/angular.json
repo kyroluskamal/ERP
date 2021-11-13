@@ -36,7 +36,8 @@
               "./node_modules/flag-icon-css/css/flag-icon.min.css",
               "./node_modules/aos/dist/aos.css",
               "ag-grid-community/dist/styles/ag-grid.css",
-              "ag-grid-community/dist/styles/ag-theme-alpine.css"
+              "ag-grid-community/dist/styles/ag-theme-alpine.css",
+              "ag-grid-community/dist/styles/ag-theme-alpine-dark.css"
             ],
             "scripts": []
           },

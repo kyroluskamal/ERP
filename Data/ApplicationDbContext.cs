@@ -409,6 +409,7 @@ namespace ERP.Data
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<ItemMainCategory>().HasIndex(x => x.Name).IsUnique();
             builder.Entity<ApplicationUser>()
                    .HasIndex(u => u.Email)
                    .IsUnique();

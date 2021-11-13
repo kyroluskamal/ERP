@@ -214,11 +214,20 @@ mat-expansion-panel-header {
   padding: 15px 15px 15px 0px !important;
 }
 
-[dir="rtl"] .mat-expansion-panel-header-title,
-[dir="rtl"] .mat-expansion-panel-header-description {
+ .mat-expansion-panel-header-title,
+.mat-expansion-panel-header-description {
   font-family: var(--Almarai) !important;
   font-size: 1.2rem !important;
 }
 ::-webkit-scrollbar-thumb {
   background: #9d9d9d;
+}
+.BodyPadding{
+  padding: 20px 20px 0 20px;
+}
+[dir="rtl"] .mat-card-title{
+  font-family: var(--Hacen) !important;
+}
+.mat-card-title{
+  font-family: cursive !important;
 }

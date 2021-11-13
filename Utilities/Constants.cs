@@ -26,7 +26,14 @@
         public string Email_Is_Confirmed_statuCode = "Email_Confirmed";
         public string RolenameAddtion_statuCode = "AddingRoleName";
         public string Required_field = "Required_field";
-        public string Can_Not_Save_To_Db = "Can_Not_Save_To_Db";
+        public string DataAddtionStatus_Error_status = "DataAddtionStatus_Error";
+        public string Data_Deleted_ERROR_status = "Data_Deleted_ERROR";
+        public string Data_NOTFOUND_ERROR_status = "Data_NOTFOUND_ERROR";
+        public string Data_SAVED_ERROR_status = "Data_SAVE_ERROR";
+        public string HackTrying_Error = "HackTrying_Error";
+        public string Unique_Field_ERROR_Status = "Unique_Field_ERROR";
+        public string UnCategorized_Can_tDeleted_Or_Updated_Status = "UnCategorized_Can'tDeleted_Or_Updated";
+
 
 
         //error Messages
@@ -38,7 +45,21 @@
         public string Email_Is_Confirmed_ErrorMessage = "Email is already confirmed";
         public string RolenameAddtion_ErrorMessage = "Your account is add but we can't assign role to you. Please Contact us";
         public string Required_field_ErrorMessage = "This Field is required";
-        public string Can_Not_Save_To_Db_ErrorMessage = "Error: Data is not saved to database. Try again.";
+        public string DataAddtionStatus_ERROR_ErrorMessage = "Error: Faild to add data in database. Try again.";
+        public string Data_Deleted_ERROR_ErrorMessage = "Error: Faild to delete data from database.";
+        public string Data_NOTFOUND_ERROR_ErrorMessage = "Error: Data is not found in database.";
+        public string Data_Saved_Error_Message = "Error: Faild to save data to database";
+        public string HackTrying_Error_message = "You are trying to enter the subdomain manually. This is forbidden.";
+        public string UnCategorized_Can_tDeleted_Or_Updated_Error_Message = "Sorry, You can't modify or delete the default main category.";
+        public string Unique_Field_ERROR_Message = "You can't repeat values in this field. Add UNIQUE value.";
+
+        //Success Status
+        public string Data_Deleted_success_status = "Data_Deleted_success";
+        public string Data_Saved_success_status = "Data_SAVE_success";
+
+        //Success Messages
+        public string Data_Deleted_success_message = "Data is deleted from databse successfully";
+        public string Data_Saved_success_message = "Data is saved successfully";
 
         //ValidationErrorMessages
 
@@ -215,5 +236,7 @@
         {
             return $"To reset your password <a href='{emailbody}'>clicking here</a>.";
         }
+
+        public string Uncategorized = "Uncategorized";
     }
 }
