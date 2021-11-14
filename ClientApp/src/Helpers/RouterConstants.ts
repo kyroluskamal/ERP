@@ -18,6 +18,7 @@ export abstract class RouterConstants {
 
   //APIURLS for Items
   public static ItemMainCategory_GetAll_API = "/api/items/allcategories";
+  public static ItemSubCategory_GetAll_API = "/api/items/GetItemsAllSubCategories";
   public static ItemMainCategory_AddMainCat_API = "/api/items/AddMainGategory";
   public static ItemMainCategory_UPDATE_MainCat_API = "/api/items/UpdateItemMainCategory";
   public static ItemMainCategory_DELETE_MainCat_API = "/api/items/DelteItemMainCat";

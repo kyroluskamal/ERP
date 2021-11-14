@@ -97,6 +97,7 @@
   "Products": "Products",
   "MainCatName": "Main Category Name",
   "MainCatNameIsRequired": "Please, write a name for Main Category",
+  "Sub_CatNameIsRequired": "Please, write a name for Subcategory",
   "DataAddtionStatus_Success" : "Data is added successfully",
   "DataAddtionStatus_Error" : "Error: Faild tp add data in database. Try again.",
   "NullTenant" : "There are no user associated with this link",
@@ -117,5 +118,9 @@
   "Uncategorized" : "Uncategorized",
   "Unique_Field_ERROR": "You can't repeat values in this field. Add UNIQUE value.",
   "Please, write the name of the category":"Please, write the name of the category",
-  "Search table":"Search table"
+  "Search table":"Search table",
+  "loading" : "loading...",
+  "Select One main category": "Select One main category",
+  "Sub_Categories":"Subcategories",
+  "SubCatName" : "Subcategory Name"
 }

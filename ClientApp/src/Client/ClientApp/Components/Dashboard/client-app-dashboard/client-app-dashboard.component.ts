@@ -343,7 +343,6 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
     const flags = RendererStyleFlags2.DashCase | RendererStyleFlags2.Important;
     this.MediaSubscription = this.mediaObserver.asObservable().subscribe(
       (response: MediaChange[]) => {
-        console.log(response)
         if (response.some(x => x.mqAlias === 'lt-sm')) {
           this.SideNavToggleButtonOnSmallScreen.nativeElement.style.display = "flex";
           this.pinButton.nativeElement.style.display = "none";

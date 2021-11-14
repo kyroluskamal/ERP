@@ -58,8 +58,12 @@ export class ValidationErrorMessagesService {
         break;
       }
       case "CatName": {
-        if (errorType == "required") return "This field is required";
-
+        if (errorType == "required") return "<strong>Main category name</strong> is required";
+        break;
+      }
+      case "SubCatName": {
+        if (errorType == "required") return "<strong>Subcategory name</strong> is required";
+        break;
       }
     }
     return "";

@@ -23,8 +23,13 @@ export class ConstantsService {
   ********************************************************************************/
   //Form Keys
   Main_Categories = "Main_Categories";
+  Sub_Categories = "Sub_Categories";
   Add_Edit_Delete = "Add_Edit_Delete";
   Search_table = "Search table";
+  loading = "loading";
+  SelectOneMainCat = "Select One main category";
+  MainCatName = "MainCatName";
+  SubCatName = "SubCatName";
   //Notifications Messages
   LoggedInSuccessfully: string = "LoggedInSuccessfully";
   EmilConfirmationResnding = "EmilConfirmationResnding";
@@ -46,6 +51,7 @@ export class ConstantsService {
   Data_SAVED_success_status = "Data_SAVE_success";
   Data_SAVED_ERROR_status = "Data_SAVE_ERROR";
   MainCatNameIsRequired = "MainCatNameIsRequired";
+  Sub_CatNameIsRequired = "Sub_CatNameIsRequired";
   UnCategorized_Can_tDeleted_Or_Updated = "UnCategorized_Can'tDeleted_Or_Updated";
   Uncategorized = "Uncategorized";
   HackTrying_Error = "HackTrying_Error";
@@ -139,6 +145,8 @@ export class ConstantsService {
   CSS_Background_transparent = "bg-transparent";
   CSS_LelezarFont = "LelezarFont";
   CSS_Calibri_font = "Calibri-font";
+  CSS_cursive_font_NotClass = "cursive";
+  CSS_Hacen_Casablanca_font_NotClass = 'Hacen Casablanca';
   CSS_max_height_100vh = "max-height-100vh";
   CSS_max_width_100vh = "max-width-100vh";
   CSS_min_width_100vh = "min-width-100vh";
@@ -224,6 +232,9 @@ export class ConstantsService {
 
   CSS_dark_color = "dark-color";
   CSS_light_color = "light-color"
+
+  CSS_dark_for_Child_Component = "dark-for-Child-Component";
+  CSS_Light_for_Child_Component = "Light-for-Child-Component";
   //Local Stoarage
   FixedSidnav = "FixedSidNav";
   ToolbarThemeClass = "ToolbarThemeClass";

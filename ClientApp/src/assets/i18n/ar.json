@@ -113,7 +113,8 @@
   "Layout_RTL": "وضع الشاشة من اليمين الى الشمال",
   "Products": "المنتجات",
   "MainCatName": "اسم التصنيف الرئيسي",
-  "MainCatNameIsRequired": "لابد من ادخال اسم التصنيف الرئيسي",
+  "MainCatNameIsRequired": "من فضلك، ادخل اسم التصنيف الرئيسي",
+  "Sub_CatNameIsRequired": "من فضلك، ادخل اسم التصنيف الفرعي",
   "DataAddtionStatus_Success" : "تمت الاضافة بنجاح",
   "DataAddtionStatus_Error" : "حدث خطأ في حفظ البيانات في قاعدة البيانات. حاول مرة اخرى.",
   "NullTenant" : "لا يوجد حساب خاص بهذا الرابط.",
@@ -134,5 +135,10 @@
   "Uncategorized": "بدون تصنيف",
   "Unique_Field_ERROR" : "لايمكن تكرار قيم في هذا الحقل. أضف قيماً فريدة.",
   "Please, write the name of the category" : "من فضلك، ادخل اسم التصنيف الرئيسي.",
-  "Search table" : "ابحث في الجدول"
+  "Search table" : "ابحث في الجدول",
+  "loading" : "تحميل...",
+  "Select One main category": "اختر تصنيف رئيسي",
+  "Sub_Categories": "التصنيفات الفرعية",
+  "SubCatName" : "اسم التصنيف الفرعي"
+
 }

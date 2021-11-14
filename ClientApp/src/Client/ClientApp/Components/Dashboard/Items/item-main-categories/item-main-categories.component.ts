@@ -1,6 +1,6 @@
 import { Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CellValueChangedEvent, ColDef, GridApi, GridReadyEvent, RowSelectedEvent, SelectCellEditor } from 'ag-grid-community';
+import { CellValueChangedEvent, ColDef, Column, ColumnApi, GridApi, GridReadyEvent, RowSelectedEvent, SelectCellEditor } from 'ag-grid-community';
 import { Observable, Subscription, tap, throwError } from 'rxjs';
 import { ClientAccountService } from 'src/Client/MainDomain/Authentication/client-account-service.service';
 import { ConstantsService } from 'src/CommonServices/constants.service';
@@ -12,6 +12,7 @@ import { IconButtonRendererComponent } from '../../AgFrameworkComponents/button-
 import { ThemeColor } from '../../client-app-dashboard/client-app-dashboard.component';
 import { LightDarkThemeConverterService } from '../../light-dark-theme-converter.service';
 import { ItemMainGategory } from '../../Models/Items/item-main-gategory.model';
+import { ItemSubCategory } from '../../Models/Items/item-sub-category.model';
 import { ItemsService } from '../items.service';
 
 @Component({
@@ -21,11 +22,10 @@ import { ItemsService } from '../items.service';
 })
 export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
   ItemsMainCategories: Observable<ItemMainGategory[]> = new Observable<ItemMainGategory[]>();
+  Items_Sub_Categories: Observable<ItemSubCategory[]> = new Observable<ItemSubCategory[]>();
   ItemMainCat: ItemMainGategory = new ItemMainGategory();
-  defaultColDef: ColDef = {
-    flex: 1,
-    maxWidth: 500,
 
+  defaultColDef: ColDef = {
     filter: true,
     sortable: true,
     suppressKeyboardEvent: params => {
@@ -50,7 +50,7 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
     {
       headerName: "#id", field: 'id',
       filter: true,
-      maxWidth: 80
+      flex: 1
     },
     {
       headerName: "Name", field: 'name',
@@ -62,7 +62,69 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
         }
         return true
       }, filter: true,
-      resizable: true,
+      flex: 3
+    },
+    {
+      headerName: 'Delete', field: "delete",
+      cellRenderer: 'buttonRenderer',
+      cellRendererParams: {
+        onClick: this.onDeleteButtonClick.bind(this),
+        iconName: 'delete',
+        preventionName: this.Constants.Uncategorized
+      },
+      filter: false,
+      sortable: false,
+      flex: 1
+    },
+
+  ];
+  agFrameworks = {
+    buttonRenderer: IconButtonRendererComponent
+  }
+
+
+  defaultColDef_SubCat: ColDef = {
+    filter: true,
+    sortable: true,
+    suppressKeyboardEvent: params => {
+      if (!params.editing) {
+        let isBackspaceKey = params.event.key === "Delete";
+        let isDeleteKey = params.event.key === "Backspace";
+        let shiftKey = params.event.shiftKey;
+        if (isBackspaceKey && shiftKey) {
+          this.onDeleteButtonClick(params);
+          return true
+        }
+
+        if (isDeleteKey && shiftKey) {
+          this.onDeleteButtonClick(params);
+          return true
+        }
+      }
+      return false;
+    }
+  };
+  columnDefs_Subcats: ColDef[] = [
+    {
+      headerName: "#id", field: 'id',
+      filter: true,
+      flex: 1
+    },
+    {
+      headerName: "Name", field: 'name',
+      editable: ({ node }) => {
+        if (node.data.name === this.translate.GetTranslation(this.Constants.Uncategorized)) {
+          this.NotificationService.error(this.translate.GetTranslation(this.Constants.UnCategorized_Can_tDeleted_Or_Updated), "",
+            this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr')
+          return false
+        }
+        return true
+      }, filter: true,
+      flex: 2
+    },
+    {
+      headerName: "Main Category Id", field: 'itemMainCategoryId',
+      flex: 2
     },
     {
       headerName: 'Delete',
@@ -72,22 +134,27 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
         iconName: 'delete',
         preventionName: this.Constants.Uncategorized
       },
-      maxWidth: 80,
-      filter: false
+      filter: false,
+      sortable: false,
+      flex: 0,
+
     },
   ];
-  agFrameworks = {
-    buttonRenderer: IconButtonRendererComponent
-  }
 
-  overlayLoadingTemplate =
-    '<span class="ag-overlay-loading-center">Please wait while your rows are loading</span>';
+
+  overlayLoadingTemplate: string = "";
+
+  overlayLoadingTemplate_SubCat: string = "";
+
   gridApi: GridApi = new GridApi();
-  gridColumnApi: any;
+  gridApi_subCat: GridApi = new GridApi();
+  gridColumnApi: ColumnApi = new ColumnApi();
+  gridColumnApi_SubCat: any;
   GlobalSearchValue: string = "";
 
 
   AddMainCatForm: FormGroup = new FormGroup({});
+  Add_Sub_CatForm: FormGroup = new FormGroup({});
   LangSubscibtion: Subscription = new Subscription();
   customErrorStateMatcher: CustomErrorStateMatcher = new CustomErrorStateMatcher()
   selected: any;
@@ -105,13 +172,15 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
   Theme_dir: 'rtl' | 'ltr';
   ThemeColors: ThemeColor = JSON.parse(JSON.stringify(localStorage.getItem(this.Constants.ChoosenThemeColors)));
   ShowProgressBar: boolean = false;
-
+  showOverlayFirstTime: boolean = true;
 
   //Constructor ........................................................................
   constructor(public ItemService: ItemsService, private NotificationService: NotificationsService,
     public Constants: ConstantsService, private clientAccountService: ClientAccountService,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
     private LightOrDarkConverter: LightDarkThemeConverterService) {
+    this.overlayLoadingTemplate = `<span class="ag-overlay-loading-center" [dir]=${this.translate.isRightToLeft(this.translate.GetCurrentLang())}>
+      ${this.translate.GetTranslation(this.Constants.loading)}</span>`;
 
     let tem: any = localStorage.getItem(this.Constants.BodyAppeareance);
     this.DarkOrLight = tem;
@@ -123,7 +192,7 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
     this.ThemeColorSubscription = this.LightOrDarkConverter.ThemeColors$.subscribe(
       x => this.ThemeColors = x
     );
-    let agGrid_dir: any = localStorage.getItem(this.Constants.Table_Settings);
+    let agGrid_dir: any = localStorage.getItem(this.Constants.Table_direction);
     this.AgGridDir = agGrid_dir;
     this.AgGridTable_dir = this.LightOrDarkConverter.agGridTable_dir$.subscribe(x => {
       this.AgGridDir = x;
@@ -141,6 +210,7 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
     this.ThemeDirection = this.LightOrDarkConverter.ThemeDir$.subscribe(
       r => this.Theme_dir = r
     );
+    this.Items_Sub_Categories = this.ItemService.GetItems_All_SubCats();
   }
 
   ngOnDestroy(): void {
@@ -153,7 +223,7 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
     this.ThemeDirection.unsubscribe();
   }
   ngOnInit(): void {
-
+    this.showOverlayFirstTime = false;
     this.LangSubscibtion = this.translate.SelectedLangSubject.subscribe(
       (response) => {
         this.selected = response;
@@ -162,19 +232,14 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
     this.AddMainCatForm = new FormGroup({
       CatName: new FormControl('', Validators.required)
     });
+    this.Add_Sub_CatForm = new FormGroup({
+      SubCatName: new FormControl('', Validators.required)
+    });
 
   }
-  // @HostListener('window : load')
-  // onWindowLoad() {
-  //   console.log("Called")
-  //   this.clientAccountService.IsTenantFound().subscribe(
-  //     {
-  //       error: error => { this.ErrorGettingAllMainCats = error; return }
-  //     }
-  //   );
-  // }
 
   AddMainCategory() {
+    this.gridApi.showLoadingOverlay();
     this.ShowProgressBar = true;
     this.loading = true;
     if (this.NotUniqueMainCat(this.AddMainCatForm.get("CatName")?.value)) {
@@ -183,7 +248,7 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
       this.loading = false;
       this.ShowProgressBar = false;
       this.AddMainCatForm.get("CatName")?.setValue("");
-      this.gridApi.showLoadingOverlay();
+      this.gridApi.hideOverlay();
       return;
     }
 
@@ -198,7 +263,7 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
               item.name = this.translate.GetTranslation(this.Constants.Uncategorized);
             }
           })
-          this.gridApi.showLoadingOverlay();
+          this.gridApi.hideOverlay();
           this.gridApi.setRowData(MainCatLists);
         });
         this.ShowProgressBar = false;
@@ -213,27 +278,23 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
             this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
         if (error[0].status === this.Constants.NullTenant || error.error.status === this.Constants.NullTenant)
           this.ErrorGettingAllMainCats = error;
-        this.gridApi.showLoadingOverlay();
+        this.gridApi.hideOverlay();
         this.loading = false;
         this.ShowProgressBar = false;
       }
     });
     this.AddMainCatForm.get("CatName")?.setValue("");
     this.loading = false;
-    this.gridApi.refreshInfinitePageCache();
+    this.gridApi.hideOverlay();
     this.ShowProgressBar = false;
   }
 
-  // GetMainCatId(MainCat: ItemMainGategory): string {
-  //   console.log(MainCat.id);
-  //   return MainCat.id.toString();
-  // }
   OnGridReady(event: GridReadyEvent) {
     this.gridApi = event.api;
     this.gridColumnApi = event.columnApi;
-    event.api.sizeColumnsToFit();
     let agGrid_dir: any = localStorage.getItem(this.Constants.Table_direction);
     this.AgGridDir = agGrid_dir;
+    // this.gridApi.sizeColumnsToFit();
     this.ItemsMainCategories.subscribe(
       r => {
         r.map((item) => {
@@ -247,15 +308,11 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
   }
 
   externalFilterChanged(MainCatSearch: HTMLInputElement) {
-    this.gridApi.setQuickFilter(MainCatSearch.value)
+    this.gridApi.setQuickFilter(MainCatSearch.value);
   }
 
-  // onSelectionChanged(event: any) {
-  //   var selectedRows = this.gridApi.getSelectedRows();
-  //   console.log(selectedRows)
-  // }
-
   UpdateItemMainCat(event: CellValueChangedEvent) {
+    this.gridApi.showLoadingOverlay();
     this.ShowProgressBar = true;
     if (String(event.data.name) === "") {
       console.log("empty is called");
@@ -264,6 +321,7 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
       this.NotificationService.error(this.translate.GetTranslation(this.Constants.Required_field_Error), '',
         this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
       this.ShowProgressBar = false;
+      this.gridApi.hideOverlay();
       return;
     }
     if (this.NotUniqueMainCat(String(event.data.name))) {
@@ -271,8 +329,8 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
       this.NotificationService.error(this.translate.GetTranslation(this.Constants.Unique_Field_ERROR), '',
         this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
       event.node.data.name = event.oldValue;
-      this.gridApi.refreshCells();
       this.ShowProgressBar = false;
+      this.gridApi.hideOverlay();
       return;
     }
     let MaindCat: ItemMainGategory = {
@@ -292,11 +350,12 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
         })
 
         console.log(r);
-        this.gridApi.showLoadingOverlay();
+        this.gridApi.hideOverlay();
         this.gridApi.setRowData(r);
         this.ShowProgressBar = false;
       },
       error: (e) => {
+        event.node.data.name = event.oldValue;
         console.log(e);
         if (Array.isArray(e)) {
           if (e[0].title === this.Constants.Model_state_errors) {
@@ -310,6 +369,7 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
           }
           this.NotificationService.error(this.translate.GetTranslation(e[0].status), '',
             this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
+          this.gridApi.hideOverlay();
         } else
           this.NotificationService.error(this.translate.GetTranslation(e.error.status), '',
             this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
@@ -317,9 +377,12 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
           this.ErrorGettingAllMainCats = e;
         console.log(e);
         this.ShowProgressBar = false;
+        this.gridApi.hideOverlay();
       }
     })
     this.ShowProgressBar = false;
+    this.gridApi.hideOverlay();
+    this.gridApi.refreshCells();
   }
 
   onDeleteButtonClick(event: any) {
@@ -368,7 +431,35 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
   }
 
   ItemMainCatRowSelect(event: RowSelectedEvent) {
+    this.gridApi_subCat.showLoadingOverlay();
+    if (!event.node.isSelected()) {
+      this.gridApi_subCat.hideOverlay();
+      return
+    };
     console.log(event);
+
+    this.Items_Sub_Categories.subscribe(
+      r => {
+        this.gridApi_subCat.setRowData(
+          r.filter((i) => {
+            return i.itemMainCategoryId === Number(event.data.id);
+          })
+        )
+      }
+    );
+    this.gridApi_subCat.hideOverlay();
+  }
+
+  externalFilterChanged_SubCAt(SubCatSearch: HTMLInputElement) {
+    this.Items_Sub_Categories.subscribe(r => this.gridApi_subCat.setRowData(r));
+    this.gridApi_subCat.setQuickFilter(SubCatSearch.value);
+  }
+  OnSubCatGridReady(event: GridReadyEvent) {
+    this.gridApi_subCat = event.api;
+    this.gridColumnApi_SubCat = event.columnApi;
+    event.api.sizeColumnsToFit();
+    let agGrid_dir: any = localStorage.getItem(this.Constants.Table_direction);
+    this.AgGridDir = agGrid_dir;
   }
   //Helper Methods
   NotUniqueMainCat(value: string): boolean {
@@ -377,6 +468,7 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
 
       r => {
         x = r.filter((item) => {
+          console.log(item);
           return item.name === value;
         })
       }

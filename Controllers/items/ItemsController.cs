@@ -193,22 +193,31 @@ namespace ERP.Controllers.items
         #endregion
 
         #region Item Subcats Category Functions
-        //Get all cats
-        [HttpGet("allcategories")]
-        public async Task<ActionResult<List<ItemSubCategory>>> GetSubCatsByMainItemId(ItemMainCategory MainCat)
+        //Get all Sub cats
+        [HttpGet(nameof(GetItemsAllSubCategories))]
+        public async Task<ActionResult<List<ItemSubCategory>>> GetItemsAllSubCategories(string subdomain)
         {
-            if (CheckManuallyChanged_Subdomain(MainCat.Subdomain))
+            if (CheckManuallyChanged_Subdomain(subdomain))
             {
-                var tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(MainCat.Subdomain);
+                var tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(subdomain);
                 if (tenant != null)
                 {
                     await UserUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
-                    return await UserUnitOfWork.Item_SubCats.GetSubCats_By_MainCat_Id_Async(MainCat.Id);
+                    var SubCats = await UserUnitOfWork.Item_SubCats.GetAllAsync();
+                    return Ok(SubCats);
                 }
                 return BadRequest(new { status = Constants.NullTenant_statuCode, error = Constants.NullTenant_ErrorMessage });
             }
             return BadRequest(new { status = Constants.HackTrying_Error, error = Constants.HackTrying_Error_message });
         }
+        //Add
+
+
+        //Update
+
+
+        //Delete
+
         #endregion
         //HelperMedthod
         private bool CheckManuallyChanged_Subdomain(string subdomain)
