@@ -18,5 +18,7 @@ namespace ERP.Models.Items
         [Required(ErrorMessage = "Enter the amount of pieces in the Retail unit")]
         [Column(TypeName = "smallint")]
         public int NumberInRetailSale { get; set; }
+        [NotMapped]
+        public string Subdomain { get; set; }
     }
 }

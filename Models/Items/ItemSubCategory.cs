@@ -6,12 +6,13 @@ namespace ERP.Models.Items
     public class ItemSubCategory
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, write the name of the Subcategory")]
+        [Required(ErrorMessage = "Required_field")]
         [MaxLength(30)]
         public string Name { get; set; }
         public ItemMainCategory ItemMainCategory { get; set; }
+
         public int ItemMainCategoryId { get; set; }
         [NotMapped]
-        public int Subdomain { get; set; }
+        public string Subdomain { get; set; }
     }
 }

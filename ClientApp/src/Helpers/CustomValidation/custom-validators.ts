@@ -55,13 +55,19 @@ export class CustomValidators {
   static passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
     const password: string = control.get('Password')?.value; // get password from our password form control
     const confirmPassword: string = control.get('ConfirmPassword')?.value; // get password from our confirmPassword form control
+    console.log(control)
+    console.log(password)
+    console.log(confirmPassword)
+    console.log(password !== confirmPassword)
+
     // compare is the password math
     if (password !== confirmPassword) {
       // if they don't match, set an error in our confirmPassword form control
       control.get('ConfirmPassword')?.setErrors({ NoPassswordMatch: true });
-      return null
+      return { 'NoPassswordMatch': true };
     }
-    return { 'NoPassswordMatch': true };
+    return null
+
   }
 
   getFormControl(controlName: string, formGroup: FormGroup): FormControl {

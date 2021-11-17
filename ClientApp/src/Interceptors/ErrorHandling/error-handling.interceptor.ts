@@ -28,6 +28,8 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
       case this.Constants.Data_Deleted_ERROR_status: return this.Constants.Data_Deleted_ERROR_Message_Ar;
       case this.Constants.Data_NOTFOUND_ERROR_status: return this.Constants.Data_NOTFOUND_ERROR_Message_Ar;
       case this.Constants.HackTrying_Error: return this.Constants.HackTrying_Error_message_Ar;
+      case this.Constants.Unique_SubCat_Per_MainCat_ERROR: return this.Constants.Unique_SubCat_Per_MainCat_ERROR_Message_AR;
+      case this.Constants.NotSelected_MainCat: return this.Constants.NotSelected_MainCat_Message_Ar;
       default: return this.Constants.Something_nexpected_went_wrong_Arabic;
     }
   }
@@ -40,6 +42,8 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
       case this.Constants.Data_Deleted_ERROR_status: return this.Constants.Data_Deleted_ERROR_Message_En;
       case this.Constants.Data_NOTFOUND_ERROR_status: return this.Constants.Data_NOTFOUND_ERROR_Message_EN;
       case this.Constants.HackTrying_Error: return this.Constants.HackTrying_Error_message_EN;
+      case this.Constants.Unique_SubCat_Per_MainCat_ERROR: return this.Constants.Unique_SubCat_Per_MainCat_ERROR_Message_EN;
+      case this.Constants.NotSelected_MainCat: return this.Constants.NotSelected_MainCat_Message_EN;
 
       default: return this.Constants.Something_nexpected_went_wrong_EN;
     }
@@ -84,10 +88,11 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
                 //     modalStateErrors.push(error.error.errors[key]);
                 //   }
                 // }
-                this.Notification.error(this.TranslatedError(this.Constants.PleaseCorrectErrors, this.current_lang),
-                  error.status, this.isRightToLeft(this.current_lang));
+                // this.Notification.error(this.TranslatedError(this.Constants.PleaseCorrectErrors, this.current_lang),
+                //   error.status, this.isRightToLeft(this.current_lang));
                 throw modalStateErrors.flat();
               } else if (error.error) {
+                console.log(error.error)
                 if (Array.isArray(error.error)) {
                   for (let i = 0; i < error.error.length; i++) {
                     if (error.error[i].status) {
@@ -96,8 +101,8 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
                   }
                 } else {
                   modalStateErrors.push(error.error);
-                  this.Notification.error(this.TranslatedError(error.error.status, this.current_lang),
-                    error.status, this.isRightToLeft(this.current_lang) ? 'rtl' : 'ltr');
+                  // this.Notification.error(this.TranslatedError(error.error.status, this.current_lang),
+                  //   error.status, this.isRightToLeft(this.current_lang) ? 'rtl' : 'ltr');
                   throw modalStateErrors.flat();
                 }
                 this.Notification.error(this.TranslatedError(this.Constants.PleaseCorrectErrors, this.current_lang), error.status, this.isRightToLeft(this.current_lang));
@@ -122,7 +127,8 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
               this.router.navigateByUrl('/server-error', navigationExtras);
               break;
             default:
-              this.Notification.error(this.TranslatedError(this.Constants.Something_nexpected_went_wrong, this.current_lang), "", this.isRightToLeft(this.current_lang));
+              // this.Notification.error(this.TranslatedError(this.Constants.Something_nexpected_went_wrong, this.current_lang), "", this.isRightToLeft(this.current_lang));
+              this.Notification.error(error, "", "ltr");
               break;
           }
         }

@@ -30,6 +30,10 @@ export class ConstantsService {
   SelectOneMainCat = "Select One main category";
   MainCatName = "MainCatName";
   SubCatName = "SubCatName";
+  Add = "Add";
+  New = "New"
+  Sub_Categories_Singular = "Sub_Categories_Singular";
+  MainCat_Singular = "MainCat_Singular";
   //Notifications Messages
   LoggedInSuccessfully: string = "LoggedInSuccessfully";
   EmilConfirmationResnding = "EmilConfirmationResnding";
@@ -58,6 +62,8 @@ export class ConstantsService {
   Unique_Field_ERROR = "Unique_Field_ERROR";
   Model_state_errors = "One or more validation errors occurred.";
   RequiredMainCat_name = "Please, write the name of the category";
+  Unique_SubCat_Per_MainCat_ERROR = "Unique_SubCat_Per_MainCat_ERROR";
+  NotSelected_MainCat = "NotSelected_MainCat";
   //Tooltip translation
   CloseSidebar = "Close sidebar";
   FixSidebar = "Fix sidebar";
@@ -104,8 +110,15 @@ export class ConstantsService {
   Data_SAVED_success_message_EN = "Data is saved successfully";
   Data_SAVED_success_message_Ar = "تم حفظ البيانات بنجاح";
 
-  HackTrying_Error_message_EN = "You are trying to enter the subdomain manually. This is forbidden."
-  HackTrying_Error_message_Ar = "انت تحاول اداخل الدومين الفرعي يدويا. هذا غير مسموح."
+  HackTrying_Error_message_EN = "You are trying to enter the subdomain manually. This is forbidden.";
+  HackTrying_Error_message_Ar = "انت تحاول اداخل الدومين الفرعي يدويا. هذا غير مسموح.";
+
+  Unique_SubCat_Per_MainCat_ERROR_Message_EN = "You can't repeat subcategory in the same main category. Add UNIQUE value.";
+  Unique_SubCat_Per_MainCat_ERROR_Message_AR = "لايمكن تكرار نفس التصنيف الفرعي داخل نفس التصنيف الرئيسي. اضف قيماً فريدة.";
+
+  NotSelected_MainCat_Message_EN = "Please, select a Main category from the Main categories table";
+  NotSelected_MainCat_Message_Ar = "اختار التصنيف الرئيسي اولا من جدول التصنيفات الرئيسية"
+
   //ValidatioErrorMessages
 
 

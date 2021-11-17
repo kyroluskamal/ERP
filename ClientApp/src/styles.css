@@ -721,3 +721,18 @@ body {
   background-color: rgba(0,0,0,.12) !important;
  }
 
+.mat-button-wrapper{
+  font-weight: bold !important;
+}
+.dark-for-Child-Component .mat-raised-button.mat-primary.mat-button-disabled, .mat-raised-button.mat-button-disabled.mat-button-disabled{
+  color: rgb(255 255 255 / 26%) !important;
+}
+.Light-for-Child-Component .mat-raised-button.mat-primary.mat-button-disabled, .mat-raised-button.mat-button-disabled.mat-button-disabled{
+  color: rgb(0 0 0 / 42%) !important;
+}
+.dark-for-Child-Component .mat-form-field-label{
+  color: inherit !important;
+}
+.Light-for-Child-Component {
+  color: inherit !important;
+}

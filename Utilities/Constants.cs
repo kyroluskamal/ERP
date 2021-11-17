@@ -1,4 +1,6 @@
-﻿namespace ERP.Utilities
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+
+namespace ERP.Utilities
 {
     public class Constants
     {
@@ -32,8 +34,9 @@
         public string Data_SAVED_ERROR_status = "Data_SAVE_ERROR";
         public string HackTrying_Error = "HackTrying_Error";
         public string Unique_Field_ERROR_Status = "Unique_Field_ERROR";
+        public string Unique_SubCat_Per_MainCat_ERROR_status = "Unique_SubCat_Per_MainCat_ERROR";
         public string UnCategorized_Can_tDeleted_Or_Updated_Status = "UnCategorized_Can'tDeleted_Or_Updated";
-
+        public string NotSelected_MainCat_ERROR_status = "NotSelected_MainCat";
 
 
         //error Messages
@@ -52,6 +55,8 @@
         public string HackTrying_Error_message = "You are trying to enter the subdomain manually. This is forbidden.";
         public string UnCategorized_Can_tDeleted_Or_Updated_Error_Message = "Sorry, You can't modify or delete the default main category.";
         public string Unique_Field_ERROR_Message = "You can't repeat values in this field. Add UNIQUE value.";
+        public string Unique_SubCat_Per_MainCat_ERROR_Message = "You can't repeat subcategory in the same main category. Add UNIQUE value.";
+        public string NotSelected_MainCat_ERROR_Message = "Please, select a Main category from the Main categories table";
 
         //Success Status
         public string Data_Deleted_success_status = "Data_Deleted_success";
@@ -238,5 +243,63 @@
         }
 
         public string Uncategorized = "Uncategorized";
+
+        public object NullTentant_Error_Response()
+        {
+            return new { status = NullTenant_statuCode, error = NullTenant_ErrorMessage };
+        }
+        public object HackTrying_Error_Response()
+        {
+            return new { status = HackTrying_Error, error = HackTrying_Error_message };
+        }
+        public object Data_NOTFOUND_ERROR_Response()
+        {
+            return new { status = Data_NOTFOUND_ERROR_status, error = Data_NOTFOUND_ERROR_ErrorMessage };
+        }
+        public object Data_SAVED_ERROR_Response()
+        {
+            return new { status = Data_SAVED_ERROR_status, error = Data_Saved_Error_Message };
+        }
+        public object Data_SAVED_SUCCESS_Response()
+        {
+            return new { status = Data_Saved_success_status, message = Data_Saved_success_message };
+        }
+
+        public object Unique_Field_ERROR_Response()
+        {
+            return new { status = Unique_Field_ERROR_Status, error = Unique_Field_ERROR_Message };
+        }
+        public object Required_Field_ERROR_Response()
+        {
+            return new { status = Required_field, error = Required_field_ErrorMessage };
+        }
+        public object DataAddtion_ERROR_Response()
+        {
+            return new { status = DataAddtionStatus_Error_status, error = DataAddtionStatus_ERROR_ErrorMessage };
+        }
+        public object Uncategorized_Delete_ERROR_Response()
+        {
+            return new { status = UnCategorized_Can_tDeleted_Or_Updated_Status, error = UnCategorized_Can_tDeleted_Or_Updated_Error_Message };
+        }
+        public object Data_Deleted_SUCCESS_Response()
+        {
+            return new { status = Data_Deleted_success_status, message = Data_Deleted_success_message };
+        }
+        public object Data_Deleted_ERROR_Response()
+        {
+            return new { status = Data_Deleted_ERROR_status, error = Data_Deleted_ERROR_ErrorMessage };
+        }
+        public object NOT_Unique_SubCat_Per_MainCat_ERROR_Response()
+        {
+            return new { status = Unique_SubCat_Per_MainCat_ERROR_status, error = Unique_SubCat_Per_MainCat_ERROR_Message };
+        }
+        public object ModelState_ERROR_Response(ModelStateDictionary ModelState)
+        {
+            return new { status = ModelState_statuCode, error = ModelState };
+        }
+        public object Unique_SubCat_Per_MainCat_ERROR_Response()
+        {
+            return new { status = Unique_SubCat_Per_MainCat_ERROR_status, error = Unique_SubCat_Per_MainCat_ERROR_Message };
+        }
     }
 }

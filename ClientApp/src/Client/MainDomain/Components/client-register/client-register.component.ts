@@ -45,6 +45,7 @@ export class ClientRegisterComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+
     this.LangSubscibtion = this.translate.SelectedLangSubject.subscribe(
       (response) => {
         this.selected = response;
@@ -68,6 +69,8 @@ export class ClientRegisterComponent implements OnInit, OnDestroy {
       {
         validators: CustomValidators.passwordMatchValidator
       });
+    this.RegisterForm.statusChanges.subscribe(r => console.log(r));
+    this.RegisterForm.valueChanges.subscribe(r => console.log(r));
   }
   //Register Function
   OnRegisterClick(event: any) {

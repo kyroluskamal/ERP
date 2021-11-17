@@ -18,10 +18,13 @@ export abstract class RouterConstants {
 
   //APIURLS for Items
   public static ItemMainCategory_GetAll_API = "/api/items/allcategories";
-  public static ItemSubCategory_GetAll_API = "/api/items/GetItemsAllSubCategories";
-  public static ItemMainCategory_AddMainCat_API = "/api/items/AddMainGategory";
+  public static ItemMainCategory_AddMainCat_API = "/api/items/AddMainCategory";
   public static ItemMainCategory_UPDATE_MainCat_API = "/api/items/UpdateItemMainCategory";
   public static ItemMainCategory_DELETE_MainCat_API = "/api/items/DelteItemMainCat";
+  public static Item_Sub_Category_GetAll_API = "/api/items/GetItemsAllSubCategories";
+  public static Item_Sub_Category_Add_API = "/api/items/AddSubCategory";
+  public static Item_Sub_Category_Update_API = "/api/items/UpdateItemSubCategory";
+  public static Item_Sub_Category_Delete_API = "/api/items/DelteItemSubCat";
 
   //Client URLs
   public static Client_EmailConfirmationUrl: string = "client/emailconfirmation";

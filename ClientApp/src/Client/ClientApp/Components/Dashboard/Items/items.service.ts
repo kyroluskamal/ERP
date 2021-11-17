@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { RouterConstants } from 'src/Helpers/RouterConstants';
-import { ItemMainGategory } from '../Models/Items/item-main-gategory.model';
+import { ItemMainCategory } from '../Models/Items/item-main-category.model';
 import { ItemSubCategory } from '../Models/Items/item-sub-category.model';
 
 @Injectable({
@@ -17,28 +17,38 @@ export class ItemsService {
   }
 
   //#region Item Main Category
-  GetAllGategories(): Observable<ItemMainGategory[]> {
+  GetAllGategories(): Observable<ItemMainCategory[]> {
     let subomain = window.location.hostname.split('.')[0];
-    return this.httpClient.get<ItemMainGategory[]>(`${RouterConstants.ItemMainCategory_GetAll_API}?subomain=${subomain}`);
+    return this.httpClient.get<ItemMainCategory[]>(`${RouterConstants.ItemMainCategory_GetAll_API}?subomain=${subomain}`);
   }
-  AddMainCat(CatName: string): Observable<ItemMainGategory> {
+  AddMainCat(CatName: string): Observable<ItemMainCategory> {
     let subdomain = window.location.hostname.split('.')[0];
-    return this.httpClient.get<ItemMainGategory>(`${RouterConstants.ItemMainCategory_AddMainCat_API}?CatName=${CatName}&subdomain=${subdomain}`);
+    return this.httpClient.get<ItemMainCategory>(`${RouterConstants.ItemMainCategory_AddMainCat_API}?CatName=${CatName}&subdomain=${subdomain}`);
   }
 
   DeleteMainCat(id: number): Observable<any> {
     let subdomain = window.location.hostname.split(".")[0];
     return this.httpClient.delete(`${RouterConstants.ItemMainCategory_DELETE_MainCat_API}?Subdomain=${subdomain}&id=${id}`)
   }
-  UpdateMainCat(ItemMainCat: ItemMainGategory): Observable<any> {
-    return this.httpClient.put<ItemMainGategory>(RouterConstants.ItemMainCategory_UPDATE_MainCat_API, ItemMainCat, { responseType: 'json' });
+  UpdateMainCat(ItemMainCat: ItemMainCategory): Observable<any> {
+    return this.httpClient.put<ItemMainCategory>(RouterConstants.ItemMainCategory_UPDATE_MainCat_API, ItemMainCat, { responseType: 'json' });
   }
   //#endregion
 
 
   //#region Item Sub Cats
   GetItems_All_SubCats(): Observable<ItemSubCategory[]> {
-    return this.httpClient.get<ItemSubCategory[]>(`${RouterConstants.ItemSubCategory_GetAll_API}?subdomain=${this.subdomain}`);
+    return this.httpClient.get<ItemSubCategory[]>(`${RouterConstants.Item_Sub_Category_GetAll_API}?subdomain=${this.subdomain}`);
+  }
+
+  AddNew_SubCAt(SubCategory: ItemSubCategory): Observable<ItemSubCategory> {
+    return this.httpClient.post<ItemSubCategory>(`${RouterConstants.Item_Sub_Category_Add_API}`, SubCategory);
+  }
+  Update_SubCAt(SubCategory: ItemSubCategory): Observable<any> {
+    return this.httpClient.put(`${RouterConstants.Item_Sub_Category_Update_API}`, SubCategory);
+  }
+  DeleteSubCat(id: number): Observable<any> {
+    return this.httpClient.delete(`${RouterConstants.Item_Sub_Category_Delete_API}?Subdomain=${this.subdomain}&id=${id}`)
   }
   //#endregion
 }

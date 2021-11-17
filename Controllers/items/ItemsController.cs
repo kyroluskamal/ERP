@@ -50,7 +50,7 @@ namespace ERP.Controllers.items
         #region Item Main Category Functions
         //Get all cats
         [HttpGet("allcategories")]
-        public async Task<ActionResult<List<ItemMainCategory>>> GetItemGategories(string subomain)
+        public async Task<ActionResult<List<ItemMainCategory>>> GetItemCategories(string subomain)
         {
             if (CheckManuallyChanged_Subdomain(subomain))
             {
@@ -60,13 +60,13 @@ namespace ERP.Controllers.items
                     await UserUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
                     return await UserUnitOfWork.ItemMainCategory.GetAllAsync();
                 }
-                return BadRequest(new { status = Constants.NullTenant_statuCode, error = Constants.NullTenant_ErrorMessage });
+                return BadRequest(Constants.NullTentant_Error_Response());
             }
-            return BadRequest(new { status = Constants.HackTrying_Error, error = Constants.HackTrying_Error_message });
+            return BadRequest(Constants.HackTrying_Error_Response());
         }
         //Add new Main Cat
-        [HttpGet(nameof(AddMainGategory))]
-        public async Task<IActionResult> AddMainGategory(string catName, string subdomain)
+        [HttpGet(nameof(AddMainCategory))]
+        public async Task<IActionResult> AddMainCategory(string catName, string subdomain)
         {
             if (CheckManuallyChanged_Subdomain(subdomain))
             {
@@ -75,14 +75,11 @@ namespace ERP.Controllers.items
                 {
                     await UserUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
                     if (catName == null)
-                    {
-                        return BadRequest(new { status = Constants.Required_field, error = Constants.Required_field_ErrorMessage });
-                    }
+                        return BadRequest(Constants.Required_Field_ERROR_Response());
 
-                    if (await NotUniqeMainCat(catName))
-                    {
-                        return BadRequest(new { status = Constants.Unique_Field_ERROR_Status, error = Constants.Unique_Field_ERROR_Message });
-                    }
+                    if (!await IsUniqeMainCat(catName))
+                        return BadRequest(Constants.Unique_Field_ERROR_Response());
+
                     await UserUnitOfWork.ItemMainCategory.AddAsync(new ItemMainCategory { Name = catName });
                     var result = await UserUnitOfWork.SaveAsync();
                     if (result > 0)
@@ -90,11 +87,11 @@ namespace ERP.Controllers.items
                         var Cats = await UserUnitOfWork.ItemMainCategory.GetAllAsync();
                         return Ok(Cats.Last(x => x.Name == catName));
                     }
-                    return BadRequest(new { status = Constants.DataAddtionStatus_Error_status, error = Constants.DataAddtionStatus_ERROR_ErrorMessage });
+                    return BadRequest(Constants.DataAddtion_ERROR_Response());
                 }
-                return BadRequest(new { status = Constants.NullTenant_statuCode, error = Constants.NullTenant_ErrorMessage });
+                return BadRequest(Constants.NullTentant_Error_Response());
             }
-            return BadRequest(new { status = Constants.HackTrying_Error, error = Constants.HackTrying_Error_message });
+            return BadRequest(Constants.HackTrying_Error_Response());
         }
         /************************************************
          * xxxxxxxxxxxxxxxxxxxx  Delete Main Categrory  xxxxxxxxxxxxxxxxxxxxx
@@ -106,7 +103,6 @@ namespace ERP.Controllers.items
         {
             if (CheckManuallyChanged_Subdomain(Subdomain))
             {
-
                 //get tenant from TenantDP
                 var Tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(Subdomain);
                 if (Tenant != null)
@@ -120,7 +116,7 @@ namespace ERP.Controllers.items
                     {
                         if (MainCat.Name == Constants.Uncategorized)
                         {
-                            return BadRequest(new { status = Constants.UnCategorized_Can_tDeleted_Or_Updated_Status, error = Constants.UnCategorized_Can_tDeleted_Or_Updated_Error_Message });
+                            return BadRequest(Constants.Uncategorized_Delete_ERROR_Response());
                         }
                         /*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                          * Get Items and update their CategoryId forign key
@@ -132,19 +128,19 @@ namespace ERP.Controllers.items
                         if (result > 0)
                         {
                             //If all conditions are success.
-                            return Ok(new { status = Constants.Data_Deleted_success_status, message = Constants.Data_Deleted_success_message });
+                            return Ok(Constants.Data_Deleted_SUCCESS_Response());
                         }
-                        //If the Main cat cannot be deleted
-                        return BadRequest(new { status = Constants.Data_Deleted_ERROR_status, error = Constants.Data_Deleted_ERROR_ErrorMessage });
+                        //If the Main Cat cat cannot be deleted
+                        return BadRequest(Constants.Data_Deleted_ERROR_Response());
                     }
                     //If the tenant is not found
-                    return BadRequest(new { status = Constants.Data_NOTFOUND_ERROR_status, error = Constants.Data_NOTFOUND_ERROR_ErrorMessage });
+                    return BadRequest(Constants.Data_NOTFOUND_ERROR_Response());
                 }
-                return BadRequest(new { status = Constants.NullTenant_statuCode, error = Constants.NullTenant_ErrorMessage });
+                return BadRequest(Constants.NullTentant_Error_Response());
             }
-            return BadRequest(new { status = Constants.HackTrying_Error, error = Constants.HackTrying_Error_message });
+            return BadRequest(Constants.HackTrying_Error_Response());
         }
-        //Update Main Cat xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        //Update Main Cat 
 
         [HttpPut("UpdateItemMainCategory")]
         public async Task<IActionResult> ItemMainCategory_Update(ItemMainCategory MainCategory)
@@ -157,7 +153,7 @@ namespace ERP.Controllers.items
             {
                 if (MainCategory.Name == Constants.Uncategorized)
                 {
-                    return BadRequest(new { status = Constants.UnCategorized_Can_tDeleted_Or_Updated_Status, error = Constants.UnCategorized_Can_tDeleted_Or_Updated_Error_Message });
+                    return BadRequest(Constants.Uncategorized_Delete_ERROR_Response());
                 }
                 //get tenant from TenantDP
                 var Tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(MainCategory.Subdomain);
@@ -167,9 +163,9 @@ namespace ERP.Controllers.items
                     await UserUnitOfWork.SetConnectionStringAsync(Tenant.ConnectionString);
                     //Check if teh Main cat is found in DB
                     var MainCat = await UserUnitOfWork.ItemMainCategory.GetAsync(MainCategory.Id);
-                    if (await NotUniqeMainCat(MainCategory.Name))
+                    if (!await IsUniqeMainCat(MainCategory.Name))
                     {
-                        return BadRequest(new { status = Constants.Unique_Field_ERROR_Status, error = Constants.Unique_Field_ERROR_Message });
+                        return BadRequest(Constants.Unique_Field_ERROR_Response());
                     }
                     if (MainCat != null)
                     {
@@ -177,18 +173,16 @@ namespace ERP.Controllers.items
                         UserUnitOfWork.ItemMainCategory.Update(MainCat);
                         var result = await UserUnitOfWork.SaveAsync();
                         if (result > 0)
-                        {
-                            return Ok(new { status = Constants.Data_Saved_success_status, message = Constants.Data_Saved_success_message });
-                        }
+                            return Ok(Constants.Data_SAVED_SUCCESS_Response());
                         //If the Main cannot be deleted
-                        return BadRequest(new { status = Constants.Data_SAVED_ERROR_status, error = Constants.Data_Saved_Error_Message });
+                        return BadRequest(Constants.Data_SAVED_ERROR_Response());
                     }
                     //If the tenant is not found
-                    return BadRequest(new { status = Constants.Data_NOTFOUND_ERROR_status, error = Constants.Data_NOTFOUND_ERROR_ErrorMessage });
+                    return BadRequest(Constants.Data_NOTFOUND_ERROR_Response());
                 }
-                return BadRequest(new { status = Constants.NullTenant_statuCode, error = Constants.NullTenant_ErrorMessage });
+                return BadRequest(Constants.NullTentant_Error_Response());
             }
-            return BadRequest(new { status = Constants.HackTrying_Error, error = Constants.HackTrying_Error_message });
+            return BadRequest(Constants.HackTrying_Error_Response());
         }
         #endregion
 
@@ -206,29 +200,143 @@ namespace ERP.Controllers.items
                     var SubCats = await UserUnitOfWork.Item_SubCats.GetAllAsync();
                     return Ok(SubCats);
                 }
-                return BadRequest(new { status = Constants.NullTenant_statuCode, error = Constants.NullTenant_ErrorMessage });
+                return BadRequest(Constants.NullTentant_Error_Response());
             }
-            return BadRequest(new { status = Constants.HackTrying_Error, error = Constants.HackTrying_Error_message });
+            return BadRequest(Constants.HackTrying_Error_Response());
         }
-        //Add
 
+        //Add new SubCat Cat
+        [HttpPost(nameof(AddSubCategory))]
+        public async Task<IActionResult> AddSubCategory([FromBody] ItemSubCategory NewSubCat)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new { status = Constants.NotSelected_MainCat_ERROR_status, error = Constants.NotSelected_MainCat_ERROR_Message });
+            if (CheckManuallyChanged_Subdomain(NewSubCat.Subdomain))
+            {
 
-        //Update
+                var tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(NewSubCat.Subdomain);
+                if (tenant != null)
+                {
+                    await UserUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
+                    if (NewSubCat.Name == null)
+                        return BadRequest(Constants.Required_Field_ERROR_Response());
 
+                    if (!await IsUniqueSubCat_Per_MainCat(NewSubCat))
+                        return BadRequest(Constants.NOT_Unique_SubCat_Per_MainCat_ERROR_Response());
 
-        //Delete
+                    await UserUnitOfWork.Item_SubCats.AddAsync(new ItemSubCategory
+                    {
+                        Name = NewSubCat.Name,
+                        ItemMainCategoryId = NewSubCat.ItemMainCategoryId
+                    });
+                    var result = await UserUnitOfWork.SaveAsync();
+                    if (result > 0)
+                    {
+                        var Cats = await UserUnitOfWork.Item_SubCats.GetAllAsync();
+                        return Ok(Cats.Last(x => x.Name == NewSubCat.Name));
+                    }
+                    return BadRequest(Constants.DataAddtion_ERROR_Response());
+                }
+                return BadRequest(Constants.NullTentant_Error_Response());
+            }
+            return BadRequest(Constants.HackTrying_Error_Response());
+        }
 
+        //Update Sub Cat
+        [HttpPut("UpdateItemSubCategory")]
+        public async Task<IActionResult> Item_Sub_CategoryUpdate(ItemSubCategory SubCategory)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(Constants.ModelState_ERROR_Response(ModelState));
+            }
+            if (CheckManuallyChanged_Subdomain(SubCategory.Subdomain))
+            {
+                //get tenant from TenantDP
+                var Tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(SubCategory.Subdomain);
+                if (Tenant != null)
+                {
+                    //if Tentnat is found, set the connection stirng
+                    await UserUnitOfWork.SetConnectionStringAsync(Tenant.ConnectionString);
+                    //Check if teh Main cat is found in DB
+                    var SubCat = await UserUnitOfWork.Item_SubCats.GetAsync(SubCategory.Id);
+                    if (!await IsUniqueSubCat_Per_MainCat(SubCategory))
+                        return BadRequest(Constants.Unique_SubCat_Per_MainCat_ERROR_Response());
+                    if (SubCat != null)
+                    {
+                        SubCat.Name = SubCategory.Name;
+                        UserUnitOfWork.Item_SubCats.Update(SubCat);
+                        var result = await UserUnitOfWork.SaveAsync();
+                        if (result > 0)
+                            return Ok(Constants.Data_SAVED_SUCCESS_Response());
+
+                        //If the Main cannot be deleted
+                        return BadRequest(Constants.Data_SAVED_ERROR_Response());
+                    }
+                    //If the tenant is not found
+                    return BadRequest(Constants.Data_NOTFOUND_ERROR_Response());
+                }
+                return BadRequest(Constants.NullTentant_Error_Response());
+            }
+            return BadRequest(Constants.HackTrying_Error_Response());
+        }
         #endregion
+        //Delete
+        [HttpDelete("DelteItemSubCat")]
+        public async Task<IActionResult> Item_Sub_CategoryDelete(string Subdomain, int id)
+        {
+            if (CheckManuallyChanged_Subdomain(Subdomain))
+            {
+                //get tenant from TenantDP
+                var Tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(Subdomain);
+                if (Tenant != null)
+                {
+                    //if Tentnat is found, set the connection stirng
+                    await UserUnitOfWork.SetConnectionStringAsync(Tenant.ConnectionString);
+                    //Check if teh Main cat is found in DB
+                    var SubCat = await UserUnitOfWork.Item_SubCats.GetAsync(id);
+
+                    if (SubCat != null)
+                    {
+                        UserUnitOfWork.Item_SubCats.Remove(SubCat);
+                        var result = await UserUnitOfWork.SaveAsync();
+                        if (result > 0)
+                        {
+                            //If all conditions are success.
+                            return Ok(Constants.Data_Deleted_SUCCESS_Response());
+                        }
+                        //If the Sub Cat cat cannot be deleted
+                        return BadRequest(Constants.Data_Deleted_ERROR_Response());
+                    }
+                    //If the tenant is not found
+                    return BadRequest(Constants.Data_NOTFOUND_ERROR_Response());
+                }
+                return BadRequest(Constants.NullTentant_Error_Response());
+            }
+            return BadRequest(Constants.HackTrying_Error_Response());
+        }
+
         //HelperMedthod
         private bool CheckManuallyChanged_Subdomain(string subdomain)
         {
             return subdomain == HttpContext.Request.Host.Host.Split('.')[0];
         }
 
-        private async Task<bool> NotUniqeMainCat(string catName)
+        private async Task<bool> IsUniqeMainCat(string catName)
         {
             var allCats = await UserUnitOfWork.ItemMainCategory.GetAllAsync();
-            return allCats.Find(x => x.Name == catName) != null;
+            return allCats.Find(x => x.Name == catName) == null;
+        }
+
+        private async Task<bool> IsUniqueSubCat_Per_MainCat(ItemSubCategory newSubCat)
+        {
+            var AllSubCat = await UserUnitOfWork.Item_SubCats.GetAllAsync();
+            var SubCats_per_MainCat = AllSubCat.Where(x => x.ItemMainCategoryId == newSubCat.ItemMainCategory.Id).ToArray();
+            foreach (var subcat in SubCats_per_MainCat)
+            {
+                if (subcat.Name == newSubCat.Name) return false;
+            }
+            return true;
         }
     }
 }

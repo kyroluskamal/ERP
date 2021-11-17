@@ -1,0 +1,9 @@
+<mat-form-field>
+  <mat-select [value]="selectedItem"
+              style="color: inherit;">
+    <mat-option *ngFor="let MainCat of MainCats"
+                [value]="MainCat.id">
+      {{MainCat.id}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

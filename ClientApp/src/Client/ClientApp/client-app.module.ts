@@ -14,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ItemMainCategoriesComponent } from './Components/Dashboard/Items/item-main-categories/item-main-categories.component';
 import { ItemsComponentComponent } from './Components/Dashboard/Items/items-component/items-component.component';
 import { IconButtonRendererComponent } from './Components/Dashboard/AgFrameworkComponents/button-renderer-component/Icon-button-renderer.component';
+import { SelectableEditroAgFramweworkComponent } from './Components/Dashboard/AgFrameworkComponents/selectable-editro-ag-framwework/selectable-editro-ag-framwework.component';
 
 
 const Commponents = [
@@ -22,7 +23,7 @@ const Commponents = [
   ItemMainCategoriesComponent, ItemsComponentComponent, IconButtonRendererComponent
 ]
 @NgModule({
-  declarations: [Commponents],
+  declarations: [Commponents, SelectableEditroAgFramweworkComponent],
   imports: [
     SharedModule, MaterialModule, ClientAppRoutingModule, CommonModule, AppRoutingModule,
     BrowserAnimationsModule

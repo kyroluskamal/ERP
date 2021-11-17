@@ -4,10 +4,10 @@ import { NotificationsService } from 'src/CommonServices/NotificationService/not
 import { ConstantsService } from '../../../../../CommonServices/constants.service';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { routerAnimation } from '../DashboardAnimations/Animations'
-import { MatDrawerMode, MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
-import { Subscription } from 'rxjs';
+import { MatDrawerMode } from '@angular/material/sidenav';
+import { filter, Subscription } from 'rxjs';
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
-import { RouterOutlet } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterOutlet, RouterStateSnapshot } from '@angular/router';
 import { SideNav_items } from '.././SideNavItems'
 import { LightDarkThemeConverterService } from '../light-dark-theme-converter.service';
 
@@ -90,7 +90,8 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
   //Constructor............................................................................
   constructor(public Constants: ConstantsService, public translate: TranslationService,
     private Notifications: NotificationsService, private mediaObserver: MediaObserver,
-    private LightDarkThemeConverter: LightDarkThemeConverterService) {
+    private LightDarkThemeConverter: LightDarkThemeConverterService, private router: Router) {
+
     if (localStorage.getItem(this.Constants.ChoosenThemeColors)) {
       let temp: any = localStorage.getItem(this.Constants.ChoosenThemeColors)
       this.ChoosenThemeColor = JSON.parse(temp);
@@ -183,20 +184,29 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
       this.ToggleClass = this.Constants.CSS_SideNav_HalfClosed;
       this.SideNav_Content_class = this.dir === 'rtl' ? this.Constants.CSS_sidenav_content_nonPinned_RTL : this.Constants.CSS_sidenav_content_nonPinned_LTR;
     }
+    if (!this.pinned) this.SideNavItems.forEach(i => i.expanded = false);
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    )
+      .subscribe((event: any) => {
+        for (let item of this.SideNavItems) {
+          for (let link of item.links) {
+            if (event.url.split("/").pop() === link.link.split('/').pop()) {
+              if (!this.pinned) item.expanded = false;
+              else item.expanded = true;
+              link.state = true;
+            }
+            else link.state = false;
+          }
+        }
+      });
     this.setThemeAppearence(this.BodyAppeareance.value, this.ToolbarAppeareance.value, this.SidebarAppeareance.value);
   }
   //#endregion
 
   //NgOn it .....................................................................
   ngOnInit(): void {
-    // this.SideNavItems = [
-    //   {
-    //     title: "Products",
-    //     expanded: false,
-    //     links: [{ link: this.Constants.App_Items, state: false }, { link: this.Constants.App_Items, state: false }],
-    //     iconName: "inventory_2"
-    //   }
-    // ]
+
   }
 
   //Events to toggle the left sidenav
@@ -383,18 +393,6 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
 
       };
     }
-  }
-
-  SetLinkActive(MainArrayIndex: number, innerArray: number) {
-    for (let i = 0; i < this.SideNavItems.length; i++) {
-      for (let j = 0; j < this.SideNavItems[i].links.length; j++)
-        if (i === MainArrayIndex && j === innerArray) {
-          this.SideNavItems[i].links[j].state = true;
-        }
-        else
-          this.SideNavItems[i].links[j].state = false;
-    }
-    console.log(MainArrayIndex + ' ' + innerArray);
   }
 
   agGridTableDirectionToggle() {

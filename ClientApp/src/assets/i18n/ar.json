@@ -103,7 +103,7 @@
   "Something unexpected went wrong": "حدث خطأ غير متوقع",
   "Close sidebar": "اغلق القائمة",
   "Fix sidebar": "ثبت القائمة",
-  "Add New": "أضف",
+  "New": "جديد",
   "FullscreenMode_enable": "فعل وضع ملئ الشاشة",
   "FullscreenMode_exit": "اخرج من وضع ملئ الشاشة",
   "ChooseYourLang": "اختر لغتك",
@@ -139,6 +139,11 @@
   "loading" : "تحميل...",
   "Select One main category": "اختر تصنيف رئيسي",
   "Sub_Categories": "التصنيفات الفرعية",
-  "SubCatName" : "اسم التصنيف الفرعي"
-
+  "Sub_Categories_Singular": "تصنيف فرعي",
+  "SubCatName" : "اسم التصنيف الفرعي",
+  "Add": "أضف",
+  "MainCat_Singular":"تصنيف رئيسي",
+  "Unique_SubCat_Per_MainCat_ERROR" : "لايمكن تكرار نفس التصنيف الفرعي داخل نفس التصنيف الرئيسي. اضف قيماً فريدة.",
+  "NotSelected_MainCat" : "اختار التصنيف الرئيسي اولا من جدول التصنيفات الرئيسية",
+  "Name": "الاسم"
 }

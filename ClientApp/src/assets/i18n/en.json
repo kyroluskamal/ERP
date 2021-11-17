@@ -86,7 +86,7 @@
   "Something unexpected went wrong": "Something unexpected went wrong",
   "Close sidebar": "Close sidebar",
   "Fix sidebar": "Fix sidebar",
-  "Add New": "Add New",
+  "New": "new",
   "FullscreenMode_enable": "Enable Fullscreen",
   "FullscreenMode_exit": "Exit Fullscreen",
   "ChooseYourLang": "Choose your language",
@@ -122,5 +122,11 @@
   "loading" : "loading...",
   "Select One main category": "Select One main category",
   "Sub_Categories":"Subcategories",
-  "SubCatName" : "Subcategory Name"
+  "SubCatName" : "Subcategory Name",
+  "Add": "Add",
+  "Sub_Categories_Singular" : "Subcategory",
+  "MainCat_Singular": "Main category",
+  "Unique_SubCat_Per_MainCat_ERROR" : "You can't repeat subcategory in the same main category. Add UNIQUE value.",
+  "NotSelected_MainCat" : "Please, select a Main category from the Main categories table",
+  "Name": "Name"
 }

@@ -1,17 +1,30 @@
-<mat-sidenav-container [hasBackdrop]="hasBackDrop" [dir]="dir">
+<mat-sidenav-container [hasBackdrop]="hasBackDrop"
+                       [dir]="dir">
   <!-- --------------------------------------------------------------------------------------
      ----------------------------------- Half Closed ----------------------------
      ------------------------------------------------------------------------------------->
-  <mat-sidenav [mode]="SideNav_mode" [opened]="SideNav_openingStatus" #SideNav (mouseover)="OnMouseOver()"
-    (mouseleave)="OnMouseLeave()" [ngClass]="ToggleClass+ ' ' +'menuSideNav' +' ' + SidenavThemeClass"
-    fxLayout="column">
-    <mat-nav-list fxLayout="row" fxLayoutAlign="space-between center">
-      <a [class]="Constants.CSS_Dashboard_Sidenav_CompmanyName + ' ' + Display" fxFlex="1 2 90%"
-        [routerLink]="['','app']">KH-ERP</a>
-      <button fxLayout="column" fxLayoutAlign="center center" [matTooltip]="pinned?translate.GetTranslation(Constants.CloseSidebar):
-        translate.GetTranslation(Constants.FixSidebar)" [matTooltipPosition]="dir==='ltr'?'right':'left'"
-        [matTooltipClass]="Constants.CSS_Dashboard_ToolTip" mat-icon-button (click)="PinSideNav()"
-        [class]="pinned?'':Constants.CSS_Openned_pin" #pinButton>
+  <mat-sidenav [mode]="SideNav_mode"
+               [opened]="SideNav_openingStatus"
+               #SideNav
+               (mouseover)="OnMouseOver()"
+               (mouseleave)="OnMouseLeave()"
+               [ngClass]="ToggleClass+ ' ' +'menuSideNav' +' ' + SidenavThemeClass"
+               fxLayout="column">
+    <mat-nav-list fxLayout="row"
+                  fxLayoutAlign="space-between center">
+      <a [class]="Constants.CSS_Dashboard_Sidenav_CompmanyName + ' ' + Display"
+         fxFlex="1 2 90%"
+         [routerLink]="['','app']">KH-ERP</a>
+      <button fxLayout="column"
+              fxLayoutAlign="center center"
+              [matTooltip]="pinned?translate.GetTranslation(Constants.CloseSidebar):
+        translate.GetTranslation(Constants.FixSidebar)"
+              [matTooltipPosition]="dir==='ltr'?'right':'left'"
+              [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
+              mat-icon-button
+              (click)="PinSideNav()"
+              [class]="pinned?'':Constants.CSS_Openned_pin"
+              #pinButton>
         <mat-icon>
           push_pin
         </mat-icon>
@@ -21,8 +34,11 @@
     ----------------------------- Menus of the sidebar -------------------------------------
     ------------------------------------------------------------------------------------- -->
     <mat-accordion multi>
-      <mat-expansion-panel hideToggle *ngFor="let item of SideNavItems let i = index" [expanded]="item.expanded">
-        <mat-expansion-panel-header (click)="OpenExpAndCloseAll(i)" [ngClass]="{'expansionIsExpanded': item.expanded}">
+      <mat-expansion-panel hideToggle
+                           *ngFor="let item of SideNavItems let i = index"
+                           [expanded]="item.expanded">
+        <mat-expansion-panel-header (click)="OpenExpAndCloseAll(i)"
+                                    [ngClass]="{'expansionIsExpanded': item.expanded}">
           <mat-panel-title>
             <mat-icon><span class=" material-icons-outlined">
                 {{item.iconName}}
@@ -33,9 +49,10 @@
 
           <mat-icon [class]="Display">add</mat-icon>
         </mat-expansion-panel-header>
-
-        <a *ngFor="let link of item.links let x = index" [routerLink]="link.link"
-          [ngClass]="{'expansionIsExpanded':link.state}" (click)="SetLinkActive(i, x)">{{link.LinkText}}</a>
+        <!-- Fill the sideNav Items  -->
+        <a *ngFor="let link of item.links let x = index"
+           [routerLink]="link.link"
+           [ngClass]="{'expansionIsExpanded':link.state}">{{link.LinkText}}</a>
 
       </mat-expansion-panel>
     </mat-accordion>
@@ -43,9 +60,15 @@
   <!-- --------------------------------------------------------------------------------------
      ----------------------------------- Settings nav ---------------------------------------
      ---------------------------------------------------------------------------------------->
-  <mat-sidenav mode="over" #sideNav position="end" fxLayout="column" [class]="Constants.CSS_SideNav_FullOpened + ' '
+  <mat-sidenav mode="over"
+               #sideNav
+               position="end"
+               fxLayout="column"
+               [class]="Constants.CSS_SideNav_FullOpened + ' '
     + SidenavThemeClass + ' ' + 'WidthForSmallScreens'">
-    <button mat-icon-button [class]="Constants.CSS_smallCloseIcone" [disableRipple]="true">
+    <button mat-icon-button
+            [class]="Constants.CSS_smallCloseIcone"
+            [disableRipple]="true">
       <mat-icon (click)="sideNav.toggle()"><span class="material-icons-outlined">cancel</span></mat-icon>
     </button>
     <mat-nav-list [class]="Constants.CSS_padding_10">
@@ -54,48 +77,71 @@
         {'font-family': 'inherit'}">{{"Theme settings"|translate}}</h3>
         <p>{{"General appearance"|translate}}</p>
         <p>
-          <mat-button-toggle-group [formControl]="ThemeAppearence" name="ThemeAppearence"
-            (change)="AllThemeDarkOrLight(ThemeAppearence.value)" aria-label="Theme Appearence">
-            <mat-button-toggle value="{{this.Constants.light}}" disableRipple>{{this.Constants.light|translate}}
+          <mat-button-toggle-group [formControl]="ThemeAppearence"
+                                   name="ThemeAppearence"
+                                   (change)="AllThemeDarkOrLight(ThemeAppearence.value)"
+                                   aria-label="Theme Appearence">
+            <mat-button-toggle value="{{this.Constants.light}}"
+                               disableRipple>{{this.Constants.light|translate}}
             </mat-button-toggle>
-            <mat-button-toggle value="{{this.Constants.dark}}" disableRipple>{{this.Constants.dark|translate}}
+            <mat-button-toggle value="{{this.Constants.dark}}"
+                               disableRipple>{{this.Constants.dark|translate}}
             </mat-button-toggle>
           </mat-button-toggle-group>
         </p>
         <p>{{"Sidebar appeareance"|translate}}</p>
         <p>
-          <mat-button-toggle-group name="SidebarAppeareance" aria-label="Sidebar appeareance"
-            (change)="SidebarAppeareanceToggle(SidebarAppeareance.value)" [formControl]="SidebarAppeareance">
-            <mat-button-toggle value="{{this.Constants.light}}" disableRipple>{{this.Constants.light|translate}}
+          <mat-button-toggle-group name="SidebarAppeareance"
+                                   aria-label="Sidebar appeareance"
+                                   (change)="SidebarAppeareanceToggle(SidebarAppeareance.value)"
+                                   [formControl]="SidebarAppeareance">
+            <mat-button-toggle value="{{this.Constants.light}}"
+                               disableRipple>{{this.Constants.light|translate}}
             </mat-button-toggle>
-            <mat-button-toggle value="{{this.Constants.dark}}" disableRipple>{{this.Constants.dark|translate}}
+            <mat-button-toggle value="{{this.Constants.dark}}"
+                               disableRipple>{{this.Constants.dark|translate}}
             </mat-button-toggle>
           </mat-button-toggle-group>
         </p>
         <p>{{"Toolbar appeareance"|translate}}</p>
         <p>
-          <mat-button-toggle-group name="ToolbarAppeareance" aria-label="Toolbar appeareance"
-            (change)="ToolbarAppeareanceToggle(ToolbarAppeareance.value)" [formControl]="ToolbarAppeareance">
-            <mat-button-toggle value="{{this.Constants.light}}" disableRipple>{{this.Constants.light|translate}}
+          <mat-button-toggle-group name="ToolbarAppeareance"
+                                   aria-label="Toolbar appeareance"
+                                   (change)="ToolbarAppeareanceToggle(ToolbarAppeareance.value)"
+                                   [formControl]="ToolbarAppeareance">
+            <mat-button-toggle value="{{this.Constants.light}}"
+                               disableRipple>{{this.Constants.light|translate}}
             </mat-button-toggle>
-            <mat-button-toggle value="{{this.Constants.dark}}" disableRipple>{{this.Constants.dark|translate}}
+            <mat-button-toggle value="{{this.Constants.dark}}"
+                               disableRipple>{{this.Constants.dark|translate}}
             </mat-button-toggle>
           </mat-button-toggle-group>
         </p>
         <p>{{"Content appeareance"|translate}}</p>
         <p>
-          <mat-button-toggle-group name="Body Appeareance" aria-label="Content appeareance"
-            (change)="BodyAppeareanceToggle(BodyAppeareance.value)" [formControl]="BodyAppeareance">
-            <mat-button-toggle value="{{this.Constants.light}}" disableRipple>{{this.Constants.light|translate}}
+          <mat-button-toggle-group name="Body Appeareance"
+                                   aria-label="Content appeareance"
+                                   (change)="BodyAppeareanceToggle(BodyAppeareance.value)"
+                                   [formControl]="BodyAppeareance">
+            <mat-button-toggle value="{{this.Constants.light}}"
+                               disableRipple>{{this.Constants.light|translate}}
             </mat-button-toggle>
-            <mat-button-toggle value="{{this.Constants.dark}}" disableRipple>{{this.Constants.dark|translate}}
+            <mat-button-toggle value="{{this.Constants.dark}}"
+                               disableRipple>{{this.Constants.dark|translate}}
             </mat-button-toggle>
           </mat-button-toggle-group>
         </p>
         <p>{{"Theme colors"|translate}}</p>
-        <p fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="3px" #themeColorPicker>
-          <button mat-icon-button *ngFor="let x of ThemeColors; let i=
-            index" [value]="x.value" (click)="ColorChoose(x.colorName, i);" [class]="x.bg">
+        <p fxLayout="row wrap"
+           fxLayoutAlign="start center"
+           fxLayoutGap="3px"
+           #themeColorPicker>
+          <button mat-icon-button
+                  *ngFor="let x of ThemeColors; let i=
+            index"
+                  [value]="x.value"
+                  (click)="ColorChoose(x.colorName, i);"
+                  [class]="x.bg">
             <mat-icon class="mat-18">{{x.colorName===ChoosenThemeColor.colorName?'check':''}}</mat-icon>
           </button>
         </p>
@@ -103,16 +149,25 @@
       <div>
         <h3 [ngStyle]="(this.translate.isRightToLeft(this.translate.GetCurrentLang()) && dir==='ltr')?{'font': '1.2rem Hacen Casablanca'}:
         {'font-family': 'inherit'}">{{"Layout settings"|translate}}</h3>
-        <mat-button-toggle-group name="DocumentDirection" aria-label="Document Direction" dir="ltr"
-          (change)="DocumentDirectionToggle()" [formControl]="DocumentDirection">
-          <mat-button-toggle value="ltr" disableRipple [matTooltip]="translate.GetTranslation(Constants.Layout_LTR)"
-            [matTooltipPosition]="dir==='ltr'?'right':'left'" [matTooltipClass]="Constants.CSS_Dashboard_ToolTip">
+        <mat-button-toggle-group name="DocumentDirection"
+                                 aria-label="Document Direction"
+                                 dir="ltr"
+                                 (change)="DocumentDirectionToggle()"
+                                 [formControl]="DocumentDirection">
+          <mat-button-toggle value="ltr"
+                             disableRipple
+                             [matTooltip]="translate.GetTranslation(Constants.Layout_LTR)"
+                             [matTooltipPosition]="dir==='ltr'?'right':'left'"
+                             [matTooltipClass]="Constants.CSS_Dashboard_ToolTip">
             <mat-icon class="mat-18"><span class="material-icons-outlined">
                 align_horizontal_left
               </span></mat-icon>
           </mat-button-toggle>
-          <mat-button-toggle value="rtl" disableRipple [matTooltip]="translate.GetTranslation(Constants.Layout_RTL)"
-            [matTooltipPosition]="dir==='ltr'?'right':'left'" [matTooltipClass]="Constants.CSS_Dashboard_ToolTip">
+          <mat-button-toggle value="rtl"
+                             disableRipple
+                             [matTooltip]="translate.GetTranslation(Constants.Layout_RTL)"
+                             [matTooltipPosition]="dir==='ltr'?'right':'left'"
+                             [matTooltipClass]="Constants.CSS_Dashboard_ToolTip">
             <mat-icon class="mat-18"><span class="material-icons-outlined">
                 align_horizontal_right
               </span></mat-icon>
@@ -123,16 +178,24 @@
         <h3 [ngStyle]="(this.translate.isRightToLeft(this.translate.GetCurrentLang()) && dir==='ltr')?{'font': '1.2rem Hacen Casablanca'}:
         {'font-family': 'inherit'}">{{Constants.Table_Settings|translate}}</h3>
         <p>{{Constants.Table_direction | translate}}</p>
-        <mat-button-toggle-group aria-label="Document Direction" dir="ltr" (change)="agGridTableDirectionToggle()"
-          [formControl]="agGridTableDirection">
-          <mat-button-toggle value="ltr" disableRipple [matTooltip]="translate.GetTranslation(Constants.Table_LTR)"
-            [matTooltipPosition]="dir==='ltr'?'right':'left'" [matTooltipClass]="Constants.CSS_Dashboard_ToolTip">
+        <mat-button-toggle-group aria-label="Document Direction"
+                                 dir="ltr"
+                                 (change)="agGridTableDirectionToggle()"
+                                 [formControl]="agGridTableDirection">
+          <mat-button-toggle value="ltr"
+                             disableRipple
+                             [matTooltip]="translate.GetTranslation(Constants.Table_LTR)"
+                             [matTooltipPosition]="dir==='ltr'?'right':'left'"
+                             [matTooltipClass]="Constants.CSS_Dashboard_ToolTip">
             <mat-icon class="mat-18"><span class="material-icons-outlined">
                 align_horizontal_left
               </span></mat-icon>
           </mat-button-toggle>
-          <mat-button-toggle value="rtl" disableRipple [matTooltip]="translate.GetTranslation(Constants.Table_RTL)"
-            [matTooltipPosition]="dir==='ltr'?'right':'left'" [matTooltipClass]="Constants.CSS_Dashboard_ToolTip">
+          <mat-button-toggle value="rtl"
+                             disableRipple
+                             [matTooltip]="translate.GetTranslation(Constants.Table_RTL)"
+                             [matTooltipPosition]="dir==='ltr'?'right':'left'"
+                             [matTooltipClass]="Constants.CSS_Dashboard_ToolTip">
             <mat-icon class="mat-18"><span class="material-icons-outlined">
                 align_horizontal_right
               </span></mat-icon>
@@ -140,11 +203,15 @@
         </mat-button-toggle-group>
         <!-- Table Dark Mode -->
         <p>{{Constants.Table_Color_mode|translate}}</p>
-        <mat-button-toggle-group [formControl]="TableAppearence" name="ThemeAppearence"
-          (change)="TableTheme(TableAppearence.value)" aria-label="Theme Appearence">
-          <mat-button-toggle value="{{this.Constants.light}}" disableRipple>{{this.Constants.light|translate}}
+        <mat-button-toggle-group [formControl]="TableAppearence"
+                                 name="ThemeAppearence"
+                                 (change)="TableTheme(TableAppearence.value)"
+                                 aria-label="Theme Appearence">
+          <mat-button-toggle value="{{this.Constants.light}}"
+                             disableRipple>{{this.Constants.light|translate}}
           </mat-button-toggle>
-          <mat-button-toggle value="{{this.Constants.dark}}" disableRipple>{{this.Constants.dark|translate}}
+          <mat-button-toggle value="{{this.Constants.dark}}"
+                             disableRipple>{{this.Constants.dark|translate}}
           </mat-button-toggle>
         </mat-button-toggle-group>
       </div>
@@ -153,37 +220,53 @@
   <!-- --------------------------------------------------------------------------------------
      ----------------------------------- Content -----------------------------------------
      ------------------------------------------------------------------------------------->
-  <mat-sidenav-content #SideNavContent [class]="SideNav_Content_class + ' ' + BodyThemeClass + ' ' + 'sideNavContent'">
+  <mat-sidenav-content #SideNavContent
+                       [class]="SideNav_Content_class + ' ' + BodyThemeClass + ' ' + 'sideNavContent'">
 
     <!-- Toolbar -->
-    <mat-toolbar [class]="ToolbarThemeClass + ' ' + 'mat-elevation-z3'" fxLayout="row"
-      fxLayoutAlign="space-between center">
+    <mat-toolbar [class]="ToolbarThemeClass + ' ' + 'mat-elevation-z3'"
+                 fxLayout="row"
+                 fxLayoutAlign="space-between center">
       <!-- First Div -->
 
       <div fxLayoutAlign="center center">
-        <button mat-icon-button #SideNavToggleButtonOnSmallScreen>
-          <mat-icon class="mat-18" (click)="SideNav.toggle()">menu</mat-icon>
+        <button mat-icon-button
+                #SideNavToggleButtonOnSmallScreen>
+          <mat-icon class="mat-18"
+                    (click)="SideNav.toggle()">menu</mat-icon>
         </button>
-        <button mat-raised-button [ngClass]="ChoosenThemeColor.bg" [class]="ChoosenThemeColor.colorName==='organge'||ChoosenThemeColor.colorName==='amber'?Constants.CSS_dark_color:
-          Constants.CSS_text_white">{{"Add New"|translate}}</button>
+        <button mat-raised-button
+                [ngClass]="ChoosenThemeColor.bg"
+                [class]="ChoosenThemeColor.colorName==='organge'||ChoosenThemeColor.colorName==='amber'?Constants.CSS_dark_color:
+          Constants.CSS_text_white">{{"Add"|translate}}</button>
         <!-- Language selector -->
-        <button mat-icon-button aria-label="menu toggle"
-          [matTooltip]="translate.GetTranslation(Constants.ChooseYourLang)"
-          [matTooltipPosition]="dir==='ltr'?'right':'left'" [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
-          [matMenuTriggerFor]="LangSelector" dir="ltr">
+        <button mat-icon-button
+                aria-label="menu toggle"
+                [matTooltip]="translate.GetTranslation(Constants.ChooseYourLang)"
+                [matTooltipPosition]="dir==='ltr'?'right':'left'"
+                [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
+                [matMenuTriggerFor]="LangSelector"
+                dir="ltr">
           <mat-icon>language</mat-icon>
           <mat-menu #LangSelector>
-            <a mat-menu-item *ngFor="let code of translate.getLangs()" (click)="switchLang(code)">
+            <a mat-menu-item
+               *ngFor="let code of translate.getLangs()"
+               (click)="switchLang(code)">
               {{ translate.NameByCode(code) | titlecase }}
             </a>
           </mat-menu>
         </button>
       </div>
       <!-- second Div -->
-      <div fxLayoutAlign="center center" fxLayoutGap="3px">
-        <button mat-icon-button (click)="ToggleFullscreen()" [matTooltip]="FullscreenEnabled?translate.GetTranslation(Constants.FullscreenMode_exit):
-          translate.GetTranslation(Constants.FullscreenMode_enable)" [matTooltipPosition]="dir==='ltr'?'right':'left'"
-          [matTooltipClass]="Constants.CSS_Dashboard_ToolTip" #FullscreenButton>
+      <div fxLayoutAlign="center center"
+           fxLayoutGap="3px">
+        <button mat-icon-button
+                (click)="ToggleFullscreen()"
+                [matTooltip]="FullscreenEnabled?translate.GetTranslation(Constants.FullscreenMode_exit):
+          translate.GetTranslation(Constants.FullscreenMode_enable)"
+                [matTooltipPosition]="dir==='ltr'?'right':'left'"
+                [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
+                #FullscreenButton>
           <mat-icon><span class="material-icons-outlined">
               {{FullscreenEnabled?'fullscreen_exit':'fullscreen'}}
             </span></mat-icon>
@@ -194,11 +277,15 @@
             </span></mat-icon>
         </button>
 
-        <button mat-icon-button><img class="mat-elevation-z5" [class]="Constants.CSS_userIconImage"
-            src="../../../../../assets/user.jpg" width="32" height="32" />
+        <button mat-icon-button><img class="mat-elevation-z5"
+               [class]="Constants.CSS_userIconImage"
+               src="../../../../../assets/user.jpg"
+               width="32"
+               height="32" />
         </button>
 
-        <button mat-icon-button (click)="sideNav.toggle()">
+        <button mat-icon-button
+                (click)="sideNav.toggle()">
           <mat-icon><span class="material-icons-outlined">
               settings
             </span></mat-icon>
@@ -207,7 +294,8 @@
       </div>
     </mat-toolbar>
     <div class="BodyPadding">
-      <router-outlet [class]="BodyThemeClass" #DashBoardOutlet="outlet"></router-outlet>
+      <router-outlet [class]="BodyThemeClass"
+                     #DashBoardOutlet="outlet"></router-outlet>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
