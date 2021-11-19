@@ -17,6 +17,7 @@ namespace ERP.UnitOfWork
 
         public IItemMainCatRepoAsync ItemMainCategory { get; private set; }
         public IItemsSubCatRepoAsync Item_SubCats { get; private set; }
+        public IItemUnitsAsync ItemUnits { get; private set; }
 
         public Constants Constants;
         public ApplicationUserUnitOfWork(ApplicationDbContext applicationDbContext,
@@ -27,6 +28,7 @@ namespace ERP.UnitOfWork
             Constants = constants;
             ItemMainCategory = new ItemsMainCatRepoAsync(applicationDbContext);
             Item_SubCats = new ItemsSubCatRepoAsync(applicationDbContext);
+            ItemUnits = new ItemUnitsAsync(applicationDbContext);
         }
 
 

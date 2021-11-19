@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, RendererStyleFlags2, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterContentInit, Component, ElementRef, HostListener, OnDestroy, OnInit, RendererStyleFlags2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NotificationsService } from 'src/CommonServices/NotificationService/notifications.service';
 import { ConstantsService } from '../../../../../CommonServices/constants.service';
@@ -7,7 +7,7 @@ import { routerAnimation } from '../DashboardAnimations/Animations'
 import { MatDrawerMode } from '@angular/material/sidenav';
 import { filter, Subscription } from 'rxjs';
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
-import { ActivatedRoute, NavigationEnd, Router, RouterOutlet, RouterStateSnapshot } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { SideNav_items } from '.././SideNavItems'
 import { LightDarkThemeConverterService } from '../light-dark-theme-converter.service';
 

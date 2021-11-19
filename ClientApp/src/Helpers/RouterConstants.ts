@@ -25,6 +25,10 @@ export abstract class RouterConstants {
   public static Item_Sub_Category_Add_API = "/api/items/AddSubCategory";
   public static Item_Sub_Category_Update_API = "/api/items/UpdateItemSubCategory";
   public static Item_Sub_Category_Delete_API = "/api/items/DelteItemSubCat";
+  public static Item_Unit_Delete_API = "/api/items/DelteItemUnit";
+  public static Item_Unit_Add_API = "/api/items/AddItemUnit";
+  public static Item_Unit_Update_API = "/api/items/Update_Item_Unit";
+  public static Item_Unit_GetAll_API = "/api/items/AllItemUnits";
 
   //Client URLs
   public static Client_EmailConfirmationUrl: string = "client/emailconfirmation";
@@ -40,5 +44,6 @@ export abstract class RouterConstants {
   public static App_register = "register";
   public static App_Items = "items";
   public static App_ItemMainCategories = "itemsCategories";
+  public static App_ItemUnits = "ItemUnits";
 
 }

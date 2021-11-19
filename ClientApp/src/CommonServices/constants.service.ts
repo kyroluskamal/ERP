@@ -34,6 +34,15 @@ export class ConstantsService {
   New = "New"
   Sub_Categories_Singular = "Sub_Categories_Singular";
   MainCat_Singular = "MainCat_Singular";
+  WholeSaleUnit = "Wholesale Unit";
+  Delete = "Delete";
+  Name = "Name";
+  RetailUnit = "Retail Unit";
+  NumberInWholeSale = "Number in wholesale";
+  NumberInRetailSale = "Number in Retail Sale";
+  ConversionRate = "Conversion Rate";
+  Unit = "Unit";
+  Units = "Units"
   //Notifications Messages
   LoggedInSuccessfully: string = "LoggedInSuccessfully";
   EmilConfirmationResnding = "EmilConfirmationResnding";
@@ -64,6 +73,9 @@ export class ConstantsService {
   RequiredMainCat_name = "Please, write the name of the category";
   Unique_SubCat_Per_MainCat_ERROR = "Unique_SubCat_Per_MainCat_ERROR";
   NotSelected_MainCat = "NotSelected_MainCat";
+  MaxLengthExceeded_ERROR = "MaxLengthExceeded_ERROR";
+  characters = "characters";
+  Negative_Value_ERROR = "Negative_Value_ERROR";
   //Tooltip translation
   CloseSidebar = "Close sidebar";
   FixSidebar = "Fix sidebar";
@@ -264,8 +276,9 @@ export class ConstantsService {
   public App_login = "login";
   public App_main = "app";
   public App_register = "register";
-  public App_Items = "All Items";
-  public App_ItemsMainCat = "Main Categories";
+  public App_Items = "Products";
+  public App_ItemsMainCat = "Categories";
+  public App_ItemsUnits = "Units";
 
 
 }

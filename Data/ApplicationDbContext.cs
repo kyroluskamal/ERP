@@ -408,8 +408,11 @@ namespace ERP.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
+            builder.Entity<Units>().Property(x => x.ConversionRate)
+                .HasComputedColumnSql("[NumberInWholeSale] * [NumberInRetailSale]");
+            builder.Entity<Units>().HasIndex(x => x.WholeSaleUnit).IsUnique();
             builder.Entity<ItemMainCategory>().HasIndex(x => x.Name).IsUnique();
+            builder.Entity<Units>().HasIndex(x => x.WholeSaleUnit).IsUnique();
             builder.Entity<ApplicationUser>()
                    .HasIndex(u => u.Email)
                    .IsUnique();

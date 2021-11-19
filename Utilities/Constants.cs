@@ -37,6 +37,8 @@ namespace ERP.Utilities
         public string Unique_SubCat_Per_MainCat_ERROR_status = "Unique_SubCat_Per_MainCat_ERROR";
         public string UnCategorized_Can_tDeleted_Or_Updated_Status = "UnCategorized_Can'tDeleted_Or_Updated";
         public string NotSelected_MainCat_ERROR_status = "NotSelected_MainCat";
+        public string MaxLengthExeed_ERROR_status = "MaxLengthExceeded_ERROR";
+        public string Negative_Value_ERROR_status = "Negative_Value_ERROR";
 
 
         //error Messages
@@ -57,6 +59,7 @@ namespace ERP.Utilities
         public string Unique_Field_ERROR_Message = "You can't repeat values in this field. Add UNIQUE value.";
         public string Unique_SubCat_Per_MainCat_ERROR_Message = "You can't repeat subcategory in the same main category. Add UNIQUE value.";
         public string NotSelected_MainCat_ERROR_Message = "Please, select a Main category from the Main categories table";
+        public string MaxLengthExeed_ERROR_Message = "You exceeded the max allowed character number";
 
         //Success Status
         public string Data_Deleted_success_status = "Data_Deleted_success";

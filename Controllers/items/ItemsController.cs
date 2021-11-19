@@ -280,7 +280,7 @@ namespace ERP.Controllers.items
             }
             return BadRequest(Constants.HackTrying_Error_Response());
         }
-        #endregion
+
         //Delete
         [HttpDelete("DelteItemSubCat")]
         public async Task<IActionResult> Item_Sub_CategoryDelete(string Subdomain, int id)
@@ -315,6 +315,144 @@ namespace ERP.Controllers.items
             }
             return BadRequest(Constants.HackTrying_Error_Response());
         }
+        #endregion
+
+        #region Units Functions
+        //Get all Units
+        [HttpGet("AllItemUnits")]
+        public async Task<ActionResult<List<ItemSubCategory>>> GetAllUnits(string subdomain)
+        {
+            if (CheckManuallyChanged_Subdomain(subdomain))
+            {
+                var tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(subdomain);
+                if (tenant != null)
+                {
+                    await UserUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
+                    var units = await UserUnitOfWork.ItemUnits.GetAllAsync();
+                    return Ok(units);
+                }
+                return BadRequest(Constants.NullTentant_Error_Response());
+            }
+            return BadRequest(Constants.HackTrying_Error_Response());
+        }
+
+        //Add new SubCat Cat
+        [HttpPost(nameof(AddItemUnit))]
+        public async Task<IActionResult> AddItemUnit([FromBody] Units Unit)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(Constants.ModelState_ERROR_Response(ModelState));
+            if (Unit.NumberInRetailSale == 0 || Unit.NumberInWholeSale == 0)
+                return BadRequest(Constants.Required_Field_ERROR_Response());
+            if (CheckManuallyChanged_Subdomain(Unit.Subdomain))
+            {
+                var tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(Unit.Subdomain);
+                if (tenant != null)
+                {
+                    await UserUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
+                    if (Unit.WholeSaleUnit == null)
+                        return BadRequest(Constants.Required_Field_ERROR_Response());
+                    if (!await IsUniqe_ItemUnit(Unit.WholeSaleUnit))
+                        return BadRequest(Constants.Unique_Field_ERROR_Response());
+                    await UserUnitOfWork.ItemUnits.AddAsync(new Units
+                    {
+                        WholeSaleUnit = Unit.WholeSaleUnit,
+                        RetailUnit = Unit.RetailUnit,
+                        NumberInWholeSale = Unit.NumberInWholeSale,
+                        NumberInRetailSale = Unit.NumberInRetailSale
+                    });
+                    var result = await UserUnitOfWork.SaveAsync();
+                    if (result > 0)
+                    {
+                        var Units = await UserUnitOfWork.ItemUnits.GetAllAsync(x => x.WholeSaleUnit == Unit.WholeSaleUnit);
+                        return Ok(Units.Last(x => x.WholeSaleUnit == Unit.WholeSaleUnit));
+                    }
+                    return BadRequest(Constants.DataAddtion_ERROR_Response());
+                }
+                return BadRequest(Constants.NullTentant_Error_Response());
+            }
+            return BadRequest(Constants.HackTrying_Error_Response());
+        }
+
+        //Update Item Unit
+        [HttpPut("Update_Item_Unit")]
+        public async Task<IActionResult> Update_Item_Unit(Units Unit)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(Constants.ModelState_ERROR_Response(ModelState));
+            }
+            if (CheckManuallyChanged_Subdomain(Unit.Subdomain))
+            {
+                //get tenant from TenantDP
+                var Tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(Unit.Subdomain);
+                if (Tenant != null)
+                {
+                    //if Tentnat is found, set the connection stirng
+                    await UserUnitOfWork.SetConnectionStringAsync(Tenant.ConnectionString);
+                    // Check if it is unique
+                    if (!await IsUniqe_ItemUnit(Unit.WholeSaleUnit, Unit.Id))
+                        return BadRequest(Constants.Unique_Field_ERROR_Response());
+                    //Check if the unit is found in DB
+                    var UnitFromDb = await UserUnitOfWork.ItemUnits.GetAsync(Unit.Id);
+                    if (UnitFromDb != null)
+                    {
+                        UnitFromDb.WholeSaleUnit = Unit.WholeSaleUnit;
+                        UnitFromDb.RetailUnit = Unit.RetailUnit;
+                        UnitFromDb.NumberInWholeSale = Unit.NumberInWholeSale;
+                        UnitFromDb.NumberInRetailSale = Unit.NumberInRetailSale;
+                        UserUnitOfWork.ItemUnits.Update(UnitFromDb);
+                        var result = await UserUnitOfWork.SaveAsync();
+                        if (result > 0)
+                            return Ok(Constants.Data_SAVED_SUCCESS_Response());
+
+                        //If the Main cannot be deleted
+                        return BadRequest(Constants.Data_SAVED_ERROR_Response());
+                    }
+                    //If the tenant is not found
+                    return BadRequest(Constants.Data_NOTFOUND_ERROR_Response());
+                }
+                return BadRequest(Constants.NullTentant_Error_Response());
+            }
+            return BadRequest(Constants.HackTrying_Error_Response());
+        }
+
+        //Delete
+        [HttpDelete("DelteItemUnit")]
+        public async Task<IActionResult> Delete_ItemUnit(string Subdomain, int id)
+        {
+            if (CheckManuallyChanged_Subdomain(Subdomain))
+            {
+                //get tenant from TenantDP
+                var Tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(Subdomain);
+                if (Tenant != null)
+                {
+                    //if Tentnat is found, set the connection stirng
+                    await UserUnitOfWork.SetConnectionStringAsync(Tenant.ConnectionString);
+                    //Check if teh Main cat is found in DB
+                    var Unit = await UserUnitOfWork.ItemUnits.GetAsync(id);
+
+                    if (Unit != null)
+                    {
+                        UserUnitOfWork.ItemUnits.Remove(Unit);
+                        var result = await UserUnitOfWork.SaveAsync();
+                        if (result > 0)
+                        {
+                            //If all conditions are success.
+                            return Ok(Constants.Data_Deleted_SUCCESS_Response());
+                        }
+                        //If the Sub Cat cat cannot be deleted
+                        return BadRequest(Constants.Data_Deleted_ERROR_Response());
+                    }
+                    //If the tenant is not found
+                    return BadRequest(Constants.Data_NOTFOUND_ERROR_Response());
+                }
+                return BadRequest(Constants.NullTentant_Error_Response());
+            }
+            return BadRequest(Constants.HackTrying_Error_Response());
+        }
+        #endregion
+
 
         //HelperMedthod
         private bool CheckManuallyChanged_Subdomain(string subdomain)
@@ -322,13 +460,21 @@ namespace ERP.Controllers.items
             return subdomain == HttpContext.Request.Host.Host.Split('.')[0];
         }
 
-        private async Task<bool> IsUniqeMainCat(string catName)
+        public async Task<bool> IsUniqeMainCat(string catName)
         {
             var allCats = await UserUnitOfWork.ItemMainCategory.GetAllAsync();
             return allCats.Find(x => x.Name == catName) == null;
         }
+        public async Task<bool> IsUniqe_ItemUnit(string Wholesale, int id = 0)
+        {
+            var AllUnits = await UserUnitOfWork.ItemUnits.GetAllAsync();
+            if (id == 0)
+                return AllUnits.Find(x => x.WholeSaleUnit == Wholesale) == null;
+            var OtherUnits = AllUnits.Where(x => x.Id != id).ToList();
+            return OtherUnits.Find(x => x.WholeSaleUnit == Wholesale) == null;
+        }
 
-        private async Task<bool> IsUniqueSubCat_Per_MainCat(ItemSubCategory newSubCat)
+        public async Task<bool> IsUniqueSubCat_Per_MainCat(ItemSubCategory newSubCat)
         {
             var AllSubCat = await UserUnitOfWork.Item_SubCats.GetAllAsync();
             var SubCats_per_MainCat = AllSubCat.Where(x => x.ItemMainCategoryId == newSubCat.ItemMainCategory.Id).ToArray();

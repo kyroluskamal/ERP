@@ -1,5 +1,9 @@
-<ng-template [ngIf]="hidden===false" [ngIfElse]="Nobutton" #Withbutton>
-  <button mat-icon-button color="warn" (click)="onClick($event)">
+<ng-template [ngIf]="hidden===false"
+             [ngIfElse]="Nobutton"
+             #Withbutton>
+  <button mat-icon-button
+          color="warn"
+          (click)="onClick($event)">
     <mat-icon class="mat-18">
       {{iconName}}
     </mat-icon>

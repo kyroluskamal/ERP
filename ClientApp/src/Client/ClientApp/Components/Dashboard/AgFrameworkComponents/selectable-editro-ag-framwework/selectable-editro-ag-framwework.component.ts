@@ -3,7 +3,6 @@ import { FormControl } from '@angular/forms';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
 import { ItemsService } from '../../Items/items.service';
-import { ItemMainCategory } from '../../Models/Items/item-main-category.model';
 
 @Component({
   selector: 'app-selectable-editro-ag-framwework',
@@ -16,11 +15,8 @@ export class SelectableEditroAgFramweworkComponent implements ICellRendererAngul
   SelectMainCatsForm: FormControl = new FormControl("");
   selectedItem: any;
   params: any;
-  MainCats: ItemMainCategory[] = [];
   agInit(params: any): void {
-    console.log(this.MainCats);
     this.params = params;
-    this.ItemServices.GetAllGategories().subscribe(r => this.MainCats = r);
     this.selectedItem = params.value;
   }
 

@@ -1,8 +1,7 @@
-import { ValueTransformer } from '@angular/compiler/src/util';
-import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CellValueChangedEvent, ColDef, Column, ColumnApi, GridApi, GridReadyEvent, RowNode, RowSelectedEvent, SelectCellEditor, SideBarDef } from 'ag-grid-community';
-import { Observable, Subscription, tap, throwError } from 'rxjs';
+import { CellValueChangedEvent, ColDef, ColumnApi, GridApi, GridReadyEvent, RowNode, RowSelectedEvent, SelectCellEditor, SideBarDef } from 'ag-grid-community';
+import { Observable, Subscription } from 'rxjs';
 
 import { ClientAccountService } from 'src/Client/MainDomain/Authentication/client-account-service.service';
 import { ConstantsService } from 'src/CommonServices/constants.service';
@@ -15,8 +14,7 @@ import { IconButtonRendererComponent } from '../../AgFrameworkComponents/button-
 import { SelectableEditroAgFramweworkComponent } from '../../AgFrameworkComponents/selectable-editro-ag-framwework/selectable-editro-ag-framwework.component';
 import { ThemeColor } from '../../client-app-dashboard/client-app-dashboard.component';
 import { LightDarkThemeConverterService } from '../../light-dark-theme-converter.service';
-import { ItemMainCategory } from '../../Models/Items/item-main-category.model';
-import { ItemSubCategory } from '../../Models/Items/item-sub-category.model';
+import { ItemMainCategory, ItemSubCategory } from '../../Models/item.model';
 import { ItemsService } from '../items.service';
 
 @Component({
@@ -57,39 +55,7 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
       return false;
     }
   };
-  columnDefs: ColDef[] = [
-    {
-      headerName: "#", field: 'id',
-      filter: true,
-      flex: 1,
-
-    },
-    {
-      headerName: "Name", field: 'name',
-      editable: ({ node }) => {
-        if (node.data.name === this.translate.GetTranslation(this.Constants.Uncategorized)) {
-          this.NotificationService.error(this.translate.GetTranslation(this.Constants.UnCategorized_Can_tDeleted_Or_Updated), "",
-            this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr')
-          return false
-        }
-        return true
-      }, filter: true,
-      flex: 3
-    },
-    {
-      headerName: 'Delete', field: "delete",
-      cellRenderer: 'buttonRenderer',
-      cellRendererParams: {
-        onClick: this.onDeleteButtonClick.bind(this),
-        iconName: 'delete',
-        preventionName: this.Constants.Uncategorized
-      },
-      filter: false,
-      sortable: false,
-      flex: 1
-    },
-
-  ];
+  columnDefs: ColDef[] = [];
   agFrameworks = {
     buttonRenderer: IconButtonRendererComponent,
     SelectableEditor: SelectableEditroAgFramweworkComponent
@@ -116,42 +82,7 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
       return false;
     }
   };
-  columnDefs_Subcats: ColDef[] = [
-    {
-      headerName: "#id", field: 'id',
-      filter: true,
-      flex: 1
-    },
-    {
-      headerName: "Name", field: 'name',
-      editable: ({ node }) => {
-        if (node.data.name === this.translate.GetTranslation(this.Constants.Uncategorized)) {
-          this.NotificationService.error(this.translate.GetTranslation(this.Constants.UnCategorized_Can_tDeleted_Or_Updated), "",
-            this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr')
-          return false
-        }
-        return true
-      }, filter: true,
-      flex: 2
-    },
-    {
-      headerName: "Main Category Id", field: 'itemMainCategoryId',
-      flex: 2
-    },
-    {
-      headerName: 'Delete',
-      cellRenderer: 'buttonRenderer',
-      cellRendererParams: {
-        onClick: this.Delete_SubCat.bind(this),
-        iconName: 'delete',
-        preventionName: this.Constants.Uncategorized
-      },
-      filter: false,
-      sortable: false,
-      flex: 1,
-
-    },
-  ];
+  columnDefs_Subcats: ColDef[] = [];
   overlayLoadingTemplate: string = "";
 
   overlayLoadingTemplate_SubCat: string = "";
@@ -224,6 +155,75 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
       r => this.Theme_dir = r
     );
     this.Items_Sub_Categories = this.ItemService.GetItems_All_SubCats();
+    this.columnDefs = [
+      {
+        headerName: "#", field: 'id',
+        filter: true,
+        flex: 1,
+
+      },
+      {
+        headerName: this.translate.GetTranslation(this.Constants.Name), field: 'name',
+        editable: ({ node }) => {
+          if (node.data.name === this.translate.GetTranslation(this.Constants.Uncategorized)) {
+            this.NotificationService.error(this.translate.GetTranslation(this.Constants.UnCategorized_Can_tDeleted_Or_Updated), "",
+              this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr')
+            return false
+          }
+          return true
+        }, filter: true,
+        flex: 3
+      },
+      {
+        headerName: this.translate.GetTranslation(this.Constants.Delete), field: "delete",
+        cellRenderer: 'buttonRenderer',
+        cellRendererParams: {
+          onClick: this.onDeleteButtonClick.bind(this),
+          iconName: 'delete',
+          preventionName: this.Constants.Uncategorized
+        },
+        filter: false,
+        sortable: false,
+        flex: 1
+      },
+
+    ];
+    this.columnDefs_Subcats = [
+      {
+        headerName: "#", field: 'id',
+        filter: true,
+        flex: 1
+      },
+      {
+        headerName: this.translate.GetTranslation(this.Constants.Name), field: 'name',
+        editable: ({ node }) => {
+          if (node.data.name === this.translate.GetTranslation(this.Constants.Uncategorized)) {
+            this.NotificationService.error(this.translate.GetTranslation(this.Constants.UnCategorized_Can_tDeleted_Or_Updated), "",
+              this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr')
+            return false
+          }
+          return true
+        }, filter: true,
+        flex: 2
+      },
+      {
+        headerName: this.translate.GetTranslation(this.Constants.MainCat_Singular), field: 'itemMainCategoryId',
+        flex: 2
+      },
+      {
+        headerName: this.translate.GetTranslation(this.Constants.Delete),
+        cellRenderer: 'buttonRenderer',
+        cellRendererParams: {
+          onClick: this.Delete_SubCat.bind(this),
+          iconName: 'delete',
+          preventionName: this.Constants.Uncategorized
+        },
+        filter: false,
+        sortable: false,
+        flex: 1,
+
+      },
+    ];
   }
 
   ngOnDestroy(): void {
@@ -257,7 +257,7 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
     this.loading = true;
     let IsUnique: boolean = false;
     this.gridApi.forEachNode((node) => {
-      if (node.data.name === this.AddMainCatForm.get("CatName")?.value) {
+      if (String(node.data.name).toLowerCase() === String(this.AddMainCatForm.get("CatName")?.value).toLowerCase()) {
         IsUnique = true;
       }
     });
@@ -347,7 +347,7 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
       if (!node.isSelected())
         Nodes.push(node)
     });
-    for (let node of Nodes) { if (node.data.name === event.data.name) { IsUnique = true; break; } }
+    for (let node of Nodes) { if (String(node.data.name).toLowerCase() === String(event.data.name).toLowerCase()) { IsUnique = true; break; } }
     console.log(IsUnique);
     //Check if it is unique category
     if (IsUnique) {
@@ -525,7 +525,7 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
     let SelectMainCat = this.gridApi.getSelectedNodes();
     console.log(SelectMainCat[0])
     this.gridApi_subCat.forEachNode((node) => {
-      if (node.data.name === this.Add_Sub_CatForm.get("SubCatName")?.value &&
+      if (String(node.data.name).toLowerCase() === String(this.Add_Sub_CatForm.get("SubCatName")?.value).toLowerCase() &&
         node.data.itemMainCategoryId === SelectMainCat[0].data.id) {
         IsUnique = true;
       }
@@ -617,7 +617,7 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
       return (node.data.itemMainCategoryId === event.data.itemMainCategoryId && !node.isSelected());
     })
     for (let subcat of subcats) {
-      if (subcat.data.name === event.data.name) {
+      if (String(subcat.data.name).toLowerCase() === String(event.data.name).toLowerCase()) {
         IsUnique = true;
       }
     }

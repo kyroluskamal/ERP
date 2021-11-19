@@ -1,4 +1,12 @@
-/* /* .ag-header-container, .ag-center-cols-container, .ag-cell.ag-cell-not-inline-editing.ag-cell-normal-height.ag-cell-value.ag-cell-focus,
+.mat-card-actions .mat-raised-button {
+  margin:0 !important;
+}
+.mat-grid-tile{
+  background-color: inherit;
+  margin:5px !important;
+}
+
+/* .ag-header-container, .ag-center-cols-container, .ag-cell.ag-cell-not-inline-editing.ag-cell-normal-height.ag-cell-value.ag-cell-focus,
 .ag-row-no-focus.ag-row, .ag-center-cols-viewport{
   width: 100% !important;
 }
@@ -9,7 +17,9 @@
 .ag-theme-alpine .ag-rtl .ag-cell {
 width: 100% !important;
 } */
-/*
+app-icon-button-renderer.ng-star-inserted button:first-child{
+  display: none !important;
+}
 ::ng-deep mat-card-title, mat-card-subtitle, .mat-form-field-label, mat-card-actions, form, mat-divider{
   background-color: inherit !important;
   color:inherit !important;
@@ -34,4 +44,4 @@ width: 100% !important;
 }
 .space-evenly{
   justify-content: space-evenly !important;
-} */
+}

@@ -231,3 +231,6 @@ mat-expansion-panel-header {
 .mat-card-title{
   font-family: cursive !important;
 }
+.mat-expansion-panel-content{
+  font-size: 1.1rem !important;
+}

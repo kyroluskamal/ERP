@@ -145,5 +145,19 @@
   "MainCat_Singular":"تصنيف رئيسي",
   "Unique_SubCat_Per_MainCat_ERROR" : "لايمكن تكرار نفس التصنيف الفرعي داخل نفس التصنيف الرئيسي. اضف قيماً فريدة.",
   "NotSelected_MainCat" : "اختار التصنيف الرئيسي اولا من جدول التصنيفات الرئيسية",
-  "Name": "الاسم"
+  "Name": "الاسم",
+  "Wholesale Unit" : "وحدة القياس في الجملة",
+  "Delete" : "حذف",
+  "Retail Unit" : "وحدة القياس في التجزئة",
+  "Number in wholesale" : "العدد في الجملة",
+  "Number in Retail Sale": "العدد في التجزئة",
+  "Conversion Rate" : "معدل التحويل",
+  "Unit": "وحدة",
+  "Categories" : "التصنيفات",
+  "Units" : "الوحدات",
+  "MaxLengthExceeded_ERROR" : "يمكنك الكتابة حتى  ",
+  "characters": " حرفاً",
+  "Negative_Value_ERROR" : "ادخل ارقاما موجبة اكبر من الصفر فقط.",
+  "in" : " في",
+  "field" : " حقل"
 }

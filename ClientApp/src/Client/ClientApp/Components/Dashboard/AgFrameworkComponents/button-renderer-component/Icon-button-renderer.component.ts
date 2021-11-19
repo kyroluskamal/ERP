@@ -15,9 +15,11 @@ export class IconButtonRendererComponent implements ICellRendererAngularComp {
   iconName: string = "";
   hidden: boolean = false;
   agInit(params: any): void {
+    console.log(params)
     this.params = params;
     this.iconName = params.iconName;
-    this.hidden = this.params.node.data.name === this.translate.GetTranslation(this.params.preventionName);
+    if (this.params.preventionName)
+      this.hidden = this.params.node.data.name === this.translate.GetTranslation(this.params.preventionName);
   }
 
   refresh(params?: any): boolean {

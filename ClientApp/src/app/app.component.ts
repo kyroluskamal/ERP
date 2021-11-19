@@ -23,12 +23,10 @@ export class AppComponent implements OnInit {
     public OwnerAccountService: OwnerAccountService, private titleService: Title,
     public Constants: ConstantsService) {
     this.subdomain = window.location.host.split(".")[0];
-    console.log(this.subdomain);
   }
 
   //ngOnInit
   ngOnInit(): void {
-    console.log(this.router);
     this.router.events
       .pipe(
         filter(e => e instanceof NavigationEnd)

@@ -128,5 +128,19 @@
   "MainCat_Singular": "Main category",
   "Unique_SubCat_Per_MainCat_ERROR" : "You can't repeat subcategory in the same main category. Add UNIQUE value.",
   "NotSelected_MainCat" : "Please, select a Main category from the Main categories table",
-  "Name": "Name"
+  "Name": "Name",
+  "Wholesale Unit" : "Wholesale Unit",
+  "Delete" : "Delete",
+  "Retail Unit" : "Retail Unit",
+  "Number in wholesale" : "Number in wholesale",
+  "Number in Retail Sale" : "Number in Retail Sale",
+  "ConversionRate" : "Conversion Rate",
+  "Unit" : "Unit",
+  "Units" : "Units",
+  "Categories" : "Categories",
+  "MaxLengthExceeded_ERROR" : "You can write up to ",
+  "characters": " character(s)",
+  "Negative_Value_ERROR" : "Enter positive numbers greater than 0 only.",
+  "in": " in",
+  "field": " field"
 }

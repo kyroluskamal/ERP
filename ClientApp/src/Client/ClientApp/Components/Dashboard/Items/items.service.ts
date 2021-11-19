@@ -3,8 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { RouterConstants } from 'src/Helpers/RouterConstants';
-import { ItemMainCategory } from '../Models/Items/item-main-category.model';
-import { ItemSubCategory } from '../Models/Items/item-sub-category.model';
+import { ItemMainCategory, ItemSubCategory, ItemUnit } from '../Models/item.model';
 
 @Injectable({
   providedIn: 'root'
@@ -49,6 +48,23 @@ export class ItemsService {
   }
   DeleteSubCat(id: number): Observable<any> {
     return this.httpClient.delete(`${RouterConstants.Item_Sub_Category_Delete_API}?Subdomain=${this.subdomain}&id=${id}`)
+  }
+  //#endregion
+
+
+  //#region Item Units
+  Get_All_ItemUnits(): Observable<ItemUnit[]> {
+    return this.httpClient.get<ItemUnit[]>(`${RouterConstants.Item_Unit_GetAll_API}?subdomain=${this.subdomain}`);
+  }
+
+  AddNew_ItemUnit(ItemUnit: ItemUnit): Observable<ItemUnit> {
+    return this.httpClient.post<ItemUnit>(`${RouterConstants.Item_Unit_Add_API}`, ItemUnit);
+  }
+  Update_ItemUnit(ItemUnit: ItemUnit): Observable<any> {
+    return this.httpClient.put(`${RouterConstants.Item_Unit_Update_API}`, ItemUnit);
+  }
+  Delete_ItemUnit(id: number): Observable<any> {
+    return this.httpClient.delete(`${RouterConstants.Item_Unit_Delete_API}?Subdomain=${this.subdomain}&id=${id}`)
   }
   //#endregion
 }

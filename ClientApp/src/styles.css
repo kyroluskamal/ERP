@@ -736,3 +736,47 @@ body {
 .Light-for-Child-Component {
   color: inherit !important;
 }
+
+
+
+.Light-for-Child-Component .mat-card-actions .mat-raised-button ,
+  .dark-for-Child-Component .mat-card-actions .mat-raised-button {
+  margin:0 !important;
+}
+.Light-for-Child-Component .mat-grid-tile,
+  .dark-for-Child-Component .mat-grid-tile{
+  background-color: inherit;
+  margin:5px !important;
+}
+
+.Light-for-Child-Component ::ng-deep mat-card-title, mat-card-subtitle, .mat-form-field-label, mat-card-actions, form, mat-divider,
+  .dark-for-Child-Component ::ng-deep mat-card-title, mat-card-subtitle, .mat-form-field-label, mat-card-actions, form, mat-divider{
+  background-color: inherit !important;
+  color:inherit !important;
+}
+.Light-for-Child-Component ::ng-deep .mat-form-field-empty.mat-form-field-label, .Light-for-Child-Component .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label,
+.Light-for-Child-Component  ::ng-deep .mat-form-field-outline:not(::ng-deep .mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid .mat-form-field-outline-thick),
+.dark-for-Child-Component ::ng-deep .mat-form-field-empty.mat-form-field-label, .dark-for-Child-Component .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label,
+.dark-for-Child-Component  ::ng-deep .mat-form-field-outline:not(::ng-deep .mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid .mat-form-field-outline-thick){
+  color:inherit !important;
+}
+.Light-for-Child-Component ::ng-deep .mat-card-actions .mat-button, .Light-for-Child-Component ::ng-deep .mat-card-actions .mat-raised-button,.Light-for-Child-Component ::ng-deep .mat-card-actions .mat-stroked-button,
+  .dark-for-Child-Component ::ng-deep .mat-card-actions .mat-button,.dark-for-Child-Component ::ng-deep .mat-card-actions .mat-raised-button,.dark-for-Child-Component ::ng-deep .mat-card-actions .mat-stroked-button{
+  margin: 0 !important;
+}
+.Light-for-Child-Component ::ng-deep mat-label,
+.dark-for-Child-Component ::ng-deep mat-label{
+  font-size: 14px !important;
+  font-family: inherit !important;
+}
+.Light-for-Child-Component .mat-card,
+.dark-for-Child-Component .mat-card{
+  margin:0 !important;
+}
+
+.space-between{
+  justify-content: space-between !important;
+}
+.space-evenly{
+  justify-content: space-evenly!important;
+}

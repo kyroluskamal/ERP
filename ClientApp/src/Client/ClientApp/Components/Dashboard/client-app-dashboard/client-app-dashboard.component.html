@@ -52,7 +52,7 @@
         <!-- Fill the sideNav Items  -->
         <a *ngFor="let link of item.links let x = index"
            [routerLink]="link.link"
-           [ngClass]="{'expansionIsExpanded':link.state}">{{link.LinkText}}</a>
+           [ngClass]="{'expansionIsExpanded':link.state}">{{translate.GetTranslation(link.LinkText)}}</a>
 
       </mat-expansion-panel>
     </mat-accordion>
