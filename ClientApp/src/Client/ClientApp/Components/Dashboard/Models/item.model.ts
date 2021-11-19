@@ -24,3 +24,9 @@ export class ItemUnit {
   Subdomain: string = subdomain;
 
 }
+
+export class Brands {
+  id: number = 0;
+  name: string = "";
+  subdomain: string = subdomain;
+}

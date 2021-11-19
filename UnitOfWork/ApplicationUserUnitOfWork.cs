@@ -19,6 +19,8 @@ namespace ERP.UnitOfWork
         public IItemsSubCatRepoAsync Item_SubCats { get; private set; }
         public IItemUnitsAsync ItemUnits { get; private set; }
 
+        public IBrandsAsync ItemBrands { get; private set; }
+
         public Constants Constants;
         public ApplicationUserUnitOfWork(ApplicationDbContext applicationDbContext,
             ApplicationUserRoleManager roleManager, Constants constants)
@@ -29,6 +31,7 @@ namespace ERP.UnitOfWork
             ItemMainCategory = new ItemsMainCatRepoAsync(applicationDbContext);
             Item_SubCats = new ItemsSubCatRepoAsync(applicationDbContext);
             ItemUnits = new ItemUnitsAsync(applicationDbContext);
+            ItemBrands = new BrandsRepoAsync(applicationDbContext);
         }
 
 

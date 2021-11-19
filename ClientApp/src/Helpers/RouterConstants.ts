@@ -21,14 +21,21 @@ export abstract class RouterConstants {
   public static ItemMainCategory_AddMainCat_API = "/api/items/AddMainCategory";
   public static ItemMainCategory_UPDATE_MainCat_API = "/api/items/UpdateItemMainCategory";
   public static ItemMainCategory_DELETE_MainCat_API = "/api/items/DelteItemMainCat";
+
   public static Item_Sub_Category_GetAll_API = "/api/items/GetItemsAllSubCategories";
   public static Item_Sub_Category_Add_API = "/api/items/AddSubCategory";
   public static Item_Sub_Category_Update_API = "/api/items/UpdateItemSubCategory";
   public static Item_Sub_Category_Delete_API = "/api/items/DelteItemSubCat";
+
   public static Item_Unit_Delete_API = "/api/items/DelteItemUnit";
   public static Item_Unit_Add_API = "/api/items/AddItemUnit";
   public static Item_Unit_Update_API = "/api/items/Update_Item_Unit";
   public static Item_Unit_GetAll_API = "/api/items/AllItemUnits";
+
+  public static Item_Brand_Delete_API = "/api/items/DeleteBrand";
+  public static Item_Brand_Add_API = "/api/items/AddNewBrand";
+  public static Item_Brand_Update_API = "/api/items/UpdateBrand";
+  public static Item_Brand_GetAll_API = "/api/items/GetAllBrands";
 
   //Client URLs
   public static Client_EmailConfirmationUrl: string = "client/emailconfirmation";

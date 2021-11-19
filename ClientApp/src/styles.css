@@ -754,11 +754,14 @@ body {
   background-color: inherit !important;
   color:inherit !important;
 }
-.Light-for-Child-Component ::ng-deep .mat-form-field-empty.mat-form-field-label, .Light-for-Child-Component .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label,
-.Light-for-Child-Component  ::ng-deep .mat-form-field-outline:not(::ng-deep .mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid .mat-form-field-outline-thick),
-.dark-for-Child-Component ::ng-deep .mat-form-field-empty.mat-form-field-label, .dark-for-Child-Component .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label,
-.dark-for-Child-Component  ::ng-deep .mat-form-field-outline:not(::ng-deep .mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid .mat-form-field-outline-thick){
+.Light-for-Child-Component  .mat-form-field-empty.mat-form-field-label, .Light-for-Child-Component .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label,
+.Light-for-Child-Component   .mat-form-field-outline:not(.mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid .mat-form-field-outline-thick),
+.dark-for-Child-Component .mat-form-field-empty.mat-form-field-label, .dark-for-Child-Component .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label,
+.dark-for-Child-Component  .mat-form-field-outline:not( .mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid .mat-form-field-outline-thick){
   color:inherit !important;
+}
+.mat-form-field-appearance-outline .mat-form-field-outline-thick:not( .mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid .mat-form-field-outline-thick){
+  color: #3f51b5 !important
 }
 .Light-for-Child-Component ::ng-deep .mat-card-actions .mat-button, .Light-for-Child-Component ::ng-deep .mat-card-actions .mat-raised-button,.Light-for-Child-Component ::ng-deep .mat-card-actions .mat-stroked-button,
   .dark-for-Child-Component ::ng-deep .mat-card-actions .mat-button,.dark-for-Child-Component ::ng-deep .mat-card-actions .mat-raised-button,.dark-for-Child-Component ::ng-deep .mat-card-actions .mat-stroked-button{
@@ -780,3 +783,9 @@ body {
 .space-evenly{
   justify-content: space-evenly!important;
 }
+/* .Light-for-Child-Component .mat-form-field-appearance-outline .mat-form-field-outline, .dark-for-Child-Component .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: yellow !important;
+} */
+/* .mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  color: green !important;
+} */

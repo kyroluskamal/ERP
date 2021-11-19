@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { RouterConstants } from 'src/Helpers/RouterConstants';
-import { ItemMainCategory, ItemSubCategory, ItemUnit } from '../Models/item.model';
+import { Brands, ItemMainCategory, ItemSubCategory, ItemUnit } from '../Models/item.model';
 
 @Injectable({
   providedIn: 'root'
@@ -65,6 +65,21 @@ export class ItemsService {
   }
   Delete_ItemUnit(id: number): Observable<any> {
     return this.httpClient.delete(`${RouterConstants.Item_Unit_Delete_API}?Subdomain=${this.subdomain}&id=${id}`)
+  }
+  //#endregion
+  //#region Item Brands
+  Get_All_ItemBrands(): Observable<Brands[]> {
+    return this.httpClient.get<Brands[]>(`${RouterConstants.Item_Brand_GetAll_API}?subdomain=${this.subdomain}`);
+  }
+
+  AddNew_ItemBrand(Brand: Brands): Observable<Brands> {
+    return this.httpClient.post<Brands>(`${RouterConstants.Item_Brand_Add_API}`, Brand);
+  }
+  Update_ItemBrand(Brand: Brands): Observable<any> {
+    return this.httpClient.put(`${RouterConstants.Item_Unit_Update_API}`, Brand);
+  }
+  Delete_ItemBrand(id: number): Observable<any> {
+    return this.httpClient.delete(`${RouterConstants.Item_Brand_Delete_API}?Subdomain=${this.subdomain}&id=${id}`)
   }
   //#endregion
 }

@@ -453,7 +453,130 @@ namespace ERP.Controllers.items
         }
         #endregion
 
+        #region Item Brands Functions
+        //Get all Brands
+        [HttpGet(nameof(GetAllBrands))]
+        public async Task<ActionResult<List<Brands>>> GetAllBrands(string subdomain)
+        {
+            if (CheckManuallyChanged_Subdomain(subdomain))
+            {
+                var tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(subdomain);
+                if (tenant != null)
+                {
+                    await UserUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
+                    var Brands = await UserUnitOfWork.ItemBrands.GetAllAsync();
+                    return Ok(Brands);
+                }
+                return BadRequest(Constants.NullTentant_Error_Response());
+            }
+            return BadRequest(Constants.HackTrying_Error_Response());
+        }
+        //Add new Brand
+        [HttpGet(nameof(AddNewBrand))]
+        public async Task<IActionResult> AddNewBrand(string brandName, string subdomain)
+        {
+            if (CheckManuallyChanged_Subdomain(subdomain))
+            {
+                var tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(subdomain);
+                if (tenant != null)
+                {
+                    await UserUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
+                    if (brandName == null)
+                        return BadRequest(Constants.Required_Field_ERROR_Response());
 
+                    if (!await IsUniqeMainCat(brandName))
+                        return BadRequest(Constants.Unique_Field_ERROR_Response());
+
+                    await UserUnitOfWork.ItemBrands.AddAsync(new Brands { Name = brandName });
+                    var result = await UserUnitOfWork.SaveAsync();
+                    if (result > 0)
+                    {
+                        var Brands = await UserUnitOfWork.ItemBrands.GetAllAsync();
+                        return Ok(Brands.Last(x => x.Name == brandName));
+                    }
+                    return BadRequest(Constants.DataAddtion_ERROR_Response());
+                }
+                return BadRequest(Constants.NullTentant_Error_Response());
+            }
+            return BadRequest(Constants.HackTrying_Error_Response());
+        }
+        //Delete Brand
+        [HttpDelete(nameof(DeleteBrand))]
+        public async Task<IActionResult> DeleteBrand(string Subdomain, int id)
+        {
+            if (CheckManuallyChanged_Subdomain(Subdomain))
+            {
+                //get tenant from TenantDP
+                var Tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(Subdomain);
+                if (Tenant != null)
+                {
+                    //if Tentnat is found, set the connection stirng
+                    await UserUnitOfWork.SetConnectionStringAsync(Tenant.ConnectionString);
+                    //Check if teh Main cat is found in DB
+                    var Brand = await UserUnitOfWork.ItemBrands.GetAsync(id);
+
+                    if (Brand != null)
+                    {
+                        UserUnitOfWork.ItemBrands.Remove(Brand);
+                        var result = await UserUnitOfWork.SaveAsync();
+                        if (result > 0)
+                        {
+                            //If all conditions are success.
+                            return Ok(Constants.Data_Deleted_SUCCESS_Response());
+                        }
+                        //If the Main Cat cat cannot be deleted
+                        return BadRequest(Constants.Data_Deleted_ERROR_Response());
+                    }
+                    //If the tenant is not found
+                    return BadRequest(Constants.Data_NOTFOUND_ERROR_Response());
+                }
+                return BadRequest(Constants.NullTentant_Error_Response());
+            }
+            return BadRequest(Constants.HackTrying_Error_Response());
+        }
+
+        //Update Brand
+        [HttpPut(nameof(UpdateBrand))]
+        public async Task<IActionResult> UpdateBrand(Brands Brand)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(Constants.ModelState_ERROR_Response(ModelState));
+            }
+            if (CheckManuallyChanged_Subdomain(Brand.Subdomain))
+            {
+                //get tenant from TenantDP
+                var Tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(Brand.Subdomain);
+                if (Tenant != null)
+                {
+                    //if Tentnat is found, set the connection stirng
+                    await UserUnitOfWork.SetConnectionStringAsync(Tenant.ConnectionString);
+                    //Check if teh Main cat is found in DB
+                    var BrandToUpdate = await UserUnitOfWork.ItemBrands.GetAsync(Brand.Id);
+                    if (!await IsUniqeMainCat(Brand.Name))
+                    {
+                        return BadRequest(Constants.Unique_Field_ERROR_Response());
+                    }
+                    if (BrandToUpdate != null)
+                    {
+                        BrandToUpdate.Name = Brand.Name;
+                        UserUnitOfWork.ItemBrands.Update(BrandToUpdate);
+                        var result = await UserUnitOfWork.SaveAsync();
+                        if (result > 0)
+                            return Ok(Constants.Data_SAVED_SUCCESS_Response());
+                        //If the Main cannot be deleted
+                        return BadRequest(Constants.Data_SAVED_ERROR_Response());
+                    }
+                    //If the tenant is not found
+                    return BadRequest(Constants.Data_NOTFOUND_ERROR_Response());
+                }
+                return BadRequest(Constants.NullTentant_Error_Response());
+            }
+            return BadRequest(Constants.HackTrying_Error_Response());
+        }
+
+
+        #endregion
         //HelperMedthod
         private bool CheckManuallyChanged_Subdomain(string subdomain)
         {
@@ -464,6 +587,11 @@ namespace ERP.Controllers.items
         {
             var allCats = await UserUnitOfWork.ItemMainCategory.GetAllAsync();
             return allCats.Find(x => x.Name == catName) == null;
+        }
+        public async Task<bool> IsUniqBrand(string BrandName)
+        {
+            var AllBrands = await UserUnitOfWork.ItemBrands.GetAllAsync();
+            return AllBrands.Find(x => x.Name == BrandName) == null;
         }
         public async Task<bool> IsUniqe_ItemUnit(string Wholesale, int id = 0)
         {

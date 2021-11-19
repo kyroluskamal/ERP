@@ -96,5 +96,11 @@ namespace ERP.UnitOfWork.Repository.ApplicationUser
         {
             return await dbSet.ToListAsync();
         }
+
+        public async Task<bool> IsUnique(T entity)
+        {
+            var allItems = await GetAllAsync();
+            return allItems.Find(x => x.Equals(entity)) == null;
+        }
     }
 }

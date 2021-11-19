@@ -17,6 +17,7 @@ import { IconButtonRendererComponent } from './Components/Dashboard/AgFrameworkC
 import { SelectableEditroAgFramweworkComponent } from './Components/Dashboard/AgFrameworkComponents/selectable-editro-ag-framwework/selectable-editro-ag-framwework.component';
 import { ItemUnitsComponent } from './Components/Dashboard/Items/item-units/item-units.component';
 import { NumberCellEditorComponent } from './Components/Dashboard/AgFrameworkComponents/number-cell-editor/number-cell-editor.component';
+import { ItemBrandsComponent } from './Components/Dashboard/Items/item-brands/item-brands.component';
 
 
 const Commponents = [
@@ -25,7 +26,7 @@ const Commponents = [
   ItemMainCategoriesComponent, ItemsComponentComponent, IconButtonRendererComponent
 ]
 @NgModule({
-  declarations: [Commponents, SelectableEditroAgFramweworkComponent, ItemUnitsComponent, NumberCellEditorComponent],
+  declarations: [Commponents, SelectableEditroAgFramweworkComponent, ItemUnitsComponent, NumberCellEditorComponent, ItemBrandsComponent],
   imports: [
     SharedModule, MaterialModule, ClientAppRoutingModule, CommonModule, AppRoutingModule,
     BrowserAnimationsModule
