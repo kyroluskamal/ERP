@@ -94,11 +94,17 @@ export class ItemUnitsComponent implements OnInit, OnDestroy {
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
     private LightOrDarkConverter: LightDarkThemeConverterService) {
 
-
     this.ItemsUnits = this.ItemService.Get_All_ItemUnits();
+    this.ItemsUnits.subscribe({
+      error: e => {
+        if (e.status === 401 && e.error === null)
+          this.NotificationService.error(this.translate.GetTranslation(this.Constants.Unauthorized_Error), "",
+            this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr')
+      }
+    });
     let tem: any = localStorage.getItem(this.Constants.BodyAppeareance);
     this.DarkOrLight = tem;
-
+    console.log(document.cookie);
     let x: any = localStorage.getItem(this.Constants.ChoosenThemeColors)
     x = JSON.parse(x);
     this.ThemeColors = x;
@@ -285,9 +291,12 @@ export class ItemUnitsComponent implements OnInit, OnDestroy {
             }
           } else if (error[0].status)
             translatedError += this.translate.GetTranslation(error[0].status);
-        } else
-          this.NotificationService.error(this.translate.GetTranslation(error.error.status), '',
-            this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
+        } else if (error.error.status)
+          translatedError += this.translate.GetTranslation(error.error.status);
+        else if (error.status === 401 && error.error === null) {
+          console.log(error);
+          translatedError += this.translate.GetTranslation(this.Constants.Unauthorized_Error);
+        }
         this.NotificationService.error(translatedError, '', this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr')
 
         if (error[0].status === this.Constants.NullTenant)
@@ -483,7 +492,15 @@ export class ItemUnitsComponent implements OnInit, OnDestroy {
 
             }
           }
+        } else if (error[0].status)
+          translatedError += this.translate.GetTranslation(error[0].status);
+        else if (error.error.status)
+          translatedError += this.translate.GetTranslation(error.error.status);
+        else if (error.status === 401 && error.error === null) {
+          console.log(error);
+          translatedError += this.translate.GetTranslation(this.Constants.Unauthorized_Error);
         }
+        this.NotificationService.error(translatedError, '', this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr')
         if (error[0].status === this.Constants.NullTenant)
           this.ErrorGettingAllMainCats = error;
         this.NotificationService.error(translatedError, '', this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr')
@@ -517,16 +534,22 @@ export class ItemUnitsComponent implements OnInit, OnDestroy {
           if (Array.isArray(e)) {
             this.NotificationService.error(this.translate.GetTranslation(e[0].status), '',
               this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
-          } else
+          }
+          else if (e.error.status)
             this.NotificationService.error(this.translate.GetTranslation(e.error.status), '',
               this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
+          else if (e.status === 401 && e.error === null) {
+            console.log(e);
+            this.NotificationService.error(this.translate.GetTranslation(this.Constants.Unauthorized_Error), '',
+              this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
+          }
           if (e[0].status === this.Constants.NullTenant || e.error.status === this.Constants.NullTenant)
             this.ErrorGettingAllMainCats = e;
           this.ShowProgressBar = false;
         }
       }
     );
-
+    this.gridApi.refreshClientSideRowModel();
   }
   CheckIfUniqe(event: any) {
     let IsUnique: boolean = false;

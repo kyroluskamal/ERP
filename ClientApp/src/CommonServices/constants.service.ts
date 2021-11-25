@@ -43,6 +43,8 @@ export class ConstantsService {
   ConversionRate = "Conversion Rate";
   Unit = "Unit";
   Units = "Units"
+  Brand_Name_Singular = "Brand_Name";
+  Brand_Names = "Brand_Names";
   //Notifications Messages
   LoggedInSuccessfully: string = "LoggedInSuccessfully";
   EmilConfirmationResnding = "EmilConfirmationResnding";
@@ -76,6 +78,8 @@ export class ConstantsService {
   MaxLengthExceeded_ERROR = "MaxLengthExceeded_ERROR";
   characters = "characters";
   Negative_Value_ERROR = "Negative_Value_ERROR";
+  AntiForgery_Error = "AntiForgery_Error"
+  Unauthorized_Error = "Unauthorized_Error"
   //Tooltip translation
   CloseSidebar = "Close sidebar";
   FixSidebar = "Fix sidebar";

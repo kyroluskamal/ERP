@@ -39,7 +39,9 @@ namespace ERP.Utilities.Services
         public string CreateClientToken(ApplicationUser applicationUser)
         {
             var claims = new List<Claim>{
-                new Claim(JwtRegisteredClaimNames.NameId, applicationUser.UserName)
+               new Claim(ClaimTypes.Name, applicationUser.UserName),
+                        new Claim(ClaimTypes.Email, applicationUser.Email),
+                        new Claim(ClaimTypes.Role, "Admin")
             };
             var cred = new SigningCredentials(Key, SecurityAlgorithms.HmacSha256Signature);
             var tokenDescribtor = new SecurityTokenDescriptor

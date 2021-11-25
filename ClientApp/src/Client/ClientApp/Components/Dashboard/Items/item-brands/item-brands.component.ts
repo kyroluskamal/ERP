@@ -14,7 +14,7 @@ import { IconButtonRendererComponent } from '../../AgFrameworkComponents/button-
 import { SelectableEditroAgFramweworkComponent } from '../../AgFrameworkComponents/selectable-editro-ag-framwework/selectable-editro-ag-framwework.component';
 import { ThemeColor } from '../../client-app-dashboard/client-app-dashboard.component';
 import { LightDarkThemeConverterService } from '../../light-dark-theme-converter.service';
-import { ItemMainCategory, ItemSubCategory } from '../../Models/item.model';
+import { Brands, ItemMainCategory, ItemSubCategory } from '../../Models/item.model';
 import { ItemsService } from '../items.service';
 
 @Component({
@@ -25,15 +25,10 @@ import { ItemsService } from '../items.service';
 export class ItemBrandsComponent implements OnInit, OnDestroy {
   ThemeColors: ThemeColor = JSON.parse(JSON.stringify(localStorage.getItem(this.Constants.ChoosenThemeColors)));
 
-  ItemsMainCategories: Observable<ItemMainCategory[]> = new Observable<ItemMainCategory[]>();
-  Items_Sub_Categories: Observable<ItemSubCategory[]> = new Observable<ItemSubCategory[]>();
-  ItemMainCat: ItemMainCategory = new ItemMainCategory();
+  ItemBrands: Observable<Brands[]> = new Observable<Brands[]>();
   Subdomain: string = window.location.hostname.split(".")[0];
   ServerErrors: string = "";
-  NoUniqueSubCat_Per_MainCat: boolean = false;
-  NotSelected_MainCat: boolean = false;
-  SelectMainCat_Through_SubCat: boolean = false;
-  AllMainCats: ItemMainCategory[] = [];
+  MaxLength: number = 30;
   defaultColDef: ColDef = {
     filter: true,
     sortable: true,
@@ -61,47 +56,15 @@ export class ItemBrandsComponent implements OnInit, OnDestroy {
     SelectableEditor: SelectableEditroAgFramweworkComponent
   }
 
-  defaultColDef_SubCat: ColDef = {
-    filter: true,
-    sortable: true,
-    suppressKeyboardEvent: params => {
-      if (!params.editing) {
-        let isBackspaceKey = params.event.key === "Delete";
-        let isDeleteKey = params.event.key === "Backspace";
-        let shiftKey = params.event.shiftKey;
-        if (isBackspaceKey && shiftKey) {
-          this.Delete_SubCat(params);
-          return true
-        }
-
-        if (isDeleteKey && shiftKey) {
-          this.Delete_SubCat(params);
-          return true
-        }
-      }
-      return false;
-    }
-  };
-  columnDefs_Subcats: ColDef[] = [];
   overlayLoadingTemplate: string = "";
 
-  overlayLoadingTemplate_SubCat: string = "";
-
   gridApi: GridApi = new GridApi();
-  gridApi_subCat: GridApi = new GridApi();
   gridColumnApi: ColumnApi = new ColumnApi();
-  gridColumnApi_SubCat: any;
   GlobalSearchValue: string = "";
-
-
-  AddMainCatForm: FormGroup = new FormGroup({});
-  Add_Sub_CatForm: FormGroup = new FormGroup({});
+  AddBrandForm: FormGroup = new FormGroup({});
   LangSubscibtion: Subscription = new Subscription();
   customErrorStateMatcher: CustomErrorStateMatcher = new CustomErrorStateMatcher()
-  selected: any;
   loading: boolean = false;
-  loading_subcat: boolean = false;
-  IsTenantFound: Subscription = new Subscription();
   TableAppearance: Subscription = new Subscription();
   ErrorGettingAllMainCats: any[] = [];
   ThemeSubscription: Subscription;
@@ -113,7 +76,6 @@ export class ItemBrandsComponent implements OnInit, OnDestroy {
   AgGridDir: 'rtl' | 'ltr';
   Theme_dir: 'rtl' | 'ltr';
   ShowProgressBar: boolean = false;
-  ShowProgressBar_subcat: boolean = false;
   showOverlayFirstTime: boolean = true;
 
   //Constructor ........................................................................
@@ -142,8 +104,7 @@ export class ItemBrandsComponent implements OnInit, OnDestroy {
       this.AgGridDir = x;
       // window.location.reload();
     });
-    this.ItemsMainCategories = this.ItemService.GetAllGategories();
-    this.ItemsMainCategories.subscribe(r => this.AllMainCats = r);
+    this.ItemBrands = this.ItemService.Get_All_ItemBrands();
     let tableAppearence: any = localStorage.getItem(this.Constants.Table_Color_mode);
     this.Table_Color_mode = tableAppearence;
     this.TableAppearance = this.LightOrDarkConverter.TableTheme$.subscribe(
@@ -154,24 +115,15 @@ export class ItemBrandsComponent implements OnInit, OnDestroy {
     this.ThemeDirection = this.LightOrDarkConverter.ThemeDir$.subscribe(
       r => this.Theme_dir = r
     );
-    this.Items_Sub_Categories = this.ItemService.GetItems_All_SubCats();
     this.columnDefs = [
       {
         headerName: "#", field: 'id',
         filter: true,
         flex: 1,
-
       },
       {
         headerName: this.translate.GetTranslation(this.Constants.Name), field: 'name',
-        editable: ({ node }) => {
-          if (node.data.name === this.translate.GetTranslation(this.Constants.Uncategorized)) {
-            this.NotificationService.error(this.translate.GetTranslation(this.Constants.UnCategorized_Can_tDeleted_Or_Updated), "",
-              this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr')
-            return false
-          }
-          return true
-        }, filter: true,
+        editable: true, filter: true,
         flex: 3
       },
       {
@@ -180,55 +132,16 @@ export class ItemBrandsComponent implements OnInit, OnDestroy {
         cellRendererParams: {
           onClick: this.onDeleteButtonClick.bind(this),
           iconName: 'delete',
-          preventionName: this.Constants.Uncategorized
         },
         filter: false,
         sortable: false,
         flex: 1
-      },
-
-    ];
-    this.columnDefs_Subcats = [
-      {
-        headerName: "#", field: 'id',
-        filter: true,
-        flex: 1
-      },
-      {
-        headerName: this.translate.GetTranslation(this.Constants.Name), field: 'name',
-        editable: ({ node }) => {
-          if (node.data.name === this.translate.GetTranslation(this.Constants.Uncategorized)) {
-            this.NotificationService.error(this.translate.GetTranslation(this.Constants.UnCategorized_Can_tDeleted_Or_Updated), "",
-              this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr')
-            return false
-          }
-          return true
-        }, filter: true,
-        flex: 2
-      },
-      {
-        headerName: this.translate.GetTranslation(this.Constants.MainCat_Singular), field: 'itemMainCategoryId',
-        flex: 2
-      },
-      {
-        headerName: this.translate.GetTranslation(this.Constants.Delete),
-        cellRenderer: 'buttonRenderer',
-        cellRendererParams: {
-          onClick: this.Delete_SubCat.bind(this),
-          iconName: 'delete',
-          preventionName: this.Constants.Uncategorized
-        },
-        filter: false,
-        sortable: false,
-        flex: 1,
-
-      },
+      }
     ];
   }
 
   ngOnDestroy(): void {
     this.LangSubscibtion.unsubscribe();
-    this.IsTenantFound.unsubscribe();
     this.ThemeSubscription.unsubscribe();
     this.ThemeColorSubscription.unsubscribe();
     this.AgGridTable_dir.unsubscribe();
@@ -237,27 +150,18 @@ export class ItemBrandsComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.showOverlayFirstTime = false;
-    this.LangSubscibtion = this.translate.SelectedLangSubject.subscribe(
-      (response) => {
-        this.selected = response;
-      }
-    );
-    this.AddMainCatForm = new FormGroup({
-      CatName: new FormControl('', Validators.required)
+    this.AddBrandForm = new FormGroup({
+      BrandName: new FormControl('', [Validators.required, Validators.maxLength(this.MaxLength)])
     });
-    this.Add_Sub_CatForm = new FormGroup({
-      SubCatName: new FormControl('', Validators.required)
-    });
-
   }
 
-  AddMainCategory() {
+  AddBrand() {
     this.gridApi.showLoadingOverlay();
     this.ShowProgressBar = true;
     this.loading = true;
     let IsUnique: boolean = false;
     this.gridApi.forEachNode((node) => {
-      if (String(node.data.name).toLowerCase() === String(this.AddMainCatForm.get("CatName")?.value).toLowerCase()) {
+      if (String(node.data.name).toLowerCase() === String(this.AddBrandForm.get("BrandName")?.value).toLowerCase()) {
         IsUnique = true;
       }
     });
@@ -266,25 +170,21 @@ export class ItemBrandsComponent implements OnInit, OnDestroy {
         this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
       this.loading = false;
       this.ShowProgressBar = false;
-      this.AddMainCatForm.get("CatName")?.setValue("");
+      this.AddBrandForm.get("BrandName")?.setValue("");
       this.gridApi.hideOverlay();
       return;
     }
-
-    this.ItemService.AddMainCat(this.AddMainCatForm.get("CatName")?.value).subscribe({
-      next: (response) => {
+    let newBrand: Brands = {
+      id: 0,
+      name: this.AddBrandForm.get("BrandName")?.value,
+      subdomain: this.Subdomain
+    }
+    this.ItemService.AddNew_ItemBrand(newBrand).subscribe({
+      next: (r) => {
         this.NotificationService.success(this.translate.GetTranslation(this.Constants.DataAddtionStatus_Success),
           this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
+        this.gridApi.applyTransaction({ add: [r] });
         this.loading = false;
-        this.ItemsMainCategories.subscribe((MainCatLists) => {
-          MainCatLists.map((item) => {
-            if (item.name === this.Constants.Uncategorized) {
-              item.name = this.translate.GetTranslation(this.Constants.Uncategorized);
-            }
-          })
-          this.gridApi.hideOverlay();
-          this.gridApi.setRowData(MainCatLists);
-        });
         this.ShowProgressBar = false;
       },
       error: error => {
@@ -302,7 +202,7 @@ export class ItemBrandsComponent implements OnInit, OnDestroy {
         this.ShowProgressBar = false;
       }
     });
-    this.AddMainCatForm.get("CatName")?.setValue("");
+    this.AddBrandForm.get("BrandName")?.setValue("");
     this.loading = false;
     this.gridApi.hideOverlay();
     this.ShowProgressBar = false;
@@ -311,23 +211,13 @@ export class ItemBrandsComponent implements OnInit, OnDestroy {
   OnGridReady(event: GridReadyEvent) {
     this.gridApi = event.api;
     this.gridColumnApi = event.columnApi;
-    this.ItemsMainCategories.subscribe(
-      r => {
-        r.map((item) => {
-          if (item.name === this.Constants.Uncategorized) {
-            item.name = this.translate.GetTranslation(this.Constants.Uncategorized);
-          }
-        })
-        this.gridApi.setRowData(r);
-      }
-    );
   }
 
-  externalFilterChanged(MainCatSearch: HTMLInputElement) {
-    this.gridApi.setQuickFilter(MainCatSearch.value);
+  externalFilterChanged(BrandSearch: HTMLInputElement) {
+    this.gridApi.setQuickFilter(BrandSearch.value);
   }
 
-  UpdateItemMainCat(event: CellValueChangedEvent) {
+  UpdateBrand(event: CellValueChangedEvent) {
     console.log(event);
     this.gridApi.showLoadingOverlay();
     this.ShowProgressBar = true;
@@ -359,13 +249,13 @@ export class ItemBrandsComponent implements OnInit, OnDestroy {
       this.gridApi.hideOverlay();
       return;
     }
-    let MaindCat: ItemMainCategory = {
-      id: event.data.id,
-      name: event.data.name,
-      subdomain: window.location.hostname.split('.')[0]
+    let Brand: Brands = {
+      id: Number(event.data.id),
+      name: String(event.data.name),
+      subdomain: this.Subdomain
     }
     if (event.oldValue === event.newValue) return;
-    this.ItemService.UpdateMainCat(MaindCat).subscribe({
+    this.ItemService.Update_ItemBrand(Brand).subscribe({
       next: r => {
         this.NotificationService.success(this.translate.GetTranslation(r.status),
           this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
@@ -407,46 +297,12 @@ export class ItemBrandsComponent implements OnInit, OnDestroy {
 
   onDeleteButtonClick(event: any) {
     this.ShowProgressBar = true;
-    this.ItemService.DeleteMainCat(event.data.id).subscribe(
+    this.ItemService.Delete_ItemBrand(event.data.id).subscribe(
       {
         next: r => {
           this.NotificationService.success(this.translate.GetTranslation(this.Constants.Data_Deleted_success_status),
             this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
-          this.ItemsMainCategories.subscribe(
-            {
-              next: MainCatlist => {
-                MainCatlist = MainCatlist.filter(function (item) {
-                  return item.id !== event.data.id
-                });
-                MainCatlist.map((item) => {
-                  if (item.name === this.Constants.Uncategorized) {
-                    item.name = this.translate.GetTranslation(this.Constants.Uncategorized);
-                  }
-                });
-                this.gridApi.showLoadingOverlay();
-                this.gridApi.setRowData(MainCatlist);
-                this.ShowProgressBar = false;
-                //deleteing associated subcategories from the grid api
-                this.ShowProgressBar_subcat = true;
-                this.gridApi_subCat.showLoadingOverlay();
-                let SubCats: any[] = [];
-                this.gridApi_subCat.forEachNode((node) => {
-                  console.log(node);
-                  if (node.data.itemMainCategoryId === event.data.id)
-                    SubCats.push(node.data);
-                });
-                console.log(SubCats);
-
-                this.gridApi_subCat.applyTransaction({ remove: SubCats });
-                this.Items_Sub_Categories.subscribe(r => this.gridApi_subCat.setRowData(r));
-                this.gridApi_subCat.hideOverlay();
-                this.ShowProgressBar_subcat = false;
-              },
-              error: e => {
-                console.log(e);
-              }
-            }
-          );
+          this.gridApi.applyTransaction({ remove: [event.node.data] });
         },
         error: e => {
           this.ShowProgressBar = false;

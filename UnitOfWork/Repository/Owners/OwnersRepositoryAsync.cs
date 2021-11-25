@@ -101,5 +101,10 @@ namespace ERP.UnitOfWork.Repository.Owners
         {
             throw new NotImplementedException();
         }
+
+        public Task<bool> IsUnique(T entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

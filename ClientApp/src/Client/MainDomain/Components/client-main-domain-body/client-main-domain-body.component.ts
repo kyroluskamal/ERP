@@ -29,7 +29,7 @@ export class ClientMainDomainBodyComponent implements OnInit, OnDestroy {
   currentUserName: string | null = null;
 
   UrlWithSubdomain: string = "";
-
+  CurrentUser: any;
   //constructor
   constructor(public translate: TranslationService, private viewportScroller: ViewportScroller,
     private mediaObserver: MediaObserver, public dialogHandler: DialogHandlerService,
@@ -43,6 +43,7 @@ export class ClientMainDomainBodyComponent implements OnInit, OnDestroy {
       next: (user) => {
         if (user) {
           this.currentUserName = user.username;
+          this.CurrentUser = user;
           this.UrlWithSubdomain = `https://${user.subdomain}.${window.location.host}`;
         } else {
           this.currentUserName == null;

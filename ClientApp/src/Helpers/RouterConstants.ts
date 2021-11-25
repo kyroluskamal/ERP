@@ -15,6 +15,7 @@ export abstract class RouterConstants {
   public static Client_ResetPassword_APIURL: string = "/api/Identity/ResetPassword";
   public static Client_SocialLogins_APIURL: string = "/api/Identity/SoicalLogin";
   public static IsTenantFound_APIURL: string = "/api/Identity/IsTenantFound";
+  public static Client_Loggout: string = "/api/Identity/LoggOut";
 
   //APIURLS for Items
   public static ItemMainCategory_GetAll_API = "/api/items/allcategories";

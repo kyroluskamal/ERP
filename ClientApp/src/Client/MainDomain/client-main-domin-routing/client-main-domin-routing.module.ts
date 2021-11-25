@@ -15,7 +15,7 @@ import { IsLoggedInGuard } from '../Guards/is-logged-in.guard';
 
 const routes: Routes = [
   { path: RouterConstants.Client_EmailConfirmationUrl, component: EmailConfirmationClientComponent },
-
+  { path: RouterConstants.Client_PasswordResetURL, component: CommoneResetPasswordComponent },
   {
     path: "", component: ClientMainComponent, children:
       [
@@ -23,7 +23,7 @@ const routes: Routes = [
           path: RouterConstants.Client_MainDomainAccountURL, component: ClientMainDomainAccountComponent, canActivate: [IsLoggedInGuard, ClientAdminGuard]
         },
         /*{ path: "", component: ClientMainDomainBodyComponent },*/
-        { path: RouterConstants.Client_PasswordResetURL, component: CommoneResetPasswordComponent },
+
       ]
   }
 ];

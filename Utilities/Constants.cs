@@ -251,6 +251,19 @@ namespace ERP.Utilities
         {
             return new { status = NullTenant_statuCode, error = NullTenant_ErrorMessage };
         }
+        public object EmailConfirmation_Error_Response()
+        {
+            return new { status = EmailConfirmation_StatusCode, error = Emailconfirmation_ErrorMessage };
+        }
+        public object WrongPassword_Error_Response()
+        {
+            return new { status = WrongPassword_StatusCode, error = WrongPassword_ErrorMessage };
+        }
+
+        public object NullUser_Error_Response()
+        {
+            return new { status = NullUser_statuCode, error = NullUser_ErrorMessage };
+        }
         public object HackTrying_Error_Response()
         {
             return new { status = HackTrying_Error, error = HackTrying_Error_message };

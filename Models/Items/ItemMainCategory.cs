@@ -6,9 +6,8 @@ namespace ERP.Models.Items
     public class ItemMainCategory
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, write the name of the category")]
-        [MaxLength(30)]
-        [Index(IsUnique = true)]
+        [Required(ErrorMessage = "Required_field")]
+        [MaxLength(30, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string Name { get; set; }
         [NotMapped]
         public string Subdomain { get; set; }

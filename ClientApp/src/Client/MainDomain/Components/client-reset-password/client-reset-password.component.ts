@@ -83,22 +83,22 @@ export class ClientResetPasswordComponent implements OnInit, OnDestroy {
       ConfirmPassword: this.ResetForm.get("ConfirmPassword")?.value
     }
     console.log(this.ClientResetPasswordModel);
-    this.accountService.ClientResetPassword(this.ClientResetPasswordModel).subscribe(
-      (Response: any) => {
+    this.accountService.ClientResetPassword(this.ClientResetPasswordModel).subscribe({
+      next: (Response: any) => {
         this.Success = true;
         this.Notifications.success(this.translate.GetTranslation(this.Constants.ResetPassword_Success),
           this.translate.isRightToLeft(this.selected) ? "rtl" : "ltr");
         this.router.navigateByUrl("/");
         this.dialogHandler.CloseDialog();
       },
-      (error: any) => {
+      error: (error: any) => {
         this.Fail = true;
         this.Success = false;
         this.ValidationErrors = error
-        this.Notifications.error(this.translate.GetTranslation(this.Constants.ResetPassword_Error),"",
+        this.Notifications.error(this.translate.GetTranslation(this.Constants.ResetPassword_Error), "",
           this.translate.isRightToLeft(this.selected) ? "rtl" : "ltr");
       }
-    );
+    });
   }
 
   OnSubmit() {

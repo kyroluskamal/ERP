@@ -18,18 +18,33 @@ import { SelectableEditroAgFramweworkComponent } from './Components/Dashboard/Ag
 import { ItemUnitsComponent } from './Components/Dashboard/Items/item-units/item-units.component';
 import { NumberCellEditorComponent } from './Components/Dashboard/AgFrameworkComponents/number-cell-editor/number-cell-editor.component';
 import { ItemBrandsComponent } from './Components/Dashboard/Items/item-brands/item-brands.component';
+import { LoginOnAppComponent } from './Components/Dashboard/login-on-app/login-on-app.component';
+import { HttpClientXsrfModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ErrorHandlingInterceptor } from 'src/Interceptors/ErrorHandling/error-handling.interceptor';
+import { TokenInterceptorInterceptor } from 'src/Interceptors/TokenInterceptor/token-interceptor.interceptor';
 
 
 const Commponents = [
   ClientAppDashboardComponent, ClientAppHomeNavbarComponent, CLientAppHomeComponent,
   ClientAppLoginComponent, ClientAppRegisterComponent, ClientDashboardHomeComponent,
-  ItemMainCategoriesComponent, ItemsComponentComponent, IconButtonRendererComponent
+  ItemMainCategoriesComponent, ItemsComponentComponent, IconButtonRendererComponent,
+  SelectableEditroAgFramweworkComponent, ItemUnitsComponent, NumberCellEditorComponent,
+  ItemBrandsComponent, LoginOnAppComponent
 ]
 @NgModule({
-  declarations: [Commponents, SelectableEditroAgFramweworkComponent, ItemUnitsComponent, NumberCellEditorComponent, ItemBrandsComponent],
+  declarations: [Commponents],
   imports: [
     SharedModule, MaterialModule, ClientAppRoutingModule, CommonModule, AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpClientXsrfModule.withOptions({
+      cookieName: 'XSRF-TOKEN',
+      headerName: 'scfD1z5dp2',
+    })
+  ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorHandlingInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorInterceptor, multi: true },
+
   ],
   exports: [Commponents]
 })

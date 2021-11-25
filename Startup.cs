@@ -13,8 +13,11 @@ using ERP.UnitOfWork;
 using ERP.Utilities;
 using ERP.Utilities.Services;
 using ERP.Utilities.Services.EmailService;
+using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -24,8 +27,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Text;
+using System.Threading.Tasks;
+using System.Web.Helpers;
 
 namespace ERP
 {
@@ -41,6 +47,7 @@ namespace ERP
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc(o => o.EnableEndpointRouting = false);
             services.AddScoped<TenantProvider>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<ITokenService, TokenService>();
@@ -120,33 +127,44 @@ namespace ERP
 
             services.AddCors(c =>
             {
-                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+                c.AddPolicy("AllowOrigin", options => options.WithOrigins("https://kyroluskamal.localhost:44369/").AllowAnyHeader().AllowAnyMethod().AllowCredentials());
             });
 
             services.AddScoped<IOwnerDbInitializer, OwnerDbInitializer>();
             //Configure JWT Tokens
-            services.AddAuthentication(
-                options =>
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
+                x.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+            })
+            .AddCookie(IdentityConstants.ApplicationScheme)
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    //options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                    //options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"])),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
-                    };
-                });
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"])),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
+            services.AddAntiforgery(options =>
+            {
+                options.Cookie.Name = "XSRF-TOKEN";
+                options.HeaderName = "scfD1z5dp2";
+                options.Cookie.HttpOnly = false;
+                options.Cookie.MaxAge = TimeSpan.FromDays(5);
+                options.Cookie.SecurePolicy = CookieSecurePolicy.None;
+            });
+
             services.AddScoped<IUnitOfWork_ApplicationUser, ApplicationUserUnitOfWork>();
             services.AddScoped<IUnitOfWork_Owners, OwnerUnitOfWork>();
             services.AddScoped<IUnitOfWork_Tenants, TenantsUnitOfWork>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddTransient<AuthenticationService>();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => configuration.RootPath = "ClientApp/dist");
             services.AddSingleton<Constants>();
@@ -160,7 +178,7 @@ namespace ERP
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOwnerDbInitializer ownerDbInitializer)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOwnerDbInitializer ownerDbInitializer, IAntiforgery antiForgery)
         {
             app.UseMiddleware<ExceptionMiddleware>();
             //if (env.IsDevelopment())
@@ -174,6 +192,17 @@ namespace ERP
             //    //The default HSTS value is 30 days.You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             //    app.UseHsts();
             //}
+            app.Use(next => context =>
+            {
+                if (context.Request.Path.Value.IndexOf("/api", StringComparison.OrdinalIgnoreCase) != -1)
+                {
+                    var tokens = antiForgery.GetAndStoreTokens(context);
+                    //context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken,
+                    //    new CookieOptions() { HttpOnly = false, Secure = false });
+                }
+
+                return next(context);
+            });
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -184,21 +213,29 @@ namespace ERP
 
             app.UseRouting();
 
+            //app.UseCookiePolicy();
+            //app.UseCors(policy =>
+            //{
+            //    policy.AllowAnyOrigin();
+            //    policy.AllowAnyHeader();
+            //    policy.AllowAnyMethod();
+            //});
+
             app.UseAuthentication();
             app.UseAuthorization();
             ownerDbInitializer.Initialize();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
-                endpoints.MapControllerRoute(
-                    name: "areas",
-                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-          );
-                endpoints.MapRazorPages();
-            });
-
+            //  app.UseEndpoints(endpoints =>
+            //  {
+            //      endpoints.MapControllerRoute(
+            //          name: "default",
+            //          pattern: "{controller}/{action=Index}/{id?}");
+            //      endpoints.MapControllerRoute(
+            //          name: "areas",
+            //          pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+            //);
+            //      endpoints.MapRazorPages();
+            //  });
+            app.UseMvc();
             app.UseSpa(spa =>
             {
                 // To learn more about options for serving an Angular SPA from ASP.NET Core,

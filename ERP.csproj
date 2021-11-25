@@ -18,6 +18,8 @@
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="MailKit" Version="2.15.0" />
     <PackageReference Include="Microex.Swagger" Version="1.0.3" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
+    <PackageReference Include="Microsoft.AspNet.WebPages" Version="3.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.10" />
@@ -59,7 +61,6 @@
     <Folder Include="ClientApp\src\Interceptors\ErrorHandling\" />
     <Folder Include="ClientApp\src\Interceptors\TokenInterceptor\" />
     <Folder Include="ClientApp\src\Owners\Dashboard\Employers\" />
-    <Folder Include="Utilities\Helpers\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

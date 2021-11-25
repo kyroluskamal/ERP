@@ -20,8 +20,11 @@ export class CommoneResetPasswordComponent implements OnInit {
 
   //ngOnInit
   ngOnInit(): void {
+    console.log(this.route.snapshot.queryParamMap);
     const email = this.route.snapshot.queryParamMap.get(this.Constants.email);
     const token = this.route.snapshot.queryParamMap.get(this.Constants.token);
+    console.log(email);
+    console.log(token);
     if (email && token) {
       this.route.url.subscribe(
         (response: any) => {

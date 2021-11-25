@@ -270,8 +270,12 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
       this.gridApi.hideOverlay();
       return;
     }
-
-    this.ItemService.AddMainCat(this.AddMainCatForm.get("CatName")?.value).subscribe({
+    let newMainCat: ItemMainCategory = {
+      id: 0,
+      name: this.AddMainCatForm.get("CatName")?.value,
+      subdomain: this.Subdomain
+    }
+    this.ItemService.AddMainCat(newMainCat).subscribe({
       next: (response) => {
         this.NotificationService.success(this.translate.GetTranslation(this.Constants.DataAddtionStatus_Success),
           this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
@@ -302,7 +306,7 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
         this.ShowProgressBar = false;
       }
     });
-    this.AddMainCatForm.get("CatName")?.setValue("");
+    this.AddMainCatForm.reset();
     this.loading = false;
     this.gridApi.hideOverlay();
     this.ShowProgressBar = false;
@@ -587,7 +591,7 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
           this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
       }
     });
-    this.Add_Sub_CatForm.get("SubCatName")?.setValue("");
+    this.Add_Sub_CatForm.reset();
     this.ShowProgressBar_subcat = false;
     this.loading_subcat = false;
   }

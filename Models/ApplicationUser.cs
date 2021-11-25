@@ -12,5 +12,9 @@ namespace ERP.Models
         [Column(TypeName = "tinyint")]
         public int IsClientOrStaffOrBoth { get; set; }
         public ICollection<ApplicationUserUserRoles> UserRole { get; set; }
+        [NotMapped]
+        public string Token { get; set; }
+        [NotMapped]
+        public bool WrongPassowrd { get; set; }
     }
 }

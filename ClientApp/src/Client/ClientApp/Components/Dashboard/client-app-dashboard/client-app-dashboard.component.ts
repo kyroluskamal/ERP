@@ -10,6 +10,7 @@ import { MediaChange, MediaObserver } from '@angular/flex-layout';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { SideNav_items } from '.././SideNavItems'
 import { LightDarkThemeConverterService } from '../light-dark-theme-converter.service';
+import { ClientAccountService } from 'src/Client/MainDomain/Authentication/client-account-service.service';
 
 export interface ExpansionPanel {
   title: string;
@@ -90,8 +91,14 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
   //Constructor............................................................................
   constructor(public Constants: ConstantsService, public translate: TranslationService,
     private Notifications: NotificationsService, private mediaObserver: MediaObserver,
+    private ClientAccountService: ClientAccountService,
     private LightDarkThemeConverter: LightDarkThemeConverterService, private router: Router) {
-
+    this.ClientAccountService.currentUserOvservable.subscribe(
+      r => console.log(r)
+    );
+    this.ClientAccountService.X_Token$.subscribe(
+      r => console.log(r)
+    );
     if (localStorage.getItem(this.Constants.ChoosenThemeColors)) {
       let temp: any = localStorage.getItem(this.Constants.ChoosenThemeColors)
       this.ChoosenThemeColor = JSON.parse(temp);

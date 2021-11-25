@@ -5,36 +5,40 @@ import {
   HttpEvent,
   HttpInterceptor
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { OwnerAccountService } from '../../Owners/Services/Authentication/Owner-account-service.service';
 import { take } from 'rxjs/operators';
 import { OwnerWithToken } from '../../Owners/Models/owner-with-token.model';
 import { ClientWithToken } from '../../Client/Models/client-with-token.model';
 import { ClientAccountService } from '../../Client/MainDomain/Authentication/client-account-service.service';
-
+import { StorageMap } from '@ngx-pwa/local-storage';
+import { ConstantsService } from 'src/CommonServices/constants.service';
 @Injectable()
 export class TokenInterceptorInterceptor implements HttpInterceptor {
+  Client: any;
+  Owner: any;
+  constructor(private OwnerAccountService: OwnerAccountService, private indexedDb: StorageMap,
+    private ClientAccountService: ClientAccountService, private Constants: ConstantsService) {
+    this.Owner = localStorage.getItem(this.Constants.Owner);
+    if (this.Owner)
+      this.Owner = JSON.parse(this.Owner);
+    this.Client = localStorage.getItem(this.Constants.Client);
+    if (this.Client)
+      this.Client = JSON.parse(this.Client);
+  }
 
-  constructor(private OwnerAccountService: OwnerAccountService,
-    private ClientAccountService: ClientAccountService) { }
-
-  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    let owner: OwnerWithToken = new OwnerWithToken();
-    let client: ClientWithToken = new ClientWithToken();
-
-    this.OwnerAccountService.currentUserOvservable.pipe(take(1)).subscribe(user => owner = user);
-    if (owner) {
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (this.Owner) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${owner.token}`
+          Authorization: `Bearer ${this.Owner.token}`
         }
       })
     }
-    this.ClientAccountService.currentUserOvservable.pipe(take(1)).subscribe(user => client = user);
-    if (client) {
+    if (this.Client) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${client.token}`
+          Authorization: `Bearer ${this.Client.token}`
         }
       })
     }

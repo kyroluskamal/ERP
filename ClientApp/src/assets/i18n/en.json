@@ -142,5 +142,9 @@
   "characters": " character(s)",
   "Negative_Value_ERROR" : "Enter positive numbers greater than 0 only.",
   "in": " in",
-  "field": " field"
+  "field": " field",
+  "Brand_Name_Singular": "Brand Name",
+  "Brand_Names" : "Brand Names",
+  "AntiForgery_Error" : "Are you trying to login with a forge identity? This is forbidden.",
+  "Unauthorized_Error" : "You are not authorized to access this page. Are you logged in with the correct role?"
 }

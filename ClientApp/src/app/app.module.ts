@@ -8,7 +8,7 @@ import { SharedModule } from '../SharedModules/shared/shared.module';
 import { OwnerModule } from '../Owners/owner.module';
 import { CommonModule } from '@angular/common';
 import { ClientModule } from '../Client/client.module';
-import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClient, HttpClientXsrfModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorHandlingInterceptor } from '../Interceptors/ErrorHandling/error-handling.interceptor';
 import { NotFoundComponent } from '../CommonComponents/not-found/not-found.component';
 import { TokenInterceptorInterceptor } from '../Interceptors/TokenInterceptor/token-interceptor.interceptor';
@@ -16,10 +16,11 @@ import { CommoneResetPasswordComponent } from '../CommonComponents/commone-reset
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ClientAppModule } from 'src/Client/ClientApp/client-app.module';
+import { CookieService } from "ngx-cookie-service"
 
 @NgModule({
   declarations: [
-    AppComponent, NotFoundComponent, CommoneResetPasswordComponent
+    AppComponent, NotFoundComponent, CommoneResetPasswordComponent,
   ],
   imports: [
     BrowserModule, BrowserAnimationsModule, MaterialModule, SharedModule,
@@ -30,6 +31,10 @@ import { ClientAppModule } from 'src/Client/ClientApp/client-app.module';
         useFactory: httpTranslateLoader,
         deps: [HttpClient]
       }
+    }),
+    HttpClientXsrfModule.withOptions({
+      cookieName: 'XSRF-TOKEN',
+      headerName: 'scfD1z5dp2',
     })
   ],
   providers: [

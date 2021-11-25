@@ -8,6 +8,7 @@ import { ClientAppDashboardComponent } from './Components/Dashboard/client-app-d
 import { ItemMainCategoriesComponent } from './Components/Dashboard/Items/item-main-categories/item-main-categories.component';
 import { ItemUnitsComponent } from './Components/Dashboard/Items/item-units/item-units.component';
 import { ItemsComponentComponent } from './Components/Dashboard/Items/items-component/items-component.component';
+import { LoginOnAppComponent } from './Components/Dashboard/login-on-app/login-on-app.component';
 
 
 
@@ -23,10 +24,11 @@ const routes: Routes = [
             { path: RouterConstants.App_ItemMainCategories, component: ItemMainCategoriesComponent },
             { path: RouterConstants.App_ItemUnits, component: ItemUnitsComponent }
           ],
-          canActivate: [IsNullTenantGuard]
+          //canActivate: [IsNullTenantGuard]
         },
       ]
-  }
+  },
+  { path: RouterConstants.App_login, component: LoginOnAppComponent }
 ];
 
 @NgModule({

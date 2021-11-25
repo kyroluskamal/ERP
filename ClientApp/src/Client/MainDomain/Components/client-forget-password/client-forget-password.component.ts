@@ -49,18 +49,18 @@ export class ClientForgetPasswordComponent implements OnInit, OnDestroy {
       Email: this.ForgetPassworForm.get("Email")?.value,
       ClientUrl: this.Constants.ClientUrl(RouterConstants.Client_PasswordResetURL)
     }
-    this.AccountService.ClientForgetPassord(ForgetPasswordModel).subscribe(
-      () => {
+    this.AccountService.ClientForgetPassord(ForgetPasswordModel).subscribe({
+      next: () => {
         this.Notifications.success(this.translate.GetTranslation(this.Constants.PasswordResetEmail_success),
           this.translate.isRightToLeft(this.selected) ? "rtl" : "ltr")
         this.dialogHandler.CloseDialog();
       },
-      (error) => {
+      error: (error) => {
         this.Notifications.error(this.translate.GetTranslation(this.Constants.PasswordResetEmail_Error), "",
           this.translate.isRightToLeft(this.selected) ? "rtl" : "ltr");
         this.ValidationErrors = error;
       }
-    );
+    });
   }
   ngOnDestroy(): void {
     this.LangSubscibtion.unsubscribe();

@@ -11,18 +11,23 @@ import { OwnerResetPasswordComponent } from './Components/owner-reset-password/o
 import { OwnerForgetPasswordComponent } from './Components/owner-forget-password/owner-forget-password.component';
 import { OwnersRoutingModule } from './owners-routing/owners-routing.module';
 import { OwnersDashBoardComponent } from './Dashboard/Owners/Components/owners-dash-board/owners-dash-board.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { HttpClientXsrfModule } from '@angular/common/http';
 
 const Commponents = [
   OwnersLoginComponent, OwnerRegisterComponent, OwnerNavBarComponent,
   OwnerMainComponent, OwnerBodyComponent, EmailConfirmationOwnerComponent,
   OwnerResetPasswordComponent, OwnerForgetPasswordComponent,
-  OwnersDashBoardComponent
+  OwnersDashBoardComponent,
+
 ]
 @NgModule({
   declarations: [Commponents],
   imports: [
-    SharedModule, MaterialModule, OwnersRoutingModule
+    SharedModule, MaterialModule, OwnersRoutingModule,
+    HttpClientXsrfModule.withOptions({
+      cookieName: 'XSRF-TOKEN',
+      headerName: 'scfD1z5dp2',
+    })
   ],
   exports: [Commponents]
 })

@@ -1,9 +1,10 @@
-import { HttpClient, HttpHeaderResponse, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaderResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { RouterConstants } from 'src/Helpers/RouterConstants';
 import { Brands, ItemMainCategory, ItemSubCategory, ItemUnit } from '../Models/item.model';
+import { CookieService } from "ngx-cookie-service"
 
 @Injectable({
   providedIn: 'root'
@@ -11,23 +12,20 @@ import { Brands, ItemMainCategory, ItemSubCategory, ItemUnit } from '../Models/i
 export class ItemsService {
   subdomain = window.location.hostname.split(".")[0];
 
-  constructor(private httpClient: HttpClient, public Constants: ConstantsService) {
+  constructor(private httpClient: HttpClient, public Constants: ConstantsService, private CookieServ: CookieService) {
 
   }
 
   //#region Item Main Category
   GetAllGategories(): Observable<ItemMainCategory[]> {
-    let subomain = window.location.hostname.split('.')[0];
-    return this.httpClient.get<ItemMainCategory[]>(`${RouterConstants.ItemMainCategory_GetAll_API}?subomain=${subomain}`);
+    return this.httpClient.get<ItemMainCategory[]>(`${RouterConstants.ItemMainCategory_GetAll_API}?subomain=${this.subdomain}`);
   }
-  AddMainCat(CatName: string): Observable<ItemMainCategory> {
-    let subdomain = window.location.hostname.split('.')[0];
-    return this.httpClient.get<ItemMainCategory>(`${RouterConstants.ItemMainCategory_AddMainCat_API}?CatName=${CatName}&subdomain=${subdomain}`);
+  AddMainCat(NewCat: ItemMainCategory): Observable<ItemMainCategory> {
+    return this.httpClient.post<ItemMainCategory>(`${RouterConstants.ItemMainCategory_AddMainCat_API}`, NewCat);
   }
 
   DeleteMainCat(id: number): Observable<any> {
-    let subdomain = window.location.hostname.split(".")[0];
-    return this.httpClient.delete(`${RouterConstants.ItemMainCategory_DELETE_MainCat_API}?Subdomain=${subdomain}&id=${id}`)
+    return this.httpClient.delete(`${RouterConstants.ItemMainCategory_DELETE_MainCat_API}?Subdomain=${this.subdomain}&id=${id}`)
   }
   UpdateMainCat(ItemMainCat: ItemMainCategory): Observable<any> {
     return this.httpClient.put<ItemMainCategory>(RouterConstants.ItemMainCategory_UPDATE_MainCat_API, ItemMainCat, { responseType: 'json' });
@@ -54,11 +52,11 @@ export class ItemsService {
 
   //#region Item Units
   Get_All_ItemUnits(): Observable<ItemUnit[]> {
-    return this.httpClient.get<ItemUnit[]>(`${RouterConstants.Item_Unit_GetAll_API}?subdomain=${this.subdomain}`);
+    return this.httpClient.get<ItemUnit[]>(`${RouterConstants.Item_Unit_GetAll_API}?subdomain=${this.subdomain}`, { responseType: 'json' });
   }
 
   AddNew_ItemUnit(ItemUnit: ItemUnit): Observable<ItemUnit> {
-    return this.httpClient.post<ItemUnit>(`${RouterConstants.Item_Unit_Add_API}`, ItemUnit);
+    return this.httpClient.post<ItemUnit>(`${RouterConstants.Item_Unit_Add_API}`, ItemUnit, { headers: { 'Content-Type': 'application/json' } });
   }
   Update_ItemUnit(ItemUnit: ItemUnit): Observable<any> {
     return this.httpClient.put(`${RouterConstants.Item_Unit_Update_API}`, ItemUnit);

@@ -6,11 +6,18 @@ using ERP.UnitOfWork;
 using ERP.Utilities;
 using ERP.Utilities.Services;
 using ERP.Utilities.Services.EmailService;
+using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -27,7 +34,9 @@ namespace ERP.Controllers
         public ITokenService TokenService { get; set; }
         public IUnitOfWork_Tenants TenantsUnitOfWork { get; set; }
         public ApplicationUserSignIngManager ApplicationUserSignIngManager { get; }
+        public Utilities.Services.AuthenticationService Authentication { get; }
         public IMailService MailService { get; }
+        public IAntiforgery Antiforgery { get; }
         public IUnitOfWork_ApplicationUser ClientUnitOfWork { get; set; }
         public DbContextOptions<ApplicationDbContext> DbOptions;
         public Constants Constants { get; set; }
@@ -37,7 +46,8 @@ namespace ERP.Controllers
             ApplicationUserManager userManager, ITokenService tokenService, Constants constants,
             IUnitOfWork_Tenants tenantsUnitOfWork, IUnitOfWork_ApplicationUser clientUnitOfWork,
             DbContextOptions<ApplicationDbContext> dbOptions, ApplicationUserRoleManager roleManager,
-            ApplicationUserSignIngManager applicationUserSignIngManager, IMailService mailService)
+            ApplicationUserSignIngManager applicationUserSignIngManager, Utilities.Services.AuthenticationService authentication,
+            IMailService mailService, IAntiforgery antiforgery)
         {
             UserManager = userManager;
             TokenService = tokenService;
@@ -47,7 +57,9 @@ namespace ERP.Controllers
             DbOptions = dbOptions;
             RoleManager = roleManager;
             ApplicationUserSignIngManager = applicationUserSignIngManager;
+            Authentication = authentication;
             MailService = mailService;
+            Antiforgery = antiforgery;
         }
 
         // GET: api/<IdentityController>
@@ -166,36 +178,37 @@ namespace ERP.Controllers
             return BadRequest(new { status = Constants.ModelState_statuCode, error = ModelState });
         }
         // POST api/<IdentityController>/LoginMainDomain
-        [HttpPost(nameof(LoginMainDomain))]
+        [HttpPost]
+        [Route("LoginMainDomain")]
+        [AllowAnonymous]
         public async Task<ActionResult<UserWithToken>> LoginMainDomain([FromBody] ClientLogin clientLogin)
         {
             if (ModelState.IsValid)
             {
                 //Get ConnectionString From Tenant Db
                 var tenant = await TenantsUnitOfWork.Tenants.TenantByEmailAsync(clientLogin.Email);
-
-                if (tenant == null) return BadRequest(new { status = Constants.NullTenant_ErrorMessage, error = Constants.NullTenant_ErrorMessage });
-                //Connect to the correct Db based on the Connectionstring
-                await ClientUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
-                //Get user From Users table
-                var user = UserManager.Users.SingleOrDefault(x => x.Email == clientLogin.Email);
-                if (user == null) return Unauthorized(new { status = Constants.NullUser_statuCode, error = Constants.NullUser_ErrorMessage });
+                if (tenant == null) return BadRequest(Constants.NullTentant_Error_Response());
+                var user = await Authentication.AuthenticateClients(clientLogin, tenant);
+                if (user == null) return Unauthorized(Constants.NullUser_Error_Response());
                 //Sign In User
-                if (!await UserManager.IsEmailConfirmedAsync(user)) return Unauthorized(new { status = Constants.EmailConfirmation_StatusCode, error = Constants.Emailconfirmation_ErrorMessage });
-                var result = await ApplicationUserSignIngManager.CheckPasswordSignInAsync(user, clientLogin.Password, false);
-                if (result.Succeeded)
+                if (!await UserManager.IsEmailConfirmedAsync(user)) return Unauthorized(Constants.EmailConfirmation_Error_Response());
+                var claimPrincipal = HttpContext.User = await ApplicationUserSignIngManager.CreateUserPrincipalAsync(user);
+                
+                await Request.HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, claimPrincipal);
+               
+                if (user.WrongPassowrd == false)
                 {
                     return new UserWithToken
                     {
                         Username = user.UserName,
-                        Token = TokenService.CreateClientToken(user),
+                        Token = user.Token,
                         Roles = (List<string>)await UserManager.GetRolesAsync(user),
                         Subdomain = tenant.Subdomain
                     };
                 }
-                else return Unauthorized(new { status = Constants.WrongPassword_StatusCode, error = Constants.WrongPassword_ErrorMessage });
+                else return Unauthorized(Constants.WrongPassword_Error_Response());
             }
-            return BadRequest(new { status = Constants.ModelState_statuCode, error = ModelState });
+            return BadRequest(Constants.ModelState_ERROR_Response(ModelState));
         }
         // POST api/<IdentityController>/EmailConfirmation
         [HttpPost(nameof(EmailConfirmation))]
@@ -306,7 +319,13 @@ namespace ERP.Controllers
                 return BadRequest(new { status = Constants.NullTenant_statuCode, error = Constants.NullTenant_ErrorMessage });
             return Ok();
         }
-
+        [HttpGet(nameof(LoggOut))]
+        public async Task<IActionResult> LoggOut()
+        {
+            await Request.HttpContext.SignOutAsync();
+            HttpContext.User = null;
+            return Ok();
+        }
         //HelperMedthod
         private bool CheckManuallyChanged_Subdomain(string subdomain)
         {

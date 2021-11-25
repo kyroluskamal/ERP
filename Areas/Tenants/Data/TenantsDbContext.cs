@@ -6,7 +6,7 @@ namespace ERP.Areas.Tenants.Data
 {
     public class TenantsDbContext : DbContext
     {
-        public TenantsDbContext(DbContextOptions options) : base(options)
+        public TenantsDbContext(DbContextOptions<TenantsDbContext> options) : base(options)
         {
             Database.Migrate();
         }

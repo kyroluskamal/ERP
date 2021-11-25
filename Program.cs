@@ -15,6 +15,7 @@ namespace ERP
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("http://*.localhost:4369", "https://*.localhost:4369");
                 });
     }
 }

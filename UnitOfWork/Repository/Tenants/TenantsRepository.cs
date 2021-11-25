@@ -106,5 +106,10 @@ namespace ERP.UnitOfWork.Repository.Tenants
         {
             return await dbSet.LastAsync();
         }
+
+        public Task<bool> IsUnique(T entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

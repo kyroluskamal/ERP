@@ -113,10 +113,11 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
               }
               break;
             case 401:
-              modalStateErrors.push(error.error);
-              this.Notification.error(error.error.error, error.status, "ltr");
-              console.log(error.error.error);
-              throw modalStateErrors.flat();
+              // modalStateErrors.push(error.error);
+              // this.Notification.error(error.error.error, error.status, "ltr");
+              // console.log(error.error.error);
+              // throw modalStateErrors.flat();
+              this.router.navigateByUrl("/login");
               break;
             case 404:
               this.router.navigateByUrl('/not-found');

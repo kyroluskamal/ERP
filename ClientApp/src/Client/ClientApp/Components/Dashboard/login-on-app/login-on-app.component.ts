@@ -2,29 +2,30 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { ClientAccountService } from 'src/Client/MainDomain/Authentication/client-account-service.service';
+import { ClientLogin } from 'src/Client/Models/client-login.model';
+import { SendEmailConfirmationAgian } from 'src/Client/Models/send-email-confirmation-agian.model';
+import { ConstantsService } from 'src/CommonServices/constants.service';
+import { DialogHandlerService } from 'src/CommonServices/DialogHandler/dialog-handler.service';
+import { NotificationsService } from 'src/CommonServices/NotificationService/notifications.service';
+import { TranslationService } from 'src/CommonServices/translation-service.service';
+import { ValidationErrorMessagesService } from 'src/CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
+import { CustomErrorStateMatcher } from 'src/Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
 import { RouterConstants } from 'src/Helpers/RouterConstants';
-import { ConstantsService } from '../../../../CommonServices/constants.service';
-import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
-import { NotificationsService } from '../../../../CommonServices/NotificationService/notifications.service';
-import { TranslationService } from '../../../../CommonServices/translation-service.service';
-import { ValidationErrorMessagesService } from '../../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
-import { CustomErrorStateMatcher } from '../../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
-import { ClientLogin } from '../../../Models/client-login.model';
-import { SendEmailConfirmationAgian } from '../../../Models/send-email-confirmation-agian.model';
-import { ClientAccountService } from '../../Authentication/client-account-service.service';
+
 
 @Component({
-  selector: 'app-client-login',
-  templateUrl: './client-login.component.html',
-  styleUrls: ['./client-login.component.css']
+  selector: 'app-login-on-app',
+  templateUrl: './login-on-app.component.html',
+  styleUrls: ['./login-on-app.component.css']
 })
-export class ClientLoginComponent implements OnInit, OnDestroy {
+export class LoginOnAppComponent implements OnInit {
+
   loginForm: FormGroup = new FormGroup({});
   customErrorStateMatcher: CustomErrorStateMatcher = new CustomErrorStateMatcher()
   ValidationErrors: any[] = []
   passwordHide: boolean = true;
   ClientLogin: ClientLogin = new ClientLogin();
-  selected: any;
   LangSubscibtion: Subscription = new Subscription();
   loading: boolean = false;
   //constructor
@@ -32,15 +33,9 @@ export class ClientLoginComponent implements OnInit, OnDestroy {
     public dialogHandler: DialogHandlerService, public translate: TranslationService,
     public ValidationErrorMessage: ValidationErrorMessagesService, public Constants: ConstantsService,
     public accountService: ClientAccountService, private Notifications: NotificationsService) {
-    this.selected = localStorage.getItem(this.Constants.lang);
   }
 
   ngOnInit(): void {
-    this.LangSubscibtion = this.translate.SelectedLangSubject.subscribe(
-      (response) => {
-        this.selected = response;
-      }
-    );
     this.loginForm = this.formBuilder.group({
       Email: [null, [Validators.email, Validators.required]],
       Password: [null, [Validators.required]],
@@ -58,20 +53,20 @@ export class ClientLoginComponent implements OnInit, OnDestroy {
       Password: this.loginForm.get("Password")?.value,
       Subdomain: window.location.hostname.split(".")[0]
     }
-    this.accountService.loginMainDomain(this.ClientLogin, RememberMe).subscribe({
-      next: response => {
+    this.accountService.loginMainDomain(this.ClientLogin, RememberMe).subscribe(
+      response => {
         console.log(response);
         this.Notifications.success(this.translate.GetTranslation(this.Constants.LoggedInSuccessfully),
-          this.translate.isRightToLeft(this.selected) ? "rtl" : "ltr");
+          this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? "rtl" : "ltr");
         this.dialogHandler.CloseDialog();
         this.loading = false;
       },
-      error: error => {
+      error => {
         this.loading = false;
         console.log(error);
         this.ValidationErrors = error;
       },
-    });
+    );
   }
 
   SendConfirmationAgain() {
@@ -82,11 +77,11 @@ export class ClientLoginComponent implements OnInit, OnDestroy {
     this.accountService.SendConfirmationAgain(sendEmailConfirmationAgian).subscribe(
       (response: any) => {
         this.Notifications.success(this.translate.GetTranslation(this.Constants.EmilConfirmationResnding_success),
-          this.translate.isRightToLeft(this.selected) ? "rtl" : "ltr")
+          this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? "rtl" : "ltr")
       },
       (error) => {
         this.Notifications.error(this.translate.GetTranslation(this.Constants.EmilConfirmationResnding_Error), '',
-          this.translate.isRightToLeft(this.selected) ? "rtl" : "ltr");
+          this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? "rtl" : "ltr");
         console.log(error);
       }
     );

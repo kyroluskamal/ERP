@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ClientAccountService } from 'src/Client/MainDomain/Authentication/client-account-service.service';
 
 @Component({
   selector: 'app-items-component',
@@ -7,7 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ItemsComponentComponent implements OnInit {
 
-  constructor() { }
+  constructor(private ClientAccountService: ClientAccountService) {
+    this.ClientAccountService.currentUserOvservable.subscribe(
+      r => console.log(r)
+    );
+    this.ClientAccountService.X_Token$.subscribe(
+      r => console.log(r)
+    );
+  }
 
   ngOnInit(): void {
   }

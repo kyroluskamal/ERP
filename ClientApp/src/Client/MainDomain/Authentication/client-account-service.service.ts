@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, ReplaySubject } from 'rxjs';
+import { LocalStorage, StorageMap } from '@ngx-pwa/local-storage';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { RouterConstants } from 'src/Helpers/RouterConstants';
 import { ClientRegister } from '../../../Client/Models/client-register.model';
@@ -21,11 +22,14 @@ export class ClientAccountService {
 
   //constructor
   constructor(private httpClient: HttpClient, public Constants: ConstantsService,
-    private router: Router) {
+    private router: Router, private IndexedBdStorage: StorageMap) {
   }
   private currentUserSource = new ReplaySubject<ClientWithToken | any>(1);
   currentUserOvservable = this.currentUserSource.asObservable();
-
+  private X_Toketn = new Subject<any>();
+  get X_Token$() {
+    return this.X_Toketn.asObservable();
+  }
   Register(clientRegisterModel: ClientRegister): Observable<any> {
     return this.httpClient.post<any>(RouterConstants.ClientRegister_APIurl, clientRegisterModel, { responseType: "json" })
       .pipe(
@@ -39,28 +43,45 @@ export class ClientAccountService {
   }
 
   loginMainDomain(ClientLogin: ClientLogin, RememberMe: boolean) {
-    return this.httpClient.post(RouterConstants.ClientLoginMainDomain_APIurl, ClientLogin, { responseType: "json" }).pipe(
+    return this.httpClient.post(RouterConstants.ClientLoginMainDomain_APIurl, ClientLogin, { responseType: "json", observe: "response" }).pipe(
       map((response: any) => {
-        const user: ClientWithToken = response;
+        console.log(response.headers);
+        const user: ClientWithToken = response.body;
         if (user) {
           if (RememberMe)
             localStorage.setItem(this.Constants.Client, JSON.stringify(user));
+
           else
             sessionStorage.setItem(this.Constants.Client, JSON.stringify(user));
           this.currentUserSource.next(user);
+          localStorage.setItem("XSRF-REQUEST-TOKEN", response.headers.get("XSRF-REQUEST-TOKEN"))
+          this.setX_tokent(sessionStorage.getItem("XSRF-REQUEST-TOKEN"));
         }
         return user;
       })
     )
   }
 
+  setX_tokent(x: any) {
+    this.X_Toketn.next(x)
+  }
   setCurrentUser(Client: ClientWithToken) {
     this.currentUserSource.next(Client);
   }
 
   logout() {
+    var cookies = document.cookie.split(";");
+    console.log(cookies);
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = cookies[i];
+      var eqPos = cookie.indexOf("=");
+      var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+      document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
+    this.httpClient.get(RouterConstants.Client_Loggout);
     sessionStorage.removeItem(this.Constants.Client);
     localStorage.removeItem(this.Constants.Client);
+    localStorage.removeItem("XSRF-REQUEST-TOKEN")
     this.currentUserSource.next(null);
   }
   confirmEmail(emailConfirmationModel: EmailConfirmationModel) {

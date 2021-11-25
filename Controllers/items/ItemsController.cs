@@ -1,18 +1,20 @@
-﻿using ERP.Controllers.Models;
-using ERP.Data;
+﻿using ERP.Data;
 using ERP.Data.Identity;
 using ERP.Models.Items;
 using ERP.UnitOfWork;
 using ERP.Utilities;
+using ERP.Utilities.Helpers;
 using ERP.Utilities.Services;
 using ERP.Utilities.Services.EmailService;
+using ERP.ViewModels;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,6 +22,7 @@ namespace ERP.Controllers.items
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[EnableCors(PolicyName = "AllowOrigin")]
     public class ItemsController : ControllerBase
     {
         public ITokenService TokenService { get; }
@@ -34,7 +37,8 @@ namespace ERP.Controllers.items
 
         public ItemsController(ApplicationUserManager userManager, ITokenService tokenService, Constants constants,
             IUnitOfWork_ApplicationUser userUnitOfWork, DbContextOptions<ApplicationDbContext> dbOptions,
-           IUnitOfWork_Tenants tenantsUnitOfWork, ApplicationUserSignIngManager signinManager, IMailService mailService, ApplicationUserRoleManager roleManager)
+           IUnitOfWork_Tenants tenantsUnitOfWork, ApplicationUserSignIngManager signinManager, IMailService mailService,
+           ApplicationUserRoleManager roleManager)
         {
             UserManager = userManager;
             TokenService = tokenService;
@@ -50,6 +54,7 @@ namespace ERP.Controllers.items
         #region Item Main Category Functions
         //Get all cats
         [HttpGet("allcategories")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<List<ItemMainCategory>>> GetItemCategories(string subomain)
         {
             if (CheckManuallyChanged_Subdomain(subomain))
@@ -65,27 +70,29 @@ namespace ERP.Controllers.items
             return BadRequest(Constants.HackTrying_Error_Response());
         }
         //Add new Main Cat
-        [HttpGet(nameof(AddMainCategory))]
-        public async Task<IActionResult> AddMainCategory(string catName, string subdomain)
+        [HttpPost(nameof(AddMainCategory))]
+        [Authorize]
+        [ValidateAntiForgeryTokenCustom]
+        public async Task<IActionResult> AddMainCategory(ItemMainCategory NewCat)
         {
-            if (CheckManuallyChanged_Subdomain(subdomain))
+            if (CheckManuallyChanged_Subdomain(NewCat.Subdomain))
             {
-                var tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(subdomain);
+                var tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(NewCat.Subdomain);
                 if (tenant != null)
                 {
                     await UserUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
-                    if (catName == null)
+                    if (NewCat.Name == null)
                         return BadRequest(Constants.Required_Field_ERROR_Response());
 
-                    if (!await IsUniqeMainCat(catName))
+                    if (!await IsUniqeMainCat(NewCat.Name))
                         return BadRequest(Constants.Unique_Field_ERROR_Response());
 
-                    await UserUnitOfWork.ItemMainCategory.AddAsync(new ItemMainCategory { Name = catName });
+                    await UserUnitOfWork.ItemMainCategory.AddAsync(new ItemMainCategory { Name = NewCat.Name });
                     var result = await UserUnitOfWork.SaveAsync();
                     if (result > 0)
                     {
                         var Cats = await UserUnitOfWork.ItemMainCategory.GetAllAsync();
-                        return Ok(Cats.Last(x => x.Name == catName));
+                        return Ok(Cats.Last(x => x.Name == NewCat.Name));
                     }
                     return BadRequest(Constants.DataAddtion_ERROR_Response());
                 }
@@ -99,6 +106,8 @@ namespace ERP.Controllers.items
          * uncategorized cat or user defined cat)
         *******************************************************/
         [HttpDelete("DelteItemMainCat")]
+        [Authorize]
+        [ValidateAntiForgeryTokenCustom]
         public async Task<IActionResult> ItemMainCategoryDelete(string Subdomain, int id)
         {
             if (CheckManuallyChanged_Subdomain(Subdomain))
@@ -143,6 +152,8 @@ namespace ERP.Controllers.items
         //Update Main Cat 
 
         [HttpPut("UpdateItemMainCategory")]
+        [Authorize]
+        [ValidateAntiForgeryTokenCustom]
         public async Task<IActionResult> ItemMainCategory_Update(ItemMainCategory MainCategory)
         {
             if (!ModelState.IsValid)
@@ -189,6 +200,7 @@ namespace ERP.Controllers.items
         #region Item Subcats Category Functions
         //Get all Sub cats
         [HttpGet(nameof(GetItemsAllSubCategories))]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<List<ItemSubCategory>>> GetItemsAllSubCategories(string subdomain)
         {
             if (CheckManuallyChanged_Subdomain(subdomain))
@@ -204,7 +216,8 @@ namespace ERP.Controllers.items
             }
             return BadRequest(Constants.HackTrying_Error_Response());
         }
-
+        [Authorize]
+        [ValidateAntiForgeryTokenCustom]
         //Add new SubCat Cat
         [HttpPost(nameof(AddSubCategory))]
         public async Task<IActionResult> AddSubCategory([FromBody] ItemSubCategory NewSubCat)
@@ -244,6 +257,8 @@ namespace ERP.Controllers.items
 
         //Update Sub Cat
         [HttpPut("UpdateItemSubCategory")]
+        [Authorize]
+        [ValidateAntiForgeryTokenCustom]
         public async Task<IActionResult> Item_Sub_CategoryUpdate(ItemSubCategory SubCategory)
         {
             if (!ModelState.IsValid)
@@ -283,6 +298,8 @@ namespace ERP.Controllers.items
 
         //Delete
         [HttpDelete("DelteItemSubCat")]
+        [Authorize]
+        [ValidateAntiForgeryTokenCustom]
         public async Task<IActionResult> Item_Sub_CategoryDelete(string Subdomain, int id)
         {
             if (CheckManuallyChanged_Subdomain(Subdomain))
@@ -316,10 +333,11 @@ namespace ERP.Controllers.items
             return BadRequest(Constants.HackTrying_Error_Response());
         }
         #endregion
-
+        //[ValidateAntiForgeryToken]
         #region Units Functions
         //Get all Units
         [HttpGet("AllItemUnits")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<List<ItemSubCategory>>> GetAllUnits(string subdomain)
         {
             if (CheckManuallyChanged_Subdomain(subdomain))
@@ -335,9 +353,10 @@ namespace ERP.Controllers.items
             }
             return BadRequest(Constants.HackTrying_Error_Response());
         }
-
-        //Add new SubCat Cat
+        //Add new Item Unit
         [HttpPost(nameof(AddItemUnit))]
+        [Authorize]
+        [ValidateAntiForgeryTokenCustom]
         public async Task<IActionResult> AddItemUnit([FromBody] Units Unit)
         {
             if (!ModelState.IsValid)
@@ -376,6 +395,8 @@ namespace ERP.Controllers.items
 
         //Update Item Unit
         [HttpPut("Update_Item_Unit")]
+        [Authorize]
+        [ValidateAntiForgeryTokenCustom]
         public async Task<IActionResult> Update_Item_Unit(Units Unit)
         {
             if (!ModelState.IsValid)
@@ -419,6 +440,8 @@ namespace ERP.Controllers.items
 
         //Delete
         [HttpDelete("DelteItemUnit")]
+        [Authorize]
+        [ValidateAntiForgeryTokenCustom]
         public async Task<IActionResult> Delete_ItemUnit(string Subdomain, int id)
         {
             if (CheckManuallyChanged_Subdomain(Subdomain))
@@ -456,6 +479,7 @@ namespace ERP.Controllers.items
         #region Item Brands Functions
         //Get all Brands
         [HttpGet(nameof(GetAllBrands))]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<List<Brands>>> GetAllBrands(string subdomain)
         {
             if (CheckManuallyChanged_Subdomain(subdomain))
@@ -472,27 +496,29 @@ namespace ERP.Controllers.items
             return BadRequest(Constants.HackTrying_Error_Response());
         }
         //Add new Brand
-        [HttpGet(nameof(AddNewBrand))]
-        public async Task<IActionResult> AddNewBrand(string brandName, string subdomain)
+        [HttpPost(nameof(AddNewBrand))]
+        [Authorize]
+        [ValidateAntiForgeryTokenCustom]
+        public async Task<IActionResult> AddNewBrand(Brands NewBrand)
         {
-            if (CheckManuallyChanged_Subdomain(subdomain))
+            if (CheckManuallyChanged_Subdomain(NewBrand.Subdomain))
             {
-                var tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(subdomain);
+                var tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(NewBrand.Subdomain);
                 if (tenant != null)
                 {
                     await UserUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
-                    if (brandName == null)
+                    if (NewBrand.Name == null)
                         return BadRequest(Constants.Required_Field_ERROR_Response());
 
-                    if (!await IsUniqeMainCat(brandName))
+                    if (!await IsUniqeMainCat(NewBrand.Name))
                         return BadRequest(Constants.Unique_Field_ERROR_Response());
 
-                    await UserUnitOfWork.ItemBrands.AddAsync(new Brands { Name = brandName });
+                    await UserUnitOfWork.ItemBrands.AddAsync(new Brands { Name = NewBrand.Name });
                     var result = await UserUnitOfWork.SaveAsync();
                     if (result > 0)
                     {
                         var Brands = await UserUnitOfWork.ItemBrands.GetAllAsync();
-                        return Ok(Brands.Last(x => x.Name == brandName));
+                        return Ok(Brands.Last(x => x.Name == NewBrand.Name));
                     }
                     return BadRequest(Constants.DataAddtion_ERROR_Response());
                 }
@@ -502,6 +528,8 @@ namespace ERP.Controllers.items
         }
         //Delete Brand
         [HttpDelete(nameof(DeleteBrand))]
+        [Authorize]
+        [ValidateAntiForgeryTokenCustom]
         public async Task<IActionResult> DeleteBrand(string Subdomain, int id)
         {
             if (CheckManuallyChanged_Subdomain(Subdomain))
@@ -537,6 +565,8 @@ namespace ERP.Controllers.items
 
         //Update Brand
         [HttpPut(nameof(UpdateBrand))]
+        [Authorize]
+        [ValidateAntiForgeryTokenCustom]
         public async Task<IActionResult> UpdateBrand(Brands Brand)
         {
             if (!ModelState.IsValid)
