@@ -31,14 +31,14 @@ export class TokenInterceptorInterceptor implements HttpInterceptor {
     if (this.Owner) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${this.Owner.token}`
+          Authorization: `Bearer 5V4fqC2YbK${this.Owner.token}`
         }
       })
     }
     if (this.Client) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${this.Client.token}`
+          Authorization: `Bearer 5V4fqC2bK${this.Client.token}`
         }
       })
     }

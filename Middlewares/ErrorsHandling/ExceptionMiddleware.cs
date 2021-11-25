@@ -1,5 +1,6 @@
 ﻿using ERP.Middlewares.ErrorsHandling;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
@@ -30,25 +31,30 @@ namespace API.Middleware.ErrorsHandling
             {
                 //context.Request.Headers.TryGetValue("X-XSRF-Token", out var x);
                 //Debug.WriteLine(x);
-                //var token = context.Request.Headers.TryGetValue("Authorization", out var headerValue);
+                var token = context.Request.Headers.TryGetValue("Authorization", out var headerValue);
 
-                //Debug.WriteLine(token);
-                //if (token)
-                //{
-                //    var tokenFormHeader = headerValue.ToString().Split(" ");
-                //    if (!tokenFormHeader[1].Contains("5V4fqC2YbK"))
-                //    {
-                //        //context.Abort();
-                //    }
-                //    else
-                //    {
-                //        tokenFormHeader[1] = tokenFormHeader[1].Remove(0, "5V4fqC2YbK".Length);
-                //        headerValue = tokenFormHeader[0] + " " + tokenFormHeader[1];
-                //        context.Request.Headers.Remove("Authorization");
-                //        context.Request.Headers.Add("Authorization", headerValue);
-                //        Debug.WriteLine(tokenFormHeader[1]);
-                //    }
-                //}
+                if (context.Request.Path.Value.IndexOf("/api", StringComparison.OrdinalIgnoreCase) != -1)
+                {
+                    if (token)
+                    {
+                        var tokenFormHeader = headerValue.ToString().Split(" ");
+                        if (!tokenFormHeader[1].Contains("5V4fqC2YbK"))
+                        {
+                            context.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
+                        }
+                        else
+                        {
+                            tokenFormHeader[1] = tokenFormHeader[1].Remove(0, "5V4fqC2YbK".Length);
+                            headerValue = tokenFormHeader[0] + " " + tokenFormHeader[1];
+                            context.Request.Headers.Remove("Authorization");
+                            context.Request.Headers.Add("Authorization", headerValue);
+                            Debug.WriteLine(tokenFormHeader[1]);
+                            await _next(context);
+                        }
+                    }
+                    else
+                        context.Abort();
+                }else
                 await _next(context);
             }
             catch (Exception ex)
