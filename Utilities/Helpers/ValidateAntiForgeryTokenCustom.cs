@@ -8,15 +8,13 @@ using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Http.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace ERP.Utilities.Helpers
 {
-    public class ValidateAntiForgeryTokenCustom : ActionFilterAttribute
+    public class ValidateAntiForgeryTokenCustom : Microsoft.AspNetCore.Mvc.Filters.ActionFilterAttribute
     {
         private const string XsrfCookieName = "XSRF-TOKEN";
 
@@ -25,7 +23,7 @@ namespace ERP.Utilities.Helpers
         private const string CsrfTokenSalt = "b&F>67&SD`k[";
 
 
-        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        public override void OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext filterContext)
         {
             string requestMethod = filterContext.HttpContext.Request.Method;
 

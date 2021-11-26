@@ -31,16 +31,16 @@ namespace API.Middleware.ErrorsHandling
             {
                 //context.Request.Headers.TryGetValue("X-XSRF-Token", out var x);
                 //Debug.WriteLine(x);
-                var token = context.Request.Headers.TryGetValue("Authorization", out var headerValue);
 
-                if (context.Request.Path.Value.IndexOf("/api", StringComparison.OrdinalIgnoreCase) != -1)
+                if (context.Request.Path.Value.Contains("/api")&& !context.Request.Path.Value.Contains("/api/Identity"))
                 {
+                var token = context.Request.Headers.TryGetValue("Authorization", out var headerValue);
                     if (token)
                     {
                         var tokenFormHeader = headerValue.ToString().Split(" ");
                         if (!tokenFormHeader[1].Contains("5V4fqC2YbK"))
                         {
-                            context.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
+                            context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                         }
                         else
                         {
@@ -54,8 +54,9 @@ namespace API.Middleware.ErrorsHandling
                     }
                     else
                         context.Abort();
-                }else
-                await _next(context);
+                }
+                else
+                    await _next(context);
             }
             catch (Exception ex)
             {

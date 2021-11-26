@@ -63,7 +63,7 @@ namespace ERP.Areas.Owners.Controllers
 
         // POST api/<AccountController>
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] OwnerRegister Register)
+        public async Task<Microsoft.AspNetCore.Mvc.ActionResult> Post([FromBody] OwnerRegister Register)
         {
             if (ModelState.IsValid)
             {

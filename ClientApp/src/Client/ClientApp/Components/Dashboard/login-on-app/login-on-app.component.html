@@ -1,121 +1,132 @@
-<form [formGroup]="loginForm"
-      (ngSubmit)="loginForm.valid"
-      [dir]="translate.isRightToLeft(this.translate.GetCurrentLang())?'rtl':'ltr'">
-  <div class="form-container">
-    <div class="dialog-header">
-      <h2 mat-dialog-title
+<div fxLayout="column"
+     class="containter"
+     fxLayoutAlign="center center">
+  <mat-card>
+    <div class="BusinessName">Business Name</div>
+    <mat-card-header fxLayout="column">
+
+      <mat-card-title>Welcom back!
+
+      </mat-card-title>
+      <mat-card-subtitle>Sign in to our store</mat-card-subtitle>
+    </mat-card-header>
+    <form [formGroup]="loginForm"
+          (ngSubmit)="loginForm.valid"
           [dir]="translate.isRightToLeft(this.translate.GetCurrentLang())?'rtl':'ltr'">
-        {{'Login' | translate}}
-      </h2>
-    </div>
-    <!------------------------Mat-Dialog-CONTENT--------------------------->
-    <div mat-dialog-content>
-      <mat-error class="alert alert-danger"
-                 *ngIf="ValidationErrors.length>0">
-        <p>Please Correct the following errors</p>
-        <ul>
-          <li *ngFor="let error of ValidationErrors">{{error.error}} <span
-                  *ngIf="error.status == 'EmailConfirmation'">To send confirmation
-              message again, <a class='buttonLink'
-                 (click)='SendConfirmationAgain()'>Click here.</a></span></li>
-        </ul>
-      </mat-error>
-      <!-- Email -->
-      <mat-form-field appearance="outline"
-                      class="Width100">
-        <mat-label [ngClass]="ValidationErrorMessage.getFormControl('Email',
+      <div class="form-container">
+        <!------------------------Mat-Dialog-CONTENT--------------------------->
+        <mat-error class="alert alert-danger"
+                   *ngIf="ValidationErrors.length>0">
+          <p>Please Correct the following errors</p>
+          <ul>
+            <li *ngFor="let error of ValidationErrors">{{error.error}} <span
+                    *ngIf="error.status == 'EmailConfirmation'">To send confirmation
+                message again, <a class='buttonLink'
+                   (click)='SendConfirmationAgain()'>Click here.</a></span></li>
+          </ul>
+        </mat-error>
+        <!-- Email -->
+        <mat-form-field appearance="outline"
+                        class="Width100">
+          <mat-label [ngClass]="ValidationErrorMessage.getFormControl('Email',
           loginForm).valid? 'valid-green':''"><span>{{'Email'| translate}}</span></mat-label>
-        <input matInput
-               type="email"
-               value=""
-               [errorStateMatcher]="customErrorStateMatcher"
-               formControlName="Email"
-               [ngClass]="loginForm.get('Email')?.valid? 'valid-color':''" />
-        <mat-icon matSuffix>email</mat-icon>
-        <mat-hint align="end"
-                  *ngIf="ValidationErrorMessage.getFormControl('Email',
+          <input matInput
+                 type="email"
+                 value=""
+                 [errorStateMatcher]="customErrorStateMatcher"
+                 formControlName="Email"
+                 [ngClass]="loginForm.get('Email')?.valid? 'valid-color':''" />
+          <mat-icon matSuffix>email</mat-icon>
+          <mat-hint align="end"
+                    *ngIf="ValidationErrorMessage.getFormControl('Email',
           loginForm).invalid || !ValidationErrorMessage.getFormControl('Email',
           loginForm).value">{{'Email hint'|translate}}</mat-hint>
 
-        <mat-error *ngIf="ValidationErrorMessage.getFormControl('Email',
+          <mat-error *ngIf="ValidationErrorMessage.getFormControl('Email',
           loginForm).hasError('required')">
-          {{'EmailRequired'|translate}}
-        </mat-error>
+            {{'EmailRequired'|translate}}
+          </mat-error>
 
-        <mat-error *ngIf="ValidationErrorMessage.getFormControl('Email',
+          <mat-error *ngIf="ValidationErrorMessage.getFormControl('Email',
           loginForm).hasError('email')">
-          {{'IncorrecEmail'|translate}}
-        </mat-error>
-      </mat-form-field>
-      <!-- Password -->
-      <mat-form-field appearance="outline"
-                      class="Width100"
-                      [ngClass]="ValidationErrorMessage.getFormControl('Password',
+            {{'IncorrecEmail'|translate}}
+          </mat-error>
+        </mat-form-field>
+        <!-- Password -->
+        <mat-form-field appearance="outline"
+                        class="Width100"
+                        [ngClass]="ValidationErrorMessage.getFormControl('Password',
         loginForm).invalid&&ValidationErrorMessage.getFormControl('Password',
         loginForm).value? 'password':''">
-        <mat-label [ngClass]="ValidationErrorMessage.getFormControl('Password',
+          <mat-label [ngClass]="ValidationErrorMessage.getFormControl('Password',
           loginForm).valid? 'valid-green':''">{{'Password'| translate}}</mat-label>
-        <input matInput
-               value=""
-               [errorStateMatcher]="customErrorStateMatcher"
-               autocomplete="current-password"
-               [type]="passwordHide ? 'password' : 'text'"
-               formControlName="Password" /><!-- Input -->
-        <mat-icon matSuffix
-                  class="pointerCursor"
-                  (click)="passwordHide=
+          <input matInput
+                 value=""
+                 [errorStateMatcher]="customErrorStateMatcher"
+                 autocomplete="current-password"
+                 [type]="passwordHide ? 'password' : 'text'"
+                 formControlName="Password" /><!-- Input -->
+          <mat-icon matSuffix
+                    class="pointerCursor"
+                    (click)="passwordHide=
           !passwordHide">{{passwordHide? 'visibility' : 'visibility_off'}}</mat-icon>
-        <mat-hint align="end"
-                  *ngIf="ValidationErrorMessage.getFormControl('Password',
+          <mat-hint align="end"
+                    *ngIf="ValidationErrorMessage.getFormControl('Password',
           loginForm).invalid ||
           !ValidationErrorMessage.getFormControl('Password', loginForm).value">
-          {{'PasswordHint'|translate}}
-        </mat-hint>
+            {{'PasswordHint'|translate}}
+          </mat-hint>
 
-        <mat-error *ngIf="ValidationErrorMessage.getFormControl('Password',
+          <mat-error *ngIf="ValidationErrorMessage.getFormControl('Password',
           loginForm).hasError('required')
          ">
-          {{'PasswordRequired' | translate}}
-        </mat-error>
-      </mat-form-field>
-      <mat-checkbox color="primary"
-                    formControlName="RememberMe"
-                    (change)="rememberMeOnClick()"> {{'Remember Me'|translate}}</mat-checkbox>
-    </div>
-    <!-- Fogrget Password -->
-    <button class="buttonLink"
-            (click)="dialogHandler.CloseDialog();
+            {{'PasswordRequired' | translate}}
+          </mat-error>
+        </mat-form-field>
+        <mat-checkbox color="primary"
+                      formControlName="RememberMe"
+                      (change)="rememberMeOnClick()"> {{'Remember Me'|translate}}</mat-checkbox>
+
+        <!-- Fogrget Password -->
+        <button class="buttonLink"
+                (click)="dialogHandler.CloseDialog();
       dialogHandler.OpenClientForgetPassword();">{{'Forget password?'|
-      translate}}</button>
-    <!------------------------Mat-Dialog-actions--------------------------->
-    <div mat-dialog-actions>
-      <button mat-raised-button
-              color="primary"
-              dir="ltr"
-              [disabled]="loginForm.invalid"
-              class="Width100"
-              aria-label="press to
+          translate}}</button>
+        <!------------------------Mat-Dialog-actions--------------------------->
+        <div mat-dialog-actions>
+          <button mat-raised-button
+                  color="primary"
+                  dir="ltr"
+                  [disabled]="loginForm.invalid"
+                  class="Width100"
+                  aria-label="press to
         login"
-              (click)="Login(ValidationErrorMessage.getFormControl('RememberMe',
+                  (click)="Login(ValidationErrorMessage.getFormControl('RememberMe',
         loginForm).value)"
-              (ngSubmit)="Login(ValidationErrorMessage.getFormControl('RememberMe',
+                  (ngSubmit)="Login(ValidationErrorMessage.getFormControl('RememberMe',
         loginForm).value)"
-              (submit)="loginForm.valid">
-        <mat-icon>
-          <mat-spinner diameter="20"
-                       color="warn"
-                       *ngIf="loading"></mat-spinner><span *ngIf="!loading">login</span>
-        </mat-icon>
-        {{'Login' | translate}}
-      </button>
-    </div>
-    <!--End Mat-Dialog-actions-->
-  </div>
-  <p>
-    {{"Don't have Account?"|translate}} <button class="buttonLink"
-            (click)="dialogHandler.CloseDialog();
+                  (submit)="loginForm.valid">
+            <mat-icon>
+              <mat-spinner diameter="20"
+                           color="warn"
+                           *ngIf="loading"></mat-spinner><span *ngIf="!loading">login</span>
+            </mat-icon>
+            {{'Login' | translate}}
+          </button>
+        </div>
+        <!--End Mat-Dialog-actions-->
+      </div>
+      <p>
+        {{"Don't have Account?"|translate}} <button class="buttonLink"
+                (click)="dialogHandler.CloseDialog();
       dialogHandler.OpenClientRegisterDialog();">
-      {{'Create one'|translate}}
-    </button>
-  </p>
-</form>
+          {{'Create one'|translate}}
+        </button>
+      </p>
+    </form>
+    <mat-card-actions>
+      <button mat-button>LIKE</button>
+      <button mat-button>SHARE</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

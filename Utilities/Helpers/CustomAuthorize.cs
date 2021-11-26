@@ -6,15 +6,13 @@ using System.Linq;
 using System.Net;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Threading.Tasks;
-using System.Web.Http.Controllers;
-using System.Web.Http.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERP.Utilities.Helpers
 {
-    public class CustomAuthorize : ActionFilterAttribute
+    public class CustomAuthorize : Microsoft.AspNetCore.Mvc.Filters.ActionFilterAttribute
     {
-        public override void OnActionExecuting(ActionExecutingContext actionContext)
+        public override void OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext actionContext)
         {
 
             var token = actionContext.HttpContext.Request.Headers.TryGetValue("Authorization", out var headerValue);

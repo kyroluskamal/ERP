@@ -38,7 +38,7 @@ export class TokenInterceptorInterceptor implements HttpInterceptor {
     if (this.Client) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer 5V4fqC2bK${this.Client.token}`
+          Authorization: `Bearer 5V4fqC2YbK${this.Client.token}`
         }
       })
     }

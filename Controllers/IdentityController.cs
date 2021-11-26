@@ -78,7 +78,7 @@ namespace ERP.Controllers
 
         // POST api/<IdentityController>/
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] ClientRegister clientRegister)
+        public async Task<Microsoft.AspNetCore.Mvc.ActionResult> Post([FromBody] ClientRegister clientRegister)
         {
             if (ModelState.IsValid)
             {
