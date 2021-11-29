@@ -3,6 +3,7 @@ using ERP.Areas.Owners.Models.Identity;
 using ERP.Utilities;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace ERP.Areas.Owners.Data.DbInitializer
@@ -29,13 +30,14 @@ namespace ERP.Areas.Owners.Data.DbInitializer
         {
             try
             {
-                if (OwnerDbContext.Database.GetPendingMigrations().Count() > 0)
+                if (OwnerDbContext.Database.GetPendingMigrations().Any())
                 {
                     OwnerDbContext.Database.Migrate();
                 }
             }
             catch (Exception ex)
             {
+                Debug.WriteLine(ex);
                 throw;
             }
 

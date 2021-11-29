@@ -66,7 +66,7 @@ export class ItemBrandsComponent implements OnInit, OnDestroy {
   customErrorStateMatcher: CustomErrorStateMatcher = new CustomErrorStateMatcher()
   loading: boolean = false;
   TableAppearance: Subscription = new Subscription();
-  ErrorGettingAllMainCats: any[] = [];
+  ErrorGettingAllBands: any[] = [];
   ThemeSubscription: Subscription;
   ThemeColorSubscription: Subscription;
   ThemeDirection: Subscription;
@@ -105,6 +105,13 @@ export class ItemBrandsComponent implements OnInit, OnDestroy {
       // window.location.reload();
     });
     this.ItemBrands = this.ItemService.Get_All_ItemBrands();
+    this.ItemBrands.subscribe({
+      error: e => {
+        if (e.status === 401 && e.error === null)
+          this.NotificationService.error(this.translate.GetTranslation(this.Constants.Unauthorized_Error), "",
+            this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr')
+      }
+    });
     let tableAppearence: any = localStorage.getItem(this.Constants.Table_Color_mode);
     this.Table_Color_mode = tableAppearence;
     this.TableAppearance = this.LightOrDarkConverter.TableTheme$.subscribe(
@@ -186,17 +193,34 @@ export class ItemBrandsComponent implements OnInit, OnDestroy {
         this.gridApi.applyTransaction({ add: [r] });
         this.loading = false;
         this.ShowProgressBar = false;
+        this.AddBrandForm.reset();
       },
       error: error => {
+        let translatedError: string = "";
         console.log(error);
         if (Array.isArray(error)) {
-          this.NotificationService.error(this.translate.GetTranslation(error[0].status), '',
-            this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
-        } else
-          this.NotificationService.error(this.translate.GetTranslation(error.error.status), '',
-            this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
-        if (error[0].status === this.Constants.NullTenant || error.error.status === this.Constants.NullTenant)
-          this.ErrorGettingAllMainCats = error;
+          if (Number.isNaN(error[0].status))
+            translatedError += this.translate.GetTranslation(error[0].status);
+          if (error[0].errors)
+            for (let err of error[0].errors.Name) {
+              if (err === this.Constants.MaxLengthExceeded_ERROR)
+                translatedError += `${this.translate.GetTranslation(err)} ${this.MaxLength}
+                  ${this.translate.GetTranslation(this.Constants.characters)}
+                `;
+              else
+                translatedError += this.translate.GetTranslation(err)
+            }
+        } else if (error.error.status)
+          translatedError += this.translate.GetTranslation(error.error.status);
+
+        else if (error.status === 401 && error.error === null) {
+          translatedError += this.translate.GetTranslation(this.Constants.Unauthorized_Error)
+
+        }
+        if (error[0].status === this.Constants.NullTenant)
+          this.ErrorGettingAllBands = error;
+        this.NotificationService.error(translatedError, '',
+          this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
         this.gridApi.hideOverlay();
         this.loading = false;
         this.ShowProgressBar = false;
@@ -237,11 +261,22 @@ export class ItemBrandsComponent implements OnInit, OnDestroy {
       if (!node.isSelected())
         Nodes.push(node)
     });
-    for (let node of Nodes) { if (String(node.data.name).toLowerCase() === String(event.data.name).toLowerCase()) { IsUnique = true; break; } }
-    console.log(IsUnique);
+    for (let node of Nodes) {
+      if (String(node.data.name).toLowerCase() === String(event.data.name).toLowerCase()) { IsUnique = true; break; }
+    }
     //Check if it is unique category
     if (IsUnique) {
       this.NotificationService.error(this.translate.GetTranslation(this.Constants.Unique_Field_ERROR), '',
+        this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
+      event.node.data.name = event.oldValue;
+      this.ShowProgressBar = false;
+      this.gridApi.refreshCells();
+      this.gridApi.hideOverlay();
+      return;
+    }
+    if (String(event.data.name).length > 30) {
+      this.NotificationService.error(`${this.translate.GetTranslation(this.Constants.MaxLengthExceeded_ERROR)}
+       ${this.MaxLength} ${this.translate.GetTranslation(this.Constants.characters)}`, '',
         this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
       event.node.data.name = event.oldValue;
       this.ShowProgressBar = false;
@@ -264,30 +299,37 @@ export class ItemBrandsComponent implements OnInit, OnDestroy {
         this.ShowProgressBar = false;
       },
       error: (e) => {
-        this.gridApi.refreshCells();
+        let translatedError: string = "";
         event.node.data.name = event.oldValue;
+        this.gridApi.refreshCells();
         console.log(e);
         if (Array.isArray(e)) {
           if (e[0].title === this.Constants.Model_state_errors) {
-            let NotifTranslation = "";
             console.log(e[0].errors);
             for (let err of e[0].errors.Name) {
-              NotifTranslation += this.translate.GetTranslation(err);
+              if (err === this.Constants.MaxLengthExceeded_ERROR)
+                translatedError += `${this.translate.GetTranslation(err)} ${this.MaxLength}
+                  ${this.translate.GetTranslation(this.Constants.characters)}
+                `;
+              else
+                translatedError += this.translate.GetTranslation(err);
             }
-            this.NotificationService.error(NotifTranslation, '',
-              this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
           }
-          this.NotificationService.error(this.translate.GetTranslation(e[0].status), '',
-            this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
+          if (Number.isNaN(e[0].status))
+            translatedError += this.translate.GetTranslation(e[0].status);
+
           this.gridApi.hideOverlay();
         } else
-          this.NotificationService.error(this.translate.GetTranslation(e.error.status), '',
-            this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
+          translatedError += this.translate.GetTranslation(e.error.status);
         if (e[0].status === this.Constants.NullTenant)
-          this.ErrorGettingAllMainCats = e;
+          this.ErrorGettingAllBands = e;
         console.log(e);
+        this.NotificationService.error(translatedError, '',
+          this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
         this.ShowProgressBar = false;
         this.gridApi.hideOverlay();
+        this.gridApi.refreshCells();
+
       }
     })
     this.ShowProgressBar = false;
@@ -314,11 +356,11 @@ export class ItemBrandsComponent implements OnInit, OnDestroy {
             this.NotificationService.error(this.translate.GetTranslation(e.error.status), '',
               this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
           if (e[0].status === this.Constants.NullTenant || e.error.status === this.Constants.NullTenant)
-            this.ErrorGettingAllMainCats = e;
+            this.ErrorGettingAllBands = e;
           this.ShowProgressBar = false;
         }
       }
     );
-
+    this.ShowProgressBar = false;
   }
 }

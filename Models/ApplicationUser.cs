@@ -16,5 +16,9 @@ namespace ERP.Models
         public string Token { get; set; }
         [NotMapped]
         public bool WrongPassowrd { get; set; }
+        [NotMapped]
+        public string Subdomain { get; set; }
+        [NotMapped]
+        public string ClientUrl { get; set; }
     }
 }

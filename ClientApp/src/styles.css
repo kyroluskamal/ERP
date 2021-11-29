@@ -207,7 +207,10 @@ form p {
 font-size: 1.2rem;
 transform: translateY(40vh);
 }
-
+.ClientLoginDiablog mat-dialog-container{
+  background: none;
+  padding: 0;
+}
 .container {
   padding-right: 15px;
   padding-left: 15px;
@@ -528,8 +531,12 @@ transform: translateY(40vh);
   animation-name: fadeInUp;
   -webkit-animation-name: fadeInUp;
 }
-form[dir="rtl"] *:not(mat-icon) {
+form[dir="rtl"] *:not(mat-icon){
   font-family: Calibri !important;
+}
+
+form[dir="rtl"] .mat-icon span.ng-star-inserted{
+  font-family: 'Material Icons' !important ;
 }
 .Dashboard-ToolTip {
   background-color: rgb(133, 0, 0);
@@ -721,9 +728,9 @@ body {
   background-color: rgba(0,0,0,.12) !important;
  }
 
-.mat-button-wrapper{
+/* .mat-button-wrapper{
   font-weight: bold !important;
-}
+} */
 .dark-for-Child-Component .mat-raised-button.mat-primary.mat-button-disabled, .mat-raised-button.mat-button-disabled.mat-button-disabled{
   color: rgb(255 255 255 / 26%) !important;
 }

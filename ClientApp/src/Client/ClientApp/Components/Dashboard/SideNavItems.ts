@@ -20,6 +20,10 @@ export let SideNav_items: ExpansionPanel[] = [{
     {
       link: RouterConstants.App_Items + '/' + RouterConstants.App_ItemUnits,
       LinkText: Constants.App_ItemsUnits, state: false
+    },
+    {
+      link: RouterConstants.App_Items + '/' + RouterConstants.App_ItemBrands,
+      LinkText: Constants.App_ItemsBrands, state: false
     }
   ],
   iconName: "inventory_2"

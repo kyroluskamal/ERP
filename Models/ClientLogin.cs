@@ -11,6 +11,6 @@ namespace ERP.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
         public string Subdomain { get; set; }
-
+        public bool IsCOC { get; set; }
     }
 }

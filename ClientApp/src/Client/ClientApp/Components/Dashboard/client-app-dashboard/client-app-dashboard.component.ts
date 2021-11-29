@@ -96,9 +96,7 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
     this.ClientAccountService.currentUserOvservable.subscribe(
       r => console.log(r)
     );
-    this.ClientAccountService.X_Token$.subscribe(
-      r => console.log(r)
-    );
+
     if (localStorage.getItem(this.Constants.ChoosenThemeColors)) {
       let temp: any = localStorage.getItem(this.Constants.ChoosenThemeColors)
       this.ChoosenThemeColor = JSON.parse(temp);

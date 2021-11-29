@@ -53,5 +53,6 @@ export abstract class RouterConstants {
   public static App_Items = "items";
   public static App_ItemMainCategories = "itemsCategories";
   public static App_ItemUnits = "ItemUnits";
+  public static App_ItemBrands = "ItemBrands";
 
 }

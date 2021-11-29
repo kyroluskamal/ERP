@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ERP.Models.COC
+namespace ERP.Models.COCs
 {
     public class COCAddress
     {

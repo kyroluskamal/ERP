@@ -48,7 +48,7 @@ namespace ERP.Utilities
         public string Emailconfirmation_ErrorMessage = "You need to confirm your email.";
         public string WrongPassword_ErrorMessage = "Wrong Password";
         public string Email_Is_Confirmed_ErrorMessage = "Email is already confirmed";
-        public string RolenameAddtion_ErrorMessage = "Your account is add but we can't assign role to you. Please Contact us";
+        public string RolenameAddtion_ErrorMessage = "Your account is added but we can't assign role to you. Please Contact us";
         public string Required_field_ErrorMessage = "This Field is required";
         public string DataAddtionStatus_ERROR_ErrorMessage = "Error: Faild to add data in database. Try again.";
         public string Data_Deleted_ERROR_ErrorMessage = "Error: Faild to delete data from database.";
@@ -72,7 +72,7 @@ namespace ERP.Utilities
         //ValidationErrorMessages
 
         //ModelsConstants
-        public enum IsClientOrStaffOrBoth { Client_COC = 0, Employee_COC = 1, both = 2 }
+        public enum IsClientOrStaffOrBoth { Client_COC = 0, Employee_COC = 1, both = 2 , Owner=3}
         public enum ClientType { Individual = 0, BusinessType = 1 }
         public int Male = 1;
         public int Female = 0;
@@ -316,6 +316,10 @@ namespace ERP.Utilities
         public object Unique_SubCat_Per_MainCat_ERROR_Response()
         {
             return new { status = Unique_SubCat_Per_MainCat_ERROR_status, error = Unique_SubCat_Per_MainCat_ERROR_Message };
+        }
+        public object RolenameAddtion_ERROR_Response()
+        {
+            return new { status = RolenameAddtion_statuCode, error = RolenameAddtion_ErrorMessage };
         }
     }
 }

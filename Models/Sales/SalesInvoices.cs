@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ERP.Models.COCs;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace ERP.Models.Sales
 {
@@ -45,7 +44,7 @@ namespace ERP.Models.Sales
         public ApplicationUser ApplicationUser { get; set; }
         public int CreatedBy_UserId { get; set; }
 
-        public ERP.Models.COC.COC COC { get; set; }
+        public COC COC { get; set; }
         public int? COCId { get; set; }
     }
 }

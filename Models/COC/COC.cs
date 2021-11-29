@@ -4,22 +4,22 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ERP.Models.COC
+namespace ERP.Models.COCs
 {
     public class COC
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "You need to choose your account type")]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "bit")]
         public bool ClientType { get; set; }
 
-        [Required(ErrorMessage = "You need to specify the client credit limit or write 0")]
+        [Required(ErrorMessage = "Required_field")]
         public int CreditLimit { get; set; }
 
-        [Required(ErrorMessage = "You need to specify the client credit limit or write 0")]
+        [Required(ErrorMessage = "Required_field")]
         public int CreditPeriodLimit { get; set; }
         [Column(TypeName = "Money")]
-        public decimal Balance { get; set; }
+        public decimal TotalBalance { get; set; }
 
         [DataType(DataType.Date)]
         [Column(TypeName = "Date")]
@@ -37,7 +37,7 @@ namespace ERP.Models.COC
 
         public string Location { get; set; }
 
-        [Required(ErrorMessage = "You must provide a phone number")]
+        [Required(ErrorMessage = "Required_field")]
         [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"+?^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
         public string MobilePhone { get; set; }

@@ -6,12 +6,13 @@ namespace ERP.Models
     {
         public string email { get; set; }
         public string token { get; set; }
-        [Required(ErrorMessage = "Password is required")]
+        [Required(ErrorMessage = "PasswordRequired")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Compare("Password", ErrorMessage = "ConfirmPasswordNoPassswordMatch")]
         public string ConfirmPassword { get; set; }
-
+        public string Subdomain { get; set; }
+        public bool IsCOC { get; set; }
     }
 }

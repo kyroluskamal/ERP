@@ -1,10 +1,9 @@
-﻿using ERP.Models.PointsAndCredits.Settings;
+﻿using ERP.Models.COCs;
+using ERP.Models.PointsAndCredits.Settings;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace ERP.Models.PointsAndCredits
 {
@@ -22,7 +21,7 @@ namespace ERP.Models.PointsAndCredits
         [Column(TypeName = "bit")]
         public bool HasDescription { get; set; }
 
-        public ERP.Models.COC.COC COC { get; set; }
+        public COC COC { get; set; }
         public int COCId { get; set; }
 
         public CreditTypes CreditTypes { get; set; }

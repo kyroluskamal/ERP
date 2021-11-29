@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
+import { MediaChange, MediaObserver } from '@angular/flex-layout';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 import { ClientForgetPasswordComponent } from '../../Client/MainDomain/Components/client-forget-password/client-forget-password.component';
 import { ClientLoginComponent } from '../../Client/MainDomain/Components/client-login/client-login.component';
 import { ClientRegisterComponent } from '../../Client/MainDomain/Components/client-register/client-register.component';
@@ -8,13 +10,16 @@ import { OwnerForgetPasswordComponent } from '../../Owners/Components/owner-forg
 import { OwnerRegisterComponent } from '../../Owners/Components/owner-register/owner-register.component';
 import { OwnerResetPasswordComponent } from '../../Owners/Components/owner-reset-password/owner-reset-password.component';
 import { OwnersLoginComponent } from '../../Owners/Components/owners-login/owners-login.component';
+import { ConstantsService } from '../constants.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DialogHandlerService {
 
-  constructor(public Dialog: MatDialog) { }
+  constructor(public Dialog: MatDialog, private mediaObserver: MediaObserver, public Constants: ConstantsService) {
+
+  }
 
   OpenOwnerRegisterDialog() {
     let RegisterDialogConfig: MatDialogConfig = new MatDialogConfig();
@@ -33,7 +38,11 @@ export class DialogHandlerService {
     this.Dialog.open(ClientRegisterComponent, RegisterDialogConfig);
   }
   OpenClientLoginDialog() {
-    this.Dialog.open(ClientLoginComponent);
+    let ClientLoginDialogConfig: MatDialogConfig = new MatDialogConfig();
+    ClientLoginDialogConfig.panelClass = "ClientLoginDiablog";
+    ClientLoginDialogConfig.autoFocus = true;
+    ClientLoginDialogConfig.maxWidth = "100vw";
+    this.Dialog.open(ClientLoginComponent, ClientLoginDialogConfig);
   }
   CLoseRegisterThenOpen_Client_LoginDialog() {
     this.CloseDialog();

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
 import { Subscription } from 'rxjs';
@@ -8,13 +8,16 @@ import { Subscription } from 'rxjs';
   templateUrl: './client-dashboard-home.component.html',
   styleUrls: ['./client-dashboard-home.component.css']
 })
-export class ClientDashboardHomeComponent implements OnInit {
+export class ClientDashboardHomeComponent implements OnInit, OnDestroy {
   //properties
   MediaSubscription: Subscription = new Subscription();
   gridCols: number = 4;
   fontSize: string = '0.5rem';
   //constructor
   constructor(private mediaObserver: MediaObserver, public Constants: ConstantsService) { }
+  ngOnDestroy(): void {
+    this.MediaSubscription.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.MediaSubscription = this.mediaObserver.asObservable().subscribe(

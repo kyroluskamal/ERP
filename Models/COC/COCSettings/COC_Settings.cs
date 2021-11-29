@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ERP.Models.COC.COCSettings
+namespace ERP.Models.COCs.COCSettings
 {
     public class COC_Settings
     {

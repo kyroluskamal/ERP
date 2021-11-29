@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ERP.Models.COC
+namespace ERP.Models.COCs
 {
     public class Business_COC
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "You must enter the buisness name")]
+        [Required(ErrorMessage = "Required_field")]
         public string BusinessName { get; set; }
         public string BusinessPhone { get; set; }
         public string TaxRecordId { get; set; }

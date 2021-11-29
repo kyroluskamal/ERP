@@ -1,11 +1,9 @@
-﻿using ERP.Models.PointsAndCredits;
+﻿using ERP.Models.COCs;
+using ERP.Models.PointsAndCredits;
 using ERP.Models.Sales;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ERP.Models.Membership
 {
@@ -27,7 +25,7 @@ namespace ERP.Models.Membership
         [Column(TypeName = "bit")]
         public bool HasDescription { get; set; }
 
-        public ERP.Models.COC.COC COC { get; set; }
+        public COC COC { get; set; }
         public int COCId { get; set; }
 
         public Packages Packages { get; set; }

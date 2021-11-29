@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ERP.Models.COCs;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ERP.Models.CRMSystem
 {
@@ -27,7 +25,7 @@ namespace ERP.Models.CRMSystem
         [Column(TypeName = "bit")]
         public bool IsAssignedToStaff { get; set; }
 
-        public ERP.Models.COC.COC COC { get; set; }
+        public COC COC { get; set; }
         public int COCId { get; set; }
     }
 }

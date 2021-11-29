@@ -146,5 +146,13 @@
   "Brand_Name_Singular": "Brand Name",
   "Brand_Names" : "Brand Names",
   "AntiForgery_Error" : "Are you trying to login with a forge identity? This is forbidden.",
-  "Unauthorized_Error" : "You are not authorized to access this page. Are you logged in with the correct role?"
+  "Unauthorized_Error" : "You are not authorized to access this page. Are you logged in with the correct role?",
+  "WrongPassword": "Wrong Password",
+  "ConfermationEmail_Resend" : " To send confirmation message again",
+  "WelcomeBack" : " Welcom back!",
+  "EmailRequired" : "Email is required",
+  "PasswordRequired" : "Password is required",
+  "ConfirmPasswordNoPassswordMatch" : "The password and confirmation password do not match.",
+  "Brands" : "Brands",
+  "Brand" : "Brand"
 }

@@ -26,10 +26,7 @@ export class ClientAccountService {
   }
   private currentUserSource = new ReplaySubject<ClientWithToken | any>(1);
   currentUserOvservable = this.currentUserSource.asObservable();
-  private X_Toketn = new Subject<any>();
-  get X_Token$() {
-    return this.X_Toketn.asObservable();
-  }
+
   Register(clientRegisterModel: ClientRegister): Observable<any> {
     return this.httpClient.post<any>(RouterConstants.ClientRegister_APIurl, clientRegisterModel, { responseType: "json" })
       .pipe(
@@ -54,17 +51,12 @@ export class ClientAccountService {
           else
             sessionStorage.setItem(this.Constants.Client, JSON.stringify(user));
           this.currentUserSource.next(user);
-          localStorage.setItem("XSRF-REQUEST-TOKEN", response.headers.get("XSRF-REQUEST-TOKEN"))
-          this.setX_tokent(sessionStorage.getItem("XSRF-REQUEST-TOKEN"));
         }
         return user;
       })
     )
   }
 
-  setX_tokent(x: any) {
-    this.X_Toketn.next(x)
-  }
   setCurrentUser(Client: ClientWithToken) {
     this.currentUserSource.next(Client);
   }

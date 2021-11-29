@@ -12,9 +12,6 @@ export class ItemsComponentComponent implements OnInit {
     this.ClientAccountService.currentUserOvservable.subscribe(
       r => console.log(r)
     );
-    this.ClientAccountService.X_Token$.subscribe(
-      r => console.log(r)
-    );
   }
 
   ngOnInit(): void {

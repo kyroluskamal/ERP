@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter, Subscription } from 'rxjs';
 import { RouterConstants } from 'src/Helpers/RouterConstants';
 import { ConstantsService } from '../../../../CommonServices/constants.service';
 import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
@@ -34,13 +34,15 @@ export class ClientLoginComponent implements OnInit, OnDestroy {
     public accountService: ClientAccountService, private Notifications: NotificationsService) {
     this.selected = localStorage.getItem(this.Constants.lang);
   }
-
+  @Input() CloseIconHide: boolean = false;
+  @Input() IsCOC: boolean = false;
   ngOnInit(): void {
     this.LangSubscibtion = this.translate.SelectedLangSubject.subscribe(
       (response) => {
         this.selected = response;
       }
     );
+    console.log(window.location.hostname.split("."));
     this.loginForm = this.formBuilder.group({
       Email: [null, [Validators.email, Validators.required]],
       Password: [null, [Validators.required]],
@@ -56,7 +58,8 @@ export class ClientLoginComponent implements OnInit, OnDestroy {
     this.ClientLogin = {
       Email: this.loginForm.get("Email")?.value,
       Password: this.loginForm.get("Password")?.value,
-      Subdomain: window.location.hostname.split(".")[0]
+      Subdomain: window.location.hostname.split(".")[0],
+      IsCOC: this.IsCOC === false && window.location.hostname.split(".")[0] === "localhost" ? false : true
     }
     this.accountService.loginMainDomain(this.ClientLogin, RememberMe).subscribe({
       next: response => {
@@ -65,9 +68,23 @@ export class ClientLoginComponent implements OnInit, OnDestroy {
           this.translate.isRightToLeft(this.selected) ? "rtl" : "ltr");
         this.dialogHandler.CloseDialog();
         this.loading = false;
+        if (this.IsCOC)
+          this.router.navigateByUrl("/app");
       },
       error: error => {
         this.loading = false;
+        if (!Array.isArray(error)) {
+          if (error.error.status)
+            this.Notifications.error(this.translate.GetTranslation(error.error.status), "",
+              this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? "rtl" : "ltr");
+        } else {
+          let errors = "";
+          for (let e of error) {
+            errors += this.translate.GetTranslation(e.status);
+          }
+          this.Notifications.error(errors, "",
+            this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? "rtl" : "ltr");
+        }
         console.log(error);
         this.ValidationErrors = error;
       },
@@ -99,3 +116,7 @@ export class ClientLoginComponent implements OnInit, OnDestroy {
     this.LangSubscibtion.unsubscribe();
   }
 }
+function input() {
+  throw new Error('Function not implemented.');
+}
+

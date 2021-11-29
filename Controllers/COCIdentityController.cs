@@ -6,7 +6,6 @@ using ERP.UnitOfWork;
 using ERP.Utilities;
 using ERP.Utilities.Services;
 using ERP.Utilities.Services.EmailService;
-using ERP.Models.COCs;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -22,7 +21,6 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using System;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -30,7 +28,7 @@ namespace ERP.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class IdentityController : ControllerBase
+    public class COCIdentityController : ControllerBase
     {
         public ApplicationUserManager UserManager { get; set; }
         public ITokenService TokenService { get; set; }
@@ -44,7 +42,7 @@ namespace ERP.Controllers
         public Constants Constants { get; set; }
         public ApplicationUserRoleManager RoleManager { get; set; }
         //...........................Constructor........................
-        public IdentityController(
+        public COCIdentityController(
             ApplicationUserManager userManager, ITokenService tokenService, Constants constants,
             IUnitOfWork_Tenants tenantsUnitOfWork, IUnitOfWork_ApplicationUser clientUnitOfWork,
             DbContextOptions<ApplicationDbContext> dbOptions, ApplicationUserRoleManager roleManager,
@@ -64,9 +62,7 @@ namespace ERP.Controllers
             Antiforgery = antiforgery;
         }
 
-        // POST api/<IdentityController>/
         [HttpPost]
-        [AllowAnonymous]
         public async Task<ActionResult> Post([FromBody] ClientRegister clientRegister)
         {
             if (ModelState.IsValid)
@@ -133,7 +129,7 @@ namespace ERP.Controllers
                 {
                     Email = clientRegister.Email,
                     UserName = clientRegister.UserName,
-                    IsClientOrStaffOrBoth = (int)Constants.IsClientOrStaffOrBoth.Owner
+                    IsClientOrStaffOrBoth = (int)Constants.IsClientOrStaffOrBoth.Client_COC
                 };
                 var result = await UserManager.CreateAsync(User, clientRegister.Password);
                 if (result.Succeeded)
@@ -145,7 +141,7 @@ namespace ERP.Controllers
 
                     var roleResult = await UserManager.AddToRoleAsync(user, Constants.Admin_Role);
                     if (!roleResult.Succeeded)
-                        return BadRequest(Constants.RolenameAddtion_ERROR_Response());
+                        return BadRequest(new { status = Constants.RolenameAddtion_statuCode, error = Constants.RolenameAddtion_ErrorMessage });
                     var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var param = new Dictionary<string, string>
@@ -154,12 +150,10 @@ namespace ERP.Controllers
                         {"email", clientRegister.Email }
                     };
                     var callbackUrl = QueryHelpers.AddQueryString(clientRegister.ClientUrl, param);
-                    var mailRequest = new MailRequest
-                    {
-                        ToEmail = clientRegister.Email,
-                        Subject = Constants.ConfirmationEmail_Subject,
-                        Body = Constants.ConfirmationEmail_Body(HtmlEncoder.Default.Encode(callbackUrl))
-                    };
+                    var mailRequest = new MailRequest();
+                    mailRequest.ToEmail = clientRegister.Email;
+                    mailRequest.Subject = Constants.ConfirmationEmail_Subject;
+                    mailRequest.Body = Constants.ConfirmationEmail_Body(HtmlEncoder.Default.Encode(callbackUrl));
                     MailService.SendEmail(mailRequest);
 
                     return Ok();
@@ -168,81 +162,15 @@ namespace ERP.Controllers
             }
             return BadRequest(Constants.ModelState_ERROR_Response(ModelState));
         }
-        
-        [HttpPost(nameof(Register_COC))]
-        [AllowAnonymous]
-        public async Task<IActionResult> Register_COC(ApplicationUser COC)
-        {
-            var tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(COC.Subdomain.ToLower());
-            if (tenant == null) return BadRequest(Constants.NullTentant_Error_Response());
-
-            if (ModelState.IsValid)
-            {
-                ApplicationUser newUser = new()
-                {
-                    Email = COC.Email,
-                    UserName = COC.UserName,
-                    PhoneNumber = COC.PhoneNumber,
-                    IsClientOrStaffOrBoth = (int)Constants.IsClientOrStaffOrBoth.Client_COC
-                };
-                COC NewClient = new()
-                {
-                    ClientType = Convert.ToBoolean(Constants.ClientType.Individual),
-                    CreditLimit = 0,
-                    CreditPeriodLimit =0,
-                };
-                var UserCreationResult = await UserManager.CreateAsync(newUser, COC.PasswordHash);
-                if (UserCreationResult.Succeeded)
-                {
-                    await TenantsUnitOfWork.SaveAsync();
-                    var user = await UserManager.FindByEmailAsync(COC.Email);
-                    if (!await RoleManager.RoleExistsAsync(Constants.Client_Role))
-                        await RoleManager.CreateAsync(new ApplicationUserRole(Constants.Client_Role));
-
-                    var roleResult = await UserManager.AddToRoleAsync(user, Constants.Client_Role);
-                    if (!roleResult.Succeeded)
-                        return BadRequest(Constants.RolenameAddtion_ERROR_Response());
-                    var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var param = new Dictionary<string, string>
-                    {
-                        {"token", code },
-                        {"email", COC.Email }
-                    };
-                    var callbackUrl = QueryHelpers.AddQueryString(COC.ClientUrl, param);
-                    var mailRequest = new MailRequest
-                    {
-                        ToEmail = COC.Email,
-                        Subject = Constants.ConfirmationEmail_Subject,
-                        Body = Constants.ConfirmationEmail_Body(HtmlEncoder.Default.Encode(callbackUrl))
-                    };
-                    MailService.SendEmail(mailRequest);
-
-                    return Ok();
-                }
-                return BadRequest(new { status = Constants.ResultStatus_statuCode, error = UserCreationResult.Errors });
-            }
-            else
-            {
-                return BadRequest(Constants.ModelState_ERROR_Response(ModelState));
-            }
-
-        }
         // POST api/<IdentityController>/LoginMainDomain
-        [HttpPost]
-        [Route("LoginMainDomain")]
+        [HttpPost(nameof(Login_COC))]
         [AllowAnonymous]
-        public async Task<ActionResult<UserWithToken>> LoginMainDomain([FromBody] ClientLogin clientLogin)
+        public async Task<ActionResult<UserWithToken>> Login_COC([FromBody] ClientLogin clientLogin)
         {
             if (ModelState.IsValid)
             {
-                TenantsInfo tenant = null;
-                if(clientLogin.IsCOC==false)
                 //Get ConnectionString From Tenant Db
-                    tenant = await TenantsUnitOfWork.Tenants.TenantByEmailAsync(clientLogin.Email);
-                else if(clientLogin.IsCOC==true)
-                    tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(clientLogin.Subdomain);
-                
+                var tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(clientLogin.Subdomain);
                 if (tenant == null) return BadRequest(Constants.NullTentant_Error_Response());
                 var user = await Authentication.AuthenticateClients(clientLogin, tenant);
                 if (user == null) return Unauthorized(Constants.NullUser_Error_Response());
@@ -251,7 +179,7 @@ namespace ERP.Controllers
                 var claimPrincipal = HttpContext.User = await ApplicationUserSignIngManager.CreateUserPrincipalAsync(user);
                 
                 await Request.HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, claimPrincipal);
-                Debug.WriteLine(user.UserRole);
+               
                 if (user.WrongPassowrd == false)
                 {
                     return new UserWithToken
@@ -270,15 +198,9 @@ namespace ERP.Controllers
         [HttpPost(nameof(EmailConfirmation))]
         public async Task<IActionResult> EmailConfirmation([FromBody] EmailConfirmationModel emailConfirmationModel)
         {
-            TenantsInfo tenant = null;
-            if (emailConfirmationModel.IsCOC == false)
-                //Get ConnectionString From Tenant Db
-                tenant = await TenantsUnitOfWork.Tenants.TenantByEmailAsync(emailConfirmationModel.email);
-            else if (emailConfirmationModel.IsCOC == true)
-                tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(emailConfirmationModel.Subdomain);
-
-            if (tenant == null) return BadRequest(Constants.NullTentant_Error_Response());
-            await ClientUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
+            var tenantbyEmail = await TenantsUnitOfWork.Tenants.TenantByEmailAsync(emailConfirmationModel.email);
+            if (tenantbyEmail == null) return BadRequest(Constants.NullTentant_Error_Response());
+            await ClientUnitOfWork.SetConnectionStringAsync(tenantbyEmail.ConnectionString);
             var user = await UserManager.FindByEmailAsync(emailConfirmationModel.email);
             if (user == null)
                 return BadRequest(Constants.NullUser_Error_Response());
@@ -294,15 +216,9 @@ namespace ERP.Controllers
         [HttpPost(nameof(SendConfirmationAgain))]
         public async Task<IActionResult> SendConfirmationAgain([FromBody] SendEmailConfirmationAgian sendEmailConfirmationAgian)
         {
-            TenantsInfo tenant = null;
-            if (sendEmailConfirmationAgian.IsCOC == false)
-                //Get ConnectionString From Tenant Db
-                tenant = await TenantsUnitOfWork.Tenants.TenantByEmailAsync(sendEmailConfirmationAgian.Email);
-            else if (sendEmailConfirmationAgian.IsCOC == true)
-                tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(sendEmailConfirmationAgian.Subdomain);
-
-            if (tenant == null) return BadRequest(Constants.NullTentant_Error_Response());
-            await ClientUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
+            var tenantbyEmail = await TenantsUnitOfWork.Tenants.TenantByEmailAsync(sendEmailConfirmationAgian.Email);
+            if (tenantbyEmail == null) return BadRequest(Constants.NullTentant_Error_Response());
+            await ClientUnitOfWork.SetConnectionStringAsync(tenantbyEmail.ConnectionString);
             var user = await UserManager.FindByEmailAsync(sendEmailConfirmationAgian.Email);
             if (user == null)
                 return BadRequest(Constants.NullUser_Error_Response());
@@ -321,12 +237,10 @@ namespace ERP.Controllers
             //    pageHandler: null,
             //    values: new { userId = User.Id, code = code },
             //    protocol: Request.Scheme);
-            var mailRequest = new MailRequest
-            {
-                ToEmail = sendEmailConfirmationAgian.Email,
-                Subject = Constants.ConfirmationEmail_Subject,
-                Body = Constants.ConfirmationEmail_Body(HtmlEncoder.Default.Encode(callbackUrl))
-            };
+            var mailRequest = new MailRequest();
+            mailRequest.ToEmail = sendEmailConfirmationAgian.Email;
+            mailRequest.Subject = Constants.ConfirmationEmail_Subject;
+            mailRequest.Body = Constants.ConfirmationEmail_Body(HtmlEncoder.Default.Encode(callbackUrl));
             MailService.SendEmail(mailRequest);
             return Ok();
         }
@@ -334,15 +248,9 @@ namespace ERP.Controllers
         [HttpPost(nameof(ForgetPassword))]
         public async Task<IActionResult> ForgetPassword([FromBody] ClientForgetPasswordModel ForgetPasswordModel)
         {
-            TenantsInfo tenant = null;
-            if (ForgetPasswordModel.IsCOC == false)
-                //Get ConnectionString From Tenant Db
-                tenant = await TenantsUnitOfWork.Tenants.TenantByEmailAsync(ForgetPasswordModel.Email);
-            else if (ForgetPasswordModel.IsCOC == true)
-                tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(ForgetPasswordModel.Subdomain);
-
-            if (tenant == null) return BadRequest(Constants.NullTentant_Error_Response());
-            await ClientUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
+            var tenantbyEmail = TenantsUnitOfWork.Tenants.TenantByEmailAsync(ForgetPasswordModel.Email);
+            if (tenantbyEmail == null) return BadRequest(Constants.NullTentant_Error_Response());
+            await ClientUnitOfWork.SetConnectionStringAsync(tenantbyEmail.GetAwaiter().GetResult().ConnectionString);
             var user = await UserManager.FindByEmailAsync(ForgetPasswordModel.Email);
             if (user == null)
                 return BadRequest(Constants.NullUser_Error_Response());
@@ -355,12 +263,10 @@ namespace ERP.Controllers
                     };
             var callbackUrl = QueryHelpers.AddQueryString(ForgetPasswordModel.ClientUrl, param);
 
-            var mailRequest = new MailRequest
-            {
-                ToEmail = ForgetPasswordModel.Email,
-                Subject = Constants.ResetPassword_Subject,
-                Body = Constants.ResetEmail_Body(HtmlEncoder.Default.Encode(callbackUrl))
-            };
+            var mailRequest = new MailRequest();
+            mailRequest.ToEmail = ForgetPasswordModel.Email;
+            mailRequest.Subject = Constants.ResetPassword_Subject;
+            mailRequest.Body = Constants.ResetEmail_Body(HtmlEncoder.Default.Encode(callbackUrl));
             MailService.SendEmail(mailRequest);
             return Ok();
         }
@@ -370,15 +276,9 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
-                TenantsInfo tenant = null;
-                if (ResetPasswordModel.IsCOC == false)
-                    //Get ConnectionString From Tenant Db
-                    tenant = await TenantsUnitOfWork.Tenants.TenantByEmailAsync(ResetPasswordModel.email);
-                else if (ResetPasswordModel.IsCOC == true)
-                    tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(ResetPasswordModel.Subdomain);
-
-                if (tenant == null) return BadRequest(Constants.NullTentant_Error_Response());
-                await ClientUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
+                var tenantbyEmail = await TenantsUnitOfWork.Tenants.TenantByEmailAsync(ResetPasswordModel.email);
+                if (tenantbyEmail == null) return BadRequest(Constants.NullTentant_Error_Response());
+                await ClientUnitOfWork.SetConnectionStringAsync(tenantbyEmail.ConnectionString);
                 var user = await UserManager.FindByEmailAsync(ResetPasswordModel.email);
                 if (user == null)
                     return BadRequest(Constants.NullUser_Error_Response());

@@ -1,10 +1,9 @@
-﻿using ERP.Models.Generals;
+﻿using ERP.Models.COCs;
+using ERP.Models.Generals;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace ERP.Models.Subscription
 {
@@ -41,7 +40,7 @@ namespace ERP.Models.Subscription
         [Column(TypeName = "bit")]
         public bool HasTerms { get; set; }
 
-        public ERP.Models.COC.COC COC { get; set; }
+        public COC COC { get; set; }
         public int COCId { get; set; }
 
         public Currency Currency { get; set; }

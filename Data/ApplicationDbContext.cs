@@ -5,7 +5,7 @@ using ERP.Models.Attendance.AttendenceSettings;
 using ERP.Models.Bookings;
 using ERP.Models.Branches;
 using ERP.Models.Checks;
-using ERP.Models.COC;
+using ERP.Models.COCs;
 using ERP.Models.CreditNotes;
 using ERP.Models.CRMSystem;
 using ERP.Models.CutomFields;
@@ -412,7 +412,8 @@ namespace ERP.Data
                 .HasComputedColumnSql("[NumberInWholeSale] * [NumberInRetailSale]");
             builder.Entity<Units>().HasIndex(x => x.WholeSaleUnit).IsUnique();
             builder.Entity<ItemMainCategory>().HasIndex(x => x.Name).IsUnique();
-            builder.Entity<Units>().HasIndex(x => x.WholeSaleUnit).IsUnique();
+            builder.Entity<Units>().HasIndex(x => x.RetailUnit).IsUnique();
+            builder.Entity<Brands>().HasIndex(x => x.Name).IsUnique();
             builder.Entity<ApplicationUser>()
                    .HasIndex(u => u.Email)
                    .IsUnique();

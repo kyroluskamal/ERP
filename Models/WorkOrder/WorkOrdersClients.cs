@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ERP.Models.COCs;
 
 namespace ERP.Models.WorkOrder
 {
@@ -11,7 +8,7 @@ namespace ERP.Models.WorkOrder
         public WorkOrders WorkOrders { get; set; }
         public int WorkOrdersId { get; set; }
 
-        public ERP.Models.COC.COC COCs { get; set; }
+        public COC COCs { get; set; }
         public int COCid { get; set; }
     }
 }

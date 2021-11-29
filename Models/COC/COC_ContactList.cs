@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace ERP.Models.COC
+namespace ERP.Models.COCs
 {
     public class COC_ContactList
     {

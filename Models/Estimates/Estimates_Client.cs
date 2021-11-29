@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ERP.Models.COCs;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -19,7 +20,7 @@ namespace ERP.Models.Estimates
         public Estimate Estimate { get; set; }
         public int? EstimateId { get; set; }
 
-        public ERP.Models.COC.COC COC { get; set; }
+        public COC COC { get; set; }
         public int COCId { get; set; }
     }
 }

@@ -1,15 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ERP.Models.COC
+namespace ERP.Models.COCs
 {
     public class ClientStatus
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, write a status name")]
+        [Required(ErrorMessage = "Required_field")]
         [MaxLength(10)]
         public string StatusName { get; set; }
-        [Required(ErrorMessage = "Please, select a color")]
+        [Required(ErrorMessage = "Required_field")]
         [MaxLength(7)]
         public string Color { get; set; }
         [ForeignKey(nameof(COCId))]

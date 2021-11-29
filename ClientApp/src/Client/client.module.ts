@@ -16,13 +16,14 @@ import { ClientMainDominRoutingModule } from './MainDomain/client-main-domin-rou
 import { ClientMainDomainBodyComponent } from './MainDomain/Components/client-main-domain-body/client-main-domain-body.component';
 import { CLientAppHomeComponent } from './ClientApp/Components/ClientAppHome/client-app-home/client-app-home.component';
 import { ClientAppModule } from './ClientApp/client-app.module';
+import { LoginOnAppComponent } from './ClientApp/Components/login-on-app/login-on-app.component';
 
 
 const Commponents = [
   ClientRegisterComponent, ClientLoginComponent, ClientMainComponent, ClientMainDomainComponent,
   ClientMainDomainNavBarComponent, ServerErrorComponent, EmailConfirmationClientComponent,
   ClientResetPasswordComponent, ClientForgetPasswordComponent, ClientMainDomainAccountComponent,
-  ClientMainDomainBodyComponent
+  ClientMainDomainBodyComponent, LoginOnAppComponent
 ]
 @NgModule({
   declarations: [Commponents],

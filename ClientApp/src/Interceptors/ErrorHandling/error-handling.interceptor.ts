@@ -113,10 +113,6 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
               }
               break;
             case 401:
-              // modalStateErrors.push(error.error);
-              // this.Notification.error(error.error.error, error.status, "ltr");
-              // console.log(error.error.error);
-              // throw modalStateErrors.flat();
               this.router.navigateByUrl("/login");
               break;
             case 404:
@@ -129,7 +125,7 @@ export class ErrorHandlingInterceptor implements HttpInterceptor {
               break;
             default:
               // this.Notification.error(this.TranslatedError(this.Constants.Something_nexpected_went_wrong, this.current_lang), "", this.isRightToLeft(this.current_lang));
-              this.Notification.error(error, "", "ltr");
+              // this.Notification.error(error, "", "ltr");
               break;
           }
         }

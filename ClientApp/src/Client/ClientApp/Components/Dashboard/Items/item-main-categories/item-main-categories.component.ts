@@ -143,6 +143,13 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
       // window.location.reload();
     });
     this.ItemsMainCategories = this.ItemService.GetAllGategories();
+    this.ItemsMainCategories.subscribe({
+      error: e => {
+        if (e.status === 401 && e.error === null)
+          this.NotificationService.error(this.translate.GetTranslation(this.Constants.Unauthorized_Error), "",
+            this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr')
+      }
+    });
     this.ItemsMainCategories.subscribe(r => this.AllMainCats = r);
     let tableAppearence: any = localStorage.getItem(this.Constants.Table_Color_mode);
     this.Table_Color_mode = tableAppearence;
@@ -296,9 +303,13 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
         if (Array.isArray(error)) {
           this.NotificationService.error(this.translate.GetTranslation(error[0].status), '',
             this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
-        } else
+        } else if (error.error.status)
           this.NotificationService.error(this.translate.GetTranslation(error.error.status), '',
             this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
+        else if (error.status === 401 && error.error === null) {
+          this.NotificationService.error(this.translate.GetTranslation(this.Constants.Unauthorized_Error), '',
+            this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
+        }
         if (error[0].status === this.Constants.NullTenant || error.error.status === this.Constants.NullTenant)
           this.ErrorGettingAllMainCats = error;
         this.gridApi.hideOverlay();
@@ -394,9 +405,13 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
           this.NotificationService.error(this.translate.GetTranslation(e[0].status), '',
             this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
           this.gridApi.hideOverlay();
-        } else
+        } else if (e.error.status)
           this.NotificationService.error(this.translate.GetTranslation(e.error.status), '',
             this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
+        else if (e.status === 401 && e.error === null) {
+          this.NotificationService.error(this.translate.GetTranslation(this.Constants.Unauthorized_Error), '',
+            this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
+        }
         if (e[0].status === this.Constants.NullTenant)
           this.ErrorGettingAllMainCats = e;
         console.log(e);
@@ -479,15 +494,20 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
       this.ShowProgressBar_subcat = false;
       return
     };
-    this.Items_Sub_Categories.subscribe(
-      r => {
+    this.Items_Sub_Categories.subscribe({
+      next: r => {
         this.gridApi_subCat.setRowData(
           r.filter((i) => {
             return i.itemMainCategoryId === Number(event.data.id);
           })
         )
+      },
+      error: e => {
+        if (e.status === 401 && e.error === null)
+          this.NotificationService.error(this.translate.GetTranslation(this.Constants.Unauthorized_Error), "",
+            this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr')
       }
-    );
+    });
     this.gridApi_subCat.hideOverlay();
     this.ShowProgressBar_subcat = false;
     this.NotSelected_MainCat = false;
@@ -571,7 +591,6 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
         }
         if (Array.isArray(e) === true) {
           this.Add_Sub_CatForm.get("SubCatName")?.setErrors({ Unique_SubCat_Per_MainCat_ERROR: true });
-          console.log(e[0])
           this.gridApi_subCat.hideOverlay();
           if (e[0].errors["ItemMainCategory.Name"]) {
             console.log("item name called")
@@ -584,6 +603,12 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
               this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
           }
           this.Add_Sub_CatForm.get("SubCatName")?.setErrors({ Unique_SubCat_Per_MainCat_ERROR: true });
+        } else if (e.error.status)
+          this.NotificationService.error(this.translate.GetTranslation(e.error.status), '',
+            this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
+        else if (e.status === 401 && e.error === null) {
+          this.NotificationService.error(this.translate.GetTranslation(this.Constants.Unauthorized_Error), '',
+            this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
         }
         this.Add_Sub_CatForm.get("SubCatName")?.setErrors({ Unique_SubCat_Per_MainCat_ERROR: true });
         console.log("end called")
@@ -674,9 +699,13 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
           this.NotificationService.error(this.translate.GetTranslation(e[0].status), '',
             this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
           this.gridApi_subCat.hideOverlay();
-        } else
+        } else if (e.error.status)
           this.NotificationService.error(this.translate.GetTranslation(e.error.status), '',
             this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
+        else if (e.status === 401 && e.error === null) {
+          this.NotificationService.error(this.translate.GetTranslation(this.Constants.Unauthorized_Error), '',
+            this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
+        }
         if (e[0].status === this.Constants.NullTenant || e.error.status === this.Constants.NullTenant)
           this.ErrorGettingAllMainCats = e;
         console.log(e);

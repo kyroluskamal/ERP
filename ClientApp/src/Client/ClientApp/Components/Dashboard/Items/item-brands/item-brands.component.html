@@ -1,22 +1,22 @@
-<ng-container *ngIf="ErrorGettingAllMainCats.length !==0">
+<ng-container *ngIf="ErrorGettingAllBands.length !==0">
   <div class="errorsIn_The_center_Screen">
     <ul>
-      <li *ngFor="let error of ErrorGettingAllMainCats">
+      <li *ngFor="let error of ErrorGettingAllBands">
         {{error.status|translate}}
       </li>
     </ul>
   </div>
 </ng-container>
-<ng-container *ngIf="ErrorGettingAllMainCats.length === 0">
+<ng-container *ngIf="ErrorGettingAllBands.length === 0">
   <mat-card
             [class]="DarkOrLight===Constants.dark?Constants.CSS_dark_for_Child_Component:Constants.CSS_Light_for_Child_Component">
     <mat-card-title [style.font-family]="!this.translate.isRightToLeft(this.translate.GetCurrentLang())? Constants.CSS_cursive_font_NotClass + ' !important':Constants.CSS_Hacen_Casablanca_font_NotClass+' !important'"
                     [dir]="this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'rtl':
       !this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'ltr':'ltr'">
-      {{Constants.Main_Categories|translate}}</mat-card-title>
+      {{Constants.Brand_Names|translate}}</mat-card-title>
     <mat-card-subtitle [dir]="this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'rtl':
       !this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'ltr':'ltr'">
-      {{this.Constants.Add_Edit_Delete | translate}} {{Constants.Main_Categories|translate}}
+      {{this.Constants.Add_Edit_Delete | translate}} {{Constants.Brand_Names|translate}}
     </mat-card-subtitle>
     <mat-card-content>
       <mat-form-field appearance="outline"
@@ -50,7 +50,7 @@
         </ag-grid-angular>
       </ng-template>
       <ng-template #LeftGrid>
-        <!-- <ag-grid-angular style="width: 100%; height: 450px;"
+        <ag-grid-angular style="width: 100%; height: 450px;"
                          [class]="Table_Color_mode===Constants.light || Theme_dir===Constants.light?'ag-theme-alpine':'ag-theme-alpine-dark'"
                          [rowData]="ItemBrands | async"
                          [columnDefs]="columnDefs"
@@ -61,9 +61,8 @@
                          [enableRtl]="false"
                          [frameworkComponents]="agFrameworks"
                          rowSelection="single"
-                         (rowSelected)="ItemMainCatRowSelect($event)"
-                         (cellValueChanged)="UpdateItemMainCat($event)">
-        </ag-grid-angular> -->
+                         (cellValueChanged)="UpdateBrand($event)">
+        </ag-grid-angular>
       </ng-template>
 
     </mat-card-content>
@@ -80,6 +79,7 @@
           <mat-label [ngClass]="ValidationErrorMessage.getFormControl('BrandName', AddBrandForm)
             .valid?Constants.CSS_valid_green:''">{{Constants.Brand_Names| translate}}</mat-label>
           <input matInput
+                 required
                  [maxlength]="MaxLength"
                  type="text"
                  value=""
@@ -89,7 +89,7 @@
               category
             </span></mat-icon>
           <mat-error *ngIf="ValidationErrorMessage.getFormControl('BrandName',AddBrandForm)
-            .hasError('required')&& this.translate.GetCurrentLang()==='en'">
+            .hasError('required')">
             {{Constants.Required_field_Error | translate}}
           </mat-error>
           <mat-error *ngIf="ValidationErrorMessage.getFormControl('BrandName', AddBrandForm)

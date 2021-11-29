@@ -64,7 +64,7 @@ export class ClientAppHomeNavbarComponent implements OnInit {
 
     this.selected = localStorage.getItem('lang');
     if (!this.selected) {
-      this.selected = 'end';
+      this.selected = 'en';
       this.switchLang(this.selected);
     } else {
       this.switchLang(this.selected);
