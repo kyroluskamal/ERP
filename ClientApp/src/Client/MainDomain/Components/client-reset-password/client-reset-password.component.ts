@@ -6,15 +6,14 @@ import { NotificationsService } from '../../../../CommonServices/NotificationSer
 import { ValidationErrorMessagesService } from '../../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
 import { CustomErrorStateMatcher } from '../../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
 import { CustomValidators } from '../../../../Helpers/CustomValidation/custom-validators';
-import { ClientResetPasswordModel } from '../../../Models/client-reset-password-model.model';
 import { Location } from '@angular/common'
-import { ClientForgetPasswordModel } from '../../../Models/client-forget-password-model.model';
 import { ClientAccountService } from '../../Authentication/client-account-service.service';
 import { TranslationService } from '../../../../CommonServices/translation-service.service';
 import { Subscription } from 'rxjs';
 import { OnDestroy } from '@angular/core';
 import { ConstantsService } from '../../../../CommonServices/constants.service';
 import { RouterConstants } from 'src/Helpers/RouterConstants';
+import { ClientForgetPasswordModel, ClientResetPasswordModel } from 'src/Client/Models/client-models.model';
 @Component({
   selector: 'app-client-reset-password',
   templateUrl: './client-reset-password.component.html',

@@ -168,5 +168,12 @@
   "ConfermationEmail_Resend" : "لإعادة ارسال رسالة تأكيد البريد الالكتروني ",
   "WelcomeBack" : "مرحباً بعودتك!",
   "Brands" : "العلامات التجارية",
-  "Brand": "علامة تجارية"
+  "Brand": "علامة تجارية",
+  "Product" : "منتج",
+  "Add_New_Product" : "أضف منتج جدبد",
+  "Product_Main_Details" : "تفاصيل المنتج الاساسية",
+  "Has_Expiry_Date" : "له تاريخ انتهاء الصلاحية",
+  "Available_online" : "متوفر على الانترنت",
+  "ProductName" : "اسم المنتج",
+  "SelectDefultInventory": "اختار المخزن الافتراضي"
 }

@@ -20,6 +20,7 @@ import { HttpClientXsrfModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorHandlingInterceptor } from 'src/Interceptors/ErrorHandling/error-handling.interceptor';
 import { TokenInterceptorInterceptor } from 'src/Interceptors/TokenInterceptor/token-interceptor.interceptor';
 import { RegisterOnAppComponent } from './Components/register-on-app/register-on-app.component';
+import { AddNewItemComponent } from './Components/Dashboard/Items/add-new-item/add-new-item.component';
 
 
 const Commponents = [
@@ -27,7 +28,7 @@ const Commponents = [
   ClientDashboardHomeComponent,
   ItemMainCategoriesComponent, ItemsComponentComponent, IconButtonRendererComponent,
   SelectableEditroAgFramweworkComponent, ItemUnitsComponent, NumberCellEditorComponent,
-  ItemBrandsComponent, RegisterOnAppComponent
+  ItemBrandsComponent, RegisterOnAppComponent, AddNewItemComponent
 ]
 @NgModule({
   declarations: [Commponents],

@@ -1,7 +1,9 @@
 ﻿using ERP.Data;
 using ERP.Data.Identity;
 using ERP.Models.Items;
+using ERP.UnitOfWork.IRepository.ApplicationUser.Inventory;
 using ERP.UnitOfWork.IRepository.ApplicationUser.Items;
+using ERP.UnitOfWork.Repository.ApplicationUser.Inventory;
 using ERP.UnitOfWork.Repository.ApplicationUser.Items;
 using ERP.Utilities;
 using Microsoft.EntityFrameworkCore;
@@ -15,11 +17,13 @@ namespace ERP.UnitOfWork
         public ApplicationDbContext ApplicationDbContext { get; }
         public ApplicationUserRoleManager RoleManager { get; set; }
 
-        public IItemMainCatRepoAsync ItemMainCategory { get; private set; }
+        public IItemsMainCatRepoAsync ItemMainCategory { get; private set; }
         public IItemsSubCatRepoAsync Item_SubCats { get; private set; }
         public IItemUnitsAsync ItemUnits { get; private set; }
 
         public IBrandsAsync ItemBrands { get; private set; }
+
+        public IInventoriesRepoAsync Inventories { get; private set; }
 
         public Constants Constants;
         public ApplicationUserUnitOfWork(ApplicationDbContext applicationDbContext,
@@ -32,6 +36,7 @@ namespace ERP.UnitOfWork
             Item_SubCats = new ItemsSubCatRepoAsync(applicationDbContext);
             ItemUnits = new ItemUnitsAsync(applicationDbContext);
             ItemBrands = new BrandsRepoAsync(applicationDbContext);
+            Inventories = new InventoriesRepoAsync(applicationDbContext);
         }
 
 

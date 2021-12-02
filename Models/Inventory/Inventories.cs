@@ -7,7 +7,7 @@ namespace ERP.Models.Inventory
     public class Inventories
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, write a name for the inventory")]
+        [Required(ErrorMessage = "Required_field")]
         public string Name { get; set; }
         [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"+?^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
@@ -21,6 +21,6 @@ namespace ERP.Models.Inventory
 
         [ForeignKey(nameof(AddedBy_EmpId))]
         public Employees Employees { get; set; }
-        public int AddedBy_EmpId { get; set; }
+        public int? AddedBy_EmpId { get; set; } //Not Required temporary
     }
 }

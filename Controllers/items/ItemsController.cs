@@ -583,7 +583,7 @@ namespace ERP.Controllers.items
                     await UserUnitOfWork.SetConnectionStringAsync(Tenant.ConnectionString);
                     //Check if teh Main cat is found in DB
                     var BrandToUpdate = await UserUnitOfWork.ItemBrands.GetAsync(Brand.Id);
-                    if (!await IsUniqeMainCat(Brand.Name))
+                    if (!UserUnitOfWork.ItemBrands.IsUnique(x=>x.Name == Brand.Name))
                     {
                         return BadRequest(Constants.Unique_Field_ERROR_Response());
                     }

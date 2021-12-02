@@ -154,5 +154,12 @@
   "PasswordRequired" : "Password is required",
   "ConfirmPasswordNoPassswordMatch" : "The password and confirmation password do not match.",
   "Brands" : "Brands",
-  "Brand" : "Brand"
+  "Brand" : "Brand",
+  "Product": "Product",
+  "Add_New_Product": "Add new product",
+  "Product_Main_Details" : "Product Main details",
+  "Has_Expiry_Date" : "Has expiry date",
+  "Available_online" : "Available online",
+  "ProductName" : "Product Name",
+  "SelectDefultInventory": "Select defult inventory"
 }

@@ -12,7 +12,7 @@ import { CookieService } from "ngx-cookie-service"
 export class ItemsService {
   subdomain = window.location.hostname.split(".")[0];
 
-  constructor(private httpClient: HttpClient, public Constants: ConstantsService, private CookieServ: CookieService) {
+  constructor(private httpClient: HttpClient, public Constants: ConstantsService) {
 
   }
 

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { RouterConstants } from 'src/Helpers/RouterConstants';
 import { IsNullTenantGuard } from '../MainDomain/Guards/is-null-tenant.guard';
 import { ClientAppDashboardComponent } from './Components/Dashboard/client-app-dashboard/client-app-dashboard.component';
+import { AddNewItemComponent } from './Components/Dashboard/Items/add-new-item/add-new-item.component';
 import { ItemBrandsComponent } from './Components/Dashboard/Items/item-brands/item-brands.component';
 import { ItemMainCategoriesComponent } from './Components/Dashboard/Items/item-main-categories/item-main-categories.component';
 import { ItemUnitsComponent } from './Components/Dashboard/Items/item-units/item-units.component';
@@ -20,7 +21,8 @@ const routes: Routes = [
             { path: '', component: ItemsComponentComponent },
             { path: RouterConstants.App_ItemMainCategories, component: ItemMainCategoriesComponent },
             { path: RouterConstants.App_ItemUnits, component: ItemUnitsComponent },
-            { path: RouterConstants.App_ItemBrands, component: ItemBrandsComponent }
+            { path: RouterConstants.App_ItemBrands, component: ItemBrandsComponent },
+            { path: RouterConstants.App_AddNewItem, component: AddNewItemComponent }
           ],
           //canActivate: [IsNullTenantGuard]
         },

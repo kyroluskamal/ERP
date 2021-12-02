@@ -24,7 +24,6 @@ import { MatTableModule } from '@angular/material/table';
 import { AgGridModule } from 'ag-grid-angular';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-
 const MaterialComponents = [
   MatButtonModule, MatToolbarModule, MatIconModule, MatDialogModule, MatListModule,
   MatBottomSheetModule, MatInputModule, MatFormFieldModule, CommonModule, MatSnackBarModule,

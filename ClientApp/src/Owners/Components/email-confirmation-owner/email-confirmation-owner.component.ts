@@ -2,7 +2,7 @@ import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { EmailConfirmationModel } from '../../../Client/Models/email-confirmation-model.model';
+import { EmailConfirmationModel } from 'src/Client/Models/client-models.model';
 import { ConstantsService } from '../../../CommonServices/constants.service';
 import { DialogHandlerService } from '../../../CommonServices/DialogHandler/dialog-handler.service';
 import { TranslationService } from '../../../CommonServices/translation-service.service';

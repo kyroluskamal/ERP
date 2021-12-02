@@ -38,6 +38,9 @@ export abstract class RouterConstants {
   public static Item_Brand_Update_API = "/api/items/UpdateBrand";
   public static Item_Brand_GetAll_API = "/api/items/GetAllBrands";
 
+  //APIURLS for Items
+  public static Inventories_GetAll_API = "/api/Inventories/AllInventories";
+
   //Client URLs
   public static Client_EmailConfirmationUrl: string = "client/emailconfirmation";
   public static Owner_EmailConfirmationUrl: string = "owners/emailconfirmation";
@@ -54,5 +57,6 @@ export abstract class RouterConstants {
   public static App_ItemMainCategories = "itemsCategories";
   public static App_ItemUnits = "ItemUnits";
   public static App_ItemBrands = "ItemBrands";
+  public static App_AddNewItem = "AddNewItem";
 
 }

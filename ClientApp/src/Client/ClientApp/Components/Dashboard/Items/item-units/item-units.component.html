@@ -88,7 +88,6 @@
             <mat-label [ngClass]="ValidationErrorMessage.getFormControl('WholeSaleName', Add_Item_Unit)
             .valid?Constants.CSS_valid_green:''">{{Constants.WholeSaleUnit| translate}}</mat-label>
             <input matInput
-                   required
                    type="text"
                    value=""
                    [maxlength]="MaxlengthVlue"
@@ -113,7 +112,6 @@
             <mat-label [ngClass]="ValidationErrorMessage.getFormControl('NumberInWholeSale', Add_Item_Unit)
             .valid?Constants.CSS_valid_green:''">{{Constants.NumberInWholeSale| translate}}</mat-label>
             <input matInput
-                   required
                    type="number"
                    value=""
                    min="1"
@@ -137,7 +135,7 @@
             <mat-label [ngClass]="ValidationErrorMessage.getFormControl('RetailSaleName', Add_Item_Unit)
             .valid?Constants.CSS_valid_green:''">{{Constants.RetailUnit| translate}}</mat-label>
             <input matInput
-                   required
+
                    [maxlength]="MaxlengthVlue"
                    type="text"
                    value=""

@@ -1,4 +1,5 @@
-﻿using ERP.UnitOfWork.IRepository.ApplicationUser.Items;
+﻿using ERP.UnitOfWork.IRepository.ApplicationUser.Inventory;
+using ERP.UnitOfWork.IRepository.ApplicationUser.Items;
 using System;
 using System.Threading.Tasks;
 
@@ -6,7 +7,8 @@ namespace ERP.UnitOfWork
 {
     public interface IUnitOfWork_ApplicationUser : IDisposable
     {
-        IItemMainCatRepoAsync ItemMainCategory { get; }
+        IItemsMainCatRepoAsync ItemMainCategory { get; }
+        IInventoriesRepoAsync Inventories { get; }
         IItemsSubCatRepoAsync Item_SubCats { get; }
         IItemUnitsAsync ItemUnits { get; }
         IBrandsAsync ItemBrands { get; }

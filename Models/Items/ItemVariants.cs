@@ -25,6 +25,7 @@ namespace ERP.Models.Items
         public int ProfitMarginType { get; set; }
         [Required]
         public int Barcode { get; set; }
+        public int ItemSKU { get; set; }
         public Item Item { get; set; }
         public int ItemId { get; set; }
         [Column(TypeName = "bit")]

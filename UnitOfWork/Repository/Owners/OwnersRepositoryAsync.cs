@@ -102,9 +102,10 @@ namespace ERP.UnitOfWork.Repository.Owners
             throw new NotImplementedException();
         }
 
-        public Task<bool> IsUnique(T entity)
+        public bool IsUnique(Expression<Func<T, bool>> filter)
         {
-            throw new NotImplementedException();
+            IQueryable<T> query = dbSet;
+            return query.Where(filter) == null;
         }
     }
 }

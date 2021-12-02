@@ -2,6 +2,7 @@ import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { ClientRegister, ClientWithToken } from 'src/Client/Models/client-models.model';
 import { RouterConstants } from 'src/Helpers/RouterConstants';
 import { ConstantsService } from '../../../../CommonServices/constants.service';
 import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
@@ -10,8 +11,6 @@ import { TranslationService } from '../../../../CommonServices/translation-servi
 import { ValidationErrorMessagesService } from '../../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
 import { CustomErrorStateMatcher } from '../../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
 import { CustomValidators } from '../../../../Helpers/CustomValidation/custom-validators';
-import { ClientRegister } from '../../../Models/client-register.model';
-import { ClientWithToken } from '../../../Models/client-with-token.model';
 import { ClientAccountService } from '../../Authentication/client-account-service.service';
 
 @Component({

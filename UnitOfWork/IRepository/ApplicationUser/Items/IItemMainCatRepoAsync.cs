@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ERP.UnitOfWork.IRepository.ApplicationUser.Items
 {
-    public interface IItemMainCatRepoAsync : IRepositoryAsync<ItemMainCategory>
+    public interface IItemsMainCatRepoAsync : IRepositoryAsync<ItemMainCategory>
     {
         void Update(ItemMainCategory ItemMainCategory);
     }

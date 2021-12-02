@@ -6,7 +6,7 @@ namespace ERP.Models.OrganizationalStructure
     public class EmployeeType
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, Write a level")]
+        [Required(ErrorMessage = "Required_field")]
         [MaxLength(20)]
         public string EmployeeTypeName { get; set; }
         [Column(TypeName = "bit")]

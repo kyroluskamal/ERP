@@ -1,0 +1,88 @@
+<!-- <ng-container *ngIf="ErrorGettingAllBands.length !==0">
+  <div class="errorsIn_The_center_Screen">
+    <ul>
+      <li *ngFor="let error of ErrorGettingAllBands">
+        {{error.status|translate}}
+      </li>
+    </ul>
+  </div>
+</ng-container> -->
+<!-- <ng-container *ngIf="ErrorGettingAllBands.length === 0"> -->
+<ng-container>
+  <form [formGroup]="AddItemMainDetails"
+        (ngSubmit)="AddItemMainDetails.valid">
+    <mat-card
+              [class]="DarkOrLight===Constants.dark?Constants.CSS_dark_for_Child_Component:Constants.CSS_Light_for_Child_Component">
+      <mat-card-title [style.font-family]="!this.translate.isRightToLeft(this.translate.GetCurrentLang())? Constants.CSS_cursive_font_NotClass + ' !important':Constants.CSS_Hacen_Casablanca_font_NotClass+' !important'"
+                      [dir]="this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'rtl':
+      !this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'ltr':'ltr'">
+        {{Constants.Product_Main_Details|translate}}</mat-card-title>
+      <mat-card-content>
+        <div fxLayout="row wrap"
+             fxLayoutAlign="space-between">
+          <mat-form-field appearance="outline"
+                          fxFill="49">
+            <mat-label [ngClass]="ValidationErrorMessage.getFormControl('Name', AddItemMainDetails)
+      .valid?Constants.CSS_valid_green:''">{{this.Constants.ProductName | translate}}
+            </mat-label>
+            <input matInput
+                   required
+                   [maxlength]="MaxLength"
+                   type="text"
+                   value=""
+                   formControlName="Name"
+                   [errorStateMatcher]="customErrorStateMatcher" />
+            <mat-icon matSuffix><span class="material-icons-outlined">
+                category
+              </span></mat-icon>
+            <mat-error *ngIf="ValidationErrorMessage.getFormControl('Name',AddItemMainDetails)
+      .hasError('required')">
+              {{Constants.Required_field_Error | translate}}
+            </mat-error>
+            <mat-error *ngIf="ValidationErrorMessage.getFormControl('Name', AddItemMainDetails)
+    .hasError('maxlength')">{{Constants.MaxLengthExceeded_ERROR | translate}} {{MaxLength}}
+              {{Constants.characters|translate}} </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline"
+                          fxFill="49">
+            <mat-label>{{Constants.SelectDefultInventory|translate}}</mat-label>
+            <mat-select required>
+              <mat-option *ngFor="let invent of AllInventories"
+                          [value]="invent.id">
+                {{invent.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row"
+             fxLayoutAlign="space-between">
+          <mat-checkbox color="primary"
+                        required
+                        formControlName="HasExpire">{{Constants.Has_Expiry_Date|translate}} </mat-checkbox>
+          <mat-checkbox color="primary"
+                        required
+                        formControlName="IsOnline">{{Constants.Available_online|translate}}</mat-checkbox>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+  </form>
+</ng-container>
+<!-- <button mat-raised-button
+                color="primary"
+                (submit)="AddItemMainDetails.valid"
+                [disabled]="AddItemMainDetails.invalid"
+                [ngClass]="ThemeColors.bg + ' ' + Constants.CSS_Width100"
+                [class]="ThemeColors.colorName==='organge'||ThemeColors.colorName==='amber'?Constants.CSS_dark_color:
+    Constants.CSS_text_white"
+                aria-label="Add new product">
+          <mat-icon>
+            <mat-spinner diameter="20"
+                         color="warn"
+                         *ngIf="loading"></mat-spinner><span *ngIf="!loading"
+                  class="material-icons-outlined">
+              add_circle
+            </span>
+          </mat-icon>
+          {{'Add'|translate}} {{Constants.Brand_Name_Singular | translate}}
+        </button> -->

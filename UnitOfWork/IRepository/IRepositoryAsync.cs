@@ -25,6 +25,6 @@ namespace ERP.UnitOfWork.IRepository
         Task RemoveAsync(int id);
         void Remove(T entity);
         void RemoveRange(IEnumerable<T> entity);
-        Task<bool> IsUnique(T entity);
+        bool IsUnique(Expression<Func<T, bool>> filter);
     }
 }

@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { SendEmailConfirmationAgian } from 'src/Client/Models/client-models.model';
 import { RouterConstants } from 'src/Helpers/RouterConstants';
-import { SendEmailConfirmationAgian } from '../../../Client/Models/send-email-confirmation-agian.model';
 import { ConstantsService } from '../../../CommonServices/constants.service';
 import { DialogHandlerService } from '../../../CommonServices/DialogHandler/dialog-handler.service';
 import { NotificationsService } from '../../../CommonServices/NotificationService/notifications.service';

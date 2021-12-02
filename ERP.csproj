@@ -17,6 +17,7 @@
     <UserSecretsId>1b0e332e-beab-4fb2-abb2-31e565600e6b</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="BarCode" Version="2021.11.0" />
     <PackageReference Include="Castle.Windsor" Version="5.1.1" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="MailKit" Version="2.15.0" />

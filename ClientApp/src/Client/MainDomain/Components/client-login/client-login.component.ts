@@ -2,6 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
+import { ClientLogin, SendEmailConfirmationAgian } from 'src/Client/Models/client-models.model';
 import { RouterConstants } from 'src/Helpers/RouterConstants';
 import { ConstantsService } from '../../../../CommonServices/constants.service';
 import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
@@ -9,8 +10,6 @@ import { NotificationsService } from '../../../../CommonServices/NotificationSer
 import { TranslationService } from '../../../../CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from '../../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
 import { CustomErrorStateMatcher } from '../../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
-import { ClientLogin } from '../../../Models/client-login.model';
-import { SendEmailConfirmationAgian } from '../../../Models/send-email-confirmation-agian.model';
 import { ClientAccountService } from '../../Authentication/client-account-service.service';
 
 @Component({

@@ -801,3 +801,12 @@ body {
 /* .mat-form-field-appearance-outline .mat-form-field-outline-thick {
   color: green !important;
 }*/
+.dark-for-Child-Component .mat-checkbox-frame{
+  border-color: #e6e6e6;
+}
+.dark-for-Child-Component .mat-select-value, .dark-for-Child-Component .mat-select-arrow,
+.Light-for-Child-Component .mat-select-value, .Light-for-Child-Component .mat-select-arrow,
+.mat-form-field.mat-focused.mat-primary .mat-select-arrow{
+  color: inherit;
+}
+

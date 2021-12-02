@@ -232,7 +232,7 @@ namespace ERP.Controllers
         [HttpPost]
         [Route("LoginMainDomain")]
         [AllowAnonymous]
-        public async Task<ActionResult<UserWithToken>> LoginMainDomain([FromBody] ClientLogin clientLogin)
+        public async Task<ActionResult<ClientWithToken>> LoginMainDomain([FromBody] ClientLogin clientLogin)
         {
             if (ModelState.IsValid)
             {
@@ -254,8 +254,9 @@ namespace ERP.Controllers
                 Debug.WriteLine(user.UserRole);
                 if (user.WrongPassowrd == false)
                 {
-                    return new UserWithToken
+                    return new ClientWithToken
                     {
+                        UserId = user.Id,
                         Username = user.UserName,
                         Token = user.Token,
                         Roles = (List<string>)await UserManager.GetRolesAsync(user),

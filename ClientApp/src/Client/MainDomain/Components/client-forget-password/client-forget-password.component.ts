@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { ClientForgetPasswordModel } from 'src/Client/Models/client-models.model';
 import { RouterConstants } from 'src/Helpers/RouterConstants';
 import { ConstantsService } from '../../../../CommonServices/constants.service';
 import { DialogHandlerService } from '../../../../CommonServices/DialogHandler/dialog-handler.service';
@@ -8,7 +9,6 @@ import { NotificationsService } from '../../../../CommonServices/NotificationSer
 import { TranslationService } from '../../../../CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from '../../../../CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
 import { CustomErrorStateMatcher } from '../../../../Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
-import { ClientForgetPasswordModel } from '../../../Models/client-forget-password-model.model';
 import { ClientAccountService } from '../../Authentication/client-account-service.service';
 
 @Component({

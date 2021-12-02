@@ -9,7 +9,6 @@ import { Observable, Subscription } from 'rxjs';
 import { OwnerAccountService } from '../../Owners/Services/Authentication/Owner-account-service.service';
 import { take } from 'rxjs/operators';
 import { OwnerWithToken } from '../../Owners/Models/owner-with-token.model';
-import { ClientWithToken } from '../../Client/Models/client-with-token.model';
 import { ClientAccountService } from '../../Client/MainDomain/Authentication/client-account-service.service';
 import { StorageMap } from '@ngx-pwa/local-storage';
 import { ConstantsService } from 'src/CommonServices/constants.service';

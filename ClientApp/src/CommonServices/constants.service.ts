@@ -45,6 +45,14 @@ export class ConstantsService {
   Units = "Units"
   Brand_Name_Singular = "Brand_Name_Singular";
   Brand_Names = "Brand_Names";
+  Products = "Products";
+  Product = "Product";
+  Add_New_Product = "Add_New_Product";
+  Product_Main_Details = "Product_Main_Details";
+  Has_Expiry_Date = "Has_Expiry_Date";
+  Available_online = "Available_online";
+  SelectDefultInventory = "SelectDefultInventory";
+  ProductName = "ProductName";
   //Notifications Messages
   LoggedInSuccessfully: string = "LoggedInSuccessfully";
   EmilConfirmationResnding = "EmilConfirmationResnding";
@@ -290,6 +298,7 @@ export class ConstantsService {
   public App_ItemsMainCat = "Categories";
   public App_ItemsUnits = "Units";
   public App_ItemsBrands = "Brands";
+  public App_AddNewItem = "Add new Product";
 
 
 }
