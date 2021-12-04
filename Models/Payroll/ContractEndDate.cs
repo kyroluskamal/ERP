@@ -10,7 +10,7 @@ namespace ERP.Models.Payroll
     public class ContractEndDate
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "Date")]
         public DateTime EndDate { get; set; }
 

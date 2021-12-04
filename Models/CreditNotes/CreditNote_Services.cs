@@ -11,7 +11,7 @@ namespace ERP.Models.CreditNotes
     public class CreditNote_Services
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "Money")]
         public decimal ServicePrice { get; set; }
         public Services Services { get; set; }

@@ -11,7 +11,7 @@ namespace ERP.Models.Purchases.PurphaseRefund
     public class Items_in_Refund
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public int RefundedQuantity { get; set; }
 
         public ItemVariants ItemVariants { get; set; }

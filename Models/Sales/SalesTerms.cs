@@ -9,9 +9,9 @@ namespace ERP.Models.Sales
     public class SalesTerms
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public string Name { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public string Condtions { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace ERP.Models.Bookings
     public class Booking_settings
     {
         public int Id { get; set; }
-        [Required]
+        [Required (ErrorMessage = "Required_field")]
         public int BookingTimeDivider { get; set; }
 
         [Column(TypeName = "bit")]

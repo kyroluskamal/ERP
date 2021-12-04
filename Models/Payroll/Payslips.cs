@@ -12,15 +12,15 @@ namespace ERP.Models.Payroll
     public class Payslips
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [DataType(DataType.Date)]
         [Column(TypeName = "Date")]
         public DateTime PostingDate { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [DataType(DataType.Date)]
         [Column(TypeName = "Date")]
         public DateTime StartDate { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [DataType(DataType.Date)]
         [Column(TypeName = "Date")]
         public DateTime EndDate { get; set; }

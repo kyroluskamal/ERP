@@ -578,6 +578,8 @@ export class ItemMainCategoriesComponent implements OnInit, OnDestroy {
     }
     this.ItemService.AddNew_SubCAt(newSubcAt).subscribe({
       next: r => {
+        this.NotificationService.success(this.translate.GetTranslation(this.Constants.DataAddtionStatus_Success),
+          this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
         this.gridApi_subCat.applyTransaction({ add: [r] })
         this.Add_Sub_CatForm.get("SubCatName")?.setValue("");
         this.ShowProgressBar_subcat = false;

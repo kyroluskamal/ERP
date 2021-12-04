@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { CellValueChangedEvent, ColDef, ColumnApi, GridApi, GridReadyEvent, RowNode } from 'ag-grid-community';
 import { Observable, Subscription } from 'rxjs';
 
@@ -92,7 +93,7 @@ export class ItemUnitsComponent implements OnInit, OnDestroy {
   constructor(public ItemService: ItemsService, private NotificationService: NotificationsService,
     public Constants: ConstantsService, private clientAccountService: ClientAccountService,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
-    private LightOrDarkConverter: LightDarkThemeConverterService) {
+    private LightOrDarkConverter: LightDarkThemeConverterService, private bottomSheetRef: MatBottomSheetRef<ItemUnitsComponent>) {
 
     this.ItemsUnits = this.ItemService.Get_All_ItemUnits();
     this.ItemsUnits.subscribe({
@@ -226,13 +227,13 @@ export class ItemUnitsComponent implements OnInit, OnDestroy {
       return;
     }
     let itemUnit: ItemUnit = {
-      Id: 1,
-      WholeSaleUnit: this.Add_Item_Unit.get("WholeSaleName")?.value,
-      RetailUnit: this.Add_Item_Unit.get("RetailSaleName")?.value,
-      NumberInWholeSale: Number(this.Add_Item_Unit.get("NumberInWholeSale")?.value),
-      NumberInRetailSale: Number(this.Add_Item_Unit.get("NumberInRetailSale")?.value),
-      ConversionRate: Number(this.Add_Item_Unit.get("NumberInWholeSale")?.value) * Number(this.Add_Item_Unit.get("NumberInRetailSale")?.value),
-      Subdomain: window.location.hostname.split('.')[0]
+      id: 1,
+      wholeSaleUnit: this.Add_Item_Unit.get("WholeSaleName")?.value,
+      retailUnit: this.Add_Item_Unit.get("RetailSaleName")?.value,
+      numberInWholeSale: Number(this.Add_Item_Unit.get("NumberInWholeSale")?.value),
+      numberInRetailSale: Number(this.Add_Item_Unit.get("NumberInRetailSale")?.value),
+      conversionRate: Number(this.Add_Item_Unit.get("NumberInWholeSale")?.value) * Number(this.Add_Item_Unit.get("NumberInRetailSale")?.value),
+      subdomain: window.location.hostname.split('.')[0]
     }
     console.log(itemUnit);
     this.ItemService.AddNew_ItemUnit(itemUnit).subscribe({
@@ -241,6 +242,7 @@ export class ItemUnitsComponent implements OnInit, OnDestroy {
           this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
         this.gridApi.applyTransaction({ add: [response] })
         this.ShowProgressBar = false;
+        this.bottomSheetRef.dismiss();
       },
       error: error => {
         let translatedError: string = "";
@@ -409,13 +411,13 @@ export class ItemUnitsComponent implements OnInit, OnDestroy {
       return;
     }
     let ItemUnit: ItemUnit = {
-      Id: Number(event.data.id),
-      WholeSaleUnit: String(event.data.wholeSaleUnit),
-      RetailUnit: String(event.data.retailUnit),
-      NumberInRetailSale: Number(event.data.numberInRetailSale),
-      NumberInWholeSale: Number(event.data.numberInWholeSale),
-      ConversionRate: Number(event.data.numberInRetailSale) * Number(event.data.numberInWholeSale),
-      Subdomain: window.location.hostname.split('.')[0]
+      id: Number(event.data.id),
+      wholeSaleUnit: String(event.data.wholeSaleUnit),
+      retailUnit: String(event.data.retailUnit),
+      numberInRetailSale: Number(event.data.numberInRetailSale),
+      numberInWholeSale: Number(event.data.numberInWholeSale),
+      conversionRate: Number(event.data.numberInRetailSale) * Number(event.data.numberInWholeSale),
+      subdomain: window.location.hostname.split('.')[0]
     }
     if (event.oldValue === event.newValue) return;
     this.ItemService.Update_ItemUnit(ItemUnit).subscribe({
@@ -425,6 +427,7 @@ export class ItemUnitsComponent implements OnInit, OnDestroy {
         this.gridApi.hideOverlay();
         this.gridApi.refreshCells();
         this.ShowProgressBar = false;
+        this.bottomSheetRef.dismiss();
       },
       error: (error) => {
         let translatedError: string = "";

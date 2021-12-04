@@ -1,9 +1,11 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
+#nullable disable
+
 namespace ERP.Migrations.ApplicationDb
 {
-    public partial class ApplicationDb : Migration
+    public partial class AppDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -370,7 +372,6 @@ namespace ERP.Migrations.ApplicationDb
                     HasDescription = table.Column<bool>(type: "bit", nullable: false),
                     HasSpecialOffer = table.Column<bool>(type: "bit", nullable: false),
                     HasNote = table.Column<bool>(type: "bit", nullable: false),
-                    ItemSKU = table.Column<int>(type: "int", nullable: false),
                     AddByUserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -646,10 +647,11 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    WholeSaleUnit = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    RetailUnit = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    WholeSaleUnit = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    RetailUnit = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     NumberInWholeSale = table.Column<short>(type: "smallint", nullable: false),
-                    NumberInRetailSale = table.Column<short>(type: "smallint", nullable: false)
+                    NumberInRetailSale = table.Column<short>(type: "smallint", nullable: false),
+                    ConversionRate = table.Column<short>(type: "smallint", nullable: false, computedColumnSql: "[NumberInWholeSale] * [NumberInRetailSale]")
                 },
                 constraints: table =>
                 {
@@ -826,8 +828,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_BankAccount_Descriptions_BankAccounts_BankAccountsId",
                         column: x => x.BankAccountsId,
                         principalTable: "BankAccounts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -925,8 +926,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_CheckBooks_Currencies_CurrencyId",
                         column: x => x.CurrencyId,
                         principalTable: "Currencies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -938,7 +938,7 @@ namespace ERP.Migrations.ApplicationDb
                     ClientType = table.Column<bool>(type: "bit", nullable: false),
                     CreditLimit = table.Column<int>(type: "int", nullable: false),
                     CreditPeriodLimit = table.Column<int>(type: "int", nullable: false),
-                    Balance = table.Column<decimal>(type: "Money", nullable: false),
+                    TotalBalance = table.Column<decimal>(type: "Money", nullable: false),
                     BalanceStartDate = table.Column<DateTime>(type: "Date", nullable: false),
                     HasEstimates = table.Column<bool>(type: "bit", nullable: false),
                     HasCategory = table.Column<bool>(type: "bit", nullable: false),
@@ -1025,8 +1025,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_Purchase_invoices_Currencies_CurrencyId",
                         column: x => x.CurrencyId,
                         principalTable: "Currencies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -1080,8 +1079,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_WorkOrders_Currencies_CurrencyId",
                         column: x => x.CurrencyId,
                         principalTable: "Currencies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -1261,8 +1259,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_ItemBrands_Brands_BrandsId",
                         column: x => x.BrandsId,
                         principalTable: "Brands",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ItemBrands_Items_ItemId",
                         column: x => x.ItemId,
@@ -1319,11 +1316,12 @@ namespace ERP.Migrations.ApplicationDb
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     NotifyLessThan = table.Column<short>(type: "smallint", nullable: false),
-                    LastPurchasePrice = table.Column<decimal>(type: "Money", nullable: false),
-                    TotalAmountInAllInvetroies = table.Column<short>(type: "smallint", nullable: false),
+                    LastPurchasePrice = table.Column<decimal>(type: "Money", nullable: true),
+                    TotalAmountInAllInvetroies = table.Column<short>(type: "smallint", nullable: true),
                     ProfitMargin = table.Column<short>(type: "smallint", nullable: false),
                     ProfitMarginType = table.Column<byte>(type: "tinyint", nullable: false),
                     Barcode = table.Column<int>(type: "int", nullable: false),
+                    ItemSKU = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ItemId = table.Column<int>(type: "int", nullable: false),
                     HasWholeSalePrice = table.Column<bool>(type: "bit", nullable: false),
                     HasRetailPrice = table.Column<bool>(type: "bit", nullable: false)
@@ -1657,8 +1655,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_ItemTaxSettings_TaxSettings_TaxSettingsId",
                         column: x => x.TaxSettingsId,
                         principalTable: "TaxSettings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -1701,8 +1698,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_Treasury_Descriptions_Treasuries_TreasuriesId",
                         column: x => x.TreasuriesId,
                         principalTable: "Treasuries",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -1727,8 +1723,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_Item_Units_Units_UnitsId",
                         column: x => x.UnitsId,
                         principalTable: "Units",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -1770,32 +1765,27 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_Employees_Countries_CountryId",
                         column: x => x.CountryId,
                         principalTable: "Countries",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Employees_Designations_DesignationId",
                         column: x => x.DesignationId,
                         principalTable: "Designations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Employees_EmployeeLevels_EmployeeLevelId",
                         column: x => x.EmployeeLevelId,
                         principalTable: "EmployeeLevels",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Employees_EmployeeShifts_EmployeeShiftsId",
                         column: x => x.EmployeeShiftsId,
                         principalTable: "EmployeeShifts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Employees_EmployeeTypes_EmployeeTypeId",
                         column: x => x.EmployeeTypeId,
                         principalTable: "EmployeeTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Employees_HolidayLists_HolidayListsId",
                         column: x => x.HolidayListsId,
@@ -2189,8 +2179,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_SalesInvoices_COCs_COCId",
                         column: x => x.COCId,
                         principalTable: "COCs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -2228,8 +2217,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_Subscriptions_Currencies_CurrencyId",
                         column: x => x.CurrencyId,
                         principalTable: "Currencies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -2437,8 +2425,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_Refunds_Notes_Purchase_RefundRequests_Purchase_RefundRequestsId",
                         column: x => x.Purchase_RefundRequestsId,
                         principalTable: "Purchase_RefundRequests",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -2629,8 +2616,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_CreditNtotes_Client_CreditNotes_CreditNoteId",
                         column: x => x.CreditNoteId,
                         principalTable: "CreditNotes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -2655,8 +2641,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_Item_Per_Subcategories_ItemSubCategories_ItemSubCategoryId",
                         column: x => x.ItemSubCategoryId,
                         principalTable: "ItemSubCategories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -2908,8 +2893,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_Services_ServiceSubCategories_ServiceSubCategoryId",
                         column: x => x.ServiceSubCategoryId,
                         principalTable: "ServiceSubCategories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -3253,8 +3237,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_Employees_customFields_Fields_Per_Service_Fields_Per_ServiceId",
                         column: x => x.Fields_Per_ServiceId,
                         principalTable: "Fields_Per_Service",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -3322,8 +3305,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_Estimates_Employees_AddBy_empId",
                         column: x => x.AddBy_empId,
                         principalTable: "Employees",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -3348,8 +3330,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_InsuranceAgents_Employees_AddedBy_EmployeesId",
                         column: x => x.AddedBy_EmployeesId,
                         principalTable: "Employees",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -3364,7 +3345,7 @@ namespace ERP.Migrations.ApplicationDb
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     IsMainInventory = table.Column<bool>(type: "bit", nullable: false),
-                    AddedBy_EmpId = table.Column<int>(type: "int", nullable: false)
+                    AddedBy_EmpId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -3373,8 +3354,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_Inventories_Employees_AddedBy_EmpId",
                         column: x => x.AddedBy_EmpId,
                         principalTable: "Employees",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -3481,8 +3461,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_Payslips_Currencies_CurrencyId",
                         column: x => x.CurrencyId,
                         principalTable: "Currencies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Payslips_Employees_EmployeesId",
                         column: x => x.EmployeesId,
@@ -3719,8 +3698,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_Memberships_SalesInvoices_SalesInvoicesId",
                         column: x => x.SalesInvoicesId,
                         principalTable: "SalesInvoices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -3941,8 +3919,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_Subscription_Invoices_Subscriptions_SubscriptionsId",
                         column: x => x.SubscriptionsId,
                         principalTable: "Subscriptions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -4246,8 +4223,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_ServicesInSalesInvices_SalesInvoices_SalesInvoicesId",
                         column: x => x.SalesInvoicesId,
                         principalTable: "SalesInvoices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ServicesInSalesInvices_Services_ServicesId",
                         column: x => x.ServicesId,
@@ -4278,8 +4254,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_ServiceTaxSettings_TaxSettings_TaxSettingsId",
                         column: x => x.TaxSettingsId,
                         principalTable: "TaxSettings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -4513,8 +4488,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_Commissions_Per_employee_Employees_EmployeesId",
                         column: x => x.EmployeesId,
                         principalTable: "Employees",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -4694,8 +4668,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_Estimates_Clients_Estimates_EstimateId",
                         column: x => x.EstimateId,
                         principalTable: "Estimates",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -4721,8 +4694,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_Estimates_Items_ItemVariants_ItemVariantsId",
                         column: x => x.ItemVariantsId,
                         principalTable: "ItemVariants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -4748,8 +4720,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_Estimates_Services_Services_ServicesId",
                         column: x => x.ServicesId,
                         principalTable: "Services",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -4834,8 +4805,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_EstimatesStatuses_Statuses_StatusId",
                         column: x => x.StatusId,
                         principalTable: "Statuses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -5076,8 +5046,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_ItemsInSalesInvoices_Inventories_InventoriesId",
                         column: x => x.InventoriesId,
                         principalTable: "Inventories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ItemsInSalesInvoices_ItemVariants_ItemVariantsId",
                         column: x => x.ItemVariantsId,
@@ -5088,8 +5057,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_ItemsInSalesInvoices_SalesInvoices_SalesInvoicesId",
                         column: x => x.SalesInvoicesId,
                         principalTable: "SalesInvoices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -5163,8 +5131,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_AttendanceDaysPerEmps_ManualAttendanceEachDays_ManualAttendenceEachDayId",
                         column: x => x.ManualAttendenceEachDayId,
                         principalTable: "ManualAttendanceEachDays",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -5516,8 +5483,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_RefundedServices_ServicesInSalesInvices_ServicesInSalesInvicesId",
                         column: x => x.ServicesInSalesInvicesId,
                         principalTable: "ServicesInSalesInvices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -5715,8 +5681,7 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_RefundedItems_ItemsInSalesInvoices_ItemsInSalesInvoicesId",
                         column: x => x.ItemsInSalesInvoicesId,
                         principalTable: "ItemsInSalesInvoices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -5944,6 +5909,12 @@ namespace ERP.Migrations.ApplicationDb
                 name: "IX_BranchesSettings_BranchId",
                 table: "BranchesSettings",
                 column: "BranchId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Brands_Name",
+                table: "Brands",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Business_COCs_COCId",
@@ -6500,6 +6471,12 @@ namespace ERP.Migrations.ApplicationDb
                 name: "IX_ItemDescriptions_ItemId",
                 table: "ItemDescriptions",
                 column: "ItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ItemMainCategories_Name",
+                table: "ItemMainCategories",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ItemNotes_ItemId",
@@ -7240,6 +7217,12 @@ namespace ERP.Migrations.ApplicationDb
                 name: "IX_Treasury_Descriptions_TreasuriesId",
                 table: "Treasury_Descriptions",
                 column: "TreasuriesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Units_WholeSaleUnit",
+                table: "Units",
+                column: "WholeSaleUnit",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_VacationPolicy_Types_VacationsPolicy_LeavePolicyId",

@@ -9,7 +9,7 @@ namespace ERP.Models.Purchases.PurphaseRefund
     public class Refunds_items_ShippingFees
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public int ShippingFees { get; set; }
         public Purchase_RefundRequests Purchase_RefundRequests { get; set; }
         public int Purchase_RefundRequestsId { get; set; }

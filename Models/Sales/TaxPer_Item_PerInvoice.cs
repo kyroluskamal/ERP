@@ -10,7 +10,7 @@ namespace ERP.Models.Sales
     public class TaxPer_Item_PerInvoice
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public int TaxValue { get; set; }
 
         public TaxSettings TaxSettings { get; set; }

@@ -11,7 +11,7 @@ namespace ERP.Models.Sales.Settings
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public string Value { get; set; }
 
         public SalesInvoices SalesInvoices { get; set; }

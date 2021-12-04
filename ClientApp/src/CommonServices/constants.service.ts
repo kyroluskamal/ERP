@@ -53,6 +53,26 @@ export class ConstantsService {
   Available_online = "Available_online";
   SelectDefultInventory = "SelectDefultInventory";
   ProductName = "ProductName";
+
+  Description = "Description";
+  InternalNotes = "InternalNotes";
+  Item_Units = "Item_Units";
+  Select_Item_Unit = "Select_Item_Unit";
+  NoUnitsAdded = "NoUnitsAdded";
+
+  Add_New_Units = "Add_New_Units";
+  Search = "Search";
+  Add_New_Inventory = "Add_New_Inventory";
+  NoAddedInvetories = "NoAddedInvetories";
+  SelectMainCategory = "SelectMainCategory";
+  Select_Sub_Category = "Select_Sub_Category";
+  Select_ItemBrand = "Select_ItemBrand";
+  NoMainCatsAdded = "NoMainCatsAdded";
+  NoSubCatsAdded = "NoSubCatsAdded";
+  NoItemBrandsAdded = "NoItemBrandsAdded";
+
+  ItemVariants_Prices_Details = "ItemVariants_Prices_Details";
+  IncorrecEmail = "IncorrecEmail";
   //Notifications Messages
   LoggedInSuccessfully: string = "LoggedInSuccessfully";
   EmilConfirmationResnding = "EmilConfirmationResnding";
@@ -298,7 +318,7 @@ export class ConstantsService {
   public App_ItemsMainCat = "Categories";
   public App_ItemsUnits = "Units";
   public App_ItemsBrands = "Brands";
-  public App_AddNewItem = "Add new Product";
+  public App_AddNewItem = "Add_New_Product";
 
 
 }

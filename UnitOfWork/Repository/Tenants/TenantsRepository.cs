@@ -107,10 +107,10 @@ namespace ERP.UnitOfWork.Repository.Tenants
             return await dbSet.LastAsync();
         }
 
-        public bool IsUnique(Expression<Func<T, bool>> filter)
+        public async Task<bool> IsUnique(Expression<Func<T, bool>> filter)
         {
             IQueryable<T> query = dbSet;
-            return query.Where(filter) == null;
+            return await query.Where(filter).ToListAsync() == null;
         }
     }
 }

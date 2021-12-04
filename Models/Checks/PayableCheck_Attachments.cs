@@ -5,7 +5,7 @@ namespace ERP.Models.Checks
     public class PayableCheck_Attachments
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public byte[] Attachments { get; set; }
 
         public PayableCheck PayableCheck { get; set; }

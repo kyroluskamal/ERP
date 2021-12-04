@@ -7,7 +7,7 @@ namespace ERP.Models.Checks
     public class ReceivableCheck
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, write the amount of money received by this check")]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "Money")]
         public decimal Amount { get; set; }
 
@@ -19,16 +19,16 @@ namespace ERP.Models.Checks
         [Column(TypeName = "Date")]
         public DateTime DueDate { get; set; }
 
-        [Required(ErrorMessage = "Please, write the check number")]
+        [Required(ErrorMessage = "Required_field")]
         [RegularExpression(@"[0-9]*", ErrorMessage = "You must enter number only")]
         public int CheckNo { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         //AccountId in the chart of accounts in which we will add these money
         public int ReceivedFromAccountId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         //AccountId in the chart of accounts from which we will take these money
         public int CollectAccountId { get; set; }
-        [Required(ErrorMessage = "Please, write the name written on the check")]
+        [Required(ErrorMessage = "Required_field")]
         [MaxLength(50)]
         public string NameOnCheck { get; set; }
         [Column(TypeName = "bit")]

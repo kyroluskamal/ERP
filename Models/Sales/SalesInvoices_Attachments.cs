@@ -10,7 +10,7 @@ namespace ERP.Models.Sales
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public byte[] Attachments { get; set; }
 
         public SalesInvoices SalesInvoices { get; set; }

@@ -6,26 +6,24 @@ namespace ERP.Models.Items
     public class ItemVariants
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, write the name of variant ")]
+        [Required(ErrorMessage = "Required_field")]
         [MaxLength(30)]
         public string Name { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "smallint")]
         public int NotifyLessThan { get; set; }
-        [Required]
         [Column(TypeName = "Money")]
-        public decimal LastPurchasePrice { get; set; }
-        [Required]
+        public decimal? LastPurchasePrice { get; set; }
         [Column(TypeName = "smallint")]
-        public int TotalAmountInAllInvetroies { get; set; }
-        [Required]
+        public int? TotalAmountInAllInvetroies { get; set; }
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "smallint")]
         public int ProfitMargin { get; set; }
         [Column(TypeName = "tinyint")]
         public int ProfitMarginType { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public int Barcode { get; set; }
-        public int ItemSKU { get; set; }
+        public string ItemSKU { get; set; }
         public Item Item { get; set; }
         public int ItemId { get; set; }
         [Column(TypeName = "bit")]

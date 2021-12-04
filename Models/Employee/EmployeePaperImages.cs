@@ -7,7 +7,7 @@ namespace ERP.Models.Employee
     public class EmployeePaperImages
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "You have to add one image at least")]
+        [Required(ErrorMessage = "Required_field")]
         public byte[] Image { get; set; }
         [ForeignKey(nameof(EmployeeId))]
         public Employees Employees { get; set; }

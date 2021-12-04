@@ -6,7 +6,7 @@ namespace ERP.Models.Employee
     public class Employees_customFields
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public string Value { get; set; }
         public Employees Employees { get; set; }
         public int EmployeesId { get; set; }

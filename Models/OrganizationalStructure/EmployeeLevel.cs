@@ -6,8 +6,8 @@ namespace ERP.Models.OrganizationalStructure
     public class EmployeeLevel
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, Write a level")]
-        [MaxLength(20)]
+        [Required(ErrorMessage = "Required_field")]
+        [MaxLength(20, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string EmployeeLevelName { get; set; }
         [Column(TypeName = "bit")]
         public bool IsActive { get; set; }

@@ -324,7 +324,7 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
     this.setThemeAppearence(ThemeAppearence, ThemeAppearence, ThemeAppearence);
   }
   setThemeAppearence(BodyAppeareance: string, ToolbarAppeareance: string, SidebarAppeareance: string) {
-    // this.LightDarkThemeConverter.ChangeTheme(BodyAppeareance);
+    this.LightDarkThemeConverter.ChangeTheme(BodyAppeareance);
     this.BodyThemeClass = BodyAppeareance === this.Constants.light ? this.Constants.CSS_light_for_body :
       BodyAppeareance === this.Constants.dark ? this.Constants.CSS_Dark_for_body : this.Constants.CSS_light_for_body; localStorage.setItem(this.Constants.BodyThemeClass, this.BodyThemeClass);
 

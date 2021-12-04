@@ -11,10 +11,10 @@ namespace ERP.Models.Bookings
     {
         public int Id { get; set; }
         [Column(TypeName = "Time")]
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public TimeSpan StartTime { get; set; }
         [Column(TypeName = "Time")]
-        [Required]
+        [Required (ErrorMessage = "Required_field")]
         public TimeSpan EndTime { get; set; }
     }
 }

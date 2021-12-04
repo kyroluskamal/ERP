@@ -9,7 +9,7 @@ namespace ERP.Models.Purchases.PurphaseRefund
     public class Refunds_Attachments
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public byte[] Attachments { get; set; }
 
         public Purchase_RefundRequests Purchase_RefundRequests { get; set; }

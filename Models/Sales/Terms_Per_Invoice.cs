@@ -9,7 +9,7 @@ namespace ERP.Models.Sales
     public class Terms_Per_Invoice
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public int TaxValue { get; set; }
 
         public SalesInvoices SalesInvoices { get; set; }

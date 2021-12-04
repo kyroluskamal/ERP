@@ -11,11 +11,11 @@ namespace ERP.Models.WorkOrder
     public class WorkOrders
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Index]
         public string CurrentNumber { get; set; }
-        [Required(ErrorMessage = "Please, add title")]
-        [MaxLength(50)]
+        [Required(ErrorMessage = "Required_field")]
+        [MaxLength(50, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string Title { get; set; }
 
         [DataType(DataType.Date)]

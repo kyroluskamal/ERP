@@ -10,7 +10,7 @@ namespace ERP.Models.Supplier
     public class Supplier_CustomFields
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public string Value { get; set; }
 
         public Suppliers Suppliers { get; set; }

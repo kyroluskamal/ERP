@@ -10,10 +10,10 @@ namespace ERP.Models.Subscription
     public class Subscriptions
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public string CurrentNumber { get; set; }
-        [Required(ErrorMessage = "Please, add a name")]
-        [MaxLength(30)]
+        [Required(ErrorMessage = "Required_field")]
+        [MaxLength(30, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string Name { get; set; }
 
         [Column(TypeName = "tinyint")]

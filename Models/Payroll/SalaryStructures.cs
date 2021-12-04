@@ -10,7 +10,7 @@ namespace ERP.Models.Payroll
     public class SalaryStructures
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, write a name")]
+        [Required(ErrorMessage = "Required_field")]
         [MaxLength(30)]
         public string Name { get; set; }
         public string Description { get; set; }

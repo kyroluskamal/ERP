@@ -11,14 +11,14 @@ namespace ERP.Models.Inventory
         public int InventoryId { get; set; }
         public ItemVariants ItemVariants { get; set; }
         public int ItemVariantsId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public int Amount { get; set; }
 
         [Column(TypeName = "tinyint")]
-        [MaxLength(2)]
+        [MaxLength(2, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public int ExpireMonth { get; set; }
         [Column(TypeName = "smallint")]
-        [MaxLength(4)]
+        [MaxLength(4, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public int ExoireDate { get; set; }
     }
 }

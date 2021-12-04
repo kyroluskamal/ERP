@@ -50,9 +50,9 @@ namespace ERP.UnitOfWork
             return await ApplicationDbContext.SaveChangesAsync();
         }
 
-        public void Save()
+        public int Save()
         {
-            ApplicationDbContext.SaveChanges();
+            return ApplicationDbContext.SaveChanges();
         }
         public async Task SetConnectionStringAsync(string ConnectionString)
         {

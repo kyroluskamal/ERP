@@ -7,26 +7,30 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
+#nullable disable
+
 namespace ERP.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211118091527_UniqueWholeSale2")]
-    partial class UniqueWholeSale2
+    [Migration("20211204101404_AppDb2")]
+    partial class AppDb2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.10")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("ERP.Data.Identity.ApplicationUserRole", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -47,7 +51,7 @@ namespace ERP.Migrations.ApplicationDb
                         .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("AspNetRoles");
+                    b.ToTable("AspNetRoles", (string)null);
                 });
 
             modelBuilder.Entity("ERP.Data.Identity.ApplicationUserUserRoles", b =>
@@ -62,15 +66,16 @@ namespace ERP.Migrations.ApplicationDb
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetUserRoles");
+                    b.ToTable("AspNetUserRoles", (string)null);
                 });
 
             modelBuilder.Entity("ERP.Models.ApplicationUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -143,15 +148,16 @@ namespace ERP.Migrations.ApplicationDb
                         .IsUnique()
                         .HasFilter("[PhoneNumber] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers");
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("ERP.Models.Attendance.AttendanceDaysPerEmp", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("AttendanceSheetId")
                         .HasColumnType("int");
@@ -172,8 +178,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("ApplicationDate")
                         .HasColumnType("Date");
@@ -201,8 +208,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("AttendancePermissionId")
                         .HasColumnType("int");
@@ -217,12 +225,34 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("AttendancePermission_DelayPermissions");
                 });
 
+            modelBuilder.Entity("ERP.Models.Attendance.AttendancePermission_notes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AttendancePermissionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AttendancePermissionId");
+
+                    b.ToTable("AttendancePermission_notes");
+                });
+
             modelBuilder.Entity("ERP.Models.Attendance.AttendancePermission_VacationPerm", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("AttendancePermissionId")
                         .HasColumnType("int");
@@ -239,32 +269,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("AttendancePermission_VacationPerms");
                 });
 
-            modelBuilder.Entity("ERP.Models.Attendance.AttendancePermission_notes", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AttendancePermissionId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AttendancePermissionId");
-
-                    b.ToTable("AttendancePermission_notes");
-                });
-
             modelBuilder.Entity("ERP.Models.Attendance.AttendanceSheet", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<short>("Actual_WorkingHours")
                         .HasColumnType("smallint");
@@ -322,8 +333,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Color")
                         .IsRequired()
@@ -355,8 +367,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<bool>("EnableSecondryShift")
                         .HasColumnType("bit");
@@ -376,8 +389,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("Date");
@@ -401,8 +415,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -417,8 +432,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("VacationsPolicy_LeavePolicyId")
                         .HasColumnType("int");
@@ -439,8 +455,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -461,8 +478,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<byte>("ApplicableAfter_HowManyDays")
                         .HasColumnType("tinyint");
@@ -497,8 +515,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<byte>("LeaveCount")
                         .HasColumnType("tinyint");
@@ -534,8 +553,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("AttendanceDate")
                         .HasColumnType("Date");
@@ -553,12 +573,35 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("ManualAttendanceEachDays");
                 });
 
+            modelBuilder.Entity("ERP.Models.Attendance.ManualAttendanceEachDay_notes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ManualAttendenceEachDayId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ManualAttendenceEachDayId");
+
+                    b.ToTable("ManualAttendanceEachDay_notes");
+                });
+
             modelBuilder.Entity("ERP.Models.Attendance.ManualAttendanceEachDay_VacationStatus", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("ManualAttendenceEachDayId")
                         .HasColumnType("int");
@@ -578,33 +621,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("ManualAttendanceEachDay_VacationStatus");
                 });
 
-            modelBuilder.Entity("ERP.Models.Attendance.ManualAttendanceEachDay_notes", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ManualAttendenceEachDayId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ManualAttendenceEachDayId");
-
-                    b.ToTable("ManualAttendanceEachDay_notes");
-                });
-
             modelBuilder.Entity("ERP.Models.Bookings.Booking", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<TimeSpan>("EndTime")
                         .HasColumnType("Time");
@@ -617,34 +640,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Bookings");
                 });
 
-            modelBuilder.Entity("ERP.Models.Bookings.BookingSettings_AssignedEmployee", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Booking_settingsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EmployeesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Booking_settingsId");
-
-                    b.HasIndex("EmployeesId");
-
-                    b.ToTable("BookingSettings_AssignedEmployee");
-                });
-
             modelBuilder.Entity("ERP.Models.Bookings.Booking_Clients", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("BookingId")
                         .HasColumnType("int");
@@ -665,8 +667,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("BookingId")
                         .HasColumnType("int");
@@ -687,8 +690,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("BookingPaymentSettings")
                         .HasColumnType("int");
@@ -707,12 +711,36 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Booking_settings");
                 });
 
+            modelBuilder.Entity("ERP.Models.Bookings.BookingSettings_AssignedEmployee", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Booking_settingsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EmployeesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Booking_settingsId");
+
+                    b.HasIndex("EmployeesId");
+
+                    b.ToTable("BookingSettings_AssignedEmployee");
+                });
+
             modelBuilder.Entity("ERP.Models.Branches.BranchesAddress", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("AddressLine_1")
                         .IsRequired()
@@ -745,8 +773,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("BranchId")
                         .HasColumnType("int");
@@ -777,8 +806,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("CurrentNumber")
                         .IsRequired()
@@ -824,12 +854,261 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Employees_In_Branch");
                 });
 
-            modelBuilder.Entity("ERP.Models.COC.Business_COC", b =>
+            modelBuilder.Entity("ERP.Models.Checks.CheckBook", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("BankAccountsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CheckBookNo")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CurrencyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FirstSerial")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("HasNotes")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("LastSerial")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BankAccountsId");
+
+                    b.HasIndex("CurrencyId");
+
+                    b.ToTable("CheckBooks");
+                });
+
+            modelBuilder.Entity("ERP.Models.Checks.CheckBook_Notes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CheckBookId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CheckBookId");
+
+                    b.ToTable("CheckBook_Notes");
+                });
+
+            modelBuilder.Entity("ERP.Models.Checks.PayableCheck", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("Money");
+
+                    b.Property<int>("CheckNo")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("Date");
+
+                    b.Property<bool>("HasAttachments")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("IssueDate")
+                        .HasColumnType("Date");
+
+                    b.Property<string>("NameOnCheck")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("ReceivedFromAccountId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PayableChecks");
+                });
+
+            modelBuilder.Entity("ERP.Models.Checks.PayableCheck_Attachments", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<byte[]>("Attachments")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<int>("PayableCheckId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PayableCheckId");
+
+                    b.ToTable("PayableCheck_Attachments");
+                });
+
+            modelBuilder.Entity("ERP.Models.Checks.PayableCheck_Description", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PayableCheckId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PayableCheckId");
+
+                    b.ToTable("PayableCheck_Descriptions");
+                });
+
+            modelBuilder.Entity("ERP.Models.Checks.ReceivableCheck", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("Money");
+
+                    b.Property<int>("CheckNo")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CollectAccountId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("Date");
+
+                    b.Property<bool>("HasAttachments")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsEndorsed")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("IssueDate")
+                        .HasColumnType("Date");
+
+                    b.Property<string>("NameOnCheck")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("ReceivedFromAccountId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ReceivableChecks");
+                });
+
+            modelBuilder.Entity("ERP.Models.Checks.ReceivableCheck_Attachments", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<byte[]>("Attachments")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<int>("ReceivableCheckId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceivableCheckId");
+
+                    b.ToTable("ReceivableCheck_Attachments");
+                });
+
+            modelBuilder.Entity("ERP.Models.Checks.ReceivableCheck_Description", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ReceivableCheckId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceivableCheckId");
+
+                    b.ToTable("ReceivableCheck_Descriptions");
+                });
+
+            modelBuilder.Entity("ERP.Models.Checks.ReceivableCheck_Endorsement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("EndorsedName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ReceivableCheckId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceivableCheckId");
+
+                    b.ToTable("ReceivableCheck_Endorsements");
+                });
+
+            modelBuilder.Entity("ERP.Models.COCs.Business_COC", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("BusinessName")
                         .IsRequired()
@@ -854,15 +1133,79 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Business_COCs");
                 });
 
-            modelBuilder.Entity("ERP.Models.COC.COC", b =>
+            modelBuilder.Entity("ERP.Models.COCs.Category_PerClient", b =>
+                {
+                    b.Property<int>("COCId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("COC_categoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("COCId", "COC_categoryId");
+
+                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("COCId", "COC_categoryId"));
+
+                    b.HasIndex("COC_categoryId");
+
+                    b.ToTable("Category_PerClient");
+                });
+
+            modelBuilder.Entity("ERP.Models.COCs.ClientNotes", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
-                    b.Property<decimal>("Balance")
-                        .HasColumnType("Money");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("COCId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("COCId");
+
+                    b.ToTable("ClientNotes");
+                });
+
+            modelBuilder.Entity("ERP.Models.COCs.ClientStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("COCId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasMaxLength(7)
+                        .HasColumnType("nvarchar(7)");
+
+                    b.Property<string>("StatusName")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("COCId");
+
+                    b.ToTable("ClientStatuses");
+                });
+
+            modelBuilder.Entity("ERP.Models.COCs.COC", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("BalanceStartDate")
                         .HasColumnType("Date");
@@ -913,6 +1256,9 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<string>("Telephone")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("TotalBalance")
+                        .HasColumnType("Money");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -927,12 +1273,92 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("COCs");
                 });
 
-            modelBuilder.Entity("ERP.Models.COC.COCAddress", b =>
+            modelBuilder.Entity("ERP.Models.COCs.COC_category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("COC_category");
+                });
+
+            modelBuilder.Entity("ERP.Models.COCs.COC_ContactList", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("MobilePhone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Telephone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("COC_ContactList");
+                });
+
+            modelBuilder.Entity("ERP.Models.COCs.COC_CustomFields", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("COCId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Fields_Per_ServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("COCId");
+
+                    b.HasIndex("Fields_Per_ServiceId");
+
+                    b.ToTable("COC_CustomFields");
+                });
+
+            modelBuilder.Entity("ERP.Models.COCs.COCAddress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("AddressLine_1")
                         .IsRequired()
@@ -961,167 +1387,32 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("COCAddresses");
                 });
 
-            modelBuilder.Entity("ERP.Models.COC.COC_ContactList", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("MobilePhone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Telephone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("COC_ContactList");
-                });
-
-            modelBuilder.Entity("ERP.Models.COC.COC_CustomFields", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("COCId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Fields_Per_ServiceId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("COCId");
-
-                    b.HasIndex("Fields_Per_ServiceId");
-
-                    b.ToTable("COC_CustomFields");
-                });
-
-            modelBuilder.Entity("ERP.Models.COC.COC_category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("COC_category");
-                });
-
-            modelBuilder.Entity("ERP.Models.COC.Category_PerClient", b =>
+            modelBuilder.Entity("ERP.Models.COCs.ConstactList_PerCOC", b =>
                 {
                     b.Property<int>("COCId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("COC_categoryId")
-                        .HasColumnType("int");
-
-                    b.HasKey("COCId", "COC_categoryId")
-                        .IsClustered();
-
-                    b.HasIndex("COC_categoryId");
-
-                    b.ToTable("Category_PerClient");
-                });
-
-            modelBuilder.Entity("ERP.Models.COC.ClientNotes", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("COCId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Note")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("COCId");
-
-                    b.ToTable("ClientNotes");
-                });
-
-            modelBuilder.Entity("ERP.Models.COC.ClientStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("COCId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Color")
-                        .IsRequired()
-                        .HasMaxLength(7)
-                        .HasColumnType("nvarchar(7)");
-
-                    b.Property<string>("StatusName")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("COCId");
-
-                    b.ToTable("ClientStatuses");
-                });
-
-            modelBuilder.Entity("ERP.Models.COC.ConstactList_PerCOC", b =>
-                {
-                    b.Property<int>("COCId")
-                        .HasColumnType("int");
+                        .HasColumnOrder(0);
 
                     b.Property<int>("COC_ContactListId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
 
-                    b.HasKey("COCId", "COC_ContactListId")
-                        .IsClustered();
+                    b.HasKey("COCId", "COC_ContactListId");
+
+                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("COCId", "COC_ContactListId"));
 
                     b.HasIndex("COC_ContactListId");
 
                     b.ToTable("ConstactList_PerCOC");
                 });
 
-            modelBuilder.Entity("ERP.Models.COC.Individual_COC", b =>
+            modelBuilder.Entity("ERP.Models.COCs.Individual_COC", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("COCId")
                         .HasColumnType("int");
@@ -1149,332 +1440,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Individual_COCs");
                 });
 
-            modelBuilder.Entity("ERP.Models.CRMSystem.Appointments", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("AppointmentDate")
-                        .HasColumnType("Date");
-
-                    b.Property<int>("COCId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("Date");
-
-                    b.Property<int>("Duration")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("HasNotes")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsAssignedToStaff")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsRepeated")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsSharedWithClient")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("COCId");
-
-                    b.ToTable("Appointments");
-                });
-
-            modelBuilder.Entity("ERP.Models.CRMSystem.Appointments_Actions", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Actions")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<int>("AppointmentsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppointmentsId");
-
-                    b.ToTable("Appointments_Actions");
-                });
-
-            modelBuilder.Entity("ERP.Models.CRMSystem.Appointments_Notes", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AppointmentsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppointmentsId");
-
-                    b.ToTable("Appointments_Notes");
-                });
-
-            modelBuilder.Entity("ERP.Models.Checks.CheckBook", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("BankAccountsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CheckBookNo")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CurrencyId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FirstSerial")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("HasNotes")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("LastSerial")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BankAccountsId");
-
-                    b.HasIndex("CurrencyId");
-
-                    b.ToTable("CheckBooks");
-                });
-
-            modelBuilder.Entity("ERP.Models.Checks.CheckBook_Notes", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CheckBookId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CheckBookId");
-
-                    b.ToTable("CheckBook_Notes");
-                });
-
-            modelBuilder.Entity("ERP.Models.Checks.PayableCheck", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("Money");
-
-                    b.Property<int>("CheckNo")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DueDate")
-                        .HasColumnType("Date");
-
-                    b.Property<bool>("HasAttachments")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("IssueDate")
-                        .HasColumnType("Date");
-
-                    b.Property<string>("NameOnCheck")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("ReceivedFromAccountId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PayableChecks");
-                });
-
-            modelBuilder.Entity("ERP.Models.Checks.PayableCheck_Attachments", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<byte[]>("Attachments")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<int>("PayableCheckId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PayableCheckId");
-
-                    b.ToTable("PayableCheck_Attachments");
-                });
-
-            modelBuilder.Entity("ERP.Models.Checks.PayableCheck_Description", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PayableCheckId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PayableCheckId");
-
-                    b.ToTable("PayableCheck_Descriptions");
-                });
-
-            modelBuilder.Entity("ERP.Models.Checks.ReceivableCheck", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("Money");
-
-                    b.Property<int>("CheckNo")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CollectAccountId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DueDate")
-                        .HasColumnType("Date");
-
-                    b.Property<bool>("HasAttachments")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsEndorsed")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("IssueDate")
-                        .HasColumnType("Date");
-
-                    b.Property<string>("NameOnCheck")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("ReceivedFromAccountId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ReceivableChecks");
-                });
-
-            modelBuilder.Entity("ERP.Models.Checks.ReceivableCheck_Attachments", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<byte[]>("Attachments")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<int>("ReceivableCheckId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReceivableCheckId");
-
-                    b.ToTable("ReceivableCheck_Attachments");
-                });
-
-            modelBuilder.Entity("ERP.Models.Checks.ReceivableCheck_Description", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ReceivableCheckId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReceivableCheckId");
-
-                    b.ToTable("ReceivableCheck_Descriptions");
-                });
-
-            modelBuilder.Entity("ERP.Models.Checks.ReceivableCheck_Endorsement", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("EndorsedName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ReceivableCheckId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReceivableCheckId");
-
-                    b.ToTable("ReceivableCheck_Endorsements");
-                });
-
             modelBuilder.Entity("ERP.Models.CreditNotes.CreditNote", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("Date");
@@ -1517,8 +1489,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<byte[]>("Attachments")
                         .IsRequired()
@@ -1538,8 +1511,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("CreditNoteId")
                         .HasColumnType("int");
@@ -1563,8 +1537,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("CreditNoteId")
                         .HasColumnType("int");
@@ -1584,8 +1559,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("CreditNoteId")
                         .HasColumnType("int");
@@ -1609,8 +1585,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("COCId")
                         .HasColumnType("int");
@@ -1627,12 +1604,97 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("CreditNtotes_Client");
                 });
 
+            modelBuilder.Entity("ERP.Models.CRMSystem.Appointments", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("AppointmentDate")
+                        .HasColumnType("Date");
+
+                    b.Property<int>("COCId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("Date");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("HasNotes")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsAssignedToStaff")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRepeated")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSharedWithClient")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("COCId");
+
+                    b.ToTable("Appointments");
+                });
+
+            modelBuilder.Entity("ERP.Models.CRMSystem.Appointments_Actions", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Actions")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int>("AppointmentsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppointmentsId");
+
+                    b.ToTable("Appointments_Actions");
+                });
+
+            modelBuilder.Entity("ERP.Models.CRMSystem.Appointments_Notes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AppointmentsId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppointmentsId");
+
+                    b.ToTable("Appointments_Notes");
+                });
+
             modelBuilder.Entity("ERP.Models.CutomFields.Field_Choices", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ChoiceName")
                         .IsRequired()
@@ -1652,29 +1714,40 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Field_Choices");
                 });
 
-            modelBuilder.Entity("ERP.Models.CutomFields.FieldsInSystem", b =>
+            modelBuilder.Entity("ERP.Models.CutomFields.Fields_layout", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Fields_validation_Foreach_ServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("HideField")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ShowInNewLine")
+                        .HasColumnType("bit");
+
+                    b.Property<byte>("Size")
+                        .HasColumnType("tinyint");
 
                     b.HasKey("Id");
 
-                    b.ToTable("FieldsInSystem");
+                    b.HasIndex("Fields_validation_Foreach_ServiceId");
+
+                    b.ToTable("Fields_layouts");
                 });
 
             modelBuilder.Entity("ERP.Models.CutomFields.Fields_Per_Service", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("FieldsInSystemId")
                         .HasColumnType("int");
@@ -1695,8 +1768,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<bool>("EnableAutocomplete")
                         .HasColumnType("bit");
@@ -1734,38 +1808,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Fields_Properties");
                 });
 
-            modelBuilder.Entity("ERP.Models.CutomFields.Fields_layout", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Fields_validation_Foreach_ServiceId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("HideField")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("ShowInNewLine")
-                        .HasColumnType("bit");
-
-                    b.Property<byte>("Size")
-                        .HasColumnType("tinyint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Fields_validation_Foreach_ServiceId");
-
-                    b.ToTable("Fields_layouts");
-                });
-
             modelBuilder.Entity("ERP.Models.CutomFields.Fields_validation_Foreach_Service", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("Fields_Per_ServiceId")
                         .HasColumnType("int");
@@ -1795,12 +1844,31 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Fields_validation_Foreach_Services");
                 });
 
+            modelBuilder.Entity("ERP.Models.CutomFields.FieldsInSystem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FieldsInSystem");
+                });
+
             modelBuilder.Entity("ERP.Models.CutomFields.MinAndMaxDate", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("Fields_validation_Foreach_ServiceId")
                         .HasColumnType("int");
@@ -1822,8 +1890,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<byte>("Digit_Value_NotApplicable")
                         .HasColumnType("tinyint");
@@ -1848,8 +1917,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("AddressLine_1")
                         .IsRequired()
@@ -1885,8 +1955,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
@@ -1905,8 +1976,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
@@ -1926,8 +1998,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int?>("CountryId")
                         .HasColumnType("int");
@@ -2015,8 +2088,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("EmployeesId")
                         .HasColumnType("int");
@@ -2041,8 +2115,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -2060,8 +2135,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<TimeSpan>("BeginningIn")
                         .HasColumnType("time");
@@ -2103,8 +2179,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int?>("AddBy_empId")
                         .HasColumnType("int");
@@ -2165,95 +2242,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Estimates");
                 });
 
-            modelBuilder.Entity("ERP.Models.Estimates.EstimatesAttachments", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<byte[]>("Attachment")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<int>("EstimateId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EstimateId");
-
-                    b.ToTable("EstimatesAttachments");
-                });
-
-            modelBuilder.Entity("ERP.Models.Estimates.EstimatesNotes", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("EstimateId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EstimateId");
-
-                    b.ToTable("EstimatesNotes");
-                });
-
-            modelBuilder.Entity("ERP.Models.Estimates.EstimatesShippingFees", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("EstimateId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ShippingFees")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EstimateId");
-
-                    b.ToTable("EstimatesShippingFees");
-                });
-
-            modelBuilder.Entity("ERP.Models.Estimates.EstimatesStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("EstimateId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("StatusId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EstimateId");
-
-                    b.HasIndex("StatusId");
-
-                    b.ToTable("EstimatesStatuses");
-                });
-
             modelBuilder.Entity("ERP.Models.Estimates.Estimates_Client", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("COCId")
                         .HasColumnType("int");
@@ -2280,8 +2275,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("EstimateId")
                         .HasColumnType("int");
@@ -2305,8 +2301,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("EstimateId")
                         .HasColumnType("int");
@@ -2326,12 +2323,100 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Estimates_Services");
                 });
 
+            modelBuilder.Entity("ERP.Models.Estimates.EstimatesAttachments", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<byte[]>("Attachment")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<int>("EstimateId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EstimateId");
+
+                    b.ToTable("EstimatesAttachments");
+                });
+
+            modelBuilder.Entity("ERP.Models.Estimates.EstimatesNotes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("EstimateId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EstimateId");
+
+                    b.ToTable("EstimatesNotes");
+                });
+
+            modelBuilder.Entity("ERP.Models.Estimates.EstimatesShippingFees", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("EstimateId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ShippingFees")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EstimateId");
+
+                    b.ToTable("EstimatesShippingFees");
+                });
+
+            modelBuilder.Entity("ERP.Models.Estimates.EstimatesStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("EstimateId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("StatusId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EstimateId");
+
+                    b.HasIndex("StatusId");
+
+                    b.ToTable("EstimatesStatuses");
+                });
+
             modelBuilder.Entity("ERP.Models.Generals.Actions", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -2346,8 +2431,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("EmailTemplateId")
                         .HasColumnType("int");
@@ -2368,8 +2454,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -2384,8 +2471,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -2400,8 +2488,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("TemplateContent")
                         .IsRequired()
@@ -2420,8 +2509,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -2437,19 +2527,20 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Color")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("OpenedOrClosed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("StatusName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("OpenedOrClosed")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -2460,8 +2551,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<byte>("InclusiveOrExclusive")
                         .HasColumnType("tinyint");
@@ -2483,8 +2575,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("WhenOption")
                         .IsRequired()
@@ -2495,12 +2588,57 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("WhenRemidersSents");
                 });
 
+            modelBuilder.Entity("ERP.Models.Insurance.Insurance_Attachments", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<byte[]>("Attachments")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<int>("InsuranceAgentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InsuranceAgentId");
+
+                    b.ToTable("Insurance_Attachments");
+                });
+
+            modelBuilder.Entity("ERP.Models.Insurance.Insurance_description", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("InsuranceAgentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InsuranceAgentId");
+
+                    b.ToTable("Insurance_descriptions");
+                });
+
             modelBuilder.Entity("ERP.Models.Insurance.InsuranceAgent", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int?>("AddedBy_EmployeesId")
                         .HasColumnType("int");
@@ -2536,54 +2674,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("InsuranceAgents");
                 });
 
-            modelBuilder.Entity("ERP.Models.Insurance.Insurance_Attachments", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<byte[]>("Attachments")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<int>("InsuranceAgentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InsuranceAgentId");
-
-                    b.ToTable("Insurance_Attachments");
-                });
-
-            modelBuilder.Entity("ERP.Models.Insurance.Insurance_description", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("InsuranceAgentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InsuranceAgentId");
-
-                    b.ToTable("Insurance_descriptions");
-                });
-
             modelBuilder.Entity("ERP.Models.Inventory.Addition_NoExpire", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("Amount")
                         .HasColumnType("int");
@@ -2605,8 +2702,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("Amount")
                         .HasColumnType("int");
@@ -2624,33 +2722,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Addition_WithExpire");
                 });
 
-            modelBuilder.Entity("ERP.Models.Inventory.InboundNotes", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Inbound_Invent_RequisitionsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Inbound_Invent_RequisitionsId");
-
-                    b.ToTable("InboundNotes");
-                });
-
             modelBuilder.Entity("ERP.Models.Inventory.Inbound_Invent_Requisitions", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("CurrentNumber")
                         .IsRequired()
@@ -2677,14 +2755,37 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Inbound_Invent_Requisitions");
                 });
 
+            modelBuilder.Entity("ERP.Models.Inventory.InboundNotes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Inbound_Invent_RequisitionsId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Inbound_Invent_RequisitionsId");
+
+                    b.ToTable("InboundNotes");
+                });
+
             modelBuilder.Entity("ERP.Models.Inventory.Inventories", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
-                    b.Property<int>("AddedBy_EmpId")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("AddedBy_EmpId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
@@ -2717,8 +2818,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("AddressLine_1")
                         .IsRequired()
@@ -2751,8 +2853,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("Amount")
                         .HasColumnType("int");
@@ -2776,8 +2879,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("Amount")
                         .HasColumnType("int");
@@ -2805,33 +2909,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Items_withEpires");
                 });
 
-            modelBuilder.Entity("ERP.Models.Inventory.OutboundNotes", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Outbound_Invent_RequisitionsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Outbound_Invent_RequisitionsId");
-
-                    b.ToTable("OutboundNotes");
-                });
-
             modelBuilder.Entity("ERP.Models.Inventory.Outbound_Invent_Requisitions", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("CurrentNumber")
                         .IsRequired()
@@ -2858,12 +2942,35 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Outbound_Invent_Requisitions");
                 });
 
+            modelBuilder.Entity("ERP.Models.Inventory.OutboundNotes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Outbound_Invent_RequisitionsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Outbound_Invent_RequisitionsId");
+
+                    b.ToTable("OutboundNotes");
+                });
+
             modelBuilder.Entity("ERP.Models.Inventory.TransferBetweenInvent", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("AmountTransfered")
                         .HasColumnType("int");
@@ -2898,8 +3005,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Notes")
                         .IsRequired()
@@ -2919,8 +3027,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("Amount")
                         .HasColumnType("int");
@@ -2942,8 +3051,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("Amount")
                         .HasColumnType("int");
@@ -2965,8 +3075,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -2975,6 +3086,9 @@ namespace ERP.Migrations.ApplicationDb
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("Brands");
                 });
 
@@ -2982,8 +3096,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("AddByUserId")
                         .HasColumnType("int");
@@ -3006,9 +3121,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<bool>("IsOnline")
                         .HasColumnType("bit");
 
-                    b.Property<int>("ItemSKU")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -3019,12 +3131,59 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Items");
                 });
 
+            modelBuilder.Entity("ERP.Models.Items.Item_Per_Subcategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ItemSubCategoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("ItemSubCategoryId");
+
+                    b.ToTable("Item_Per_Subcategories");
+                });
+
+            modelBuilder.Entity("ERP.Models.Items.Item_Units", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UnitsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("UnitsId");
+
+                    b.ToTable("Item_Units");
+                });
+
             modelBuilder.Entity("ERP.Models.Items.ItemBrands", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int?>("BrandsId")
                         .HasColumnType("int");
@@ -3045,8 +3204,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -3066,8 +3226,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -3086,8 +3247,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
@@ -3103,12 +3265,40 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("ItemNotes");
                 });
 
+            modelBuilder.Entity("ERP.Models.Items.Items_CustomFields", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Fields_Per_ServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Fields_Per_ServiceId");
+
+                    b.HasIndex("ItemId");
+
+                    b.ToTable("Items_CustomFields");
+                });
+
             modelBuilder.Entity("ERP.Models.Items.ItemSubCategory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("ItemMainCategoryId")
                         .HasColumnType("int");
@@ -3125,12 +3315,43 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("ItemSubCategories");
                 });
 
+            modelBuilder.Entity("ERP.Models.Items.ItemsVariant_RetailPrice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<byte>("DiscountAmount")
+                        .HasColumnType("tinyint");
+
+                    b.Property<byte>("DiscountType")
+                        .HasColumnType("tinyint");
+
+                    b.Property<int>("ItemVariantsId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("MinRetailPrice")
+                        .HasColumnType("Money");
+
+                    b.Property<decimal>("RetailPrice")
+                        .HasColumnType("Money");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemVariantsId");
+
+                    b.ToTable("ItemsVariant_RetailPrices");
+                });
+
             modelBuilder.Entity("ERP.Models.Items.ItemTaxSettings", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
@@ -3151,8 +3372,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<byte>("DiscountAmount")
                         .HasColumnType("tinyint");
@@ -3180,8 +3402,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("Barcode")
                         .HasColumnType("int");
@@ -3195,7 +3418,10 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("LastPurchasePrice")
+                    b.Property<string>("ItemSKU")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("LastPurchasePrice")
                         .HasColumnType("Money");
 
                     b.Property<string>("Name")
@@ -3212,7 +3438,7 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<byte>("ProfitMarginType")
                         .HasColumnType("tinyint");
 
-                    b.Property<short>("TotalAmountInAllInvetroies")
+                    b.Property<short?>("TotalAmountInAllInvetroies")
                         .HasColumnType("smallint");
 
                     b.HasKey("Id");
@@ -3222,111 +3448,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("ItemVariants");
                 });
 
-            modelBuilder.Entity("ERP.Models.Items.Item_Per_Subcategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ItemId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ItemSubCategoryId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ItemId");
-
-                    b.HasIndex("ItemSubCategoryId");
-
-                    b.ToTable("Item_Per_Subcategories");
-                });
-
-            modelBuilder.Entity("ERP.Models.Items.Item_Units", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ItemId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UnitsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ItemId");
-
-                    b.HasIndex("UnitsId");
-
-                    b.ToTable("Item_Units");
-                });
-
-            modelBuilder.Entity("ERP.Models.Items.ItemsVariant_RetailPrice", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<byte>("DiscountAmount")
-                        .HasColumnType("tinyint");
-
-                    b.Property<byte>("DiscountType")
-                        .HasColumnType("tinyint");
-
-                    b.Property<int>("ItemVariantsId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("MinRetailPrice")
-                        .HasColumnType("Money");
-
-                    b.Property<decimal>("RetailPrice")
-                        .HasColumnType("Money");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ItemVariantsId");
-
-                    b.ToTable("ItemsVariant_RetailPrices");
-                });
-
-            modelBuilder.Entity("ERP.Models.Items.Items_CustomFields", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Fields_Per_ServiceId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ItemId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Fields_Per_ServiceId");
-
-                    b.HasIndex("ItemId");
-
-                    b.ToTable("Items_CustomFields");
-                });
-
             modelBuilder.Entity("ERP.Models.Items.Units", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<short>("ConversionRate")
                         .ValueGeneratedOnAddOrUpdate()
@@ -3361,8 +3489,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -3382,8 +3511,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("COCId")
                         .HasColumnType("int");
@@ -3417,42 +3547,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Memberships");
                 });
 
-            modelBuilder.Entity("ERP.Models.NumberingSystem.NumberSettings_Prefixes", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<byte>("Mode")
-                        .HasColumnType("tinyint");
-
-                    b.Property<string>("NextNumberPerPrefix")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<int>("NumberingSettingsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Prefix")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NumberingSettingsId");
-
-                    b.ToTable("NumberSettings_Prefixes");
-                });
-
             modelBuilder.Entity("ERP.Models.NumberingSystem.NumberingSettings", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("CurrentNumber")
                         .IsRequired()
@@ -3484,12 +3585,44 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("NumberingSettings");
                 });
 
+            modelBuilder.Entity("ERP.Models.NumberingSystem.NumberSettings_Prefixes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<byte>("Mode")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("NextNumberPerPrefix")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int>("NumberingSettingsId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Prefix")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NumberingSettingsId");
+
+                    b.ToTable("NumberSettings_Prefixes");
+                });
+
             modelBuilder.Entity("ERP.Models.OrganizationalStructure.Department", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Abbreviation")
                         .IsRequired()
@@ -3522,8 +3655,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("DepartmentId")
                         .HasColumnType("int");
@@ -3543,8 +3677,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("DesignationName")
                         .IsRequired()
@@ -3566,8 +3701,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -3587,8 +3723,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("EmployeeLevelName")
                         .IsRequired()
@@ -3610,8 +3747,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -3631,8 +3769,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("EmployeeTypeName")
                         .IsRequired()
@@ -3654,8 +3793,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -3671,55 +3811,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("EmployeeTypes_descs");
                 });
 
-            modelBuilder.Entity("ERP.Models.Payroll.ContractDuration", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("Money");
-
-                    b.Property<int>("Contract_Per_EmpId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("MonthOrYear")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Contract_Per_EmpId");
-
-                    b.ToTable("ContractDurations");
-                });
-
-            modelBuilder.Entity("ERP.Models.Payroll.ContractEndDate", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Contract_Per_EmpId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("Date");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Contract_Per_EmpId");
-
-                    b.ToTable("ContractEndDates");
-                });
-
             modelBuilder.Entity("ERP.Models.Payroll.Contract_Per_Emp", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("ContractSignDate")
                         .HasColumnType("Date");
@@ -3754,12 +3852,58 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Contract_Per_Emps");
                 });
 
+            modelBuilder.Entity("ERP.Models.Payroll.ContractDuration", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("Money");
+
+                    b.Property<int>("Contract_Per_EmpId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("MonthOrYear")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Contract_Per_EmpId");
+
+                    b.ToTable("ContractDurations");
+                });
+
+            modelBuilder.Entity("ERP.Models.Payroll.ContractEndDate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Contract_Per_EmpId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("Date");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Contract_Per_EmpId");
+
+                    b.ToTable("ContractEndDates");
+                });
+
             modelBuilder.Entity("ERP.Models.Payroll.Contracts", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("CurrencyId")
                         .HasColumnType("int");
@@ -3777,33 +3921,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Contracts");
                 });
 
-            modelBuilder.Entity("ERP.Models.Payroll.ContractsAttachments", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<byte[]>("Attachments")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<int>("Contract_Per_EmpId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Contract_Per_EmpId");
-
-                    b.ToTable("ContractsAttachments");
-                });
-
             modelBuilder.Entity("ERP.Models.Payroll.Contracts_Deduction", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("ContractsId")
                         .HasColumnType("int");
@@ -3824,8 +3948,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("ContractsId")
                         .HasColumnType("int");
@@ -3842,12 +3967,35 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Contracts_earns");
                 });
 
+            modelBuilder.Entity("ERP.Models.Payroll.ContractsAttachments", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<byte[]>("Attachments")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<int>("Contract_Per_EmpId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Contract_Per_EmpId");
+
+                    b.ToTable("ContractsAttachments");
+                });
+
             modelBuilder.Entity("ERP.Models.Payroll.LoanNotes", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("LoansId")
                         .HasColumnType("int");
@@ -3867,8 +4015,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("Money");
@@ -3918,8 +4067,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int?>("CurrencyId")
                         .HasColumnType("int");
@@ -3958,8 +4108,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("PayslipsId")
                         .HasColumnType("int");
@@ -3980,8 +4131,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("PayslipsId")
                         .HasColumnType("int");
@@ -4002,8 +4154,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<bool>("AmountOrFormula")
                         .HasColumnType("bit");
@@ -4031,8 +4184,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("Money");
@@ -4051,8 +4205,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Formula")
                         .IsRequired()
@@ -4072,8 +4227,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("SalaryComponentsId")
                         .HasColumnType("int");
@@ -4089,8 +4245,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("SalaryComponentsId")
                         .HasColumnType("int");
@@ -4106,8 +4263,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -4132,8 +4290,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("SalaryDetuctionId")
                         .HasColumnType("int");
@@ -4154,8 +4313,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("SalaryEarningId")
                         .HasColumnType("int");
@@ -4176,8 +4336,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("COCId")
                         .HasColumnType("int");
@@ -4210,8 +4371,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("CreditChargeId")
                         .HasColumnType("int");
@@ -4231,8 +4393,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("COCId")
                         .HasColumnType("int");
@@ -4262,8 +4425,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("CreditUsageId")
                         .HasColumnType("int");
@@ -4283,8 +4447,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<bool>("HasDescription")
                         .HasColumnType("bit");
@@ -4315,8 +4480,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("CreditAmount")
                         .HasColumnType("int");
@@ -4340,8 +4506,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -4361,8 +4528,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("CreditTypesId")
                         .HasColumnType("int");
@@ -4382,8 +4550,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<bool>("AllowDecimal")
                         .HasColumnType("bit");
@@ -4413,8 +4582,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -4429,37 +4599,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("PriceLists");
                 });
 
-            modelBuilder.Entity("ERP.Models.PriceLists.PriceList_Services", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("Money");
-
-                    b.Property<int>("PriceListId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ServicesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PriceListId");
-
-                    b.HasIndex("ServicesId");
-
-                    b.ToTable("priceList_Services");
-                });
-
             modelBuilder.Entity("ERP.Models.PriceLists.PriceList_items", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("ItemVariantsId")
                         .HasColumnType("int");
@@ -4479,12 +4625,39 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("PriceList_Items");
                 });
 
+            modelBuilder.Entity("ERP.Models.PriceLists.PriceList_Services", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("Money");
+
+                    b.Property<int>("PriceListId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServicesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PriceListId");
+
+                    b.HasIndex("ServicesId");
+
+                    b.ToTable("priceList_Services");
+                });
+
             modelBuilder.Entity("ERP.Models.Purchases.Items_In_PurchaseInvoice", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("AddedQuantity")
                         .HasColumnType("int");
@@ -4509,51 +4682,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Items_In_PurchaseInvoices");
                 });
 
-            modelBuilder.Entity("ERP.Models.Purchases.PurchasePaymentMethods", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PurchasePaymentMethods");
-                });
-
-            modelBuilder.Entity("ERP.Models.Purchases.PurchaseStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Purchase_invoicesId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Purchase_invoicesId");
-
-                    b.ToTable("PurchaseStatuses");
-                });
-
             modelBuilder.Entity("ERP.Models.Purchases.Purchase_Attachments", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<byte[]>("Attachments")
                         .IsRequired()
@@ -4569,34 +4704,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Purchase_Attachments");
                 });
 
-            modelBuilder.Entity("ERP.Models.Purchases.Purchase_Payments", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("PurchasePaymentMethodsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Purchase_invoicesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PurchasePaymentMethodsId");
-
-                    b.HasIndex("Purchase_invoicesId");
-
-                    b.ToTable("Purchase_Payments");
-                });
-
             modelBuilder.Entity("ERP.Models.Purchases.Purchase_invoices", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int?>("CurrencyId")
                         .HasColumnType("int");
@@ -4645,37 +4759,54 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Purchase_invoices");
                 });
 
-            modelBuilder.Entity("ERP.Models.Purchases.PurchasesInvoice_Services", b =>
+            modelBuilder.Entity("ERP.Models.Purchases.Purchase_Payments", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
-                    b.Property<int>("AddedQuantity")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("PurchasePaymentMethodsId")
                         .HasColumnType("int");
 
                     b.Property<int>("Purchase_invoicesId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ServicesId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("PurchasePaymentMethodsId");
 
                     b.HasIndex("Purchase_invoicesId");
 
-                    b.HasIndex("ServicesId");
+                    b.ToTable("Purchase_Payments");
+                });
 
-                    b.ToTable("PurchasesInvoice_Services");
+            modelBuilder.Entity("ERP.Models.Purchases.PurchasePaymentMethods", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PurchasePaymentMethods");
                 });
 
             modelBuilder.Entity("ERP.Models.Purchases.Purchases_Deposits", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("DepositsType")
                         .HasColumnType("int");
@@ -4697,8 +4828,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("DiscountType")
                         .HasColumnType("int");
@@ -4720,8 +4852,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("Purchase_invoicesId")
                         .HasColumnType("int");
@@ -4740,8 +4873,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("Purchase_invoicesId")
                         .HasColumnType("int");
@@ -4756,12 +4890,62 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Purchases_shippingFees");
                 });
 
+            modelBuilder.Entity("ERP.Models.Purchases.PurchasesInvoice_Services", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AddedQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Purchase_invoicesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServicesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Purchase_invoicesId");
+
+                    b.HasIndex("ServicesId");
+
+                    b.ToTable("PurchasesInvoice_Services");
+                });
+
+            modelBuilder.Entity("ERP.Models.Purchases.PurchaseStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Purchase_invoicesId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Purchase_invoicesId");
+
+                    b.ToTable("PurchaseStatuses");
+                });
+
             modelBuilder.Entity("ERP.Models.Purchases.PurphaseRefund.Items_in_Refund", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("InventoriesId")
                         .HasColumnType("int");
@@ -4786,12 +4970,39 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Items_in_Refunds");
                 });
 
+            modelBuilder.Entity("ERP.Models.Purchases.PurphaseRefund.Purchase_RefundedServices", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Purchase_RefundRequestsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RefundedQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServicesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Purchase_RefundRequestsId");
+
+                    b.HasIndex("ServicesId");
+
+                    b.ToTable("Purchase_RefundedServices");
+                });
+
             modelBuilder.Entity("ERP.Models.Purchases.PurphaseRefund.Purchase_RefundRequests", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("CurrencyId")
                         .HasColumnType("int");
@@ -4828,59 +5039,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Purchase_RefundRequests");
                 });
 
-            modelBuilder.Entity("ERP.Models.Purchases.PurphaseRefund.Purchase_RefundedServices", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Purchase_RefundRequestsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RefundedQuantity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ServicesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Purchase_RefundRequestsId");
-
-                    b.HasIndex("ServicesId");
-
-                    b.ToTable("Purchase_RefundedServices");
-                });
-
-            modelBuilder.Entity("ERP.Models.Purchases.PurphaseRefund.RefundsStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Purchase_RefundRequestsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Purchase_RefundRequestsId");
-
-                    b.ToTable("RefundsStatuses");
-                });
-
             modelBuilder.Entity("ERP.Models.Purchases.PurphaseRefund.Refunds_Attachments", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<byte[]>("Attachments")
                         .IsRequired()
@@ -4896,12 +5061,34 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Refunds_Attachments");
                 });
 
+            modelBuilder.Entity("ERP.Models.Purchases.PurphaseRefund.Refunds_items_ShippingFees", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Purchase_RefundRequestsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ShippingFees")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Purchase_RefundRequestsId");
+
+                    b.ToTable("Refunds_items_ShippingFees");
+                });
+
             modelBuilder.Entity("ERP.Models.Purchases.PurphaseRefund.Refunds_Notes", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Notes")
                         .IsRequired()
@@ -4920,32 +5107,36 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Refunds_Notes");
                 });
 
-            modelBuilder.Entity("ERP.Models.Purchases.PurphaseRefund.Refunds_items_ShippingFees", b =>
+            modelBuilder.Entity("ERP.Models.Purchases.PurphaseRefund.RefundsStatus", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("Purchase_RefundRequestsId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ShippingFees")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Purchase_RefundRequestsId");
 
-                    b.ToTable("Refunds_items_ShippingFees");
+                    b.ToTable("RefundsStatuses");
                 });
 
             modelBuilder.Entity("ERP.Models.Sales.DiscountsPerItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("Discount")
                         .HasColumnType("int");
@@ -4967,8 +5158,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("Discount")
                         .HasColumnType("int");
@@ -4990,8 +5182,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Decriptions")
                         .IsRequired()
@@ -5030,8 +5223,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("CreditNote_ItemsId")
                         .HasColumnType("int");
@@ -5056,8 +5250,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("CreditNote_ServicesId")
                         .HasColumnType("int");
@@ -5082,8 +5277,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("AddedBy_EmpId")
                         .HasColumnType("int");
@@ -5129,33 +5325,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Commissions");
                 });
 
-            modelBuilder.Entity("ERP.Models.Sales.SalesCommissions.CommissionsNotes", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CommissionsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CommissionsId");
-
-                    b.ToTable("CommissionsNotes");
-                });
-
             modelBuilder.Entity("ERP.Models.Sales.SalesCommissions.Commissions_ItemCat", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("CommissionsId")
                         .HasColumnType("int");
@@ -5172,12 +5348,36 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Commissions_ItemCats");
                 });
 
+            modelBuilder.Entity("ERP.Models.Sales.SalesCommissions.Commissions_items", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CommissionsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ItemVariantsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommissionsId");
+
+                    b.HasIndex("ItemVariantsId");
+
+                    b.ToTable("Commissions_items");
+                });
+
             modelBuilder.Entity("ERP.Models.Sales.SalesCommissions.Commissions_Per_employee", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("CommissionsId")
                         .HasColumnType("int");
@@ -5198,8 +5398,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("CommissionsId")
                         .HasColumnType("int");
@@ -5220,8 +5421,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("CommissionsId")
                         .HasColumnType("int");
@@ -5238,34 +5440,100 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Commissions_Services");
                 });
 
-            modelBuilder.Entity("ERP.Models.Sales.SalesCommissions.Commissions_items", b =>
+            modelBuilder.Entity("ERP.Models.Sales.SalesCommissions.CommissionsNotes", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("CommissionsId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ItemVariantsId")
-                        .HasColumnType("int");
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CommissionsId");
 
-                    b.HasIndex("ItemVariantsId");
+                    b.ToTable("CommissionsNotes");
+                });
 
-                    b.ToTable("Commissions_items");
+            modelBuilder.Entity("ERP.Models.Sales.SalesInvoice_AutomaticReminders", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AutomaticRemindersId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SalesInvoicesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AutomaticRemindersId");
+
+                    b.HasIndex("SalesInvoicesId");
+
+                    b.ToTable("SalesInvoice_AutomaticReminders");
+                });
+
+            modelBuilder.Entity("ERP.Models.Sales.SalesInvoice_PaymentStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("StatusName")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SalesInvoice_PaymentStatus");
+                });
+
+            modelBuilder.Entity("ERP.Models.Sales.SalesInvoice_TotalDsicount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("DiscountType")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("SalesInvoicesId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalDiscount")
+                        .HasColumnType("Money");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SalesInvoicesId");
+
+                    b.ToTable("SalesInvoice_TotalDsicounts");
                 });
 
             modelBuilder.Entity("ERP.Models.Sales.SalesInvoicePayments", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("Money");
@@ -5311,8 +5579,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<byte[]>("Attachments")
                         .IsRequired()
@@ -5332,8 +5601,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Details")
                         .IsRequired()
@@ -5353,8 +5623,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Notes")
                         .IsRequired()
@@ -5370,74 +5641,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("SalesInvoicePayments_Notes");
                 });
 
-            modelBuilder.Entity("ERP.Models.Sales.SalesInvoice_AutomaticReminders", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AutomaticRemindersId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SalesInvoicesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AutomaticRemindersId");
-
-                    b.HasIndex("SalesInvoicesId");
-
-                    b.ToTable("SalesInvoice_AutomaticReminders");
-                });
-
-            modelBuilder.Entity("ERP.Models.Sales.SalesInvoice_PaymentStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("StatusName")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SalesInvoice_PaymentStatus");
-                });
-
-            modelBuilder.Entity("ERP.Models.Sales.SalesInvoice_TotalDsicount", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("DiscountType")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("SalesInvoicesId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TotalDiscount")
-                        .HasColumnType("Money");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SalesInvoicesId");
-
-                    b.ToTable("SalesInvoice_TotalDsicounts");
-                });
-
             modelBuilder.Entity("ERP.Models.Sales.SalesInvoices", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int?>("COCId")
                         .HasColumnType("int");
@@ -5494,29 +5704,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("SalesInvoices");
                 });
 
-            modelBuilder.Entity("ERP.Models.Sales.SalesInvoicesStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SalesInvoicesStatuses");
-                });
-
             modelBuilder.Entity("ERP.Models.Sales.SalesInvoices_Attachments", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<byte[]>("Attachments")
                         .IsRequired()
@@ -5532,12 +5726,31 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("SalesInvoices_Attachments");
                 });
 
+            modelBuilder.Entity("ERP.Models.Sales.SalesInvoicesStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SalesInvoicesStatuses");
+                });
+
             modelBuilder.Entity("ERP.Models.Sales.SalesTerms", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Condtions")
                         .IsRequired()
@@ -5556,8 +5769,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Decriptions")
                         .IsRequired()
@@ -5591,8 +5805,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<bool>("AutoPayFromBalance")
                         .HasColumnType("bit");
@@ -5627,8 +5842,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("Fields_Per_ServiceId")
                         .HasColumnType("int");
@@ -5653,8 +5869,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -5684,8 +5901,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("SalesInvoicesId")
                         .HasColumnType("int");
@@ -5707,8 +5925,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("SalesInvoicesId")
                         .HasColumnType("int");
@@ -5725,34 +5944,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Statuses_For_EachInvoice");
                 });
 
-            modelBuilder.Entity("ERP.Models.Sales.TaxPerService_PerInvoice", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ServicesInSalesInvicesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TaxSettingsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ServicesInSalesInvicesId");
-
-                    b.HasIndex("TaxSettingsId");
-
-                    b.ToTable("TaxPerService_PerInvoices");
-                });
-
             modelBuilder.Entity("ERP.Models.Sales.TaxPer_Item_PerInvoice", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("ItemsInSalesInvoicesId")
                         .HasColumnType("int");
@@ -5772,12 +5970,36 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("TaxPer_Item_PerInvoice");
                 });
 
+            modelBuilder.Entity("ERP.Models.Sales.TaxPerService_PerInvoice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ServicesInSalesInvicesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TaxSettingsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServicesInSalesInvicesId");
+
+                    b.HasIndex("TaxSettingsId");
+
+                    b.ToTable("TaxPerService_PerInvoices");
+                });
+
             modelBuilder.Entity("ERP.Models.Sales.Terms_Per_Invoice", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("SalesInvoicesId")
                         .HasColumnType("int");
@@ -5797,115 +6019,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Terms_Per_Invoice");
                 });
 
-            modelBuilder.Entity("ERP.Models.Service.ServiceDescription", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ServiceId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ServiceId");
-
-                    b.ToTable("ServiceDescriptions");
-                });
-
-            modelBuilder.Entity("ERP.Models.Service.ServiceMainCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ServiceMainCategories");
-                });
-
-            modelBuilder.Entity("ERP.Models.Service.ServiceNotes", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ServiceId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ServiceId");
-
-                    b.ToTable("ServiceNotes");
-                });
-
-            modelBuilder.Entity("ERP.Models.Service.ServiceSubCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<int>("ServiceMainCategoryId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ServiceMainCategoryId");
-
-                    b.ToTable("ServiceSubCategories");
-                });
-
-            modelBuilder.Entity("ERP.Models.Service.ServiceTaxSettings", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ServiceId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TaxSettingsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ServiceId");
-
-                    b.HasIndex("TaxSettingsId");
-
-                    b.ToTable("ServiceTaxSettings");
-                });
-
             modelBuilder.Entity("ERP.Models.Service.Service_CustomFields", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("Fields_Per_ServiceId")
                         .HasColumnType("int");
@@ -5926,12 +6046,75 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Service_CustomFields");
                 });
 
+            modelBuilder.Entity("ERP.Models.Service.ServiceDescription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("ServiceDescriptions");
+                });
+
+            modelBuilder.Entity("ERP.Models.Service.ServiceMainCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ServiceMainCategories");
+                });
+
+            modelBuilder.Entity("ERP.Models.Service.ServiceNotes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("ServiceNotes");
+                });
+
             modelBuilder.Entity("ERP.Models.Service.Services", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("AddByUser")
                         .HasColumnType("int");
@@ -5958,33 +6141,59 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Services");
                 });
 
-            modelBuilder.Entity("ERP.Models.Subscription.SubscriptionAttachments", b =>
+            modelBuilder.Entity("ERP.Models.Service.ServiceSubCategory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
-                    b.Property<byte[]>("Attachments")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
-                    b.Property<int>("SubscriptionsId")
+                    b.Property<int>("ServiceMainCategoryId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SubscriptionsId");
+                    b.HasIndex("ServiceMainCategoryId");
 
-                    b.ToTable("SubscriptionAttachments");
+                    b.ToTable("ServiceSubCategories");
+                });
+
+            modelBuilder.Entity("ERP.Models.Service.ServiceTaxSettings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TaxSettingsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceId");
+
+                    b.HasIndex("TaxSettingsId");
+
+                    b.ToTable("ServiceTaxSettings");
                 });
 
             modelBuilder.Entity("ERP.Models.Subscription.Subscription_AutomaticReminders", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("AutomaticRemindersId")
                         .HasColumnType("int");
@@ -6005,8 +6214,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("FromDate")
                         .HasColumnType("Date");
@@ -6033,8 +6243,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Notes")
                         .IsRequired()
@@ -6054,8 +6265,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("SubscriptionsId")
                         .HasColumnType("int");
@@ -6071,12 +6283,35 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Subscription_Terms");
                 });
 
+            modelBuilder.Entity("ERP.Models.Subscription.SubscriptionAttachments", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<byte[]>("Attachments")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<int>("SubscriptionsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubscriptionsId");
+
+                    b.ToTable("SubscriptionAttachments");
+                });
+
             modelBuilder.Entity("ERP.Models.Subscription.Subscriptions", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("COCId")
                         .HasColumnType("int");
@@ -6135,46 +6370,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Subscriptions");
                 });
 
-            modelBuilder.Entity("ERP.Models.Supplier.SupplierAddresses", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AddressLine_1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AddressLine_2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BuildingNo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FlatNo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PostalCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SuppliersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SuppliersId");
-
-                    b.ToTable("SupplierAddresses");
-                });
-
             modelBuilder.Entity("ERP.Models.Supplier.Supplier_ContactList", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -6211,8 +6413,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("Fields_Per_ServiceId")
                         .HasColumnType("int");
@@ -6237,8 +6440,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
@@ -6253,12 +6457,48 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Supplier_notes");
                 });
 
+            modelBuilder.Entity("ERP.Models.Supplier.SupplierAddresses", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("AddressLine_1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressLine_2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BuildingNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FlatNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SuppliersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SuppliersId");
+
+                    b.ToTable("SupplierAddresses");
+                });
+
             modelBuilder.Entity("ERP.Models.Supplier.Suppliers", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("BusinessName")
                         .IsRequired()
@@ -6325,8 +6565,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -6345,8 +6586,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("BankAccountId")
                         .HasColumnType("int");
@@ -6369,8 +6611,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("BankAccountNo")
                         .IsRequired()
@@ -6393,8 +6636,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -6412,8 +6656,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -6432,34 +6677,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Treasury_Descriptions");
                 });
 
-            modelBuilder.Entity("ERP.Models.WorkOrder.Settings.WorkOrderStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<int>("WorkOrdersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WorkOrdersId");
-
-                    b.ToTable("WorkOrderStatuses");
-                });
-
             modelBuilder.Entity("ERP.Models.WorkOrder.Settings.WorkOrdersActions", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ActionName")
                         .IsRequired()
@@ -6476,12 +6700,36 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("WorkOrdersActions");
                 });
 
+            modelBuilder.Entity("ERP.Models.WorkOrder.Settings.WorkOrderStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int>("WorkOrdersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WorkOrdersId");
+
+                    b.ToTable("WorkOrderStatuses");
+                });
+
             modelBuilder.Entity("ERP.Models.WorkOrder.WorkOrders", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<decimal>("Budget")
                         .HasColumnType("Money");
@@ -6523,12 +6771,57 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("WorkOrders");
                 });
 
+            modelBuilder.Entity("ERP.Models.WorkOrder.WorkOrders_Attachments", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<byte[]>("Attachments")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<int>("WorkOrdersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WorkOrdersId");
+
+                    b.ToTable("WorkOrders_Attachments");
+                });
+
+            modelBuilder.Entity("ERP.Models.WorkOrder.WorkOrders_Description", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("WorkOrdersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WorkOrdersId");
+
+                    b.ToTable("WorkOrders_Descriptions");
+                });
+
             modelBuilder.Entity("ERP.Models.WorkOrder.WorkOrdersClients", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("COCid")
                         .HasColumnType("int");
@@ -6549,8 +6842,9 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("EmployeesId")
                         .HasColumnType("int");
@@ -6567,54 +6861,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("WorkOrdersEmployees");
                 });
 
-            modelBuilder.Entity("ERP.Models.WorkOrder.WorkOrders_Attachments", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<byte[]>("Attachments")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<int>("WorkOrdersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WorkOrdersId");
-
-                    b.ToTable("WorkOrders_Attachments");
-                });
-
-            modelBuilder.Entity("ERP.Models.WorkOrder.WorkOrders_Description", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("WorkOrdersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WorkOrdersId");
-
-                    b.ToTable("WorkOrders_Descriptions");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -6629,15 +6882,16 @@ namespace ERP.Migrations.ApplicationDb
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetRoleClaims");
+                    b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -6652,7 +6906,7 @@ namespace ERP.Migrations.ApplicationDb
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserClaims");
+                    b.ToTable("AspNetUserClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
@@ -6673,7 +6927,7 @@ namespace ERP.Migrations.ApplicationDb
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins");
+                    b.ToTable("AspNetUserLogins", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
@@ -6692,7 +6946,7 @@ namespace ERP.Migrations.ApplicationDb
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("AspNetUserTokens");
+                    b.ToTable("AspNetUserTokens", (string)null);
                 });
 
             modelBuilder.Entity("ERP.Data.Identity.ApplicationUserUserRoles", b =>
@@ -6753,6 +7007,17 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("AttendancePermission");
                 });
 
+            modelBuilder.Entity("ERP.Models.Attendance.AttendancePermission_notes", b =>
+                {
+                    b.HasOne("ERP.Models.Attendance.AttendancePermission", "AttendancePermission")
+                        .WithMany()
+                        .HasForeignKey("AttendancePermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AttendancePermission");
+                });
+
             modelBuilder.Entity("ERP.Models.Attendance.AttendancePermission_VacationPerm", b =>
                 {
                     b.HasOne("ERP.Models.Attendance.AttendancePermission", "AttendancePermission")
@@ -6770,17 +7035,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("AttendancePermission");
 
                     b.Navigation("VacationsType_LeaveType");
-                });
-
-            modelBuilder.Entity("ERP.Models.Attendance.AttendancePermission_notes", b =>
-                {
-                    b.HasOne("ERP.Models.Attendance.AttendancePermission", "AttendancePermission")
-                        .WithMany()
-                        .HasForeignKey("AttendancePermissionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AttendancePermission");
                 });
 
             modelBuilder.Entity("ERP.Models.Attendance.AttendanceSheet", b =>
@@ -6854,6 +7108,17 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Employees");
                 });
 
+            modelBuilder.Entity("ERP.Models.Attendance.ManualAttendanceEachDay_notes", b =>
+                {
+                    b.HasOne("ERP.Models.Attendance.ManualAttendanceEachDay", "ManualAttendenceEachDay")
+                        .WithMany()
+                        .HasForeignKey("ManualAttendenceEachDayId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ManualAttendenceEachDay");
+                });
+
             modelBuilder.Entity("ERP.Models.Attendance.ManualAttendanceEachDay_VacationStatus", b =>
                 {
                     b.HasOne("ERP.Models.Attendance.ManualAttendanceEachDay", "ManualAttendenceEachDay")
@@ -6873,36 +7138,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("VacationsType_LeaveType");
                 });
 
-            modelBuilder.Entity("ERP.Models.Attendance.ManualAttendanceEachDay_notes", b =>
-                {
-                    b.HasOne("ERP.Models.Attendance.ManualAttendanceEachDay", "ManualAttendenceEachDay")
-                        .WithMany()
-                        .HasForeignKey("ManualAttendenceEachDayId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ManualAttendenceEachDay");
-                });
-
-            modelBuilder.Entity("ERP.Models.Bookings.BookingSettings_AssignedEmployee", b =>
-                {
-                    b.HasOne("ERP.Models.Bookings.Booking_settings", "Booking_settings")
-                        .WithMany()
-                        .HasForeignKey("Booking_settingsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ERP.Models.Employee.Employees", "Employees")
-                        .WithMany()
-                        .HasForeignKey("EmployeesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Booking_settings");
-
-                    b.Navigation("Employees");
-                });
-
             modelBuilder.Entity("ERP.Models.Bookings.Booking_Clients", b =>
                 {
                     b.HasOne("ERP.Models.Bookings.Booking", "Booking")
@@ -6911,7 +7146,7 @@ namespace ERP.Migrations.ApplicationDb
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ERP.Models.COC.COC", "COC")
+                    b.HasOne("ERP.Models.COCs.COC", "COC")
                         .WithMany()
                         .HasForeignKey("COCId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -6939,6 +7174,25 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Booking");
 
                     b.Navigation("Services");
+                });
+
+            modelBuilder.Entity("ERP.Models.Bookings.BookingSettings_AssignedEmployee", b =>
+                {
+                    b.HasOne("ERP.Models.Bookings.Booking_settings", "Booking_settings")
+                        .WithMany()
+                        .HasForeignKey("Booking_settingsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Models.Employee.Employees", "Employees")
+                        .WithMany()
+                        .HasForeignKey("EmployeesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Booking_settings");
+
+                    b.Navigation("Employees");
                 });
 
             modelBuilder.Entity("ERP.Models.Branches.BranchesAddress", b =>
@@ -6980,178 +7234,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("BusinessBranches");
 
                     b.Navigation("Employees");
-                });
-
-            modelBuilder.Entity("ERP.Models.COC.Business_COC", b =>
-                {
-                    b.HasOne("ERP.Models.COC.COC", "COC")
-                        .WithMany()
-                        .HasForeignKey("COCId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("COC");
-                });
-
-            modelBuilder.Entity("ERP.Models.COC.COC", b =>
-                {
-                    b.HasOne("ERP.Models.Generals.Country", "Country")
-                        .WithMany()
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ERP.Models.Generals.Currency", "Currency")
-                        .WithMany()
-                        .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ERP.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-
-                    b.Navigation("Country");
-
-                    b.Navigation("Currency");
-                });
-
-            modelBuilder.Entity("ERP.Models.COC.COCAddress", b =>
-                {
-                    b.HasOne("ERP.Models.COC.COC", "COC")
-                        .WithMany()
-                        .HasForeignKey("COCId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("COC");
-                });
-
-            modelBuilder.Entity("ERP.Models.COC.COC_CustomFields", b =>
-                {
-                    b.HasOne("ERP.Models.COC.COC", "COC")
-                        .WithMany()
-                        .HasForeignKey("COCId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ERP.Models.CutomFields.Fields_Per_Service", "Fields_Per_Service")
-                        .WithMany()
-                        .HasForeignKey("Fields_Per_ServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("COC");
-
-                    b.Navigation("Fields_Per_Service");
-                });
-
-            modelBuilder.Entity("ERP.Models.COC.Category_PerClient", b =>
-                {
-                    b.HasOne("ERP.Models.COC.COC", "COC")
-                        .WithMany()
-                        .HasForeignKey("COCId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ERP.Models.COC.COC_category", "COC_category")
-                        .WithMany()
-                        .HasForeignKey("COC_categoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("COC");
-
-                    b.Navigation("COC_category");
-                });
-
-            modelBuilder.Entity("ERP.Models.COC.ClientNotes", b =>
-                {
-                    b.HasOne("ERP.Models.COC.COC", "COC")
-                        .WithMany()
-                        .HasForeignKey("COCId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("COC");
-                });
-
-            modelBuilder.Entity("ERP.Models.COC.ClientStatus", b =>
-                {
-                    b.HasOne("ERP.Models.COC.COC", "COC")
-                        .WithMany()
-                        .HasForeignKey("COCId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("COC");
-                });
-
-            modelBuilder.Entity("ERP.Models.COC.ConstactList_PerCOC", b =>
-                {
-                    b.HasOne("ERP.Models.COC.COC", "COC")
-                        .WithMany("COC_Contacts")
-                        .HasForeignKey("COCId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ERP.Models.COC.COC_ContactList", "COC_ContactList")
-                        .WithMany("COC_Contacts")
-                        .HasForeignKey("COC_ContactListId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("COC");
-
-                    b.Navigation("COC_ContactList");
-                });
-
-            modelBuilder.Entity("ERP.Models.COC.Individual_COC", b =>
-                {
-                    b.HasOne("ERP.Models.COC.COC", "COC")
-                        .WithMany()
-                        .HasForeignKey("COCId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("COC");
-                });
-
-            modelBuilder.Entity("ERP.Models.CRMSystem.Appointments", b =>
-                {
-                    b.HasOne("ERP.Models.COC.COC", "COC")
-                        .WithMany()
-                        .HasForeignKey("COCId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("COC");
-                });
-
-            modelBuilder.Entity("ERP.Models.CRMSystem.Appointments_Actions", b =>
-                {
-                    b.HasOne("ERP.Models.CRMSystem.Appointments", "Appointments")
-                        .WithMany()
-                        .HasForeignKey("AppointmentsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Appointments");
-                });
-
-            modelBuilder.Entity("ERP.Models.CRMSystem.Appointments_Notes", b =>
-                {
-                    b.HasOne("ERP.Models.CRMSystem.Appointments", "Appointments")
-                        .WithMany()
-                        .HasForeignKey("AppointmentsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Appointments");
                 });
 
             modelBuilder.Entity("ERP.Models.Checks.CheckBook", b =>
@@ -7237,6 +7319,145 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("ReceivableCheck");
                 });
 
+            modelBuilder.Entity("ERP.Models.COCs.Business_COC", b =>
+                {
+                    b.HasOne("ERP.Models.COCs.COC", "COC")
+                        .WithMany()
+                        .HasForeignKey("COCId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("COC");
+                });
+
+            modelBuilder.Entity("ERP.Models.COCs.Category_PerClient", b =>
+                {
+                    b.HasOne("ERP.Models.COCs.COC", "COC")
+                        .WithMany()
+                        .HasForeignKey("COCId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Models.COCs.COC_category", "COC_category")
+                        .WithMany()
+                        .HasForeignKey("COC_categoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("COC");
+
+                    b.Navigation("COC_category");
+                });
+
+            modelBuilder.Entity("ERP.Models.COCs.ClientNotes", b =>
+                {
+                    b.HasOne("ERP.Models.COCs.COC", "COC")
+                        .WithMany()
+                        .HasForeignKey("COCId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("COC");
+                });
+
+            modelBuilder.Entity("ERP.Models.COCs.ClientStatus", b =>
+                {
+                    b.HasOne("ERP.Models.COCs.COC", "COC")
+                        .WithMany()
+                        .HasForeignKey("COCId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("COC");
+                });
+
+            modelBuilder.Entity("ERP.Models.COCs.COC", b =>
+                {
+                    b.HasOne("ERP.Models.Generals.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Models.Generals.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Country");
+
+                    b.Navigation("Currency");
+                });
+
+            modelBuilder.Entity("ERP.Models.COCs.COC_CustomFields", b =>
+                {
+                    b.HasOne("ERP.Models.COCs.COC", "COC")
+                        .WithMany()
+                        .HasForeignKey("COCId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Models.CutomFields.Fields_Per_Service", "Fields_Per_Service")
+                        .WithMany()
+                        .HasForeignKey("Fields_Per_ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("COC");
+
+                    b.Navigation("Fields_Per_Service");
+                });
+
+            modelBuilder.Entity("ERP.Models.COCs.COCAddress", b =>
+                {
+                    b.HasOne("ERP.Models.COCs.COC", "COC")
+                        .WithMany()
+                        .HasForeignKey("COCId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("COC");
+                });
+
+            modelBuilder.Entity("ERP.Models.COCs.ConstactList_PerCOC", b =>
+                {
+                    b.HasOne("ERP.Models.COCs.COC", "COC")
+                        .WithMany("COC_Contacts")
+                        .HasForeignKey("COCId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Models.COCs.COC_ContactList", "COC_ContactList")
+                        .WithMany("COC_Contacts")
+                        .HasForeignKey("COC_ContactListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("COC");
+
+                    b.Navigation("COC_ContactList");
+                });
+
+            modelBuilder.Entity("ERP.Models.COCs.Individual_COC", b =>
+                {
+                    b.HasOne("ERP.Models.COCs.COC", "COC")
+                        .WithMany()
+                        .HasForeignKey("COCId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("COC");
+                });
+
             modelBuilder.Entity("ERP.Models.CreditNotes.CreditNote", b =>
                 {
                     b.HasOne("ERP.Models.Generals.EmailsTemplates", "EmailsTemplates")
@@ -7318,7 +7539,7 @@ namespace ERP.Migrations.ApplicationDb
 
             modelBuilder.Entity("ERP.Models.CreditNotes.CreditNtotes_Client", b =>
                 {
-                    b.HasOne("ERP.Models.COC.COC", "COC")
+                    b.HasOne("ERP.Models.COCs.COC", "COC")
                         .WithMany()
                         .HasForeignKey("COCId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -7333,6 +7554,39 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("CreditNote");
                 });
 
+            modelBuilder.Entity("ERP.Models.CRMSystem.Appointments", b =>
+                {
+                    b.HasOne("ERP.Models.COCs.COC", "COC")
+                        .WithMany()
+                        .HasForeignKey("COCId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("COC");
+                });
+
+            modelBuilder.Entity("ERP.Models.CRMSystem.Appointments_Actions", b =>
+                {
+                    b.HasOne("ERP.Models.CRMSystem.Appointments", "Appointments")
+                        .WithMany()
+                        .HasForeignKey("AppointmentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Appointments");
+                });
+
+            modelBuilder.Entity("ERP.Models.CRMSystem.Appointments_Notes", b =>
+                {
+                    b.HasOne("ERP.Models.CRMSystem.Appointments", "Appointments")
+                        .WithMany()
+                        .HasForeignKey("AppointmentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Appointments");
+                });
+
             modelBuilder.Entity("ERP.Models.CutomFields.Field_Choices", b =>
                 {
                     b.HasOne("ERP.Models.CutomFields.Fields_Properties", "Fields_Properties")
@@ -7342,6 +7596,17 @@ namespace ERP.Migrations.ApplicationDb
                         .IsRequired();
 
                     b.Navigation("Fields_Properties");
+                });
+
+            modelBuilder.Entity("ERP.Models.CutomFields.Fields_layout", b =>
+                {
+                    b.HasOne("ERP.Models.CutomFields.Fields_validation_Foreach_Service", "Fields_validation_Foreach_Service")
+                        .WithMany()
+                        .HasForeignKey("Fields_validation_Foreach_ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Fields_validation_Foreach_Service");
                 });
 
             modelBuilder.Entity("ERP.Models.CutomFields.Fields_Per_Service", b =>
@@ -7364,17 +7629,6 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             modelBuilder.Entity("ERP.Models.CutomFields.Fields_Properties", b =>
-                {
-                    b.HasOne("ERP.Models.CutomFields.Fields_validation_Foreach_Service", "Fields_validation_Foreach_Service")
-                        .WithMany()
-                        .HasForeignKey("Fields_validation_Foreach_ServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Fields_validation_Foreach_Service");
-                });
-
-            modelBuilder.Entity("ERP.Models.CutomFields.Fields_layout", b =>
                 {
                     b.HasOne("ERP.Models.CutomFields.Fields_validation_Foreach_Service", "Fields_validation_Foreach_Service")
                         .WithMany()
@@ -7559,6 +7813,57 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Employees");
                 });
 
+            modelBuilder.Entity("ERP.Models.Estimates.Estimates_Client", b =>
+                {
+                    b.HasOne("ERP.Models.COCs.COC", "COC")
+                        .WithMany()
+                        .HasForeignKey("COCId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Models.Estimates.Estimate", "Estimate")
+                        .WithMany()
+                        .HasForeignKey("EstimateId");
+
+                    b.Navigation("COC");
+
+                    b.Navigation("Estimate");
+                });
+
+            modelBuilder.Entity("ERP.Models.Estimates.Estimates_Items", b =>
+                {
+                    b.HasOne("ERP.Models.Estimates.Estimate", "Estimate")
+                        .WithMany()
+                        .HasForeignKey("EstimateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Models.Items.ItemVariants", "ItemVariants")
+                        .WithMany()
+                        .HasForeignKey("ItemVariantsId");
+
+                    b.Navigation("Estimate");
+
+                    b.Navigation("ItemVariants");
+                });
+
+            modelBuilder.Entity("ERP.Models.Estimates.Estimates_Services", b =>
+                {
+                    b.HasOne("ERP.Models.Estimates.Estimate", "Estimate")
+                        .WithMany()
+                        .HasForeignKey("EstimateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Models.Service.Services", "Services")
+                        .WithMany()
+                        .HasForeignKey("ServicesId");
+
+                    b.Navigation("Estimate");
+
+                    b.Navigation("Services");
+                });
+
             modelBuilder.Entity("ERP.Models.Estimates.EstimatesAttachments", b =>
                 {
                     b.HasOne("ERP.Models.Estimates.Estimate", "Estimate")
@@ -7609,57 +7914,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Status");
                 });
 
-            modelBuilder.Entity("ERP.Models.Estimates.Estimates_Client", b =>
-                {
-                    b.HasOne("ERP.Models.COC.COC", "COC")
-                        .WithMany()
-                        .HasForeignKey("COCId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ERP.Models.Estimates.Estimate", "Estimate")
-                        .WithMany()
-                        .HasForeignKey("EstimateId");
-
-                    b.Navigation("COC");
-
-                    b.Navigation("Estimate");
-                });
-
-            modelBuilder.Entity("ERP.Models.Estimates.Estimates_Items", b =>
-                {
-                    b.HasOne("ERP.Models.Estimates.Estimate", "Estimate")
-                        .WithMany()
-                        .HasForeignKey("EstimateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ERP.Models.Items.ItemVariants", "ItemVariants")
-                        .WithMany()
-                        .HasForeignKey("ItemVariantsId");
-
-                    b.Navigation("Estimate");
-
-                    b.Navigation("ItemVariants");
-                });
-
-            modelBuilder.Entity("ERP.Models.Estimates.Estimates_Services", b =>
-                {
-                    b.HasOne("ERP.Models.Estimates.Estimate", "Estimate")
-                        .WithMany()
-                        .HasForeignKey("EstimateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ERP.Models.Service.Services", "Services")
-                        .WithMany()
-                        .HasForeignKey("ServicesId");
-
-                    b.Navigation("Estimate");
-
-                    b.Navigation("Services");
-                });
-
             modelBuilder.Entity("ERP.Models.Generals.AutomaticReminders", b =>
                 {
                     b.HasOne("ERP.Models.Generals.EmailsTemplates", "EmailsTemplates")
@@ -7677,15 +7931,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("EmailsTemplates");
 
                     b.Navigation("WhenRemidersSent");
-                });
-
-            modelBuilder.Entity("ERP.Models.Insurance.InsuranceAgent", b =>
-                {
-                    b.HasOne("ERP.Models.Employee.Employees", "Employees")
-                        .WithMany()
-                        .HasForeignKey("AddedBy_EmployeesId");
-
-                    b.Navigation("Employees");
                 });
 
             modelBuilder.Entity("ERP.Models.Insurance.Insurance_Attachments", b =>
@@ -7710,6 +7955,15 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("InsuranceAgent");
                 });
 
+            modelBuilder.Entity("ERP.Models.Insurance.InsuranceAgent", b =>
+                {
+                    b.HasOne("ERP.Models.Employee.Employees", "Employees")
+                        .WithMany()
+                        .HasForeignKey("AddedBy_EmployeesId");
+
+                    b.Navigation("Employees");
+                });
+
             modelBuilder.Entity("ERP.Models.Inventory.Addition_NoExpire", b =>
                 {
                     b.HasOne("ERP.Models.Inventory.Items_NoEpire", "Items_NoEpire")
@@ -7732,17 +7986,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Items_withEpire");
                 });
 
-            modelBuilder.Entity("ERP.Models.Inventory.InboundNotes", b =>
-                {
-                    b.HasOne("ERP.Models.Inventory.Inbound_Invent_Requisitions", "Inbound_Invent_Requisitions")
-                        .WithMany()
-                        .HasForeignKey("Inbound_Invent_RequisitionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Inbound_Invent_Requisitions");
-                });
-
             modelBuilder.Entity("ERP.Models.Inventory.Inbound_Invent_Requisitions", b =>
                 {
                     b.HasOne("ERP.Models.Inventory.Inventories", "Inventory")
@@ -7762,13 +8005,22 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("ItemVariants");
                 });
 
+            modelBuilder.Entity("ERP.Models.Inventory.InboundNotes", b =>
+                {
+                    b.HasOne("ERP.Models.Inventory.Inbound_Invent_Requisitions", "Inbound_Invent_Requisitions")
+                        .WithMany()
+                        .HasForeignKey("Inbound_Invent_RequisitionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Inbound_Invent_Requisitions");
+                });
+
             modelBuilder.Entity("ERP.Models.Inventory.Inventories", b =>
                 {
                     b.HasOne("ERP.Models.Employee.Employees", "Employees")
                         .WithMany()
-                        .HasForeignKey("AddedBy_EmpId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AddedBy_EmpId");
 
                     b.Navigation("Employees");
                 });
@@ -7822,17 +8074,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("ItemVariants");
                 });
 
-            modelBuilder.Entity("ERP.Models.Inventory.OutboundNotes", b =>
-                {
-                    b.HasOne("ERP.Models.Inventory.Outbound_Invent_Requisitions", "Outbound_Invent_Requisitions")
-                        .WithMany()
-                        .HasForeignKey("Outbound_Invent_RequisitionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Outbound_Invent_Requisitions");
-                });
-
             modelBuilder.Entity("ERP.Models.Inventory.Outbound_Invent_Requisitions", b =>
                 {
                     b.HasOne("ERP.Models.Inventory.Inventories", "Inventory")
@@ -7850,6 +8091,17 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Inventory");
 
                     b.Navigation("ItemVariants");
+                });
+
+            modelBuilder.Entity("ERP.Models.Inventory.OutboundNotes", b =>
+                {
+                    b.HasOne("ERP.Models.Inventory.Outbound_Invent_Requisitions", "Outbound_Invent_Requisitions")
+                        .WithMany()
+                        .HasForeignKey("Outbound_Invent_RequisitionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Outbound_Invent_Requisitions");
                 });
 
             modelBuilder.Entity("ERP.Models.Inventory.TransferBetweenInvent", b =>
@@ -7896,6 +8148,40 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Items_withEpire");
                 });
 
+            modelBuilder.Entity("ERP.Models.Items.Item_Per_Subcategory", b =>
+                {
+                    b.HasOne("ERP.Models.Items.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Models.Items.ItemSubCategory", "ItemSubCategory")
+                        .WithMany()
+                        .HasForeignKey("ItemSubCategoryId");
+
+                    b.Navigation("Item");
+
+                    b.Navigation("ItemSubCategory");
+                });
+
+            modelBuilder.Entity("ERP.Models.Items.Item_Units", b =>
+                {
+                    b.HasOne("ERP.Models.Items.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Models.Items.Units", "Units")
+                        .WithMany()
+                        .HasForeignKey("UnitsId");
+
+                    b.Navigation("Item");
+
+                    b.Navigation("Units");
+                });
+
             modelBuilder.Entity("ERP.Models.Items.ItemBrands", b =>
                 {
                     b.HasOne("ERP.Models.Items.Brands", "Brands")
@@ -7935,6 +8221,25 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Item");
                 });
 
+            modelBuilder.Entity("ERP.Models.Items.Items_CustomFields", b =>
+                {
+                    b.HasOne("ERP.Models.CutomFields.Fields_Per_Service", "Fields_Per_Service")
+                        .WithMany()
+                        .HasForeignKey("Fields_Per_ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Models.Items.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Fields_Per_Service");
+
+                    b.Navigation("Item");
+                });
+
             modelBuilder.Entity("ERP.Models.Items.ItemSubCategory", b =>
                 {
                     b.HasOne("ERP.Models.Items.ItemMainCategory", "ItemMainCategory")
@@ -7944,6 +8249,17 @@ namespace ERP.Migrations.ApplicationDb
                         .IsRequired();
 
                     b.Navigation("ItemMainCategory");
+                });
+
+            modelBuilder.Entity("ERP.Models.Items.ItemsVariant_RetailPrice", b =>
+                {
+                    b.HasOne("ERP.Models.Items.ItemVariants", "ItemVariants")
+                        .WithMany()
+                        .HasForeignKey("ItemVariantsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ItemVariants");
                 });
 
             modelBuilder.Entity("ERP.Models.Items.ItemTaxSettings", b =>
@@ -7985,70 +8301,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Item");
                 });
 
-            modelBuilder.Entity("ERP.Models.Items.Item_Per_Subcategory", b =>
-                {
-                    b.HasOne("ERP.Models.Items.Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ERP.Models.Items.ItemSubCategory", "ItemSubCategory")
-                        .WithMany()
-                        .HasForeignKey("ItemSubCategoryId");
-
-                    b.Navigation("Item");
-
-                    b.Navigation("ItemSubCategory");
-                });
-
-            modelBuilder.Entity("ERP.Models.Items.Item_Units", b =>
-                {
-                    b.HasOne("ERP.Models.Items.Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ERP.Models.Items.Units", "Units")
-                        .WithMany()
-                        .HasForeignKey("UnitsId");
-
-                    b.Navigation("Item");
-
-                    b.Navigation("Units");
-                });
-
-            modelBuilder.Entity("ERP.Models.Items.ItemsVariant_RetailPrice", b =>
-                {
-                    b.HasOne("ERP.Models.Items.ItemVariants", "ItemVariants")
-                        .WithMany()
-                        .HasForeignKey("ItemVariantsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ItemVariants");
-                });
-
-            modelBuilder.Entity("ERP.Models.Items.Items_CustomFields", b =>
-                {
-                    b.HasOne("ERP.Models.CutomFields.Fields_Per_Service", "Fields_Per_Service")
-                        .WithMany()
-                        .HasForeignKey("Fields_Per_ServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ERP.Models.Items.Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Fields_Per_Service");
-
-                    b.Navigation("Item");
-                });
-
             modelBuilder.Entity("ERP.Models.Membership.MembershipDescription", b =>
                 {
                     b.HasOne("ERP.Models.Membership.Memberships", "Memberships")
@@ -8062,7 +8314,7 @@ namespace ERP.Migrations.ApplicationDb
 
             modelBuilder.Entity("ERP.Models.Membership.Memberships", b =>
                 {
-                    b.HasOne("ERP.Models.COC.COC", "COC")
+                    b.HasOne("ERP.Models.COCs.COC", "COC")
                         .WithMany()
                         .HasForeignKey("COCId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -8085,17 +8337,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("SalesInvoices");
                 });
 
-            modelBuilder.Entity("ERP.Models.NumberingSystem.NumberSettings_Prefixes", b =>
-                {
-                    b.HasOne("ERP.Models.NumberingSystem.NumberingSettings", "NumberingSettings")
-                        .WithMany()
-                        .HasForeignKey("NumberingSettingsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("NumberingSettings");
-                });
-
             modelBuilder.Entity("ERP.Models.NumberingSystem.NumberingSettings", b =>
                 {
                     b.HasOne("ERP.Models.SystemsInErp.SystemsInERP", "SystemsInERP")
@@ -8105,6 +8346,17 @@ namespace ERP.Migrations.ApplicationDb
                         .IsRequired();
 
                     b.Navigation("SystemsInERP");
+                });
+
+            modelBuilder.Entity("ERP.Models.NumberingSystem.NumberSettings_Prefixes", b =>
+                {
+                    b.HasOne("ERP.Models.NumberingSystem.NumberingSettings", "NumberingSettings")
+                        .WithMany()
+                        .HasForeignKey("NumberingSettingsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("NumberingSettings");
                 });
 
             modelBuilder.Entity("ERP.Models.OrganizationalStructure.Department", b =>
@@ -8162,6 +8414,25 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("EmployeeTypes");
                 });
 
+            modelBuilder.Entity("ERP.Models.Payroll.Contract_Per_Emp", b =>
+                {
+                    b.HasOne("ERP.Models.Payroll.Contracts", "Contracts")
+                        .WithMany()
+                        .HasForeignKey("ContractsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Models.Employee.Employees", "Employees")
+                        .WithMany()
+                        .HasForeignKey("EmployeesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Contracts");
+
+                    b.Navigation("Employees");
+                });
+
             modelBuilder.Entity("ERP.Models.Payroll.ContractDuration", b =>
                 {
                     b.HasOne("ERP.Models.Payroll.Contract_Per_Emp", "Contract_Per_Emp")
@@ -8184,25 +8455,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Contract_Per_Emp");
                 });
 
-            modelBuilder.Entity("ERP.Models.Payroll.Contract_Per_Emp", b =>
-                {
-                    b.HasOne("ERP.Models.Payroll.Contracts", "Contracts")
-                        .WithMany()
-                        .HasForeignKey("ContractsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ERP.Models.Employee.Employees", "Employees")
-                        .WithMany()
-                        .HasForeignKey("EmployeesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Contracts");
-
-                    b.Navigation("Employees");
-                });
-
             modelBuilder.Entity("ERP.Models.Payroll.Contracts", b =>
                 {
                     b.HasOne("ERP.Models.Generals.Currency", "Currency")
@@ -8212,17 +8464,6 @@ namespace ERP.Migrations.ApplicationDb
                         .IsRequired();
 
                     b.Navigation("Currency");
-                });
-
-            modelBuilder.Entity("ERP.Models.Payroll.ContractsAttachments", b =>
-                {
-                    b.HasOne("ERP.Models.Payroll.Contract_Per_Emp", "Contract_Per_Emp")
-                        .WithMany()
-                        .HasForeignKey("Contract_Per_EmpId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Contract_Per_Emp");
                 });
 
             modelBuilder.Entity("ERP.Models.Payroll.Contracts_Deduction", b =>
@@ -8261,6 +8502,17 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Contracts");
 
                     b.Navigation("SalaryEarning");
+                });
+
+            modelBuilder.Entity("ERP.Models.Payroll.ContractsAttachments", b =>
+                {
+                    b.HasOne("ERP.Models.Payroll.Contract_Per_Emp", "Contract_Per_Emp")
+                        .WithMany()
+                        .HasForeignKey("Contract_Per_EmpId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Contract_Per_Emp");
                 });
 
             modelBuilder.Entity("ERP.Models.Payroll.LoanNotes", b =>
@@ -8440,7 +8692,7 @@ namespace ERP.Migrations.ApplicationDb
 
             modelBuilder.Entity("ERP.Models.PointsAndCredits.CreditCharge", b =>
                 {
-                    b.HasOne("ERP.Models.COC.COC", "COC")
+                    b.HasOne("ERP.Models.COCs.COC", "COC")
                         .WithMany()
                         .HasForeignKey("COCId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -8470,7 +8722,7 @@ namespace ERP.Migrations.ApplicationDb
 
             modelBuilder.Entity("ERP.Models.PointsAndCredits.CreditUsage", b =>
                 {
-                    b.HasOne("ERP.Models.COC.COC", "COC")
+                    b.HasOne("ERP.Models.COCs.COC", "COC")
                         .WithMany()
                         .HasForeignKey("COCId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -8539,25 +8791,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("CreditTypes");
                 });
 
-            modelBuilder.Entity("ERP.Models.PriceLists.PriceList_Services", b =>
-                {
-                    b.HasOne("ERP.Models.PriceLists.PriceList", "PriceList")
-                        .WithMany()
-                        .HasForeignKey("PriceListId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ERP.Models.Service.Services", "Services")
-                        .WithMany()
-                        .HasForeignKey("ServicesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PriceList");
-
-                    b.Navigation("Services");
-                });
-
             modelBuilder.Entity("ERP.Models.PriceLists.PriceList_items", b =>
                 {
                     b.HasOne("ERP.Models.Items.ItemVariants", "ItemVariants")
@@ -8575,6 +8808,25 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("ItemVariants");
 
                     b.Navigation("PriceList");
+                });
+
+            modelBuilder.Entity("ERP.Models.PriceLists.PriceList_Services", b =>
+                {
+                    b.HasOne("ERP.Models.PriceLists.PriceList", "PriceList")
+                        .WithMany()
+                        .HasForeignKey("PriceListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Models.Service.Services", "Services")
+                        .WithMany()
+                        .HasForeignKey("ServicesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PriceList");
+
+                    b.Navigation("Services");
                 });
 
             modelBuilder.Entity("ERP.Models.Purchases.Items_In_PurchaseInvoice", b =>
@@ -8604,7 +8856,7 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Purchase_invoices");
                 });
 
-            modelBuilder.Entity("ERP.Models.Purchases.PurchaseStatus", b =>
+            modelBuilder.Entity("ERP.Models.Purchases.Purchase_Attachments", b =>
                 {
                     b.HasOne("ERP.Models.Purchases.Purchase_invoices", "Purchase_invoices")
                         .WithMany()
@@ -8615,15 +8867,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Purchase_invoices");
                 });
 
-            modelBuilder.Entity("ERP.Models.Purchases.Purchase_Attachments", b =>
+            modelBuilder.Entity("ERP.Models.Purchases.Purchase_invoices", b =>
                 {
-                    b.HasOne("ERP.Models.Purchases.Purchase_invoices", "Purchase_invoices")
+                    b.HasOne("ERP.Models.Generals.Currency", "Currency")
                         .WithMany()
-                        .HasForeignKey("Purchase_invoicesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CurrencyId");
 
-                    b.Navigation("Purchase_invoices");
+                    b.Navigation("Currency");
                 });
 
             modelBuilder.Entity("ERP.Models.Purchases.Purchase_Payments", b =>
@@ -8640,37 +8890,9 @@ namespace ERP.Migrations.ApplicationDb
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Purchase_invoices");
-
                     b.Navigation("PurchasePaymentMethods");
-                });
-
-            modelBuilder.Entity("ERP.Models.Purchases.Purchase_invoices", b =>
-                {
-                    b.HasOne("ERP.Models.Generals.Currency", "Currency")
-                        .WithMany()
-                        .HasForeignKey("CurrencyId");
-
-                    b.Navigation("Currency");
-                });
-
-            modelBuilder.Entity("ERP.Models.Purchases.PurchasesInvoice_Services", b =>
-                {
-                    b.HasOne("ERP.Models.Purchases.Purchase_invoices", "Purchase_invoices")
-                        .WithMany()
-                        .HasForeignKey("Purchase_invoicesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ERP.Models.Service.Services", "Services")
-                        .WithMany()
-                        .HasForeignKey("ServicesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("Purchase_invoices");
-
-                    b.Navigation("Services");
                 });
 
             modelBuilder.Entity("ERP.Models.Purchases.Purchases_Deposits", b =>
@@ -8717,6 +8939,36 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Purchase_invoices");
                 });
 
+            modelBuilder.Entity("ERP.Models.Purchases.PurchasesInvoice_Services", b =>
+                {
+                    b.HasOne("ERP.Models.Purchases.Purchase_invoices", "Purchase_invoices")
+                        .WithMany()
+                        .HasForeignKey("Purchase_invoicesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Models.Service.Services", "Services")
+                        .WithMany()
+                        .HasForeignKey("ServicesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Purchase_invoices");
+
+                    b.Navigation("Services");
+                });
+
+            modelBuilder.Entity("ERP.Models.Purchases.PurchaseStatus", b =>
+                {
+                    b.HasOne("ERP.Models.Purchases.Purchase_invoices", "Purchase_invoices")
+                        .WithMany()
+                        .HasForeignKey("Purchase_invoicesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Purchase_invoices");
+                });
+
             modelBuilder.Entity("ERP.Models.Purchases.PurphaseRefund.Items_in_Refund", b =>
                 {
                     b.HasOne("ERP.Models.Inventory.Inventories", "Inventories")
@@ -8744,17 +8996,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Purchase_RefundRequests");
                 });
 
-            modelBuilder.Entity("ERP.Models.Purchases.PurphaseRefund.Purchase_RefundRequests", b =>
-                {
-                    b.HasOne("ERP.Models.Generals.Currency", "Currency")
-                        .WithMany()
-                        .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Currency");
-                });
-
             modelBuilder.Entity("ERP.Models.Purchases.PurphaseRefund.Purchase_RefundedServices", b =>
                 {
                     b.HasOne("ERP.Models.Purchases.PurphaseRefund.Purchase_RefundRequests", "Purchase_RefundRequests")
@@ -8774,7 +9015,18 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Services");
                 });
 
-            modelBuilder.Entity("ERP.Models.Purchases.PurphaseRefund.RefundsStatus", b =>
+            modelBuilder.Entity("ERP.Models.Purchases.PurphaseRefund.Purchase_RefundRequests", b =>
+                {
+                    b.HasOne("ERP.Models.Generals.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Currency");
+                });
+
+            modelBuilder.Entity("ERP.Models.Purchases.PurphaseRefund.Refunds_Attachments", b =>
                 {
                     b.HasOne("ERP.Models.Purchases.PurphaseRefund.Purchase_RefundRequests", "Purchase_RefundRequests")
                         .WithMany()
@@ -8785,7 +9037,7 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Purchase_RefundRequests");
                 });
 
-            modelBuilder.Entity("ERP.Models.Purchases.PurphaseRefund.Refunds_Attachments", b =>
+            modelBuilder.Entity("ERP.Models.Purchases.PurphaseRefund.Refunds_items_ShippingFees", b =>
                 {
                     b.HasOne("ERP.Models.Purchases.PurphaseRefund.Purchase_RefundRequests", "Purchase_RefundRequests")
                         .WithMany()
@@ -8805,7 +9057,7 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Purchase_RefundRequests");
                 });
 
-            modelBuilder.Entity("ERP.Models.Purchases.PurphaseRefund.Refunds_items_ShippingFees", b =>
+            modelBuilder.Entity("ERP.Models.Purchases.PurphaseRefund.RefundsStatus", b =>
                 {
                     b.HasOne("ERP.Models.Purchases.PurphaseRefund.Purchase_RefundRequests", "Purchase_RefundRequests")
                         .WithMany()
@@ -8914,17 +9166,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Employees");
                 });
 
-            modelBuilder.Entity("ERP.Models.Sales.SalesCommissions.CommissionsNotes", b =>
-                {
-                    b.HasOne("ERP.Models.Sales.SalesCommissions.Commissions", "Commissions")
-                        .WithMany()
-                        .HasForeignKey("CommissionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Commissions");
-                });
-
             modelBuilder.Entity("ERP.Models.Sales.SalesCommissions.Commissions_ItemCat", b =>
                 {
                     b.HasOne("ERP.Models.Sales.SalesCommissions.Commissions", "Commissions")
@@ -8942,6 +9183,25 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Commissions");
 
                     b.Navigation("ItemSubCategory");
+                });
+
+            modelBuilder.Entity("ERP.Models.Sales.SalesCommissions.Commissions_items", b =>
+                {
+                    b.HasOne("ERP.Models.Sales.SalesCommissions.Commissions", "Commissions")
+                        .WithMany()
+                        .HasForeignKey("CommissionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Models.Items.ItemVariants", "ItemVariants")
+                        .WithMany()
+                        .HasForeignKey("ItemVariantsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Commissions");
+
+                    b.Navigation("ItemVariants");
                 });
 
             modelBuilder.Entity("ERP.Models.Sales.SalesCommissions.Commissions_Per_employee", b =>
@@ -8999,7 +9259,7 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Services");
                 });
 
-            modelBuilder.Entity("ERP.Models.Sales.SalesCommissions.Commissions_items", b =>
+            modelBuilder.Entity("ERP.Models.Sales.SalesCommissions.CommissionsNotes", b =>
                 {
                     b.HasOne("ERP.Models.Sales.SalesCommissions.Commissions", "Commissions")
                         .WithMany()
@@ -9007,15 +9267,37 @@ namespace ERP.Migrations.ApplicationDb
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ERP.Models.Items.ItemVariants", "ItemVariants")
+                    b.Navigation("Commissions");
+                });
+
+            modelBuilder.Entity("ERP.Models.Sales.SalesInvoice_AutomaticReminders", b =>
+                {
+                    b.HasOne("ERP.Models.Generals.AutomaticReminders", "AutomaticReminders")
                         .WithMany()
-                        .HasForeignKey("ItemVariantsId")
+                        .HasForeignKey("AutomaticRemindersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Commissions");
+                    b.HasOne("ERP.Models.Sales.SalesInvoices", "SalesInvoices")
+                        .WithMany()
+                        .HasForeignKey("SalesInvoicesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("ItemVariants");
+                    b.Navigation("AutomaticReminders");
+
+                    b.Navigation("SalesInvoices");
+                });
+
+            modelBuilder.Entity("ERP.Models.Sales.SalesInvoice_TotalDsicount", b =>
+                {
+                    b.HasOne("ERP.Models.Sales.SalesInvoices", "SalesInvoices")
+                        .WithMany()
+                        .HasForeignKey("SalesInvoicesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SalesInvoices");
                 });
 
             modelBuilder.Entity("ERP.Models.Sales.SalesInvoicePayments", b =>
@@ -9086,39 +9368,9 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("SalesInvoicePayments");
                 });
 
-            modelBuilder.Entity("ERP.Models.Sales.SalesInvoice_AutomaticReminders", b =>
-                {
-                    b.HasOne("ERP.Models.Generals.AutomaticReminders", "AutomaticReminders")
-                        .WithMany()
-                        .HasForeignKey("AutomaticRemindersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ERP.Models.Sales.SalesInvoices", "SalesInvoices")
-                        .WithMany()
-                        .HasForeignKey("SalesInvoicesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AutomaticReminders");
-
-                    b.Navigation("SalesInvoices");
-                });
-
-            modelBuilder.Entity("ERP.Models.Sales.SalesInvoice_TotalDsicount", b =>
-                {
-                    b.HasOne("ERP.Models.Sales.SalesInvoices", "SalesInvoices")
-                        .WithMany()
-                        .HasForeignKey("SalesInvoicesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SalesInvoices");
-                });
-
             modelBuilder.Entity("ERP.Models.Sales.SalesInvoices", b =>
                 {
-                    b.HasOne("ERP.Models.COC.COC", "COC")
+                    b.HasOne("ERP.Models.COCs.COC", "COC")
                         .WithMany()
                         .HasForeignKey("COCId");
 
@@ -9221,25 +9473,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("SalesInvoicesStatus");
                 });
 
-            modelBuilder.Entity("ERP.Models.Sales.TaxPerService_PerInvoice", b =>
-                {
-                    b.HasOne("ERP.Models.Sales.ServicesInSalesInvices", "ServicesInSalesInvices")
-                        .WithMany()
-                        .HasForeignKey("ServicesInSalesInvicesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ERP.Models.Generals.TaxSettings", "TaxSettings")
-                        .WithMany()
-                        .HasForeignKey("TaxSettingsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ServicesInSalesInvices");
-
-                    b.Navigation("TaxSettings");
-                });
-
             modelBuilder.Entity("ERP.Models.Sales.TaxPer_Item_PerInvoice", b =>
                 {
                     b.HasOne("ERP.Models.Sales.ItemsInSalesInvoices", "ItemsInSalesInvoices")
@@ -9255,6 +9488,25 @@ namespace ERP.Migrations.ApplicationDb
                         .IsRequired();
 
                     b.Navigation("ItemsInSalesInvoices");
+
+                    b.Navigation("TaxSettings");
+                });
+
+            modelBuilder.Entity("ERP.Models.Sales.TaxPerService_PerInvoice", b =>
+                {
+                    b.HasOne("ERP.Models.Sales.ServicesInSalesInvices", "ServicesInSalesInvices")
+                        .WithMany()
+                        .HasForeignKey("ServicesInSalesInvicesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Models.Generals.TaxSettings", "TaxSettings")
+                        .WithMany()
+                        .HasForeignKey("TaxSettingsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ServicesInSalesInvices");
 
                     b.Navigation("TaxSettings");
                 });
@@ -9278,6 +9530,25 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("SalesTerms");
                 });
 
+            modelBuilder.Entity("ERP.Models.Service.Service_CustomFields", b =>
+                {
+                    b.HasOne("ERP.Models.CutomFields.Fields_Per_Service", "Fields_Per_Service")
+                        .WithMany()
+                        .HasForeignKey("Fields_Per_ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Models.Service.Services", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Fields_Per_Service");
+
+                    b.Navigation("Service");
+                });
+
             modelBuilder.Entity("ERP.Models.Service.ServiceDescription", b =>
                 {
                     b.HasOne("ERP.Models.Service.Services", "Service")
@@ -9298,6 +9569,15 @@ namespace ERP.Migrations.ApplicationDb
                         .IsRequired();
 
                     b.Navigation("Service");
+                });
+
+            modelBuilder.Entity("ERP.Models.Service.Services", b =>
+                {
+                    b.HasOne("ERP.Models.Service.ServiceSubCategory", "ServiceSubCategory")
+                        .WithMany()
+                        .HasForeignKey("ServiceSubCategoryId");
+
+                    b.Navigation("ServiceSubCategory");
                 });
 
             modelBuilder.Entity("ERP.Models.Service.ServiceSubCategory", b =>
@@ -9326,45 +9606,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Service");
 
                     b.Navigation("TaxSettings");
-                });
-
-            modelBuilder.Entity("ERP.Models.Service.Service_CustomFields", b =>
-                {
-                    b.HasOne("ERP.Models.CutomFields.Fields_Per_Service", "Fields_Per_Service")
-                        .WithMany()
-                        .HasForeignKey("Fields_Per_ServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ERP.Models.Service.Services", "Service")
-                        .WithMany()
-                        .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Fields_Per_Service");
-
-                    b.Navigation("Service");
-                });
-
-            modelBuilder.Entity("ERP.Models.Service.Services", b =>
-                {
-                    b.HasOne("ERP.Models.Service.ServiceSubCategory", "ServiceSubCategory")
-                        .WithMany()
-                        .HasForeignKey("ServiceSubCategoryId");
-
-                    b.Navigation("ServiceSubCategory");
-                });
-
-            modelBuilder.Entity("ERP.Models.Subscription.SubscriptionAttachments", b =>
-                {
-                    b.HasOne("ERP.Models.Subscription.Subscriptions", "Subscriptions")
-                        .WithMany()
-                        .HasForeignKey("SubscriptionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Subscriptions");
                 });
 
             modelBuilder.Entity("ERP.Models.Subscription.Subscription_AutomaticReminders", b =>
@@ -9425,9 +9666,20 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Subscriptions");
                 });
 
+            modelBuilder.Entity("ERP.Models.Subscription.SubscriptionAttachments", b =>
+                {
+                    b.HasOne("ERP.Models.Subscription.Subscriptions", "Subscriptions")
+                        .WithMany()
+                        .HasForeignKey("SubscriptionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Subscriptions");
+                });
+
             modelBuilder.Entity("ERP.Models.Subscription.Subscriptions", b =>
                 {
-                    b.HasOne("ERP.Models.COC.COC", "COC")
+                    b.HasOne("ERP.Models.COCs.COC", "COC")
                         .WithMany()
                         .HasForeignKey("COCId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -9440,17 +9692,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("COC");
 
                     b.Navigation("Currency");
-                });
-
-            modelBuilder.Entity("ERP.Models.Supplier.SupplierAddresses", b =>
-                {
-                    b.HasOne("ERP.Models.Supplier.Suppliers", "Suppliers")
-                        .WithMany()
-                        .HasForeignKey("SuppliersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Suppliers");
                 });
 
             modelBuilder.Entity("ERP.Models.Supplier.Supplier_ContactList", b =>
@@ -9484,6 +9725,17 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             modelBuilder.Entity("ERP.Models.Supplier.Supplier_notes", b =>
+                {
+                    b.HasOne("ERP.Models.Supplier.Suppliers", "Suppliers")
+                        .WithMany()
+                        .HasForeignKey("SuppliersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Suppliers");
+                });
+
+            modelBuilder.Entity("ERP.Models.Supplier.SupplierAddresses", b =>
                 {
                     b.HasOne("ERP.Models.Supplier.Suppliers", "Suppliers")
                         .WithMany()
@@ -9539,7 +9791,7 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Treasuries");
                 });
 
-            modelBuilder.Entity("ERP.Models.WorkOrder.Settings.WorkOrderStatus", b =>
+            modelBuilder.Entity("ERP.Models.WorkOrder.Settings.WorkOrdersActions", b =>
                 {
                     b.HasOne("ERP.Models.WorkOrder.WorkOrders", "WorkOrders")
                         .WithMany()
@@ -9550,7 +9802,7 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("WorkOrders");
                 });
 
-            modelBuilder.Entity("ERP.Models.WorkOrder.Settings.WorkOrdersActions", b =>
+            modelBuilder.Entity("ERP.Models.WorkOrder.Settings.WorkOrderStatus", b =>
                 {
                     b.HasOne("ERP.Models.WorkOrder.WorkOrders", "WorkOrders")
                         .WithMany()
@@ -9570,9 +9822,31 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Currency");
                 });
 
+            modelBuilder.Entity("ERP.Models.WorkOrder.WorkOrders_Attachments", b =>
+                {
+                    b.HasOne("ERP.Models.WorkOrder.WorkOrders", "WorkOrders")
+                        .WithMany()
+                        .HasForeignKey("WorkOrdersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("WorkOrders");
+                });
+
+            modelBuilder.Entity("ERP.Models.WorkOrder.WorkOrders_Description", b =>
+                {
+                    b.HasOne("ERP.Models.WorkOrder.WorkOrders", "WorkOrders")
+                        .WithMany()
+                        .HasForeignKey("WorkOrdersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("WorkOrders");
+                });
+
             modelBuilder.Entity("ERP.Models.WorkOrder.WorkOrdersClients", b =>
                 {
-                    b.HasOne("ERP.Models.COC.COC", "COCs")
+                    b.HasOne("ERP.Models.COCs.COC", "COCs")
                         .WithMany()
                         .HasForeignKey("COCid")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -9604,28 +9878,6 @@ namespace ERP.Migrations.ApplicationDb
                         .IsRequired();
 
                     b.Navigation("Employees");
-
-                    b.Navigation("WorkOrders");
-                });
-
-            modelBuilder.Entity("ERP.Models.WorkOrder.WorkOrders_Attachments", b =>
-                {
-                    b.HasOne("ERP.Models.WorkOrder.WorkOrders", "WorkOrders")
-                        .WithMany()
-                        .HasForeignKey("WorkOrdersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("WorkOrders");
-                });
-
-            modelBuilder.Entity("ERP.Models.WorkOrder.WorkOrders_Description", b =>
-                {
-                    b.HasOne("ERP.Models.WorkOrder.WorkOrders", "WorkOrders")
-                        .WithMany()
-                        .HasForeignKey("WorkOrdersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("WorkOrders");
                 });
@@ -9681,12 +9933,12 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Employees_In_Branch");
                 });
 
-            modelBuilder.Entity("ERP.Models.COC.COC", b =>
+            modelBuilder.Entity("ERP.Models.COCs.COC", b =>
                 {
                     b.Navigation("COC_Contacts");
                 });
 
-            modelBuilder.Entity("ERP.Models.COC.COC_ContactList", b =>
+            modelBuilder.Entity("ERP.Models.COCs.COC_ContactList", b =>
                 {
                     b.Navigation("COC_Contacts");
                 });

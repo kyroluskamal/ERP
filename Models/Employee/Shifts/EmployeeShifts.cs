@@ -8,7 +8,7 @@ namespace ERP.Models.Employee.Shifts
     public class EmployeeShifts
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "You need to add shift Name")]
+        [Required(ErrorMessage = "Required_field")]
         public string Name { get; set; }
         [Column(TypeName = "tinyint")]
         public int StandardOrAdvanced { get; set; }

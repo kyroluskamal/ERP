@@ -11,7 +11,7 @@ namespace ERP.Models.Inventory
         [Column(TypeName = "Date")]
         public DateTime Date { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public int Amount { get; set; }
 
         public Items_withEpire Items_withEpire { get; set; }

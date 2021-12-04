@@ -10,7 +10,7 @@ namespace ERP.Models.PointsAndCredits
     public class Packages_CreditType
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public int CreditAmount { get; set; }
         public CreditTypes CreditTypes { get; set; }
         public int CreditTypesId { get; set; }

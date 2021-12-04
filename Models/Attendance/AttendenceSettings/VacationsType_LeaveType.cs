@@ -6,9 +6,9 @@ namespace ERP.Models.Attendance.AttendenceSettings
     public class VacationsType_LeaveType
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, write a name for the leave type")]
+        [Required(ErrorMessage = "Required_field")]
         public string Name { get; set; }
-        [Required(ErrorMessage = "Please, choose a color")]
+        [Required(ErrorMessage = "Required_field")]
         [MaxLength(20)]
         public string Color { get; set; }
         public string Description { get; set; }

@@ -13,17 +13,17 @@ namespace ERP.Models.Sales
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "Money")]
         public decimal Price { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public int Quantity { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "Money")]
         public decimal SubtotalPerItem { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public string Decriptions { get; set; }
 
         public ItemVariants ItemVariants { get; set; }

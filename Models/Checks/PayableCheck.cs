@@ -7,7 +7,7 @@ namespace ERP.Models.Checks
     public class PayableCheck
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, write the amount of money issued by this check")]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "Money")]
         public decimal Amount { get; set; }
 
@@ -19,7 +19,7 @@ namespace ERP.Models.Checks
         [Column(TypeName = "Date")]
         public DateTime DueDate { get; set; }
 
-        [Required(ErrorMessage = "Please, write the check number")]
+        [Required(ErrorMessage = "Required_field")]
         [RegularExpression(@"[0-9]*", ErrorMessage = "You must enter number only")]
         public int CheckNo { get; set; }
         [Required]
@@ -27,7 +27,7 @@ namespace ERP.Models.Checks
         public int ReceivedFromAccountId { get; set; }
         //مفيش حساب هناخد منه هنا لان تلقائي حساب البنك هو اللى هيتاخد منه
         //ورقم حساب البنك هنلاقيه مربوط بالCheckbook
-        [Required(ErrorMessage = "Please, write the name written on the check")]
+        [Required(ErrorMessage = "Required_field")]
         [MaxLength(50)]
         public string NameOnCheck { get; set; }
 

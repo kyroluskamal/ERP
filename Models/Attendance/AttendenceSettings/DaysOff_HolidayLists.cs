@@ -7,10 +7,10 @@ namespace ERP.Models.Attendance.AttendenceSettings
     public class DaysOff_HolidayLists
     {
         public int Id { get; set; }
-        [Required]
-        [MaxLength(30)]
+        [Required(ErrorMessage = "Required_field")]
+        [MaxLength(30, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string Title { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "Date")]
         public DateTime Date { get; set; }
 

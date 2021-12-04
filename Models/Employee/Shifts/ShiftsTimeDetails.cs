@@ -23,7 +23,7 @@ namespace ERP.Models.Employee.Shifts
         [MaxLength(3)]
         [Column(TypeName = "tinyint")]
         public int LateTime { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public string DaysOfWeeks { get; set; }
 
         [ForeignKey(nameof(ShiftId))]

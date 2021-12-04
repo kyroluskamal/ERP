@@ -7,7 +7,7 @@ namespace ERP.Models.Estimates
     public class Estimates_Items
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "Money")]
         public decimal NewPrice { get; set; }
 

@@ -10,16 +10,16 @@ namespace ERP.Models.PointsAndCredits
     public class CreditCharge
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "Date")]
         [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "Date")]
         [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public int CreditAmount { get; set; }
 
         [Column(TypeName = "bit")]

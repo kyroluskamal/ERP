@@ -10,10 +10,10 @@ namespace ERP.Models.Sales
     public class DiscountsPerItem
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public int Discount { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "bit")]
         public bool DiscountType { get; set; }
 

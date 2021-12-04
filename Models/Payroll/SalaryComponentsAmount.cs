@@ -10,7 +10,7 @@ namespace ERP.Models.Payroll
     public class SalaryComponentsAmount
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "Money")]
         public decimal Amount { get; set; }
 

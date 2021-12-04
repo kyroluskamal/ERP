@@ -11,8 +11,8 @@ namespace ERP.Models.Sales
     {
         public int Id { get; set; }
 
-        [Required]
-        [MaxLength(30)]
+        [Required(ErrorMessage = "Required_field")]
+        [MaxLength(30, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string StatusName { get; set; }
     }
 }

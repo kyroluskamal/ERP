@@ -9,16 +9,16 @@ namespace ERP.Models.Sales
     public class SalesInvoices
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public string InvoiceBumber { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "bit")]
         public bool SentToClientMethod { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "bit")]
         public bool HasAttachments { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "Date")]
         public DateTime DateCreated { get; set; }
         [Column(TypeName = "Date")]

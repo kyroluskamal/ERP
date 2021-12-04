@@ -9,7 +9,7 @@ namespace ERP.Models.CRMSystem
     public class Appointments_Notes
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, write a note")]
+        [Required(ErrorMessage = "Required_field")]
         public string Notes { get; set; }
         public Appointments Appointments { get; set; }
         public int AppointmentsId { get; set; }

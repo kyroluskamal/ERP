@@ -5,8 +5,8 @@ namespace ERP.Models.Service
     public class ServiceMainCategory
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, write the name of the category")]
-        [MaxLength(30)]
+        [Required(ErrorMessage = "Required_field")]
+        [MaxLength(30, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string Name { get; set; }
     }
 }

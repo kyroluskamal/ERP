@@ -9,7 +9,7 @@ namespace ERP.Models.Generals
     public class PaymentMethods
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [MaxLength(30)]
         public string Name { get; set; }
     }

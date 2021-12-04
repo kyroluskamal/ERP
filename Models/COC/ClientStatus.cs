@@ -7,10 +7,10 @@ namespace ERP.Models.COCs
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "Required_field")]
-        [MaxLength(10)]
+        [MaxLength(10, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string StatusName { get; set; }
         [Required(ErrorMessage = "Required_field")]
-        [MaxLength(7)]
+        [MaxLength(7, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string Color { get; set; }
         [ForeignKey(nameof(COCId))]
         public COC COC { get; set; }

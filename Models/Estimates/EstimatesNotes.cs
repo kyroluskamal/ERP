@@ -5,7 +5,7 @@ namespace ERP.Models.Estimates
     public class EstimatesNotes
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public string Notes { get; set; }
 
         public Estimate Estimate { get; set; }

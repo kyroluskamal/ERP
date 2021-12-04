@@ -6,7 +6,7 @@ namespace ERP.Models.Service
     public class Service_CustomFields
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public string Value { get; set; }
 
         public Services Service { get; set; }

@@ -12,12 +12,12 @@ namespace ERP.Models.Purchases
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [DataType(DataType.Date)]
         [Column(TypeName = "Date")]
         public DateTime Date { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public string CurrentNumber { get; set; }
 
         [Column(TypeName = "bit")]

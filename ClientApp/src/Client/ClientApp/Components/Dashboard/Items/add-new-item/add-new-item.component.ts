@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { ClientAccountService } from 'src/Client/MainDomain/Authentication/client-account-service.service';
@@ -8,16 +8,22 @@ import { TranslationService } from 'src/CommonServices/translation-service.servi
 import { ValidationErrorMessagesService } from 'src/CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
 import { CustomErrorStateMatcher } from 'src/Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
 import { ThemeColor } from '../../client-app-dashboard/client-app-dashboard.component';
-import { Inventories } from '../../Inventories/inventories.model';
+import { Inventories } from '../../Models/inventories.model';
 import { LightDarkThemeConverterService } from '../../light-dark-theme-converter.service';
 import { ItemsService } from '../items.service';
 import { InventoriesService } from '../../Inventories/inventories.service'
+import { ItemMainCategory, ItemSubCategory, ItemUnit } from '../../Models/item.model';
+import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { ItemUnitsComponent } from '../item-units/item-units.component';
+import { MatSelect } from '@angular/material/select';
+import { ItemMainCategoriesComponent } from '../item-main-categories/item-main-categories.component';
+import { Direction } from '@angular/cdk/bidi';
 @Component({
   selector: 'app-add-new-item',
   templateUrl: './add-new-item.component.html',
   styleUrls: ['./add-new-item.component.css']
 })
-export class AddNewItemComponent implements OnInit {
+export class AddNewItemComponent implements OnInit, AfterViewInit {
 
   ThemeColors: ThemeColor = JSON.parse(JSON.stringify(localStorage.getItem(this.Constants.ChoosenThemeColors)));
 
@@ -43,11 +49,20 @@ export class AddNewItemComponent implements OnInit {
   ShowProgressBar: boolean = false;
   showOverlayFirstTime: boolean = true;
   AllInventories: Inventories[] = [];
+  AllUnits: ItemUnit[] = [];
+  SelectedUnits: ItemUnit[] = [];
+  AllMainCategories: ItemMainCategory[] = [];
+  AllSubCategories: ItemSubCategory[] = [];
+  SelectedSubCats: ItemSubCategory[] = [];
+
+  Direction: Direction = this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr';
+  @ViewChild("itemUnitSelections") itemUnitSelections!: MatSelect;
   //Constructor ........................................................................
   constructor(public ItemService: ItemsService, private NotificationService: NotificationsService,
-    public Constants: ConstantsService, private clientAccountService: ClientAccountService,
+    public Constants: ConstantsService, private bottomSheet: MatBottomSheet,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
-    private LightOrDarkConverter: LightDarkThemeConverterService, private InventoriesService: InventoriesService) {
+    private LightOrDarkConverter: LightDarkThemeConverterService,
+    private InventoriesService: InventoriesService) {
     let tem: any = localStorage.getItem(this.Constants.BodyAppeareance);
     this.DarkOrLight = tem;
 
@@ -81,7 +96,17 @@ export class AddNewItemComponent implements OnInit {
       this.AllInventories = r;
       console.log(this.AllInventories)
     });
-
+    this.ItemService.Get_All_ItemUnits().subscribe(r => {
+      this.AllUnits = r;
+    });
+    this.ItemService.GetAllGategories().subscribe(r => this.AllMainCategories = r);
+    this.ItemService.GetItems_All_SubCats().subscribe(r => this.AllSubCategories = r);
+    this.AllMainCategories.map((item) => {
+      if (item.name === this.Constants.Uncategorized)
+        item.name = this.translate.GetTranslation(this.Constants.Uncategorized);
+    })
+  }
+  ngAfterViewInit(): void {
   }
 
   ngOnDestroy(): void {
@@ -101,6 +126,25 @@ export class AddNewItemComponent implements OnInit {
     });
   }
 
+  OpenItemUnitForm() {
+    this.bottomSheet.open(ItemUnitsComponent, {
+      direction: this.Direction,
 
+    });
+    this.itemUnitSelections.close();
+    this.bottomSheet._openedBottomSheetRef?.afterDismissed().subscribe(
+      () => this.ItemService.Get_All_ItemUnits().subscribe(r => this.AllUnits = r)
+    )
+  }
 
+  OpenItemMainCats() {
+    this.bottomSheet.open(ItemMainCategoriesComponent, {
+      direction: this.Direction
+    })
+  }
+
+  GetAllSubCats(MainCat: number) {
+    console.log(MainCat);
+    this.SelectedSubCats = this.AllSubCategories.filter(x => { return x.itemMainCategoryId === MainCat })
+  }
 }

@@ -9,12 +9,12 @@ namespace ERP.Models.Employee
         public int Id { get; set; }
         public string BuildingNo { get; set; }
         public string FlatNo { get; set; }
-        [Required(ErrorMessage = "You need to add any info for the address")]
+        [Required(ErrorMessage = "Required_field")]
         public string AddressLine_1 { get; set; }
         public string AddressLine_2 { get; set; }
-        [Required(ErrorMessage = "Add the postal code")]
+        [Required(ErrorMessage = "Required_field")]
         public string PostalCode { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "bit")]
         public bool PermanentOrPresent { get; set; }
         [ForeignKey(nameof(EmployeeId))]

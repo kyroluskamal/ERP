@@ -9,7 +9,7 @@ namespace ERP.Models.Payroll
     public class SalaryComponentsFormula
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public string Formula { get; set; }
         public SalaryComponents SalaryComponents { get; set; }
         public int SalaryComponentsId { get; set; }

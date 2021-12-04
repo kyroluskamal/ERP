@@ -2533,12 +2533,12 @@ namespace ERP.Migrations.ApplicationDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("OpenedOrClosed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("StatusName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("OpenedOrClosed")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -3416,10 +3416,10 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ItemSKU")
-                        .HasColumnType("int");
+                    b.Property<string>("ItemSKU")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("LastPurchasePrice")
+                    b.Property<decimal?>("LastPurchasePrice")
                         .HasColumnType("Money");
 
                     b.Property<string>("Name")
@@ -3436,7 +3436,7 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<byte>("ProfitMarginType")
                         .HasColumnType("tinyint");
 
-                    b.Property<short>("TotalAmountInAllInvetroies")
+                    b.Property<short?>("TotalAmountInAllInvetroies")
                         .HasColumnType("smallint");
 
                     b.HasKey("Id");
@@ -3476,9 +3476,6 @@ namespace ERP.Migrations.ApplicationDb
                         .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RetailUnit")
-                        .IsUnique();
 
                     b.HasIndex("WholeSaleUnit")
                         .IsUnique();

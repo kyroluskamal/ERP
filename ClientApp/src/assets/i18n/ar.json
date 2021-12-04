@@ -118,6 +118,7 @@
   "DataAddtionStatus_Success" : "تمت الاضافة بنجاح",
   "DataAddtionStatus_Error" : "حدث خطأ في حفظ البيانات في قاعدة البيانات. حاول مرة اخرى.",
   "NullTenant" : "لا يوجد حساب خاص بهذا الرابط.",
+  "NullUser": "لا يوجد مستخدم بهذا البريد الالكتروني. تأكد من البريد الالكتروني وحاول مرة اخرى.",
   "Required_field" : "لابد من ملئ هذا الحقل.",
   "Data_SAVE_ERROR" : "فشل في حفظ الباينات. حاول مرة اخرى.",
   "Data_SAVE_success" : "تم حفظ البيانات بنجاح.",
@@ -175,5 +176,19 @@
   "Has_Expiry_Date" : "له تاريخ انتهاء الصلاحية",
   "Available_online" : "متوفر على الانترنت",
   "ProductName" : "اسم المنتج",
-  "SelectDefultInventory": "اختار المخزن الافتراضي"
+  "SelectDefultInventory": "اختار المخزن الافتراضي",
+  "Description" : "الوصف",
+  "InternalNotes" : "ملاحظات داخلية",
+  "Item_Units" : "وحدات المنتج",
+  "Select_Item_Unit" : "اختر وحدات البيع",
+  "NoUnitsAdded" : "لم يتم اضافة وحدات بيع. اضف وحدات جديدة.",
+  "Add_New_Units": "أضف وحدة جديدة",
+  "Search" : "بحث",
+  "Add_New_Inventory" : "أضف مخزن جديد",
+  "NoAddedInvetories" : "لم يتم اضافة مخزن. أضف مخزن جديد.",
+  "SelectMainCategory" : "اختر التصنيف الرئيسي",
+  "Select_Sub_Category" : "اختر التصنيف الفرعي",
+  "NoMainCatsAdded" : "لم يتم اضافة اي تصينف رئيسي. اضف تصنيف رئيسي جديد.",
+  "NoSubCatsAdded" : "لم يتم اضافة اي تصينف فرعي. اضف تصنيف فرعي جديد.",
+  "ItemVariants_Prices_Details" : "تفاصيل انواع المنتج والاسعار"
 }

@@ -15,6 +15,6 @@ namespace ERP.UnitOfWork
 
         Task SetConnectionStringAsync(string ConnectionString);
         Task<int> SaveAsync();
-        void Save();
+        int Save();
     }
 }

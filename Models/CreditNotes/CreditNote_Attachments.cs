@@ -10,7 +10,7 @@ namespace ERP.Models.CreditNotes
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public byte[] Attachments { get; set; }
 
         public CreditNote CreditNote { get; set; }

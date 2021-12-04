@@ -8,7 +8,7 @@ namespace ERP.Models.Inventory
     public class Outbound_Invent_Requisitions
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public string CurrentNumber { get; set; }
 
         [DataType(DataType.Date)]

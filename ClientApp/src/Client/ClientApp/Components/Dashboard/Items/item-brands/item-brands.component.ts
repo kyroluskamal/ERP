@@ -199,7 +199,7 @@ export class ItemBrandsComponent implements OnInit, OnDestroy {
         let translatedError: string = "";
         console.log(error);
         if (Array.isArray(error)) {
-          if (Number.isNaN(error[0].status))
+          if (!Number.isNaN(error[0].status))
             translatedError += this.translate.GetTranslation(error[0].status);
           if (error[0].errors)
             for (let err of error[0].errors.Name) {

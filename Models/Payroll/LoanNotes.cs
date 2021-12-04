@@ -9,7 +9,7 @@ namespace ERP.Models.Payroll
     public class LoanNotes
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, write a name")]
+        [Required(ErrorMessage = "Required_field")]
         public string Notes { get; set; }
 
         public Loans Loans { get; set; }

@@ -5,7 +5,7 @@ namespace ERP.Models.Generals
     public class Currency
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "You must add a currency name")]
+        [Required(ErrorMessage = "Required_field")]
         public string Name { get; set; }
     }
 }

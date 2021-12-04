@@ -9,8 +9,8 @@ namespace ERP.Models.CRMSystem
     public class Appointments_Actions
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, add an action")]
-        [MaxLength(30)]
+        [Required(ErrorMessage = "Required_field")]
+        [MaxLength(30, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string Actions { get; set; }
         public Appointments Appointments { get; set; }
         public int AppointmentsId { get; set; }

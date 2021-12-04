@@ -6,7 +6,7 @@ namespace ERP.Models.Attendance
     public class AttendancePermission_DelayPermissions
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, write the late times in minutes")]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "tinyint")]
         public int LateTime { get; set; }
 

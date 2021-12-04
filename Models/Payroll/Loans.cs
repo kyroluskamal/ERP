@@ -14,10 +14,10 @@ namespace ERP.Models.Payroll
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "Date")]
         public DateTime ApplicationDate { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "Date")]
         public DateTime InstallmentStartDate { get; set; }
 
@@ -31,10 +31,10 @@ namespace ERP.Models.Payroll
         [Column(TypeName = "bit")]
         public bool HasNotes { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "tinyint")]
         public int InstallmentCount { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "tinyint")]
         public int PeriodOfInstallment { get; set; }
 

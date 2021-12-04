@@ -7,7 +7,7 @@ namespace ERP.Models.Attendance
     public class ManualAttendanceEachDay_VacationStatus
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "smallint")]
         public int VacationCount { get; set; }
 

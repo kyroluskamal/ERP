@@ -10,7 +10,7 @@ namespace ERP.Models.WorkOrder
     public class WorkOrdersCustomFields
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public string Value { get; set; }
 
         public WorkOrders WorkOrders { get; set; }

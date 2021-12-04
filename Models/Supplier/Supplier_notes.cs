@@ -11,6 +11,7 @@ namespace ERP.Models.Supplier
     {
         [Key]
         public int Id { get; set; }
+        [Required(ErrorMessage = "Required_field")]
         public string Note { get; set; }
 
         public Suppliers Suppliers { get; set; }

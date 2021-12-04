@@ -9,7 +9,7 @@ namespace ERP.Models.Purchases
     public class Purchases_discount
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public int DiscountValue { get; set; }
         public int DiscountType { get; set; }//Percent or vlaue
         public Purchase_invoices Purchase_invoices { get; set; }

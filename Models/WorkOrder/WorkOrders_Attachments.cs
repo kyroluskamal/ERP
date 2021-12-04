@@ -9,7 +9,7 @@ namespace ERP.Models.WorkOrder
     public class WorkOrders_Attachments
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public byte[] Attachments { get; set; }
 
         public WorkOrders WorkOrders { get; set; }

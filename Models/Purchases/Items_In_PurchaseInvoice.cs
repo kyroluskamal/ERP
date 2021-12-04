@@ -11,7 +11,7 @@ namespace ERP.Models.Purchases
     public class Items_In_PurchaseInvoice
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public int AddedQuantity { get; set; }
 
         public ItemVariants ItemVariants { get; set; }

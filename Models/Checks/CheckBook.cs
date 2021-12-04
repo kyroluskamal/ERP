@@ -8,14 +8,14 @@ namespace ERP.Models.Checks
     public class CheckBook
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, write the check number")]
+        [Required(ErrorMessage = "Required_field")]
         [RegularExpression(@"[0-9]*", ErrorMessage = "You must enter number only")]
         public int CheckBookNo { get; set; }
 
-        [Required(ErrorMessage = "Please, write the first serial number")]
+        [Required(ErrorMessage = "Required_field")]
         [RegularExpression(@"[0-9]*", ErrorMessage = "You must enter number only")]
         public int FirstSerial { get; set; }
-        [Required(ErrorMessage = "Please, write the Last serial number")]
+        [Required(ErrorMessage = "Required_field")]
         [RegularExpression(@"[0-9]*", ErrorMessage = "You must enter number only")]
         public int LastSerial { get; set; }
 

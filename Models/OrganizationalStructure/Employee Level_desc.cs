@@ -6,7 +6,7 @@ namespace ERP.Models.OrganizationalStructure
     public class EmployeeLevel_desc
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, write a description")]
+        [Required(ErrorMessage = "Required_field")]
         public string Description { get; set; }
         [ForeignKey(nameof(EmployessLevelId))]
         public EmployeeLevel EmployeeLevel { get; set; }

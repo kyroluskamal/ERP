@@ -10,7 +10,7 @@ namespace ERP.Models.Inventory
         public int InventoryId { get; set; }
         public ItemVariants ItemVariants { get; set; }
         public int ItemVariantsId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public int Amount { get; set; }
     }
 }

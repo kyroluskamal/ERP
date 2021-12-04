@@ -5,7 +5,7 @@ namespace ERP.Models.Inventory
     public class OutboundNotes
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public string Notes { get; set; }
 
         public Outbound_Invent_Requisitions Outbound_Invent_Requisitions { get; set; }

@@ -5,8 +5,8 @@ namespace ERP.Models.CutomFields
     public class FieldsInSystem
     {
         public int Id { get; set; }
-        [Required]
-        [MaxLength(30)]
+        [Required(ErrorMessage = "Required_field")]
+        [MaxLength(30, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string Name { get; set; }
     }
 }

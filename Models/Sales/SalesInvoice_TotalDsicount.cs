@@ -10,10 +10,10 @@ namespace ERP.Models.Sales
     public class SalesInvoice_TotalDsicount
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "Money")]
         public decimal TotalDiscount { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "bit")]
         public bool DiscountType { get; set; }
 

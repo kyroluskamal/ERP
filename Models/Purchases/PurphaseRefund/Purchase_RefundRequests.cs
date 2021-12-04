@@ -10,9 +10,9 @@ namespace ERP.Models.Purchases.PurphaseRefund
 {
     public class Purchase_RefundRequests
     {
-        [Required]
-        public string CurrentNumber { get; set; }
         public int Id { get; set; }
+        [Required(ErrorMessage = "Required_field")]
+        public string CurrentNumber { get; set; }
         [Column(TypeName = "Date")]
         public DateTime RequestDate { get; set; }
         [Column(TypeName = "Date")]

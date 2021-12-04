@@ -7,7 +7,7 @@ namespace ERP.Models.PriceLists
     public class PriceList_items
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, add the price")]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "Money")]
         public decimal Price { get; set; }
 

@@ -9,7 +9,7 @@ namespace ERP.Models.Membership
     public class MembershipDescription
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, write a description")]
+        [Required(ErrorMessage = "Required_field")]
         public string Description { get; set; }
 
         public Memberships Memberships { get; set; }

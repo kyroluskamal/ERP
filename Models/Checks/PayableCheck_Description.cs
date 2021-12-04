@@ -5,7 +5,7 @@ namespace ERP.Models.Checks
     public class PayableCheck_Description
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, write a description")]
+        [Required(ErrorMessage = "Required_field")]
         public string Description { get; set; }
 
         public PayableCheck PayableCheck { get; set; }

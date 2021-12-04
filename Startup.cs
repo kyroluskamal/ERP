@@ -154,7 +154,7 @@ namespace ERP
                 options.Cookie.Name = "XSRF-TOKEN";
                 options.HeaderName = "scfD1z5dp2";
                 options.Cookie.HttpOnly = false;
-                options.Cookie.MaxAge = TimeSpan.FromDays(5);
+                options.Cookie.MaxAge = TimeSpan.FromDays(10);
                 options.Cookie.SecurePolicy = CookieSecurePolicy.None;
             });
 

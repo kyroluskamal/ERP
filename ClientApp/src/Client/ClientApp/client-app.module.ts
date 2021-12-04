@@ -22,7 +22,6 @@ import { TokenInterceptorInterceptor } from 'src/Interceptors/TokenInterceptor/t
 import { RegisterOnAppComponent } from './Components/register-on-app/register-on-app.component';
 import { AddNewItemComponent } from './Components/Dashboard/Items/add-new-item/add-new-item.component';
 
-
 const Commponents = [
   ClientAppDashboardComponent, ClientAppHomeNavbarComponent, CLientAppHomeComponent,
   ClientDashboardHomeComponent,

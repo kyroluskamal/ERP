@@ -8,7 +8,7 @@ namespace ERP.Models.Inventory
     public class TransferBetweenInvent
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public string CurrentNumber { get; set; }
 
         [DataType(DataType.Date)]
@@ -17,11 +17,11 @@ namespace ERP.Models.Inventory
 
         [Column(TypeName = "bit")]
         public bool HasNotes { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public int ToInventoryId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public int FromInventoryId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public int AmountTransfered { get; set; }
         public ItemVariants ItemVariants { get; set; }
         public int ItemVariantsId { get; set; }

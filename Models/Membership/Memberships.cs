@@ -10,16 +10,16 @@ namespace ERP.Models.Membership
     public class Memberships
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "Date")]
         [DataType(DataType.Date)]
         public DateTime JoinDate { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "Date")]
         [DataType(DataType.Date)]
         public DateTime ExpireDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public int ToleranceDays { get; set; }
 
         [Column(TypeName = "bit")]

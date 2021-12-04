@@ -5,7 +5,7 @@ namespace ERP.Models.Inventory
     public class TransferBetweenInvent_notes
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public string Notes { get; set; }
 
         public TransferBetweenInvent TransferBetweenInvent { get; set; }

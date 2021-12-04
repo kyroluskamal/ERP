@@ -9,7 +9,7 @@ namespace ERP.Models.Purchases.PurphaseRefund
     public class Refunds_Notes
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public string Notes { get; set; }
 
         public Purchase_RefundRequests Purchase_RefundRequests { get; set; }

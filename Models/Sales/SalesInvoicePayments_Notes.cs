@@ -10,7 +10,7 @@ namespace ERP.Models.Sales
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public string Notes { get; set; }
         public SalesInvoicePayments SalesInvoicePayments { get; set; }
         public int SalesInvoicePaymentsID { get; set; }

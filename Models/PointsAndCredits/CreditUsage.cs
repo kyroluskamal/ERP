@@ -10,12 +10,12 @@ namespace ERP.Models.PointsAndCredits
     public class CreditUsage
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [DataType(DataType.Date)]
         [Column(TypeName = "Date")]
         public DateTime UsageDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public int UsedAmount { get; set; }
 
         [Column(TypeName = "bit")]

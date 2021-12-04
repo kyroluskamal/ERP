@@ -69,4 +69,5 @@ export class DialogHandlerService {
   CloseDialog() {
     this.Dialog.closeAll();
   }
+
 }

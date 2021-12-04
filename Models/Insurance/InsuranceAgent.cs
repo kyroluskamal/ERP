@@ -11,14 +11,14 @@ namespace ERP.Models.Insurance
     public class InsuranceAgent
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, write the agent name")]
-        [MaxLength(60)]
+        [Required(ErrorMessage = "Required_field")]
+        [MaxLength(60, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string Name { get; set; }
-        [Required(ErrorMessage = "You must provide a phone number")]
+        [Required(ErrorMessage = "Required_field")]
         [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"+?^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
         public string MobilePhone { get; set; }
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "IncorrecEmail")]
         public string Email { get; set; }
         public string Website { get; set; }
 

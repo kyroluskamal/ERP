@@ -6,7 +6,7 @@ namespace ERP.Models.Items
     public class ItemVariant_WholeSalePrice
     {
         public int Id { get; set; }
-        [Required]
+                [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "Money")]
         public decimal WholeSalePrice { get; set; }
         [Column(TypeName = "Money")]

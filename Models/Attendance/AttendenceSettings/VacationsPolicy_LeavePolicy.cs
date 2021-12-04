@@ -6,7 +6,7 @@ namespace ERP.Models.Attendance.AttendenceSettings
     public class VacationsPolicy_LeavePolicy
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, write a name")]
+        [Required(ErrorMessage = "Required_field")]
         public string Name { get; set; }
         [Column(TypeName = "bit")]
         public bool IsActive { get; set; }

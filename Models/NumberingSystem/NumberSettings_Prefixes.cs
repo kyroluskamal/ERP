@@ -10,12 +10,12 @@ namespace ERP.Models.NumberingSystem
     public class NumberSettings_Prefixes
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [MaxLength(30)]
         public string Prefix { get; set; }
         [Column(TypeName = "tinyint")]
         public int Mode { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [MaxLength(30)]
         public string NextNumberPerPrefix { get; set; }
 

@@ -510,7 +510,7 @@ namespace ERP.Controllers.items
                     if (NewBrand.Name == null)
                         return BadRequest(Constants.Required_Field_ERROR_Response());
 
-                    if (!await IsUniqeMainCat(NewBrand.Name))
+                    if (!await UserUnitOfWork.ItemBrands.IsUnique(x=>x.Name == NewBrand.Name))
                         return BadRequest(Constants.Unique_Field_ERROR_Response());
 
                     await UserUnitOfWork.ItemBrands.AddAsync(new Brands { Name = NewBrand.Name });
@@ -583,7 +583,7 @@ namespace ERP.Controllers.items
                     await UserUnitOfWork.SetConnectionStringAsync(Tenant.ConnectionString);
                     //Check if teh Main cat is found in DB
                     var BrandToUpdate = await UserUnitOfWork.ItemBrands.GetAsync(Brand.Id);
-                    if (!UserUnitOfWork.ItemBrands.IsUnique(x=>x.Name == Brand.Name))
+                    if (!await UserUnitOfWork.ItemBrands.IsUnique(x=>x.Name == Brand.Name))
                     {
                         return BadRequest(Constants.Unique_Field_ERROR_Response());
                     }

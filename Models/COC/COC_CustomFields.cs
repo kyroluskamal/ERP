@@ -6,7 +6,7 @@ namespace ERP.Models.COCs
     public class COC_CustomFields
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public string Value { get; set; }
 
         public COC COC { get; set; }

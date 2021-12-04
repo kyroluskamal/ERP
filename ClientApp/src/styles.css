@@ -367,9 +367,10 @@ transform: translateY(40vh);
 .max-height-100vh {
   max-width: 100vh !important;
 }
-[dir="rtl"] {
-  font-family: Calibri !important;
+[dir="rtl"]{
+  font-family: Calibri;
 }
+
 .Calibri-font {
   font-family: Calibri !important;
 }
@@ -531,10 +532,10 @@ transform: translateY(40vh);
   animation-name: fadeInUp;
   -webkit-animation-name: fadeInUp;
 }
-form[dir="rtl"] *:not(mat-icon){
+
+form[dir="rtl"] {
   font-family: Calibri !important;
 }
-
 form[dir="rtl"] .mat-icon span.ng-star-inserted{
   font-family: 'Material Icons' !important ;
 }
@@ -798,6 +799,7 @@ body {
 .dark-for-Child-Component .mat-form-field-appearance-outline .mat-form-field-outline:not( .mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid .mat-form-field-outline-thick) {
   color: inherit !important;
 }
+
 /* .mat-form-field-appearance-outline .mat-form-field-outline-thick {
   color: green !important;
 }*/
@@ -808,5 +810,45 @@ body {
 .Light-for-Child-Component .mat-select-value, .Light-for-Child-Component .mat-select-arrow,
 .mat-form-field.mat-focused.mat-primary .mat-select-arrow{
   color: inherit;
+}
+
+[dir="rtl"] mat-label,[dir="rtl"] .mat-checkbox-label{
+  font-family: var(--Calibri) !important;
+  font-weight: bold;
+}
+
+.mat-card-title{
+  padding:10px;
+}
+mat-card.mat-card.mat-focus-indicator.dark-for-Child-Component , .dark-for-Body .mat-raised-button:not([class*=mat-elevation-z], .mat-raised-button.mat-button-disabled.mat-button-disabled){
+  box-shadow: 0px 2px 2px 0px rgb(255 254 254 / 24%),
+   0px 1px 1px 1px rgb(255 237 237 / 14%), 0px 1px 3px 1px rgb(255 236 236 / 12%) !important;
+}
+.mat-option-text{
+  font-family: var(--Calibri);
+  font-weight: bold;
+}
+.mat-select-panel button{
+  width: 100%;
+    border: none;
+    background: blanchedalmond;
+    cursor: pointer;
+}
+[dir="rtl"] .mat-button-wrapper{
+  font-weight: bold;
+}
+.mat-select-panel input[type="search"]{
+  padding: 10px;
+  max-width: 95%;
+}
+
+.Light-for-Child-Component .mat-select-min-line, .dark-for-Child-Component .mat-select-min-line {
+  font-family: 'Hacen Casablanca';
+}
+.Light-for-Child-Component .mat-select-min-line{
+  color: blue;
+}
+.dark-for-Child-Component .mat-select-min-line{
+  color: #ffff00d2;
 }
 

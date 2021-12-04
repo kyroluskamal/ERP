@@ -26,10 +26,10 @@ namespace ERP.Models.Payroll
         [Column(TypeName = "Date")]
         public DateTime EndOfTestPeriodDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "bit")]
         public bool DurationOrEndDate { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "bit")]
         public bool HasAttachments { get; set; }
 

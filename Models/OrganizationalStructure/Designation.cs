@@ -6,8 +6,8 @@ namespace ERP.Models.OrganizationalStructure
     public class Designation
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, Write a designation")]
-        [MaxLength(20)]
+        [Required(ErrorMessage = "Required_field")]
+        [MaxLength(20, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string DesignationName { get; set; }
         [Column(TypeName = "bit")]
         public bool HasDescription { get; set; }

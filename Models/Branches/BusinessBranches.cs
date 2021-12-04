@@ -6,10 +6,10 @@ namespace ERP.Models.Branches
     public class BusinessBranches
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public string CurrentNumber { get; set; }
-        [Required(ErrorMessage = "Please, write a name")]
-        [MaxLength(30)]
+        [Required(ErrorMessage = "Required_field")]
+        [MaxLength(30, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string Name { get; set; }
         [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"+?^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]

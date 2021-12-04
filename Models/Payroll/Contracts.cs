@@ -15,7 +15,7 @@ namespace ERP.Models.Payroll
         [Column(TypeName = "Date")]
         public DateTime StartDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "tinyint")]
         public int PayrollFrequency { get; set; }
 

@@ -10,8 +10,8 @@ namespace ERP.Models.PointsAndCredits.Settings
     public class CreditTypes
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, write a description")]
-        [MaxLength(30)]
+        [Required(ErrorMessage = "Required_field")]
+        [MaxLength(30, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string CreditTypeName { get; set; }
 
         [Column(TypeName = "bit")]
@@ -20,8 +20,8 @@ namespace ERP.Models.PointsAndCredits.Settings
         public bool AllowDecimal { get; set; }
         [Column(TypeName = "bit")]
         public bool HasDescription { get; set; }
-        [Required(ErrorMessage = "Please, write a description")]
-        [MaxLength(30)]
+        [Required(ErrorMessage = "Required_field")]
+        [MaxLength(30, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string Unit { get; set; }
     }
 }

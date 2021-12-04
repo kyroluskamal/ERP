@@ -9,7 +9,7 @@ namespace ERP.Models.Subscription
     public class Subscription_Terms
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, write Terms")]
+        [Required(ErrorMessage = "Required_field")]
         public string Terms { get; set; }
 
         public Subscriptions Subscriptions { get; set; }

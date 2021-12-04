@@ -11,8 +11,8 @@ namespace ERP.Models.Sales.Settings
     public class ShippingOptions
     {
         public int Id { get; set; }
-        [Required]
-        [MaxLength(30)]
+        [Required(ErrorMessage = "Required_field")]
+        [MaxLength(30, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string Name { get; set; }
 
         public string Description { get; set; }
@@ -20,7 +20,7 @@ namespace ERP.Models.Sales.Settings
         [Column(TypeName = "bit")]
         public bool IsActive { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "Money")]
         public decimal Fees { get; set; }
 

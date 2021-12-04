@@ -10,7 +10,7 @@ namespace ERP.Models.Sales
     public class ShippingDetails
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "Money")]
         public decimal ShippingFees { get; set; }
 

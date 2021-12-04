@@ -7,13 +7,13 @@ namespace ERP.Models.OrganizationalStructure
     public class Department
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, Write the department name")]
-        [MaxLength(20)]
+        [Required(ErrorMessage = "Required_field")]
+        [MaxLength(20, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string DepartmentName { get; set; }
         [Column(TypeName = "bit")]
         public bool IsActive { get; set; }
-        [Required(ErrorMessage = "Please, an abbreviation for the department")]
-        [MaxLength(10)]
+        [Required(ErrorMessage = "Required_field")]
+        [MaxLength(10, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string Abbreviation { get; set; }
         [Column(TypeName = "bit")]
         public bool HasDescription { get; set; }

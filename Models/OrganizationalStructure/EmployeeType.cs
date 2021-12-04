@@ -7,7 +7,7 @@ namespace ERP.Models.OrganizationalStructure
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "Required_field")]
-        [MaxLength(20)]
+        [MaxLength(20, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string EmployeeTypeName { get; set; }
         [Column(TypeName = "bit")]
         public bool IsActive { get; set; }

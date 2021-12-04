@@ -5,13 +5,13 @@ namespace ERP.Models.TreasuriesAndBankAccount
     public class BankAccounts
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Write a name for this entry")]
+        [Required(ErrorMessage = "Required_field")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "You should write the bank name")]
+        [Required(ErrorMessage = "Required_field")]
         public string BankName { get; set; }
 
-        [Required(ErrorMessage = "You need write the bank account number")]
+        [Required(ErrorMessage = "Required_field")]
         public string BankAccountNo { get; set; }
     }
 }

@@ -6,9 +6,9 @@ namespace ERP.Models.Generals
     public class Status
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "You need to add status name")]
-        public string StatusName { get; set; }
-        [Required(ErrorMessage = "Specify a color")]
+        [Required(ErrorMessage = "Required_field")]
+        public string Name { get; set; }
+        [Required(ErrorMessage = "Required_field")]
         public string Color { get; set; }
         [Column(TypeName = "bit")]
         public bool OpenedOrClosed { get; set; }

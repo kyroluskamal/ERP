@@ -9,8 +9,8 @@ namespace ERP.Models.WorkOrder.Settings
     public class WorkOrderStatus
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, add a status")]
-        [MaxLength(30)]
+        [Required(ErrorMessage = "Required_field")]
+        [MaxLength(30, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string Status { get; set; }
         public WorkOrders WorkOrders { get; set; }
         public int WorkOrdersId { get; set; }

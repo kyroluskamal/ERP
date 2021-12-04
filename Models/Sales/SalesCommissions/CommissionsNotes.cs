@@ -10,7 +10,7 @@ namespace ERP.Models.Sales.SalesCommissions
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public string Notes { get; set; }
 
         public Commissions Commissions { get; set; }

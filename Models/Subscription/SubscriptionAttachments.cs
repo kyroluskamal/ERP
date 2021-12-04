@@ -9,7 +9,7 @@ namespace ERP.Models.Subscription
     public class SubscriptionAttachments
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public byte[] Attachments { get; set; }
 
         public Subscriptions Subscriptions { get; set; }

@@ -10,7 +10,7 @@ namespace ERP.Models.Purchases
     public class PurchasesInvoice_Services
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public int AddedQuantity { get; set; }
 
         public Services Services { get; set; }

@@ -135,7 +135,6 @@
             <mat-label [ngClass]="ValidationErrorMessage.getFormControl('RetailSaleName', Add_Item_Unit)
             .valid?Constants.CSS_valid_green:''">{{Constants.RetailUnit| translate}}</mat-label>
             <input matInput
-
                    [maxlength]="MaxlengthVlue"
                    type="text"
                    value=""
@@ -186,7 +185,7 @@
               add_circle
             </span>
           </mat-icon>
-          {{'Add'|translate}} {{Constants.MainCat_Singular | translate}}
+          {{Constants.Add_New_Units|translate}}
         </button>
       </form>
     </mat-card-actions>

@@ -21,7 +21,7 @@ namespace ERP.Models.Items
         [Column(TypeName = "bit")]
         public bool HasNote { get; set; }
         
-        [Required]
+        [Required(ErrorMessage = "Required_field")]
         public int AddByUserId { get; set; }
 
     }

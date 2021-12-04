@@ -9,7 +9,7 @@ namespace ERP.Models.Purchases
     public class PurchaseStatus
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Please, add a status")]
+        [Required(ErrorMessage = "Required_field")]
         [MaxLength(30)]
         public string Status { get; set; }
         public Purchase_invoices Purchase_invoices { get; set; }
