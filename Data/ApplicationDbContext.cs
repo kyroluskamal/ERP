@@ -412,9 +412,13 @@ namespace ERP.Data
                 .HasComputedColumnSql("[NumberInWholeSale] * [NumberInRetailSale]");
             builder.Entity<Units>().HasIndex(x => x.WholeSaleUnit).IsUnique();
             builder.Entity<ItemMainCategory>().HasIndex(x => x.Name).IsUnique();
+            builder.Entity<Inventories>().HasIndex(x => x.Name).IsUnique();
             builder.Entity<Brands>().HasIndex(x => x.Name).IsUnique();
             builder.Entity<Brands>().HasIndex(x => x.Name).IsUnique();
             builder.Entity<ItemVariants>().Property(x => x.ItemSKU).IsRequired(false);
+            builder.Entity<Suppliers>().Property(x => x.TaxID).IsRequired(false);
+            builder.Entity<Suppliers>().Property(x => x.CR).IsRequired(false);
+            builder.Entity<Suppliers>().Property(x => x.Email).IsRequired(false);
             builder.Entity<ApplicationUser>()
                    .HasIndex(u => u.Email)
                    .IsUnique();

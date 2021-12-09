@@ -31,10 +31,10 @@ namespace ERP.Models.Supplier
         public string TaxID { get; set; }
         public string CR { get; set; }
 
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "IncorrecEmail")]
         public string Email { get; set; }
 
-                [Required(ErrorMessage = "Required_field")]
+        [Required(ErrorMessage = "Required_field")]
         [DataType(DataType.Date)]
         [Column(TypeName = "Date")]
         public DateTime DateCreated { get; set; }

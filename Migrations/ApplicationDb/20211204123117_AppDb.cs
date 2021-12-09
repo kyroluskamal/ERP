@@ -575,7 +575,7 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    StatusName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OpenedOrClosed = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -1049,6 +1049,50 @@ namespace ERP.Migrations.ApplicationDb
                     table.PrimaryKey("PK_Purchase_RefundRequests", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Purchase_RefundRequests_Currencies_CurrencyId",
+                        column: x => x.CurrencyId,
+                        principalTable: "Currencies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Suppliers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BusinessName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Telephone = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
+                    MobilePhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TaxID = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CR = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateCreated = table.Column<DateTime>(type: "Date", nullable: false),
+                    OpeningBalance = table.Column<decimal>(type: "Money", nullable: false),
+                    HasNotes = table.Column<bool>(type: "bit", nullable: false),
+                    CurrencyId = table.Column<int>(type: "int", nullable: false),
+                    CountryId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Suppliers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Suppliers_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Suppliers_Countries_CountryId",
+                        column: x => x.CountryId,
+                        principalTable: "Countries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Suppliers_Currencies_CurrencyId",
                         column: x => x.CurrencyId,
                         principalTable: "Currencies",
                         principalColumn: "Id",
@@ -2449,6 +2493,74 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
+                name: "Supplier_ContactLists",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Telephone = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
+                    MobilePhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SuppliersId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Supplier_ContactLists", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Supplier_ContactLists_Suppliers_SuppliersId",
+                        column: x => x.SuppliersId,
+                        principalTable: "Suppliers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Supplier_notes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SuppliersId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Supplier_notes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Supplier_notes_Suppliers_SuppliersId",
+                        column: x => x.SuppliersId,
+                        principalTable: "Suppliers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SupplierAddresses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BuildingNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FlatNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AddressLine_1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AddressLine_2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SuppliersId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SupplierAddresses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SupplierAddresses_Suppliers_SuppliersId",
+                        column: x => x.SuppliersId,
+                        principalTable: "Suppliers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "WorkOrders_Attachments",
                 columns: table => new
                 {
@@ -2971,6 +3083,33 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_Items_CustomFields_Items_ItemId",
                         column: x => x.ItemId,
                         principalTable: "Items",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Supplier_CustomFields",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SuppliersId = table.Column<int>(type: "int", nullable: false),
+                    Fields_Per_ServiceId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Supplier_CustomFields", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Supplier_CustomFields_Fields_Per_Service_Fields_Per_ServiceId",
+                        column: x => x.Fields_Per_ServiceId,
+                        principalTable: "Fields_Per_Service",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Supplier_CustomFields_Suppliers_SuppliersId",
+                        column: x => x.SuppliersId,
+                        principalTable: "Suppliers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -3511,50 +3650,6 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_SalesInvoicePayments_SalesInvoice_PaymentStatus_PaymentStatusId",
                         column: x => x.PaymentStatusId,
                         principalTable: "SalesInvoice_PaymentStatus",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Suppliers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BusinessName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    Telephone = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    MobilePhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TaxID = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CR = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateCreated = table.Column<DateTime>(type: "Date", nullable: false),
-                    OpeningBalance = table.Column<decimal>(type: "Money", nullable: false),
-                    HasNotes = table.Column<bool>(type: "bit", nullable: false),
-                    CurrencyId = table.Column<int>(type: "int", nullable: false),
-                    CountryId = table.Column<int>(type: "int", nullable: false),
-                    EmployeesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Suppliers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Suppliers_Countries_CountryId",
-                        column: x => x.CountryId,
-                        principalTable: "Countries",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Suppliers_Currencies_CurrencyId",
-                        column: x => x.CurrencyId,
-                        principalTable: "Currencies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Suppliers_Employees_EmployeesId",
-                        column: x => x.EmployeesId,
-                        principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -5325,101 +5420,6 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
-                name: "Supplier_ContactLists",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    Telephone = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    MobilePhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SuppliersId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Supplier_ContactLists", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Supplier_ContactLists_Suppliers_SuppliersId",
-                        column: x => x.SuppliersId,
-                        principalTable: "Suppliers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Supplier_CustomFields",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SuppliersId = table.Column<int>(type: "int", nullable: false),
-                    Fields_Per_ServiceId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Supplier_CustomFields", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Supplier_CustomFields_Fields_Per_Service_Fields_Per_ServiceId",
-                        column: x => x.Fields_Per_ServiceId,
-                        principalTable: "Fields_Per_Service",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Supplier_CustomFields_Suppliers_SuppliersId",
-                        column: x => x.SuppliersId,
-                        principalTable: "Suppliers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Supplier_notes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SuppliersId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Supplier_notes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Supplier_notes_Suppliers_SuppliersId",
-                        column: x => x.SuppliersId,
-                        principalTable: "Suppliers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SupplierAddresses",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BuildingNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FlatNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AddressLine_1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AddressLine_2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SuppliersId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SupplierAddresses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SupplierAddresses_Suppliers_SuppliersId",
-                        column: x => x.SuppliersId,
-                        principalTable: "Suppliers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "MembershipDescriptions",
                 columns: table => new
                 {
@@ -7169,9 +7169,9 @@ namespace ERP.Migrations.ApplicationDb
                 column: "CurrencyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Suppliers_EmployeesId",
+                name: "IX_Suppliers_UserId",
                 table: "Suppliers",
-                column: "EmployeesId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TaxPer_Item_PerInvoice_ItemsInSalesInvoicesId",

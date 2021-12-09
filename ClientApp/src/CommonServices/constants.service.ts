@@ -73,6 +73,22 @@ export class ConstantsService {
 
   ItemVariants_Prices_Details = "ItemVariants_Prices_Details";
   IncorrecEmail = "IncorrecEmail";
+
+  SelectDefaultSupplier = "SelectDefaultSupplier";
+  NoSupplierAdded = "NoSupplierAdded";
+  Supplier_Singular = "Supplier_Singular";
+  Warehouses = "Warehouses";
+  Warehouse_Singular = "Warehouse_Singular";
+  Notes = "Notes";
+  WarehouseName = "WarehouseName";
+  TelephoneNumber = "TelephoneNumber";
+  CellPhoneNumber = "CellPhoneNumber";
+  Active = "Active";
+  Main = "Main";
+  AddedBy = "AddedBy";
+  MainWarehouse = "Main warehouse";
+  Edit = "Edit";
+  NOT_VALID_PHONE_NUMBER = "NOT_VALID_PHONE_NUMBER";
   //Notifications Messages
   LoggedInSuccessfully: string = "LoggedInSuccessfully";
   EmilConfirmationResnding = "EmilConfirmationResnding";
@@ -298,6 +314,13 @@ export class ConstantsService {
 
   CSS_dark_for_Child_Component = "dark-for-Child-Component";
   CSS_Light_for_Child_Component = "Light-for-Child-Component";
+  CSS_DarkRowSelection = "DarkRowSelection";
+  CSS_LightRowSelection = "LightRowSelection";
+  CSS_DarkTableBg = "DarkTableBg";
+  CSS_LightTableBg = "LightTableBg";
+
+  CSS_table_container = "table-container";
+  CSS_table_outer_Container = "table-outer-container"
   //Local Stoarage
   FixedSidnav = "FixedSidNav";
   ToolbarThemeClass = "ToolbarThemeClass";
@@ -310,15 +333,22 @@ export class ConstantsService {
   dir = "dir";
   ChoosenThemeColors = "ChoosenThemeColors";
 
-  //ClientAppUrls
+  //..............................................................ClientAppUrls
   public App_login = "login";
   public App_main = "app";
   public App_register = "register";
+
+  //for items
   public App_Items = "Products";
   public App_ItemsMainCat = "Categories";
   public App_ItemsUnits = "Units";
   public App_ItemsBrands = "Brands";
   public App_AddNewItem = "Add_New_Product";
+
+  //for inventories
+  public App_Warehouses = "Warehouses";
+  public App_AddNewWarehouse = "Add_new_warehouse";
+
 
 
 }

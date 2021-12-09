@@ -190,5 +190,21 @@
   "Select_Sub_Category" : "اختر التصنيف الفرعي",
   "NoMainCatsAdded" : "لم يتم اضافة اي تصينف رئيسي. اضف تصنيف رئيسي جديد.",
   "NoSubCatsAdded" : "لم يتم اضافة اي تصينف فرعي. اضف تصنيف فرعي جديد.",
-  "ItemVariants_Prices_Details" : "تفاصيل انواع المنتج والاسعار"
+  "ItemVariants_Prices_Details" : "تفاصيل انواع المنتج والاسعار",
+  "SelectDefaultSupplier":"اختر المورد الافتراضي",
+  "NoSupplierAdded" : "لم يتم اضافة اي موردين. اضف مورد جديد.",
+  "Supplier_Singular" : "مورد",
+  "Warehouses": "المخازن",
+  "NOT_VALID_PHONE_NUMBER" : "ادخل رقم تلفون صحيح.",
+  "Add_new_warehouse" : "اضف مخزن جديد",
+  "Notes" : "ملاحظات",
+  "WarehouseName" : "اسم المخزن",
+  "TelephoneNumber" : "التليفون الارضي",
+  "CellPhoneNumber":"الهاتف المحمول",
+  "Active" : "نشط",
+  "Main" : "رئيسي",
+  "AddedBy" : "أضيف بوسطة",
+  "Main warehouse" : "المخزن الرئيسي",
+  "Edit" : "تعديل",
+  "Warehouse_Singular" : "مخزن"
 }

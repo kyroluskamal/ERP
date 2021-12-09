@@ -1,0 +1,8 @@
+.mat-column-notes{
+  max-width: 100px;
+  inline-size: 100px; 
+  overflow-wrap:break-word;
+  word-break: break-all;
+  padding: 0 20px 0 20px;
+  overflow: auto;
+}

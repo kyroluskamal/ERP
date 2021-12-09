@@ -28,7 +28,17 @@ export class CustomValidators {
       return control.invalid ? error : null;
     };
   }
+  static OnlyTouched(error: ValidationErrors): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      if (control.touched) {
+        // if control is empty return no error
+        return null;
+      }
 
+      // if true, return no error (no error), else return error passed in the second parameter
+      return !control.touched ? error : null;
+    };
+  }
 
   static ServerErrorValidations(validationError: any, FormGroup: FormGroup) {
     if (validationError.length > 0) {

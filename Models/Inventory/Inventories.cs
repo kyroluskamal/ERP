@@ -8,10 +8,13 @@ namespace ERP.Models.Inventory
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "Required_field")]
+        [MaxLength(30, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string Name { get; set; }
         [DataType(DataType.PhoneNumber)]
-        [RegularExpression(@"+?^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
+        [RegularExpression(@"^(\+\s?)?((?<!\+.*)\(\+?\d+([\s\-\.]?\d+)?\)|\d+)([\s\-\.]?(\(\d+([\s\-\.]?\d+)?\)|\d+))*(\s?(x|ext\.?)\s?\d+)?$", ErrorMessage = "NOT_VALID_PHONE_NUMBER")]
         public string MobilePhone { get; set; }
+        [DataType(DataType.PhoneNumber)]
+        [RegularExpression(@"^(\+\s?)?((?<!\+.*)\(\+?\d+([\s\-\.]?\d+)?\)|\d+)([\s\-\.]?(\(\d+([\s\-\.]?\d+)?\)|\d+))*(\s?(x|ext\.?)\s?\d+)?$", ErrorMessage = "NOT_VALID_PHONE_NUMBER")]
         public string Telephone { get; set; }
         public string Notes { get; set; }
         [Column(TypeName = "bit")]
@@ -19,8 +22,11 @@ namespace ERP.Models.Inventory
         [Column(TypeName = "bit")]
         public bool IsMainInventory { get; set; }
 
-        [ForeignKey(nameof(AddedBy_EmpId))]
-        public Employees Employees { get; set; }
-        public int? AddedBy_EmpId { get; set; } //Not Required temporary
+        [ForeignKey(nameof(AddedBy_UserId))]
+        public ApplicationUser ApplicationUser { get; set; }
+        public int? AddedBy_UserId { get; set; } //Not Required temporary
+        public string AddedBy_UserName { get; set; }
+        [NotMapped]
+        public string Subdomain { get; set; }
     }
 }

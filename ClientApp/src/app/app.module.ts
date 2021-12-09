@@ -34,7 +34,8 @@ import { ClientAppModule } from 'src/Client/ClientApp/client-app.module';
     HttpClientXsrfModule.withOptions({
       cookieName: 'XSRF-TOKEN',
       headerName: 'scfD1z5dp2',
-    })
+    }),
+
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorHandlingInterceptor, multi: true },

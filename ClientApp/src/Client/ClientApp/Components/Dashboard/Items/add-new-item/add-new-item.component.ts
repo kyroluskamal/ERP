@@ -7,7 +7,6 @@ import { NotificationsService } from 'src/CommonServices/NotificationService/not
 import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from 'src/CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
 import { CustomErrorStateMatcher } from 'src/Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
-import { ThemeColor } from '../../client-app-dashboard/client-app-dashboard.component';
 import { Inventories } from '../../Models/inventories.model';
 import { LightDarkThemeConverterService } from '../../light-dark-theme-converter.service';
 import { ItemsService } from '../items.service';
@@ -18,6 +17,9 @@ import { ItemUnitsComponent } from '../item-units/item-units.component';
 import { MatSelect } from '@angular/material/select';
 import { ItemMainCategoriesComponent } from '../item-main-categories/item-main-categories.component';
 import { Direction } from '@angular/cdk/bidi';
+import { SuppliersService } from '../../Suppliers/suppliers.service';
+import { Suppliers } from '../../Models/supplier.model';
+import { ThemeColor } from 'src/Interfaces/interfaces';
 @Component({
   selector: 'app-add-new-item',
   templateUrl: './add-new-item.component.html',
@@ -54,15 +56,17 @@ export class AddNewItemComponent implements OnInit, AfterViewInit {
   AllMainCategories: ItemMainCategory[] = [];
   AllSubCategories: ItemSubCategory[] = [];
   SelectedSubCats: ItemSubCategory[] = [];
+  AllSuppliers: Suppliers[] = [];
 
   Direction: Direction = this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr';
   @ViewChild("itemUnitSelections") itemUnitSelections!: MatSelect;
+  @ViewChild("mainCatSelection") mainCatSelection!: MatSelect;
   //Constructor ........................................................................
   constructor(public ItemService: ItemsService, private NotificationService: NotificationsService,
     public Constants: ConstantsService, private bottomSheet: MatBottomSheet,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
     private LightOrDarkConverter: LightDarkThemeConverterService,
-    private InventoriesService: InventoriesService) {
+    private InventoriesService: InventoriesService, private SuppliersSerive: SuppliersService) {
     let tem: any = localStorage.getItem(this.Constants.BodyAppeareance);
     this.DarkOrLight = tem;
 
@@ -101,10 +105,8 @@ export class AddNewItemComponent implements OnInit, AfterViewInit {
     });
     this.ItemService.GetAllGategories().subscribe(r => this.AllMainCategories = r);
     this.ItemService.GetItems_All_SubCats().subscribe(r => this.AllSubCategories = r);
-    this.AllMainCategories.map((item) => {
-      if (item.name === this.Constants.Uncategorized)
-        item.name = this.translate.GetTranslation(this.Constants.Uncategorized);
-    })
+
+    this.SuppliersSerive.GetAllSuppliers().subscribe(r => this.AllSuppliers = r);
   }
   ngAfterViewInit(): void {
   }
@@ -131,16 +133,29 @@ export class AddNewItemComponent implements OnInit, AfterViewInit {
       direction: this.Direction,
 
     });
-    this.itemUnitSelections.close();
+
     this.bottomSheet._openedBottomSheetRef?.afterDismissed().subscribe(
-      () => this.ItemService.Get_All_ItemUnits().subscribe(r => this.AllUnits = r)
+      () => {
+        this.itemUnitSelections.close();
+        this.ItemService.Get_All_ItemUnits().subscribe(r => this.AllUnits = r);
+        this.itemUnitSelections.open();
+      }
     )
   }
 
   OpenItemMainCats() {
     this.bottomSheet.open(ItemMainCategoriesComponent, {
       direction: this.Direction
-    })
+    });
+
+    this.bottomSheet._openedBottomSheetRef?.afterDismissed().subscribe(
+      () => {
+        this.mainCatSelection.close();
+        this.ItemService.GetAllGategories().subscribe(r => this.AllMainCategories = r);
+        this.ItemService.GetItems_All_SubCats().subscribe(r => this.AllSubCategories = r);
+        this.mainCatSelection.open();
+      }
+    )
   }
 
   GetAllSubCats(MainCat: number) {

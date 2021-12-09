@@ -179,5 +179,21 @@
   "NoItemBrandsAdded" : "No brands are added. Add new brand.",
   "Select_ItemBrand" : "Select item brand",
   "ItemVariants_Prices_Details" : "Item variants and prices details",
-  "IncorrecEmail" : "Enter correct email. Email should contain @"
+  "IncorrecEmail" : "Enter correct email. Email should contain @",
+  "SelectDefaultSupplier":"Select default supplier",
+  "NoSupplierAdded" : "No suppliers are added. Add new supplier",
+  "Supplier_Singular" : "Supplier",
+  "Warehouses" : "Warehouses",
+  "NOT_VALID_PHONE_NUMBER" : "Not a valid phone number",
+  "Add_new_warehouse":"Add new warehouse",
+  "Notes" : "Notes",
+  "WarehouseName" : "Warehouse name",
+  "TelephoneNumber" : "Telephone number",
+  "CellPhoneNumber":"Cell phone number",
+  "Active" : "Active",
+  "Main" : "Main",
+  "AddedBy" : "Added By",
+  "Main warehouse" : "Main warehouse",
+  "Edit" : "Edit",
+  "Warehouse_Singular" : "Warehouse"
 }

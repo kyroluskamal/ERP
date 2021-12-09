@@ -115,7 +115,8 @@ Constants.CSS_text_white"
                             [dir]="this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'rtl':
 !this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'ltr':'ltr'"
                             [value]="MainCat.id">
-                  {{MainCat.name}}
+                  {{MainCat.name===Constants.Uncategorized?
+                  this.translate.GetTranslation(Constants.Uncategorized):MainCat.name}}
                 </mat-option>
                 <button mat-button
                         (click)="OpenItemMainCats()"
@@ -240,13 +241,53 @@ Constants.CSS_text_white"
               </mat-select>
             </ng-template>
           </mat-form-field>
-          <!-- Add Defult Suppliers -->
-          <p fxFlex.gt-sm="49%"
-             style='color: red; background-color: yellow;'
-             fxFlex.sm="100%"
-             fxFlex.lt-sm="100%">
-            Add default supllier
-          </p>
+          <!-- .....................................................Add Defult Suppliers -->
+          <mat-form-field appearance="outline"
+                          fxFlex.gt-sm="49%"
+                          fxFlex.sm="100%"
+                          fxFlex.lt-sm="100%">
+            <mat-label>{{Constants.SelectDefaultSupplier|translate}}</mat-label>
+            <ng-template [ngIf]="AllSuppliers.length>0"
+                         [ngIfElse]="NoSuppliersAreAdded">
+              <mat-select>
+                <input matInput
+                       type="search"
+                       placeholder="{{Constants.Search|translate}}">
+                <mat-divider></mat-divider>
+                <mat-option *ngFor="let Supplier of AllSuppliers"
+                            [style.font-family]="!this.translate.isRightToLeft(this.translate.GetCurrentLang())? Constants.CSS_Calibri_font + ' !important':Constants.CSS_Hacen_Casablanca_font_NotClass+' !important'"
+                            [dir]="this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'rtl':
+!this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'ltr':'ltr'"
+                            [value]="Supplier.id">
+                  {{Supplier.businessName}} - {{Supplier.firstName}} {{Supplier.lastName}}
+                </mat-option>
+                <button mat-button
+                        (click)="OpenItemMainCats()"
+                        disableRipple>
+                  <mat-icon class="mat-18">
+                    <span class="material-icons">
+                      add_box
+                    </span>
+                  </mat-icon>{{Constants.Add|translate}} {{Constants.Supplier_Singular|translate}}
+                </button>
+              </mat-select>
+            </ng-template>
+            <ng-template #NoSuppliersAreAdded>
+              <mat-select>
+                <mat-option *ngIf="AllSuppliers.length===0"
+                            [class]="Constants.CSS_red">{{Constants.NoSupplierAdded|translate}}</mat-option>
+                <button mat-button
+                        (click)="OpenItemMainCats()"
+                        disableRipple>
+                  <mat-icon class="mat-18">
+                    <span class="material-icons">
+                      add_box
+                    </span>
+                  </mat-icon>{{Constants.Add|translate}} {{Constants.Supplier_Singular|translate}}
+                </button>
+              </mat-select>
+            </ng-template>
+          </mat-form-field>
         </div>
 
         <!-- ----------------------------------------------------------- TextArea -->

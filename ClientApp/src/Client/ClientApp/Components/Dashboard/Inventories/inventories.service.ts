@@ -16,4 +16,8 @@ export class InventoriesService {
   GetAllInventories(): Observable<Inventories[]> {
     return this.httpClient.get<Inventories[]>(`${RouterConstants.Inventories_GetAll_API}?subomain=${this.subdomain}`);
   }
+
+  AddNewInvetore(newInvent: Inventories): Observable<Inventories> {
+    return this.httpClient.post<Inventories>(RouterConstants.Inventories_Add_API, newInvent)
+  }
 }

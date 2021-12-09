@@ -31,4 +31,11 @@ export let SideNav_items: ExpansionPanel[] = [{
     }
   ],
   iconName: "inventory_2"
+}, {
+  title: "Warehouses",
+  expanded: false,
+  links: [
+    { link: RouterConstants.App_Warehouses, LinkText: Constants.App_Warehouses, state: false }
+  ],
+  iconName: "warehouse"
 }];

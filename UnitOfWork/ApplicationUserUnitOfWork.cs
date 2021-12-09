@@ -3,12 +3,15 @@ using ERP.Data.Identity;
 using ERP.Models.Items;
 using ERP.UnitOfWork.IRepository.ApplicationUser.Inventory;
 using ERP.UnitOfWork.IRepository.ApplicationUser.Items;
+using ERP.UnitOfWork.IRepository.ApplicationUser.SuppliersRepo;
 using ERP.UnitOfWork.Repository.ApplicationUser.Inventory;
 using ERP.UnitOfWork.Repository.ApplicationUser.Items;
 using ERP.Utilities;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using ERP.UnitOfWork.Repository.ApplicationUser.SupliersRepoAsync;
+using ERP.Models.Inventory;
 
 namespace ERP.UnitOfWork
 {
@@ -25,6 +28,8 @@ namespace ERP.UnitOfWork
 
         public IInventoriesRepoAsync Inventories { get; private set; }
 
+        public ISuppliersRepoAsync Suppliers { get; private set; }
+
         public Constants Constants;
         public ApplicationUserUnitOfWork(ApplicationDbContext applicationDbContext,
             ApplicationUserRoleManager roleManager, Constants constants)
@@ -37,6 +42,7 @@ namespace ERP.UnitOfWork
             ItemUnits = new ItemUnitsAsync(applicationDbContext);
             ItemBrands = new BrandsRepoAsync(applicationDbContext);
             Inventories = new InventoriesRepoAsync(applicationDbContext);
+            Suppliers = new SuppliersRepoAsync(applicationDbContext);
         }
 
 
@@ -70,11 +76,23 @@ namespace ERP.UnitOfWork
             if (!RoleManager.RoleExistsAsync(Constants.Client_Role).GetAwaiter().GetResult())
                 RoleManager.CreateAsync(new ApplicationUserRole(Constants.Client_Role)).GetAwaiter().GetResult();
             //Check if the Item Main Category is empty, then add a defaul uncategorized Main Category
-            if (ItemMainCategory.GetAllAsync().GetAwaiter().GetResult().Count() == 0)
+            if (ItemMainCategory.GetAllAsync().GetAwaiter().GetResult().Count == 0)
             {
                 await ItemMainCategory.AddAsync(new ItemMainCategory
                 {
                     Name = "Uncategorized"
+                });
+            }
+
+            if (Inventories.GetAllAsync().GetAwaiter().GetResult().Count == 0)
+            {
+                await Inventories.AddAsync(new Inventories
+                {
+                    Name = "Main warehouse",
+                    IsActive = true,
+                    IsMainInventory = true,
+                    AddedBy_UserId = 1,
+                    AddedBy_UserName = "Owner"
                 });
             }
         }

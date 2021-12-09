@@ -10,11 +10,10 @@ import { NotificationsService } from 'src/CommonServices/NotificationService/not
 import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from 'src/CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
 import { CustomErrorStateMatcher } from 'src/Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
-import { CustomValidators } from 'src/Helpers/CustomValidation/custom-validators';
 import { IconButtonRendererComponent } from '../../AgFrameworkComponents/button-renderer-component/Icon-button-renderer.component';
 import { NumberCellEditorComponent } from '../../AgFrameworkComponents/number-cell-editor/number-cell-editor.component';
 import { SelectableEditroAgFramweworkComponent } from '../../AgFrameworkComponents/selectable-editro-ag-framwework/selectable-editro-ag-framwework.component';
-import { ThemeColor } from '../../client-app-dashboard/client-app-dashboard.component';
+import { ThemeColor } from 'src/Interfaces/interfaces';
 import { LightDarkThemeConverterService } from '../../light-dark-theme-converter.service';
 import { ItemUnit } from '../../Models/item.model';
 import { ItemsService } from '../items.service';

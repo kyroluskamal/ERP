@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERP.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211204082753_AppDb")]
-    partial class AppDb
+    [Migration("20211205141505_UpdateInventories2")]
+    partial class UpdateInventories2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -2535,12 +2535,12 @@ namespace ERP.Migrations.ApplicationDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("OpenedOrClosed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("StatusName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("OpenedOrClosed")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -2785,7 +2785,10 @@ namespace ERP.Migrations.ApplicationDb
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("AddedBy_EmpId")
+                    b.Property<int?>("AddedBy_UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InventoryAddressId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
@@ -2809,7 +2812,9 @@ namespace ERP.Migrations.ApplicationDb
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddedBy_EmpId");
+                    b.HasIndex("AddedBy_UserId");
+
+                    b.HasIndex("InventoryAddressId");
 
                     b.ToTable("Inventories");
                 });
@@ -2835,16 +2840,10 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<string>("FlatNo")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("InventoryId")
-                        .HasColumnType("int");
-
                     b.Property<string>("PostalCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("InventoryId");
 
                     b.ToTable("InventoryAddresses");
                 });
@@ -6445,6 +6444,7 @@ namespace ERP.Migrations.ApplicationDb
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Note")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SuppliersId")
@@ -6520,9 +6520,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("EmployeesId")
-                        .HasColumnType("int");
-
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -6550,13 +6547,16 @@ namespace ERP.Migrations.ApplicationDb
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CountryId");
 
                     b.HasIndex("CurrencyId");
 
-                    b.HasIndex("EmployeesId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Suppliers");
                 });
@@ -8018,22 +8018,19 @@ namespace ERP.Migrations.ApplicationDb
 
             modelBuilder.Entity("ERP.Models.Inventory.Inventories", b =>
                 {
-                    b.HasOne("ERP.Models.Employee.Employees", "Employees")
+                    b.HasOne("ERP.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("AddedBy_EmpId");
+                        .HasForeignKey("AddedBy_UserId");
 
-                    b.Navigation("Employees");
-                });
-
-            modelBuilder.Entity("ERP.Models.Inventory.InventoryAddress", b =>
-                {
-                    b.HasOne("ERP.Models.Inventory.Inventories", "Inventory")
+                    b.HasOne("ERP.Models.Inventory.InventoryAddress", "InventoryAddress")
                         .WithMany()
-                        .HasForeignKey("InventoryId")
+                        .HasForeignKey("InventoryAddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Inventory");
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("InventoryAddress");
                 });
 
             modelBuilder.Entity("ERP.Models.Inventory.Items_NoEpire", b =>
@@ -9760,17 +9757,17 @@ namespace ERP.Migrations.ApplicationDb
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ERP.Models.Employee.Employees", "Employees")
+                    b.HasOne("ERP.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("EmployeesId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ApplicationUser");
 
                     b.Navigation("Country");
 
                     b.Navigation("Currency");
-
-                    b.Navigation("Employees");
                 });
 
             modelBuilder.Entity("ERP.Models.TreasuriesAndBankAccount.BankAccount_Description", b =>

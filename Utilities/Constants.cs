@@ -39,6 +39,8 @@ namespace ERP.Utilities
         public string NotSelected_MainCat_ERROR_status = "NotSelected_MainCat";
         public string MaxLengthExeed_ERROR_status = "MaxLengthExceeded_ERROR";
         public string Negative_Value_ERROR_status = "Negative_Value_ERROR";
+        public string Delete_Default_inventory_Error_status = "Delete_Default_inventory_Error";
+
 
 
         //error Messages
@@ -60,6 +62,7 @@ namespace ERP.Utilities
         public string Unique_SubCat_Per_MainCat_ERROR_Message = "You can't repeat subcategory in the same main category. Add UNIQUE value.";
         public string NotSelected_MainCat_ERROR_Message = "Please, select a Main category from the Main categories table";
         public string MaxLengthExeed_ERROR_Message = "You exceeded the max allowed character number";
+        public string Delete_Default_inventory_Error_Message = "You can't delete the default inventory";
 
         //Success Status
         public string Data_Deleted_success_status = "Data_Deleted_success";
@@ -321,5 +324,11 @@ namespace ERP.Utilities
         {
             return new { status = RolenameAddtion_statuCode, error = RolenameAddtion_ErrorMessage };
         }
+        public object Delete_Default_inventory_Error_Response()
+        {
+            return new { status = Delete_Default_inventory_Error_status, error = Delete_Default_inventory_Error_Message };
+        }
+
+
     }
 }

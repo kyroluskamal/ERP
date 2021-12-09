@@ -21,16 +21,20 @@ import { ErrorHandlingInterceptor } from 'src/Interceptors/ErrorHandling/error-h
 import { TokenInterceptorInterceptor } from 'src/Interceptors/TokenInterceptor/token-interceptor.interceptor';
 import { RegisterOnAppComponent } from './Components/register-on-app/register-on-app.component';
 import { AddNewItemComponent } from './Components/Dashboard/Items/add-new-item/add-new-item.component';
+import { InventoriesComponent } from './Components/Dashboard/Inventories/inventories/inventories.component';
+import { AddNewInventoryAddressComponent } from './Components/Dashboard/Inventories/add-new-inventory-address/add-new-inventory-address.component';
+import { EditInventoryComponent } from './Components/Dashboard/Inventories/edit-inventory/edit-inventory.component';
 
 const Commponents = [
   ClientAppDashboardComponent, ClientAppHomeNavbarComponent, CLientAppHomeComponent,
   ClientDashboardHomeComponent,
   ItemMainCategoriesComponent, ItemsComponentComponent, IconButtonRendererComponent,
   SelectableEditroAgFramweworkComponent, ItemUnitsComponent, NumberCellEditorComponent,
-  ItemBrandsComponent, RegisterOnAppComponent, AddNewItemComponent
+  ItemBrandsComponent, RegisterOnAppComponent, AddNewItemComponent, InventoriesComponent,
+  AddNewInventoryAddressComponent
 ]
 @NgModule({
-  declarations: [Commponents],
+  declarations: [Commponents, EditInventoryComponent],
   imports: [
     SharedModule, MaterialModule, ClientAppRoutingModule, CommonModule, AppRoutingModule,
     BrowserAnimationsModule,

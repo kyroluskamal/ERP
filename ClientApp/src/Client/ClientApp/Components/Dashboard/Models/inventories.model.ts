@@ -6,5 +6,7 @@ export class Inventories {
   notes: string = "";
   isActive: boolean = false;
   isMainInventory: boolean = false;
-  addedBy_EmpId?: number = 0;
+  addedBy_UserId?: number = 0;
+  subdomain: string = "";
+  addedBy_UserName: string = "";
 }

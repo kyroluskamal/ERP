@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { MatBottomSheetModule, MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA, MAT_BOTTOM_SHEET_DEFAULT_OPTIONS } from '@angular/material/bottom-sheet';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -24,17 +24,27 @@ import { MatTableModule } from '@angular/material/table';
 import { AgGridModule } from 'ag-grid-angular';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
 const MaterialComponents = [
   MatButtonModule, MatToolbarModule, MatIconModule, MatDialogModule, MatListModule,
   MatBottomSheetModule, MatInputModule, MatFormFieldModule, CommonModule, MatSnackBarModule,
   MatCheckboxModule, MatProgressSpinnerModule, MatGridListModule, MatSidenavModule,
   FlexLayoutModule, MatSelectModule, MatMenuModule, MatExpansionModule, MatTooltipModule,
   MatButtonToggleModule, MatSlideToggleModule, MatTableModule, AgGridModule.withComponents([]),
-  MatCardModule, MatProgressBarModule
+  MatCardModule, MatProgressBarModule, FontAwesomeModule, MatPaginatorModule, MatSortModule, DragDropModule
 ];
 @NgModule({
   declarations: [],
   imports: [MaterialComponents],
-  exports: [MaterialComponents]
+  exports: [MaterialComponents],
+  providers: [
+    { provide: MatBottomSheetRef, useValue: {} },
+    { provide: MAT_BOTTOM_SHEET_DATA, useValue: {} },
+    { provide: MAT_BOTTOM_SHEET_DEFAULT_OPTIONS, useValue: { hasBackdrop: true, closeOnNavigation: true, backdropClass: "bg-gray" } }
+  ],
 })
 export class MaterialModule { }

@@ -11,21 +11,9 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { SideNav_items } from '.././SideNavItems'
 import { LightDarkThemeConverterService } from '../light-dark-theme-converter.service';
 import { ClientAccountService } from 'src/Client/MainDomain/Authentication/client-account-service.service';
+import { ExpansionPanel, ThemeColor } from 'src/Interfaces/interfaces';
 
-export interface ExpansionPanel {
-  title: string;
-  expanded: boolean;
-  links: { link: string, LinkText: string, state: boolean }[];
-  iconName: string;
-}
 
-export interface ThemeColor {
-  colorName: string
-  value: string;
-  choosen: boolean;
-  bg: string;
-  color: string;
-}
 
 @Component({
   selector: 'app-client-app-dashboard',

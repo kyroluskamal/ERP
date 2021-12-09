@@ -1,0 +1,250 @@
+<ng-container>
+
+  <!-- ------------------------------------------------------ Item Main Details -->
+  <mat-card fxFlex="100%"
+            [class]="DarkOrLight===Constants.dark?Constants.CSS_dark_for_Child_Component:Constants.CSS_Light_for_Child_Component">
+    <mat-card-title [ngClass]="ThemeColors.bg"
+                    [class]="ThemeColors.colorName==='organge'||ThemeColors.colorName==='amber'?Constants.CSS_dark_color:
+Constants.CSS_text_white"
+                    [style.font-family]="!this.translate.isRightToLeft(this.translate.GetCurrentLang())? Constants.CSS_cursive_font_NotClass + ' !important':Constants.CSS_Hacen_Casablanca_font_NotClass+' !important'"
+                    [dir]="this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'rtl':
+      !this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'ltr':'ltr'">
+      {{Constants.Warehouses|translate}}</mat-card-title>
+    <mat-card-subtitle [dir]="this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'rtl':
+      !this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'ltr':'ltr'">
+      {{this.Constants.Add_Edit_Delete | translate}} {{Constants.Warehouses|translate}}
+    </mat-card-subtitle>
+    <mat-card-content>
+
+      <div [class]="Constants.CSS_table_outer_Container + ' '+ 'mat-elevation-z8'">
+        <div class="table-container ">
+          <div class="example-loading-shade"
+               [dir]="TableDirection"
+               *ngIf="isLoadingResults"
+               style="min-height: 300px;">
+            <mat-spinner *ngIf="isLoadingResults"
+                         diameter="50"></mat-spinner>
+          </div>
+          <div *ngIf="!isLoadingResults">
+            <ng-template [ngIf]="AllInventories.length===0"
+                         [ngIfElse]="FullData">
+              <div style="min-height: 100px;">
+                No rows are shown
+              </div>
+            </ng-template>
+            <ng-template #FullData>
+              <table mat-table
+                     [class]="Table_Color_mode===Constants.dark?Constants.CSS_DarkTableBg
+        :Constants.CSS_LightTableBg"
+                     [dataSource]="dataSource"
+                     class="example-table"
+                     cdkDropList
+                     matSort
+                     cdkDropListOrientation="horizontal"
+                     (cdkDropListDropped)="dropListDropped($event)">
+                <ng-container *ngFor="let column of columns; let i = index"
+                              [matColumnDef]="column.field">
+                  <th mat-header-cell
+                      [style.max-width]="column.field==='notes'?'100px':''"
+                      *matHeaderCellDef
+                      cdkDrag
+                      (cdkDragStarted)="GetCurrentIndex(i)"
+                      cdkDragLockAxis="x"
+                      mat-sort-header>
+                    <ng-template [ngIf]="column.field==='mobilePhone'">
+                      <mat-icon class="mat-18">
+                        <fa-icon [icon]="faMobileAlt"></fa-icon>
+                      </mat-icon>
+                    </ng-template>
+                    <ng-template [ngIf]="column.field==='telephone'">
+                      <mat-icon class="mat-18">
+                        <fa-icon [icon]="faPhone"></fa-icon>
+                      </mat-icon>
+                    </ng-template>
+                    <ng-template [ngIf]="column.field!=='mobilePhone' && column.field!=='telephone'">
+                      {{translate.GetTranslation(column.display)}}
+                    </ng-template>
+                  </th>
+                  <td mat-cell
+                      *matCellDef="let row"> {{ row[column.field]===Constants.MainWarehouse?
+                    this.translate.GetTranslation(Constants.MainWarehouse):row[column.field] }} </td>
+                </ng-container>
+                <ng-container matColumnDef="Delete">
+                  <th mat-header-cell
+                      *matHeaderCellDef> {{Constants.Delete | translate}} </th>
+                  <td mat-cell
+                      *matCellDef="let element">
+                    <button mat-icon-button
+                            *ngIf="element.name!== Constants.MainWarehouse"
+                            color="warn"
+                            (click)="Delete(element.id)">
+                      <mat-icon class="mat-18">delete</mat-icon>
+                    </button>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="Edit">
+                  <th mat-header-cell
+                      *matHeaderCellDef> {{Constants.Edit | translate}} </th>
+                  <td mat-cell
+                      *matCellDef="let element">
+                    <button mat-icon-button
+                            fxLayoutAlign="center"
+                            color="primary"
+                            (click)="EditInventory(element)">
+                      <fa-icon [icon]="faEdit"
+                               style="font-size: 18px;"></fa-icon>
+                    </button>
+                  </td>
+                </ng-container>
+                <tr mat-header-row
+                    [ngClass]="ThemeColors.bg"
+                    [class]="ThemeColors.colorName==='organge'||ThemeColors.colorName==='amber'?Constants.CSS_dark_color:
+        Constants.CSS_text_white"
+                    *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row
+                    (click)="SelectRow(row)"
+                    (dblclick)="Dbclick(row)"
+                    [class]="SelectedRows.includes(row) && Table_Color_mode===Constants.dark?  Constants.CSS_DarkRowSelection:
+                  SelectedRows.includes(row) && Table_Color_mode===Constants.light?Constants.CSS_LightRowSelection:'' "
+                    *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+            </ng-template>
+          </div>
+          <mat-divider style="max-width: 100%;"></mat-divider>
+
+        </div>
+        <mat-paginator [length]="AllInventories.length"
+                       fixed
+                       [class]="Table_Color_mode===Constants.dark?Constants.CSS_DarkTableBg
+        :Constants.CSS_LightTableBg"
+                       [pageSize]="2"
+                       [pageSizeOptions]="[2, 4, 6, 10, 20]"
+                       [class]="Table_Color_mode===Constants.dark?Constants.CSS_DarkTableBg
+                         :Constants.CSS_LightTableBg"
+                       aria-label="Select page of GitHub search results"></mat-paginator>
+        <mat-progress-bar mode="indeterminate"
+                          *ngIf="ShowProgressBar"></mat-progress-bar>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <form [formGroup]="AddNewInventory"
+            class="space-evenly"
+            fxLayout="column wrap"
+            [noValidate]="false"
+            (ngSubmit)="AddNewInventory.valid"
+            [dir]="this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'rtl':
+      !this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'ltr':'ltr'">
+        <div fxLayout="row wrap"
+             fxLayoutAlign="space-between">
+          <!-- ................................................. Inventory Name -->
+          <mat-form-field appearance="outline"
+                          fxFlex.gt-sm="33%"
+                          fxFlex.sm="100%"
+                          fxFlex.lt-sm="100%">
+            <mat-label [ngClass]="AddNewInventory.get('Name')?.valid?Constants.CSS_valid_green:''">
+              {{Constants.WarehouseName | translate}}
+            </mat-label>
+            <input matInput
+                   [formNoValidate]="true"
+                   type="text"
+                   value=""
+                   formControlName="Name"
+                   [errorStateMatcher]="customErrorStateMatcher" />
+            <mat-icon class="mat-18"
+                      matSuffix>
+              <fa-icon [icon]="faPenAlt">
+              </fa-icon>
+            </mat-icon>
+            <mat-error *ngIf="AddNewInventory.get('Name')?.hasError('required')">
+              {{Constants.Required_field_Error | translate}}
+            </mat-error>
+            <mat-error *ngIf="ValidationErrorMessage.getFormControl('Name', AddNewInventory)
+    .hasError('maxlength')">{{Constants.MaxLengthExceeded_ERROR | translate}} {{MaxLength}}
+              {{Constants.characters|translate}} </mat-error>
+          </mat-form-field>
+          <!-- ....................................................Inventory Phone number -->
+          <mat-form-field appearance="outline"
+                          fxFlex.gt-sm="33%"
+                          fxFlex.sm="100%"
+                          fxFlex.lt-sm="100%">
+            <mat-label>{{Constants.TelephoneNumber|translate}}</mat-label>
+            <input matInput
+                   type="tel"
+                   value=""
+                   formControlName="Phone"
+                   [errorStateMatcher]="customErrorStateMatcher" />
+
+            <mat-hint dir="ltr"
+                      align="end">+(20)xxxxxxxxxx</mat-hint>
+            <mat-icon class="mat-18"
+                      matSuffix>
+              <fa-icon [icon]="faPhone"></fa-icon>
+            </mat-icon>
+          </mat-form-field>
+          <!-- ....................................................Inventory Mobile -->
+          <mat-form-field appearance="outline"
+                          fxFlex.gt-sm="33%"
+                          fxFlex.sm="100%"
+                          fxFlex.lt-sm="100%">
+            <mat-label>{{Constants.CellPhoneNumber|translate}}</mat-label>
+            <input matInput
+                   type="tel"
+                   value=""
+                   formControlName="Mobile"
+                   [errorStateMatcher]="customErrorStateMatcher" />
+            <mat-hint dir="ltr"
+                      align="end">+(20)xxxxxxxxxx</mat-hint>
+            <mat-icon class="mat-18"
+                      matSuffix>
+              <fa-icon [icon]="faMobileAlt"></fa-icon>
+            </mat-icon>
+          </mat-form-field>
+        </div>
+        <!-- ----------------------------------------------------------- TextArea -->
+        <div fxLayout="row wrap"
+             fxLayoutAlign="space-between">
+          <mat-form-field appearance="outline"
+                          fxFlex="100%">
+            <mat-label>{{Constants.Notes|translate}}</mat-label>
+            <textarea matInput
+                      formControlName="Notes"
+                      cdkTextareaAutosize
+                      cdkAutosizeMinRows="5"></textarea>
+            <mat-icon class="mat-18"
+                      matSuffix>
+              <fa-icon [icon]="faPenAlt">
+              </fa-icon>
+            </mat-icon>
+          </mat-form-field>
+        </div>
+        <div fxLayout="column"
+             fxLayoutAlign="space-between">
+          <mat-checkbox color="primary"
+                        formControlName="IsMain">{{Constants.Active|translate}} </mat-checkbox>
+          <mat-checkbox color="primary"
+                        formControlName="IsActive">{{Constants.Main|translate}}</mat-checkbox>
+        </div>
+        <button mat-raised-button
+                color="primary"
+                (submit)="AddNewInventory.valid"
+                [disabled]="AddNewInventory.invalid"
+                [ngClass]="ThemeColors.bg + ' ' + Constants.CSS_Width100"
+                (click)="AddNewInvetory()"
+                [class]="ThemeColors.colorName==='organge'||ThemeColors.colorName==='amber'?Constants.CSS_dark_color:
+    Constants.CSS_text_white"
+                aria-label="Add new product">
+          <mat-icon>
+            <mat-spinner diameter="20"
+                         color="warn"
+                         *ngIf="loading"></mat-spinner><span *ngIf="!loading"
+                  class="material-icons-outlined">
+              add_circle
+            </span>
+          </mat-icon>
+          {{'Add'|translate}} {{Constants.Warehouse_Singular | translate}}
+        </button>
+      </form>
+    </mat-card-actions>
+  </mat-card>
+
+</ng-container>

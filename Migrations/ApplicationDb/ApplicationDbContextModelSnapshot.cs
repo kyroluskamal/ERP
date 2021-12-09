@@ -2783,8 +2783,11 @@ namespace ERP.Migrations.ApplicationDb
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("AddedBy_EmpId")
+                    b.Property<int?>("AddedBy_UserId")
                         .HasColumnType("int");
+
+                    b.Property<string>("AddedBy_UserName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -2797,7 +2800,8 @@ namespace ERP.Migrations.ApplicationDb
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
@@ -2807,7 +2811,10 @@ namespace ERP.Migrations.ApplicationDb
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddedBy_EmpId");
+                    b.HasIndex("AddedBy_UserId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Inventories");
                 });
@@ -2837,7 +2844,6 @@ namespace ERP.Migrations.ApplicationDb
                         .HasColumnType("int");
 
                     b.Property<string>("PostalCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -6443,6 +6449,7 @@ namespace ERP.Migrations.ApplicationDb
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Note")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SuppliersId")
@@ -6518,9 +6525,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("EmployeesId")
-                        .HasColumnType("int");
-
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -6548,13 +6552,16 @@ namespace ERP.Migrations.ApplicationDb
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CountryId");
 
                     b.HasIndex("CurrencyId");
 
-                    b.HasIndex("EmployeesId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Suppliers");
                 });
@@ -8016,11 +8023,11 @@ namespace ERP.Migrations.ApplicationDb
 
             modelBuilder.Entity("ERP.Models.Inventory.Inventories", b =>
                 {
-                    b.HasOne("ERP.Models.Employee.Employees", "Employees")
+                    b.HasOne("ERP.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("AddedBy_EmpId");
+                        .HasForeignKey("AddedBy_UserId");
 
-                    b.Navigation("Employees");
+                    b.Navigation("ApplicationUser");
                 });
 
             modelBuilder.Entity("ERP.Models.Inventory.InventoryAddress", b =>
@@ -9758,17 +9765,17 @@ namespace ERP.Migrations.ApplicationDb
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ERP.Models.Employee.Employees", "Employees")
+                    b.HasOne("ERP.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("EmployeesId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ApplicationUser");
 
                     b.Navigation("Country");
 
                     b.Navigation("Currency");
-
-                    b.Navigation("Employees");
                 });
 
             modelBuilder.Entity("ERP.Models.TreasuriesAndBankAccount.BankAccount_Description", b =>

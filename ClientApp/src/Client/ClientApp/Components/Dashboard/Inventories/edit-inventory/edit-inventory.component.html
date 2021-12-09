@@ -1,0 +1,114 @@
+<ng-container>
+  <form [formGroup]="AddNewInventory"
+        class="space-evenly"
+        fxLayout="row wrap"
+        [noValidate]="false"
+        (ngSubmit)="AddNewInventory.valid"
+        [dir]="this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'rtl':
+      !this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'ltr':'ltr'">
+    <!-- ------------------------------------------------------ Item Main Details -->
+    <mat-card fxFlex="100%"
+              [class]="DarkOrLight===Constants.dark?Constants.CSS_dark_for_Child_Component:Constants.CSS_Light_for_Child_Component">
+      <mat-card-title [ngClass]="ThemeColors.bg"
+                      [class]="ThemeColors.colorName==='organge'||ThemeColors.colorName==='amber'?Constants.CSS_dark_color:
+Constants.CSS_text_white"
+                      [style.font-family]="!this.translate.isRightToLeft(this.translate.GetCurrentLang())? Constants.CSS_cursive_font_NotClass + ' !important':Constants.CSS_Hacen_Casablanca_font_NotClass+' !important'"
+                      [dir]="this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'rtl':
+      !this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'ltr':'ltr'">
+        {{Constants.Product_Main_Details|translate}}</mat-card-title>
+      <mat-card-content>
+        <div fxLayout="row wrap"
+             fxLayoutAlign="space-between">
+          <!-- ................................................. Inventory Name -->
+          <mat-form-field appearance="outline"
+                          fxFlex.gt-sm="33%"
+                          fxFlex.sm="100%"
+                          fxFlex.lt-sm="100%">
+            <mat-label [ngClass]="AddNewInventory.get('Name')?.valid?Constants.CSS_valid_green:''">
+              {{Constants.WarehouseName | translate}}
+            </mat-label>
+            <input matInput
+                   [formNoValidate]="true"
+                   type="text"
+                   value=""
+                   formControlName="Name"
+                   [errorStateMatcher]="customErrorStateMatcher" />
+            <mat-icon class="mat-18"
+                      matSuffix>
+              <fa-icon [icon]="faPenAlt">
+              </fa-icon>
+            </mat-icon>
+            <mat-error *ngIf="AddNewInventory.get('Name')?.hasError('required')">
+              {{Constants.Required_field_Error | translate}}
+            </mat-error>
+            <mat-error *ngIf="ValidationErrorMessage.getFormControl('Name', AddNewInventory)
+    .hasError('maxlength')">{{Constants.MaxLengthExceeded_ERROR | translate}} {{MaxLength}}
+              {{Constants.characters|translate}} </mat-error>
+          </mat-form-field>
+          <!-- ....................................................Inventory Phone number -->
+          <mat-form-field appearance="outline"
+                          fxFlex.gt-sm="33%"
+                          fxFlex.sm="100%"
+                          fxFlex.lt-sm="100%">
+            <mat-label>{{Constants.TelephoneNumber|translate}}</mat-label>
+            <input matInput
+                   type="tel"
+                   value=""
+                   formControlName="Phone"
+                   [errorStateMatcher]="customErrorStateMatcher" />
+
+            <mat-hint dir="ltr"
+                      align="end">+(20)xxxxxxxxxx</mat-hint>
+            <mat-icon class="mat-18"
+                      matSuffix>
+              <fa-icon [icon]="faPhone"></fa-icon>
+            </mat-icon>
+          </mat-form-field>
+          <!-- ....................................................Inventory Mobile -->
+          <mat-form-field appearance="outline"
+                          fxFlex.gt-sm="33%"
+                          fxFlex.sm="100%"
+                          fxFlex.lt-sm="100%">
+            <mat-label>{{Constants.CellPhoneNumber|translate}}</mat-label>
+            <input matInput
+                   type="tel"
+                   value=""
+                   formControlName="Mobile"
+                   [errorStateMatcher]="customErrorStateMatcher" />
+            <mat-hint dir="ltr"
+                      align="end">+(20)xxxxxxxxxx</mat-hint>
+            <mat-icon class="mat-18"
+                      matSuffix>
+              <fa-icon [icon]="faMobileAlt"></fa-icon>
+            </mat-icon>
+          </mat-form-field>
+        </div>
+        <!-- ----------------------------------------------------------- TextArea -->
+        <div fxLayout="row wrap"
+             fxLayoutAlign="space-between">
+          <mat-form-field appearance="outline"
+                          fxFlex="100%">
+            <mat-label>{{Constants.Notes|translate}}</mat-label>
+            <textarea matInput
+                      formControlName="Notes"
+                      cdkTextareaAutosize
+                      cdkAutosizeMinRows="5"></textarea>
+            <mat-icon class="mat-18"
+                      matSuffix>
+              <fa-icon [icon]="faPenAlt">
+              </fa-icon>
+            </mat-icon>
+          </mat-form-field>
+        </div>
+        <div fxLayout="column"
+             fxLayoutAlign="space-between">
+          <mat-checkbox color="primary"
+                        formControlName="IsMain">{{Constants.Active|translate}} </mat-checkbox>
+          <mat-checkbox color="primary"
+                        formControlName="IsActive">{{Constants.Main|translate}}</mat-checkbox>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+  </form>
+</ng-container>

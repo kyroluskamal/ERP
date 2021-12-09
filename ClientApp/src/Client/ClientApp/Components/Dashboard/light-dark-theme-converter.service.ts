@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { ThemeColor } from './client-app-dashboard/client-app-dashboard.component';
+import { ThemeColor } from 'src/Interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root'

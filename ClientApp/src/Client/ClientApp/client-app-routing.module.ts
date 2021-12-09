@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { RouterConstants } from 'src/Helpers/RouterConstants';
 import { IsNullTenantGuard } from '../MainDomain/Guards/is-null-tenant.guard';
 import { ClientAppDashboardComponent } from './Components/Dashboard/client-app-dashboard/client-app-dashboard.component';
+import { InventoriesComponent } from './Components/Dashboard/Inventories/inventories/inventories.component';
 import { AddNewItemComponent } from './Components/Dashboard/Items/add-new-item/add-new-item.component';
 import { ItemBrandsComponent } from './Components/Dashboard/Items/item-brands/item-brands.component';
 import { ItemMainCategoriesComponent } from './Components/Dashboard/Items/item-main-categories/item-main-categories.component';
@@ -26,6 +27,11 @@ const routes: Routes = [
           ],
           //canActivate: [IsNullTenantGuard]
         },
+        {
+          path: RouterConstants.App_Warehouses, children: [
+            { path: "", component: InventoriesComponent },
+          ]
+        }
       ]
   },
   { path: RouterConstants.App_login, component: LoginOnAppComponent }

@@ -100,7 +100,7 @@ namespace ERP.UnitOfWork.Repository.ApplicationUser
         public async Task<bool> IsUnique(Expression<Func<T, bool>> filter)
         {
             IQueryable<T> query = dbSet;
-            return await query.Where(filter).ToListAsync() == null;
+            return await query.FirstOrDefaultAsync(filter) == null;
         }
     }
 }

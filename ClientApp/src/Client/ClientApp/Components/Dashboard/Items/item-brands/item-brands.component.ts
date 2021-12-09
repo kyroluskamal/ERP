@@ -10,9 +10,9 @@ import { TranslationService } from 'src/CommonServices/translation-service.servi
 import { ValidationErrorMessagesService } from 'src/CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
 import { CustomErrorStateMatcher } from 'src/Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
 import { CustomValidators } from 'src/Helpers/CustomValidation/custom-validators';
+import { ThemeColor } from 'src/Interfaces/interfaces';
 import { IconButtonRendererComponent } from '../../AgFrameworkComponents/button-renderer-component/Icon-button-renderer.component';
 import { SelectableEditroAgFramweworkComponent } from '../../AgFrameworkComponents/selectable-editro-ag-framwework/selectable-editro-ag-framwework.component';
-import { ThemeColor } from '../../client-app-dashboard/client-app-dashboard.component';
 import { LightDarkThemeConverterService } from '../../light-dark-theme-converter.service';
 import { Brands, ItemMainCategory, ItemSubCategory } from '../../Models/item.model';
 import { ItemsService } from '../items.service';

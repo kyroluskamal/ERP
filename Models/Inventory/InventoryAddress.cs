@@ -10,7 +10,6 @@ namespace ERP.Models.Inventory
         [Required(ErrorMessage = "Required_field")]
         public string AddressLine_1 { get; set; }
         public string AddressLine_2 { get; set; }
-        [Required(ErrorMessage = "Required_field")]
         public string PostalCode { get; set; }
 
         public Inventories Inventory { get; set; }

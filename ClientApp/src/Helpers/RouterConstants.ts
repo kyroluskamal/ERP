@@ -38,8 +38,11 @@ export abstract class RouterConstants {
   public static Item_Brand_Update_API = "/api/items/UpdateBrand";
   public static Item_Brand_GetAll_API = "/api/items/GetAllBrands";
 
-  //APIURLS for Items
+  //APIURLS for Inventories
   public static Inventories_GetAll_API = "/api/Inventories/AllInventories";
+  public static Inventories_Add_API = "/api/Inventories/AddWarehouse";
+  //APIURLS for Suppliers
+  public static Suppliers_GetAll_API = "/api/Suppliers/AllSuppliers";
 
   //Client URLs
   public static Client_EmailConfirmationUrl: string = "client/emailconfirmation";
@@ -49,14 +52,21 @@ export abstract class RouterConstants {
   public static Client_MainDomainAccountURL: string = "account";
   public static Client_Dashboard: string = "Dashboard";
 
-  //ClientAppUrls
+  //................................................................................ClientAppUrls
   public static App_login = "login";
   public static App_main = "app";
   public static App_register = "register";
+  //for Items
   public static App_Items = "items";
-  public static App_ItemMainCategories = "itemsCategories";
-  public static App_ItemUnits = "ItemUnits";
-  public static App_ItemBrands = "ItemBrands";
   public static App_AddNewItem = "AddNewItem";
+  //for Item Categories
+  public static App_ItemMainCategories = "itemsCategories";
+  //for Item Units
+  public static App_ItemUnits = "ItemUnits";
+  //for item brands
+  public static App_ItemBrands = "ItemBrands";
+  //for Warehouses
+  public static App_Warehouses = "Warehouses";
+  public static App_AddNewWarehouse = "AddNewWarehouse";
 
 }
