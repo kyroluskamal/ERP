@@ -355,7 +355,7 @@ export class ItemBrandsComponent implements OnInit, OnDestroy {
           } else
             this.NotificationService.error(this.translate.GetTranslation(e.error.status), '',
               this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
-          if (e[0].status === this.Constants.NullTenant || e.error.status === this.Constants.NullTenant)
+          if (e[0].status === this.Constants.NullTenant)
             this.ErrorGettingAllBands = e;
           this.ShowProgressBar = false;
         }

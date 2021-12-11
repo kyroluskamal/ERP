@@ -24,17 +24,18 @@ import { AddNewItemComponent } from './Components/Dashboard/Items/add-new-item/a
 import { InventoriesComponent } from './Components/Dashboard/Inventories/inventories/inventories.component';
 import { AddNewInventoryAddressComponent } from './Components/Dashboard/Inventories/add-new-inventory-address/add-new-inventory-address.component';
 import { EditInventoryComponent } from './Components/Dashboard/Inventories/edit-inventory/edit-inventory.component';
+import { BadgeComponent } from 'src/CommonComponents/badge/badge.component';
+import { StylePaginatorDirective } from 'src/Directives/style-paginator.directive';
 
 const Commponents = [
   ClientAppDashboardComponent, ClientAppHomeNavbarComponent, CLientAppHomeComponent,
-  ClientDashboardHomeComponent,
+  ClientDashboardHomeComponent, BadgeComponent,
   ItemMainCategoriesComponent, ItemsComponentComponent, IconButtonRendererComponent,
   SelectableEditroAgFramweworkComponent, ItemUnitsComponent, NumberCellEditorComponent,
   ItemBrandsComponent, RegisterOnAppComponent, AddNewItemComponent, InventoriesComponent,
-  AddNewInventoryAddressComponent
-]
+  AddNewInventoryAddressComponent, EditInventoryComponent, StylePaginatorDirective]
 @NgModule({
-  declarations: [Commponents, EditInventoryComponent],
+  declarations: [Commponents],
   imports: [
     SharedModule, MaterialModule, ClientAppRoutingModule, CommonModule, AppRoutingModule,
     BrowserAnimationsModule,
@@ -48,6 +49,7 @@ const Commponents = [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorInterceptor, multi: true },
 
   ],
-  exports: [Commponents]
+  exports: [Commponents],
+
 })
 export class ClientAppModule { }

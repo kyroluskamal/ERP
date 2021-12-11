@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Injectable({
   providedIn: 'root'
@@ -84,11 +86,18 @@ export class ConstantsService {
   TelephoneNumber = "TelephoneNumber";
   CellPhoneNumber = "CellPhoneNumber";
   Active = "Active";
+  InActive = "InActive";
   Main = "Main";
+  NonMain = "NonMain";
   AddedBy = "AddedBy";
   MainWarehouse = "Main warehouse";
   Edit = "Edit";
   NOT_VALID_PHONE_NUMBER = "NOT_VALID_PHONE_NUMBER";
+  ItemPerPageLabal = "ItemPerPageLabal";
+  FirstPage = "FirstPage";
+  NextPage = "NextPage";
+  PreviousPage = "PreviousPage";
+  LastPage = "LastPage";
   //Notifications Messages
   LoggedInSuccessfully: string = "LoggedInSuccessfully";
   EmilConfirmationResnding = "EmilConfirmationResnding";
@@ -130,6 +139,7 @@ export class ConstantsService {
   EmailRequired = "EmailRequired";
   PasswordRequired = "PasswordRequired";
   ConfirmPasswordNoPassswordMatch = "ConfirmPasswordNoPassswordMatch";
+  Delete_Default_inventory_Error = "Delete_Default_inventory_Error";
   //Tooltip translation
   CloseSidebar = "Close sidebar";
   FixSidebar = "Fix sidebar";
@@ -321,6 +331,20 @@ export class ConstantsService {
 
   CSS_table_container = "table-container";
   CSS_table_outer_Container = "table-outer-container"
+  CSS_loading_shade = "loading-shade";
+  CSS_badge_dark = "badge-dark";
+  CSS_badge_light = "badge-light";
+  CSS_badge_info = "badge-info";
+  CSS_badge_warning = "badge-warning";
+  CSS_badge_danger = "badge-danger";
+  CSS_badge_secondary = "badge-secondary";
+  CSS_badge_primary = "badge-primary";
+  CSS_badge_success = "badge-success";
+  CSS_badge = "badge";
+  CSS_TablefilterDiv = "TablefilterDiv";
+  NoMatchedData = "NoMatchedData";
+  Found = "Found";
+  results = "results";
   //Local Stoarage
   FixedSidnav = "FixedSidNav";
   ToolbarThemeClass = "ToolbarThemeClass";
@@ -350,5 +374,9 @@ export class ConstantsService {
   public App_AddNewWarehouse = "Add_new_warehouse";
 
 
+  //Keyboard Keys
+  public ArrowDown = "ArrowDown";
+  public ArrowUp = "ArrowUp";
+  public Enter = "Enter";
 
 }

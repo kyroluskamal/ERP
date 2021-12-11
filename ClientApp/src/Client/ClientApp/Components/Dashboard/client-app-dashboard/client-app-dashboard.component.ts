@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, ElementRef, HostListener, OnDestroy, OnInit, RendererStyleFlags2, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, RendererStyleFlags2, ViewChild, ViewContainerRef, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NotificationsService } from 'src/CommonServices/NotificationService/notifications.service';
 import { ConstantsService } from '../../../../../CommonServices/constants.service';
@@ -79,7 +79,8 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
   //Constructor............................................................................
   constructor(public Constants: ConstantsService, public translate: TranslationService,
     private Notifications: NotificationsService, private mediaObserver: MediaObserver,
-    private ClientAccountService: ClientAccountService,
+    private ClientAccountService: ClientAccountService, private renderer: Renderer2,
+    private vr: ViewContainerRef,
     private LightDarkThemeConverter: LightDarkThemeConverterService, private router: Router) {
     this.ClientAccountService.currentUserOvservable.subscribe(
       r => console.log(r)
@@ -195,6 +196,7 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
       });
     this.setThemeAppearence(this.BodyAppeareance.value, this.ToolbarAppeareance.value, this.SidebarAppeareance.value);
   }
+
   //#endregion
 
   //NgOn it .....................................................................
@@ -353,7 +355,11 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
 
           this.SideNav_mode = "over";
           this.hasBackDrop = true;
-          this.SideNav_openingStatus = false
+          this.SideNav_openingStatus = false;
+          const ActionLabel = this.vr.element.nativeElement.querySelector(
+            "div.mat-paginator-range-label"
+          );
+          this.renderer.setStyle(ActionLabel, 'display', 'none')
         } else {
           this.FullscreenButton.nativeElement.style.display = "flex";
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { ConstantsService } from './constants.service';
 
@@ -12,7 +12,7 @@ export class TranslationService {
   languages: string[] = ['en', 'ar'];
   selected: any = "en";
   SelectedLangSubject: Subject<any>;
-
+  _onLangChange: any;
   //constructor
   constructor(public translate: TranslateService, private Constants: ConstantsService) {
     this.SelectedLangSubject = new Subject<string>();
@@ -41,12 +41,12 @@ export class TranslationService {
   }
 
   GetTranslation(key: string) {
-
     return this.translate.instant(key);
   }
   GetCurrentLang() {
     return this.translate.currentLang;
   }
+
   NameByCode(lang: any): string {
     switch (lang) {
       case 'aa': return 'Afar';

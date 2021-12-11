@@ -15,21 +15,21 @@ import { LoginOnAppComponent } from './Components/login-on-app/login-on-app.comp
 
 const routes: Routes = [
   {
-    path: RouterConstants.App_main, component: ClientAppDashboardComponent, children:
+    path: RouterConstants.App_main, component: ClientAppDashboardComponent, data: { breadcrumb: 'Home' }, children:
       [
         {
           path: RouterConstants.App_Items, children: [
-            { path: '', component: ItemsComponentComponent },
-            { path: RouterConstants.App_ItemMainCategories, component: ItemMainCategoriesComponent },
-            { path: RouterConstants.App_ItemUnits, component: ItemUnitsComponent },
-            { path: RouterConstants.App_ItemBrands, component: ItemBrandsComponent },
-            { path: RouterConstants.App_AddNewItem, component: AddNewItemComponent }
+            { path: '', component: ItemsComponentComponent, data: { breadcrumb: 'Products' } },
+            { path: RouterConstants.App_ItemMainCategories, component: ItemMainCategoriesComponent, data: { breadcrumb: 'Categories' } },
+            { path: RouterConstants.App_ItemUnits, component: ItemUnitsComponent, data: { breadcrumb: 'Units' } },
+            { path: RouterConstants.App_ItemBrands, component: ItemBrandsComponent, data: { breadcrumb: 'Brands' } },
+            { path: RouterConstants.App_AddNewItem, component: AddNewItemComponent, data: { breadcrumb: 'New' } }
           ],
           //canActivate: [IsNullTenantGuard]
         },
         {
           path: RouterConstants.App_Warehouses, children: [
-            { path: "", component: InventoriesComponent },
+            { path: "", component: InventoriesComponent, data: { breadcrumb: 'Warehouses' } },
           ]
         }
       ]

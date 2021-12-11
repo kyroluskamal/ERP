@@ -202,9 +202,20 @@
   "TelephoneNumber" : "التليفون الارضي",
   "CellPhoneNumber":"الهاتف المحمول",
   "Active" : "نشط",
+  "InActive" : "غير نشط",
   "Main" : "رئيسي",
   "AddedBy" : "أضيف بوسطة",
   "Main warehouse" : "المخزن الرئيسي",
   "Edit" : "تعديل",
-  "Warehouse_Singular" : "مخزن"
+  "Warehouse_Singular" : "مخزن",
+  "Delete_Default_inventory_Error": "لا يمكنك حذف المخزن الافتراضي.",
+  "ItemPerPageLabal" : "عنصر في الصفحة:",
+  "FirstPage" : "الصفحة الاولى",
+  "NextPage" : "الصفحة التالية",
+  "PreviousPage" : "الصفحة السابقة",
+  "LastPage" : "الصفحة الاخيرة",
+  "NonMain":"غير رئيسي",
+  "NoMatchedData" : "لا توجد بيانات تطابق بحثك.",
+  "Found" : "تم ايجاد",
+  "results" : "نتائج"
 }

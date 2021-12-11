@@ -191,9 +191,20 @@
   "TelephoneNumber" : "Telephone number",
   "CellPhoneNumber":"Cell phone number",
   "Active" : "Active",
+  "InActive" : "Inactive",
   "Main" : "Main",
   "AddedBy" : "Added By",
   "Main warehouse" : "Main warehouse",
   "Edit" : "Edit",
-  "Warehouse_Singular" : "Warehouse"
+  "Warehouse_Singular" : "Warehouse",
+  "Delete_Default_inventory_Error": "You can't delete the default inventory",
+  "ItemPerPageLabal" : "Items per page:",
+  "FirstPage" : "First page",
+  "NextPage" : "Next page",
+  "PreviousPage" : "Previous page",
+  "LastPage" : "Last page",
+  "NonMain" : "Non-main",
+  "NoMatchedData" : "No data matches your search",
+  "Found" : "Found",
+  "results" : "results"
 }

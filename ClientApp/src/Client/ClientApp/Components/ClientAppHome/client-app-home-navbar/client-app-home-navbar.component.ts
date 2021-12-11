@@ -1,14 +1,13 @@
 import { Component, Input, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { filter } from 'rxjs/operators';
 import { ClientAccountService } from 'src/Client/MainDomain/Authentication/client-account-service.service';
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { DialogHandlerService } from 'src/CommonServices/DialogHandler/dialog-handler.service';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
-import { RouterConstants } from 'src/Helpers/RouterConstants';
 
 
 @Component({

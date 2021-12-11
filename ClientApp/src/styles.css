@@ -925,8 +925,8 @@ mat-form-field.mat-form-field.ng-tns-c95-5.mat-primary.mat-form-field-type-mat-i
 table {
   width: 100%;
 }
-.example-loading-shade {
-  position: absolute;
+.loading-shade {
+  position: relative;
   top: 0;
   left: 0;
   bottom: 56px;
@@ -942,11 +942,12 @@ table {
 .table-container {
   position: relative;
   max-height: 400px;
+
   overflow: auto;
-  border-radius: 20px 20px 0 0;
 }
+
 .table-outer-container{
-  border-radius: 20px;
+  border-radius: 10px;
 }
 .mat-header-cell, .mat-sort-header-arrow{
   color:inherit !important;
@@ -964,7 +965,7 @@ table {
   background-color: rgba(211, 211, 211, 0.639);
 }
 .LightRowSelection{
-  background: #b9b9b9;
+  background: #efefef;
 }
 .DarkRowSelection{
   background: black;
@@ -1009,8 +1010,179 @@ table td{
   color: #181d1f !important;
 }
 mat-paginator{
-  border-radius: 0 0 20px 20px;
+  border-radius: 0 0 10px 10px;
 }
-table th{
+.TablefilterDiv{
+  border-radius: 10px 10px 0 0;
+}
+.mat-cell,
+.mat-header-cell {
+  padding: 0 5px 0 5px;
+  text-align: center !important;
+}
+tr.mat-row{
+  display: table-row;
+  height: auto !important;
+}
+table th, table td{
+  padding: 0 5px 0 5px !important;
+}
+.badge{
+  display: inline-block;
+    padding: 0.25em 0.4em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+}
+.badge-success {
+  color: #fff;
+  background-color: #28a745;
+}
+.badge-primary {
+  color: #fff;
+  background-color: #007bff;
+}
+.badge-secondary {
+  color: #fff;
+  background-color: #6c757d;
+}
+.badge-danger {
+  color: #fff;
+  background-color: #dc3545;
+}
+.badge-warning {
+  color: #212529;
+  background-color: #ffc107;
+}
+.badge-info {
+  color: #fff;
+  background-color: #17a2b8;
+}
+.badge-light {
+  color: #212529;
+  background-color: #f8f9fa;
+}
+.badge-dark {
+  color: #fff;
+  background-color: #343a40;
+}
+table th div{
+  justify-content: center;
+}
+table tr{
   text-align: center;
 }
+.mat-paginator-range-label{
+  direction: ltr !important;
+}
+.mat-column-Delete, .mat-column-Edit{
+  width:1%;
+}
+.mat-column-addedBy_UserName{
+  width:8%;
+}
+
+.mat-column-isActive{
+width:6%;
+}
+.mat-column-isMainInventory{
+width:6%;
+}
+.mat-column-id{
+width:8%;
+}
+.mat-column-notes{
+  width: 25% !important;
+  overflow-wrap:break-word;
+}
+.mat-column-name{
+  width: 10% !important;
+  overflow-wrap:break-word;
+}
+mat-form-field.mat-form-field.ng-untouched.ng-pristine.ng-valid,mat-form-field.mat-checkbox.ng-untouched.ng-pristine.ng-valid label span.mat-checkbox-label{
+  color: inherit !important;
+}
+.TablefilterDiv{
+  height: 50px;
+}
+.DarkTableBg.TablefilterDiv, .DarkTableBg.TablefilterDiv .SearchTable{
+  color:#e6e6e6;
+}
+.TablefilterDiv .SearchTable input{
+  border: none;
+  outline: none;
+  border-radius: 50px;
+  margin: 0 10px;
+}
+.SearchTable .mat-icon{
+  margin:0 3px !important;
+}
+.DarkTableBg .SearchTable .mat-icon, .DarkTableBg .SearchTable input{
+  color:#181d1f;
+}
+.TablefilterDiv .SearchTable input{
+  background: none;
+}
+.TablefilterDiv .SearchTable{
+  border-radius: 30px;
+  height: 40px;
+}
+/* .DarkTableBg.TablefilterDiv .SearchTable{
+  border: 2px solid #e6e6e6;
+} */
+/* .LightTableBg.TablefilterDiv .SearchTable{
+  border: 2px solid #181d1f;
+} */
+.LightTableBg.TablefilterDiv{
+  background-color: rgb(235, 235, 235);
+}
+.LightTableBg.TablefilterDiv .SearchTable{
+  background-color: white;
+}
+.DarkTableBg.TablefilterDiv .SearchTable{
+  background-color: lightgray;
+}
+[dir="rtl"] .SearchTable{
+  margin-right: 50px;
+}
+[dir="ltr"] .SearchTable{
+  margin-left: 50px;
+}
+.LightTableBg.TablefilterDiv,
+.LightTableBg.TablefilterDiv input{
+  color:#1a202e;
+}
+[dir='rtl'] .TablefilterDiv span{
+  font-family: var(--Calibri);
+  font-weight: bold;
+  margin: 0 10px;
+}
+.mat-paginator-range-label{
+  width:100px;
+}
+.paginator-Buttons{
+  border: none;
+  width:25px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+mat-paginator .mat-icon-button{
+  line-height: 0 !important;
+  height: 30px!important;
+  width: 30px !important;
+  border-radius: 50px !important;
+  background-color: rgb(92, 119, 255) !important;
+}
+mat-paginator .mat-icon-button.mat-button-disabled, button.paginator-Buttons:disabled{
+  color:white;
+  background-color: rgb(107, 107, 107) !important;
+  cursor: initial;
+}
+.mat-paginator-container{
+  justify-content: center !important;
+}
+

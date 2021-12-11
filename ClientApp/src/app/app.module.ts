@@ -16,7 +16,6 @@ import { CommoneResetPasswordComponent } from '../CommonComponents/commone-reset
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ClientAppModule } from 'src/Client/ClientApp/client-app.module';
-
 @NgModule({
   declarations: [
     AppComponent, NotFoundComponent, CommoneResetPasswordComponent,

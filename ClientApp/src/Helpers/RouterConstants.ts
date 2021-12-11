@@ -41,6 +41,8 @@ export abstract class RouterConstants {
   //APIURLS for Inventories
   public static Inventories_GetAll_API = "/api/Inventories/AllInventories";
   public static Inventories_Add_API = "/api/Inventories/AddWarehouse";
+  public static Inventories_Delete_API = "/api/Inventories/DeleteWarehouse";
+  public static Inventories_Update_API = "/api/Inventories/Update_Warehouse";
   //APIURLS for Suppliers
   public static Suppliers_GetAll_API = "/api/Suppliers/AllSuppliers";
 

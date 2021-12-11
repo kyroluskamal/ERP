@@ -17,7 +17,13 @@ export class InventoriesService {
     return this.httpClient.get<Inventories[]>(`${RouterConstants.Inventories_GetAll_API}?subomain=${this.subdomain}`);
   }
 
-  AddNewInvetore(newInvent: Inventories): Observable<Inventories> {
+  AddWarehouse(newInvent: Inventories): Observable<Inventories> {
     return this.httpClient.post<Inventories>(RouterConstants.Inventories_Add_API, newInvent)
+  }
+  DeleteWarehouse(id: number): Observable<any> {
+    return this.httpClient.delete(`${RouterConstants.Inventories_Delete_API}?Subdomain=${this.subdomain}&id=${id}`)
+  }
+  UpdateWarehouse(UpdatedInvent: Inventories): Observable<any> {
+    return this.httpClient.put(`${RouterConstants.Inventories_Update_API}`, UpdatedInvent);
   }
 }
