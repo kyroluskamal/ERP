@@ -345,6 +345,7 @@ export class ConstantsService {
   NoMatchedData = "NoMatchedData";
   Found = "Found";
   results = "results";
+  CSS_TableSettingsMenu = "TableSettingsMenu";
   //Local Stoarage
   FixedSidnav = "FixedSidNav";
   ToolbarThemeClass = "ToolbarThemeClass";

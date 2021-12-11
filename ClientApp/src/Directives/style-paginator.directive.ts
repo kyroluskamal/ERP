@@ -9,8 +9,13 @@ import {
   ViewContainerRef,
   Input
 } from "@angular/core";
+import { TranslationService } from 'src/CommonServices/translation-service.service';
+
 import { MatPaginator } from "@angular/material/paginator";
 import { MatButton } from "@angular/material/button";
+import { Subscription } from "rxjs";
+import { LightDarkThemeConverterService } from "src/Client/ClientApp/Components/Dashboard/light-dark-theme-converter.service";
+import { ConstantsService } from "src/CommonServices/constants.service";
 
 interface PageObject {
   length: number;
@@ -33,6 +38,8 @@ export class StylePaginatorDirective {
     pageSize: 0,
     previousPageIndex: 0
   };
+  TableDirection: 'rtl' | 'ltr';
+  TableDir_subscriptions: Subscription;
 
   @Input()
   get showTotalPages(): number {
@@ -59,9 +66,16 @@ export class StylePaginatorDirective {
 
   constructor(
     @Host() @Self() @Optional() private readonly matPag: MatPaginator,
-    private vr: ViewContainerRef,
-    private ren: Renderer2
+    private vr: ViewContainerRef, private translate: TranslationService,
+    private ren: Renderer2, private LightOrDarkConverter: LightDarkThemeConverterService,
+    private Constants: ConstantsService
   ) {
+    let tableDir: any = localStorage.getItem(this.Constants.Table_direction);
+    this.TableDirection = tableDir;
+    this.TableDir_subscriptions = this.LightOrDarkConverter.agGridTable_dir$.subscribe(x => {
+      this.TableDirection = x;
+      // window.location.reload();
+    });
     //to rerender buttons on items per page change and first, last, next and prior buttons
     this.matPag.page.subscribe((e: PageObject) => {
       if (
@@ -84,6 +98,20 @@ export class StylePaginatorDirective {
     const actionContainer = this.vr.element.nativeElement.querySelector(
       "div.mat-paginator-range-actions"
     );
+    // let actionIcons = this.vr.element.nativeElement.querySelectorAll(
+    //   ".mat-paginator-icon"
+    // );
+    // console.log(actionIcons)
+    // if (this.TableDirection === "ltr" &&
+    //   this.translate.isRightToLeft(this.translate.GetCurrentLang()))
+    //   for (let e of actionIcons) {
+    //     this.ren.setStyle(e, "transform", "rotate(360deg)")
+    //   }
+    // else {
+    //   for (let e of actionIcons) {
+    //     this.ren.setStyle(e, "transform", "rotate(180deg)")
+    //   }
+    // }
     const nextPageNode = this.vr.element.nativeElement.querySelector(
       "button.mat-paginator-navigation-next"
     );

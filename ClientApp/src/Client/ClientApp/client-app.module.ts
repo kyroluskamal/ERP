@@ -26,10 +26,10 @@ import { AddNewInventoryAddressComponent } from './Components/Dashboard/Inventor
 import { EditInventoryComponent } from './Components/Dashboard/Inventories/edit-inventory/edit-inventory.component';
 import { BadgeComponent } from 'src/CommonComponents/badge/badge.component';
 import { StylePaginatorDirective } from 'src/Directives/style-paginator.directive';
-
+import { GenericTableComponent } from 'src/CommonComponents/generic-table/generic-table.component';
 const Commponents = [
   ClientAppDashboardComponent, ClientAppHomeNavbarComponent, CLientAppHomeComponent,
-  ClientDashboardHomeComponent, BadgeComponent,
+  ClientDashboardHomeComponent, BadgeComponent, GenericTableComponent,
   ItemMainCategoriesComponent, ItemsComponentComponent, IconButtonRendererComponent,
   SelectableEditroAgFramweworkComponent, ItemUnitsComponent, NumberCellEditorComponent,
   ItemBrandsComponent, RegisterOnAppComponent, AddNewItemComponent, InventoriesComponent,

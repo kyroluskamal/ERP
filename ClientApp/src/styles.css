@@ -811,7 +811,7 @@ body {
 .mat-form-field.mat-focused.mat-primary .mat-select-arrow{
   color: inherit;
 }
-
+.li
 [dir="rtl"] mat-label,[dir="rtl"] .mat-checkbox-label{
   font-family: var(--Calibri) !important;
   font-weight: bold;
@@ -843,11 +843,11 @@ mat-card.mat-card.mat-focus-indicator.dark-for-Child-Component , .dark-for-Body 
 }
 
 .Light-for-Child-Component .mat-select-min-line, .dark-for-Child-Component .mat-select-min-line,
-.light-for-Child-Component input, .dark-for-Child-Component input, .dark-for-Child-Component textarea,
-.light-for-Child-Component textarea{
-  font-family: 'Hacen Casablanca';
+.Light-for-Child-Component .mat-input-element, .dark-for-Child-Component input, .dark-for-Child-Component textarea,
+.Light-for-Child-Component textarea{
+  font-family: 'Hacen Casablanca' !important;
 }
-.Light-for-Child-Component .mat-select-min-line, .light-for-Child-Component input, .light-for-Child-Component textarea{
+.Light-for-Child-Component .mat-select-min-line, .Light-for-Child-Component input, .Light-for-Child-Component textarea{
   color: blue;
 }
 .dark-for-Child-Component .mat-select-min-line, .dark-for-Child-Component input, .dark-for-Child-Component textarea{
@@ -1103,9 +1103,7 @@ width:8%;
   width: 10% !important;
   overflow-wrap:break-word;
 }
-mat-form-field.mat-form-field.ng-untouched.ng-pristine.ng-valid,mat-form-field.mat-checkbox.ng-untouched.ng-pristine.ng-valid label span.mat-checkbox-label{
-  color: inherit !important;
-}
+
 .TablefilterDiv{
   height: 50px;
 }
@@ -1117,6 +1115,7 @@ mat-form-field.mat-form-field.ng-untouched.ng-pristine.ng-valid,mat-form-field.m
   outline: none;
   border-radius: 50px;
   margin: 0 10px;
+  font-family: var(--Hacen);
 }
 .SearchTable .mat-icon{
   margin:0 3px !important;
@@ -1186,3 +1185,26 @@ mat-paginator .mat-icon-button.mat-button-disabled, button.paginator-Buttons:dis
   justify-content: center !important;
 }
 
+.TableSettingsMenu.mat-menu-item{
+  line-height: 0;
+  height: max-content;
+}
+.mat-paginator-icon{
+  transform: none !important;
+}
+.dark-for-Child-Component mat-form-field.mat-form-field.ng-untouched.ng-pristine.ng-valid, .mat-checkbox.ng-untouched.ng-pristine.ng-valid label span.mat-checkbox-label{
+  color: #e6e6e6 !important;
+}
+.Light-for-Child-Component mat-form-field.mat-form-field.ng-untouched.ng-pristine.ng-valid, .mat-checkbox.ng-untouched.ng-pristine.ng-valid label span.mat-checkbox-label{
+  color: #1a202e !important;
+}
+::ng-deep .cdk-overlay-pane {
+  top: 48px!important;
+}
+[dir="rtl"] label{
+  font-family: var(--Calibri) !important;
+  font-weight: bold;
+}
+.mat-checkbox fa-icon{
+  padding: 10px;
+}

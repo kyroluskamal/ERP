@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, HostListener, Inject, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { map, Subscription } from 'rxjs';
+import { map, Observable, Subscription, tap } from 'rxjs';
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { NotificationsService } from 'src/CommonServices/NotificationService/notifications.service';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
@@ -12,13 +12,10 @@ import { Inventories } from '../../Models/inventories.model';
 import { LightDarkThemeConverterService } from '../../light-dark-theme-converter.service';
 import { InventoriesService } from '../../Inventories/inventories.service'
 import { MatBottomSheet, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
-import { SuppliersService } from '../../Suppliers/suppliers.service';
 import { faMobileAlt, faPhone, faPenAlt, faEdit, faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+
+import { MatTableDataSource } from '@angular/material/table';
 import { EditInventoryComponent } from '../edit-inventory/edit-inventory.component';
-import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-inventories',
@@ -51,22 +48,25 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
   Theme_dir: 'rtl' | 'ltr';
   columns: ColDefs[] = [];
   displayedColumns: string[] = [];
+  ShowHideColumns: string[] = [];
   AllInventories: Inventories[] = [];
   resultsLength = 0;
   isLoadingResults = true;
   SelectedRows: Inventories[] = [];
-  dataSource = new MatTableDataSource<Inventories>();
+  dataSource = new MatTableDataSource<any>();
   ShowProgressBar: boolean = true;
   itemPageLabel = "";
   firstPageLabel = "";
   lastPageLabel = "";
   previousPageLabel = "";
   nextPageLabel = "";
-  constructor(private NotificationService: NotificationsService, private vr: ViewContainerRef,
-    public Constants: ConstantsService, private bottomSheet: MatBottomSheet, private renderer: Renderer2,
+  AddedRow: any;
+  PreventDeleteFor: any;
+  constructor(private NotificationService: NotificationsService,
+    public Constants: ConstantsService, private bottomSheet: MatBottomSheet,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
     private LightOrDarkConverter: LightDarkThemeConverterService, @Inject(MAT_BOTTOM_SHEET_DATA) public data: Inventories,
-    private InventoriesService: InventoriesService, private SuppliersSerive: SuppliersService) {
+    private InventoriesService: InventoriesService) {
 
     let tem: any = localStorage.getItem(this.Constants.BodyAppeareance);
     this.DarkOrLight = tem;
@@ -97,11 +97,9 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
     this.ThemeDirection = this.LightOrDarkConverter.ThemeDir$.subscribe(
       r => this.Theme_dir = r
     );
+
   }
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<Inventories>;
-  @ViewChild("tableSettingsButton") tableSetting!: MatButton;
+
 
   ngOnDestroy(): void {
     this.LangSubscibtion.unsubscribe();
@@ -112,21 +110,15 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
     this.ThemeDirection.unsubscribe();
   }
   ngOnInit(): void {
-    setTimeout(() => {
-      this.itemPageLabel = this.translate.GetTranslation(this.Constants.ItemPerPageLabal);
-      this.firstPageLabel = this.translate.GetTranslation(this.Constants.FirstPage);
-      this.lastPageLabel = this.translate.GetTranslation(this.Constants.LastPage);
-      this.previousPageLabel = this.translate.GetTranslation(this.Constants.PreviousPage);
-      this.nextPageLabel = this.translate.GetTranslation(this.Constants.NextPage);
-    }, 1000);
+
     this.columns = [
       { field: 'id', display: '#' },
-      { field: 'name', display: this.Constants.Name },
-      { field: 'mobilePhone', display: "" },
-      { field: 'telephone', display: "" },
+      { field: 'name', display: this.Constants.Name, preventDeleteFor: this.translate.GetTranslation(this.Constants.MainWarehouse) },
+      { field: 'mobilePhone', display: "", HeaderfaIcon: this.faMobileAlt },
+      { field: 'telephone', display: "", HeaderfaIcon: this.faPhone },
       { field: 'notes', display: this.Constants.Notes },
-      { field: 'isActive', display: this.Constants.Active },
-      { field: 'isMainInventory', display: this.Constants.Main },
+      { field: 'isActive', display: this.Constants.Active, IsTrueOrFlase: true, True_faIcon: this.faCheckCircle, False_faIcon: this.faTimesCircle },
+      { field: 'isMainInventory', display: this.Constants.Main, IsTrueOrFlase: true, True_faIcon: this.faCheckCircle, False_faIcon: this.faTimesCircle },
       { field: 'addedBy_UserName', display: this.Constants.AddedBy },
     ];
     this.AddNewInventory = new FormGroup({
@@ -137,27 +129,27 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
       IsActive: new FormControl(null),
       Notes: new FormControl(null)
     });
-    for (let col of this.columns)
-      this.displayedColumns.push(col.field)
-    this.displayedColumns.push(this.Constants.Delete);
-    this.displayedColumns.push(this.Constants.Edit);
-    // this.setDisplayedColumns();
-    this.dataSource.sort = this.sort;
-    this.InventoriesService.GetAllInventories().subscribe(r => {
+
+    this.InventoriesService.GetAllInventories().pipe(tap(
+      r => {
+        for (let x of r) {
+          if (x.name === this.Constants.MainWarehouse) {
+            x.name = this.translate.GetTranslation(this.Constants.MainWarehouse);
+            this.PreventDeleteFor = x;
+          }
+        }
+      }
+    )).subscribe(r => {
+      console.log(r);
       this.AllInventories = r;
-      this.dataSource.data = r as Inventories[];
+      this.dataSource.data = r;
       this.isLoadingResults = false;
       this.ShowProgressBar = false;
     }
     );
-
+    console.log(this.AllInventories);
   }
 
-  dropListDropped(event: CdkDragDrop<string[]>) {
-    if (event) {
-      moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);
-    }
-  }
 
   Delete(invent: Inventories) {
     this.ShowProgressBar = true;
@@ -191,28 +183,15 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
 
   }
 
-  SelectRow(row: Inventories) {
-    if (this.SelectedRows.includes(row))
-      this.SelectedRows.pop();
-    else {
-      this.SelectedRows = [];
-      this.SelectedRows.push(row);
-    }
+  SelectRow(event: any) {
+    this.SelectedRows = event;
   }
   EditInventory(row: Inventories) {
     this.bottomSheet.open(EditInventoryComponent, {
       data: row
     });
   }
-  @HostListener('window:keydown', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
-    let Backspace = event.key === "Backspace";
-    let Delete = event.key === "Delete";
-    let Shift = event.shiftKey
 
-    this.ShiftDelete((Backspace && Shift) || (Delete && Shift));
-    this.SelectionByKeyboard(event.key);
-  }
 
   ShiftDelete(requiredKeys: boolean) {
     if (this.SelectedRows.length > 0 && requiredKeys) {
@@ -226,16 +205,8 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
     }
   }
   ngAfterViewInit() {
+    console.log(this.AllInventories)
 
-    setTimeout(() => {
-      this.paginator._intl.itemsPerPageLabel = this.itemPageLabel
-      this.paginator._intl.firstPageLabel = this.firstPageLabel;
-      this.paginator._intl.lastPageLabel = this.lastPageLabel;
-      this.paginator._intl.previousPageLabel = this.previousPageLabel;
-      this.paginator._intl.nextPageLabel = this.nextPageLabel;
-      this.dataSource.paginator = this.paginator;
-    }, 1000);
-    this.dataSource.sort = this.sort;
   }
   AddNewInvetory() {
     this.ShowProgressBar = true;
@@ -261,6 +232,7 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
           this.AllInventories.push(r);
           this.SelectedRows = [];
           this.SelectedRows.push(r);
+          this.AddedRow = r;
           this.dataSource.data = this.AllInventories;
           this.NotificationService.success(this.translate.GetTranslation(this.Constants.DataAddtionStatus_Success),
             this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
@@ -307,73 +279,4 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
     this.ShowProgressBar = false
   }
 
-  SelectionByKeyboard(key: string) {
-    let PageData = (this.dataSource.sort?.direction === 'desc' || this.dataSource.sort?.direction === 'asc') ?
-      this.dataSource._pageData(this.dataSource.sortData(this.AllInventories, this.sort)) :
-      this.dataSource._pageData(this.AllInventories);
-    let CurrentIndex = PageData.indexOf(this.SelectedRows[0]);
-    if (this.SelectedRows.length > 0 && (key === this.Constants.ArrowDown
-      || key === this.Constants.ArrowUp)) {
-      //Case one:  ---------------------------------------------------------
-      //If no rows are selected in the current page
-      if (CurrentIndex === -1) {
-        this.SelectedRows = [];
-        this.SelectedRows.push(PageData[0]);
-        //Case Tow: ----------------------------------------------------------
-        //If the first row is selected in the current page
-      } else if (CurrentIndex === 0) {
-        //if the first row is selected and the ArrowDown is pressed
-        if (key === this.Constants.ArrowDown) {
-          this.SelectedRows = [];
-          this.SelectedRows.push(PageData[CurrentIndex + 1]);
-          //if the first row is selected and the ArrowUp is pressed
-        } else if (key === this.Constants.ArrowUp) {
-          if (this.dataSource.paginator?.hasPreviousPage()) {
-            this.dataSource.paginator.previousPage();
-            PageData = this.dataSource._pageData(this.AllInventories);
-            this.SelectedRows = [];
-            this.SelectedRows.push(PageData[PageData.length - 1])
-          }
-        }
-        //Case Three: ----------------------------------------- ------------------
-        //if the last row is selected in the current page
-      } else if (CurrentIndex === PageData.length - 1) {
-        //if the last row is selected and the ArroDown is pressed
-        if (key === this.Constants.ArrowDown) {
-          if (this.dataSource.paginator?.hasNextPage()) {
-            this.dataSource.paginator.nextPage();
-            PageData = this.dataSource._pageData(this.AllInventories);
-            this.SelectedRows = [];
-            this.SelectedRows.push(PageData[0]);
-          }
-        } else if (key === this.Constants.ArrowUp) {
-          this.SelectedRows = []
-          this.SelectedRows.push(PageData[CurrentIndex - 1])
-        }
-        //Case Four: --------------------------------------------------------------
-        //if the selected row is in the middle of the page
-      } else {
-        if (key === this.Constants.ArrowDown) {
-          this.SelectedRows = [];
-          this.SelectedRows.push(PageData[CurrentIndex + 1]);
-        } else if (key === this.Constants.ArrowUp) {
-          this.SelectedRows = [];
-          this.SelectedRows.push(PageData[CurrentIndex - 1])
-        }
-      }
-    } else if (this.SelectedRows.length === 0 && (key === this.Constants.ArrowDown || key === this.Constants.ArrowUp)) {
-      this.SelectedRows.push(PageData[0]);
-    }
-    if (key === this.Constants.Enter && this.SelectedRows.length > 0) {
-      this.Dbclick(this.SelectedRows[0])
-    }
-  }
-  Filter(value: string) {
-    this.dataSource.filter = value.trim().toLocaleLowerCase();
-    console.log(this.dataSource.filteredData)
-  }
-
-  TableSettingClick() {
-    this.tableSetting._elementRef.nativeElement.style = "transform: rotate(90deg)"
-  }
 }

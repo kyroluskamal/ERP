@@ -14,195 +14,28 @@ Constants.CSS_text_white"
       {{this.Constants.Add_Edit_Delete | translate}} {{Constants.Warehouses|translate}}
     </mat-card-subtitle>
     <mat-card-content>
+      <generic-table [columns]="columns"
+                     [data]="AllInventories"
+                     [datasource]="dataSource"
+                     [isLoadingResults]="isLoadingResults"
+                     [ShowProgressBar]="ShowProgressBar"
+                     [NoData]="AllInventories.length===0 && !isLoadingResults"
+                     (DeleteClick)="Delete($event)"
+                     (DoubleClickRow)="Dbclick($event)"
+                     (rowsSelection)="SelectRow($event)"
+                     (EditClick)="EditInventory($event)"
+                     [AddedRow]="AddedRow"
+                     [PreventDeleteFor]="translate.GetTranslation(Constants.MainWarehouse)">
+      </generic-table>
 
-      <div [class]="Constants.CSS_table_outer_Container + ' '+ 'mat-elevation-z8'"
-           [dir]="TableDirection">
-        <!-- Filter div -->
-
-        <div [class]="Table_Color_mode===Constants.dark?Constants.CSS_DarkTableBg + ' ' + Constants.CSS_TablefilterDiv
-                  :Constants.CSS_LightTableBg + ' ' + Constants.CSS_TablefilterDiv"
-             fxLayout="row"
-             fxLayoutAlign="space-between center">
-          <div fxLayout="row">
-            <!-- ................................................. Search table -->
-            <div fxLayout="row"
-                 [dir]="translate.isRightToLeft(translate.GetCurrentLang())?'rtl':'ltr'"
-                 fxLayoutAlign="center center"
-                 class="SearchTable">
-              <input #searchInput
-                     [placeholder]="translate.GetTranslation(Constants.Search_table)"
-                     (input)="Filter(searchInput.value)"
-                     type="text"
-                     value="" />
-              <mat-icon class="mat-18"
-                        matSuffix>
-                search
-              </mat-icon>
-            </div>
-            <span *ngIf="searchInput.value!==''"
-                  fxLayoutAlign="center center">
-              {{dataSource.filteredData.length===0?
-              translate.GetTranslation(Constants.NoMatchedData)
-              :dataSource.filteredData.length!==0?
-              translate.GetTranslation(Constants.Found) + ' '+ dataSource.filteredData.length + '
-              '+translate.GetTranslation(Constants.results)
-              :''}}
-            </span>
-          </div>
-          <button mat-button
-                  (click)="TableSettingClick()"
-                  #tableSettingsButton>
-            <mat-icon class="mat-18">settings</mat-icon>
-          </button>
-        </div>
-        <div [class]="Constants.CSS_table_container">
-
-          <div [class]="Constants.CSS_loading_shade"
-               *ngIf="isLoadingResults"
-               style="min-height: 200px;">
-            <mat-spinner *ngIf="isLoadingResults"
-                         diameter="50"></mat-spinner>
-          </div>
-
-          <ng-template [ngIf]="AllInventories.length===0 && !isLoadingResults">
-            <div style="min-height: 100px;"
-                 [class]="Constants.CSS_loading_shade">
-              No rows are shown
-            </div>
-          </ng-template>
-          <table mat-table
-                 [hidden]="AllInventories.length===0"
-                 multiTemplateDataRows
-                 [class]="Table_Color_mode===Constants.dark?Constants.CSS_DarkTableBg
-        :Constants.CSS_LightTableBg"
-                 [dataSource]="dataSource"
-                 cdkDropList
-                 matSort
-                 cdkDropListOrientation="horizontal"
-                 (cdkDropListDropped)="dropListDropped($event)">
-
-            <ng-container *ngFor="let column of columns; let i = index"
-                          [matColumnDef]="column.field">
-              <th mat-header-cell
-                  fxFlexAlign="center"
-                  *matHeaderCellDef
-                  cdkDrag
-                  cdkDragLockAxis="x"
-                  mat-sort-header>
-                <ng-template [ngIf]="column.field==='mobilePhone'">
-                  <mat-icon class="mat-18">
-                    <fa-icon [icon]="faMobileAlt"></fa-icon>
-                  </mat-icon>
-                </ng-template>
-                <ng-template [ngIf]="column.field==='telephone'">
-                  <mat-icon class="mat-18">
-                    <fa-icon [icon]="faPhone"></fa-icon>
-                  </mat-icon>
-                </ng-template>
-                <ng-template [ngIf]="column.field!=='mobilePhone' && column.field!=='telephone'">
-                  {{translate.GetTranslation(column.display)}}
-                </ng-template>
-              </th>
-
-              <td mat-cell
-                  *matCellDef="let row">
-                {{column.field==='name'?row[column.field]===Constants.MainWarehouse?
-                this.translate.GetTranslation(Constants.MainWarehouse):row[column.field]:''}}
-                {{column.field!=='isActive'&&column.field!=='isMainInventory'&&column.field!=='name'?row[column.field]:''}}
-                <span *ngIf="column.field==='isActive'">
-                  <mat-icon class="mat-18"
-                            [class]="Constants.CSS_green"
-                            *ngIf="row[column.field]===true">
-                    <fa-icon [icon]="faCheckCircle"></fa-icon>
-                  </mat-icon>
-                  <mat-icon class="mat-18"
-                            [class]="Constants.CSS_red"
-                            *ngIf="row[column.field]===false">
-                    <fa-icon [icon]="faTimesCircle"></fa-icon>
-                  </mat-icon>
-                </span>
-                <span *ngIf="column.field==='isMainInventory'">
-                  <mat-icon class="mat-18"
-                            [class]="Constants.CSS_green"
-                            *ngIf="row[column.field]===true">
-                    <fa-icon [icon]="faCheckCircle"></fa-icon>
-                  </mat-icon>
-                  <mat-icon class="mat-18"
-                            [class]="Constants.CSS_red"
-                            *ngIf="row[column.field]===false">
-                    <fa-icon [icon]="faTimesCircle"></fa-icon>
-                  </mat-icon>
-                </span>
-              </td>
-
-            </ng-container>
-            <ng-container matColumnDef="Delete">
-              <th mat-header-cell
-                  *matHeaderCellDef> {{Constants.Delete | translate}} </th>
-              <td mat-cell
-                  *matCellDef="let element">
-                <button mat-icon-button
-                        *ngIf="element.name!== Constants.MainWarehouse"
-                        color="warn"
-                        (click)="Delete(element)">
-                  <mat-icon class="mat-18">delete</mat-icon>
-                </button>
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="Edit">
-              <th mat-header-cell
-                  *matHeaderCellDef> {{Constants.Edit | translate}} </th>
-              <td mat-cell
-                  *matCellDef="let element">
-                <button mat-icon-button
-                        color="primary"
-                        (click)="EditInventory(element)">
-                  <fa-icon [icon]="faEdit"
-                           style="font-size: 18px;"></fa-icon>
-                </button>
-              </td>
-            </ng-container>
-            <tr mat-header-row
-                [ngClass]="ThemeColors.bg"
-                [class]="ThemeColors.colorName==='organge'||ThemeColors.colorName==='amber'?Constants.CSS_dark_color:
-                    Constants.CSS_text_white"
-                *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-            <tr mat-row
-                (click)="SelectRow(row)"
-                (dblclick)="Dbclick(row)"
-                [class]="SelectedRows.includes(row) && Table_Color_mode===Constants.dark?  Constants.CSS_DarkRowSelection:
-                    SelectedRows.includes(row) && Table_Color_mode===Constants.light?Constants.CSS_LightRowSelection:'' "
-                *matRowDef="let row; columns: displayedColumns;"></tr>
-
-          </table>
-          <mat-divider style="max-width: 100%;"></mat-divider>
-
-        </div>
-        <mat-paginator [length]="AllInventories.length"
-                       fixed
-                       style-paginator
-                       [hidden]="!isLoadingResults"
-                       [class]="Table_Color_mode===Constants.dark?Constants.CSS_DarkTableBg
-        :Constants.CSS_LightTableBg"
-                       [pageSize]="2"
-                       [pageSizeOptions]="[2, 4, 6, 10, 20]"
-                       [class]="Table_Color_mode===Constants.dark?Constants.CSS_DarkTableBg
-                         :Constants.CSS_LightTableBg"
-                       showFirstLastButtons
-                       [showTotalPages]="3"
-                       aria-label="Select page of warehouses search results"></mat-paginator>
-        <mat-progress-bar mode="indeterminate"
-                          *ngIf="ShowProgressBar"></mat-progress-bar>
-      </div>
     </mat-card-content>
     <mat-card-actions>
-      <form [formGroup]="AddNewInventory"
+      <form [formGroup]="
+                     AddNewInventory"
             class="space-evenly"
             fxLayout="column wrap"
             [noValidate]="false"
-            (ngSubmit)="AddNewInventory.valid"
-            [dir]="this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'rtl':
-      !this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'ltr':'ltr'">
+            (ngSubmit)="AddNewInventory.valid">
         <div fxLayout="row wrap"
              fxLayoutAlign="space-between">
           <!-- ................................................. Inventory Name -->
@@ -217,6 +50,7 @@ Constants.CSS_text_white"
                    [formNoValidate]="true"
                    type="text"
                    value=""
+                   cl
                    formControlName="Name"
                    [errorStateMatcher]="customErrorStateMatcher" />
             <mat-icon class="mat-18"
