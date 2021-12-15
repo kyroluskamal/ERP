@@ -65,7 +65,7 @@ namespace ERP.Controllers.Inventory
                 if (tenant != null)
                 {
                     await UserUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
-                    return await UserUnitOfWork.Inventories.GetAllAsync();
+                    return UserUnitOfWork.Inventories.GetAllAsync(includeProperties: "InventoryAddress").GetAwaiter().GetResult().ToList();
                 }
                 return BadRequest(Constants.NullTentant_Error_Response());
             }
@@ -88,11 +88,11 @@ namespace ERP.Controllers.Inventory
                 {
                     await UserUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
 
-                    if (!await UserUnitOfWork.Inventories.IsUnique(x=>x.Name == Inventory.Name))
+                    if (!await UserUnitOfWork.Inventories.IsUnique(x=>x.WarehouseName == Inventory.WarehouseName))
                         return BadRequest(Constants.Unique_Field_ERROR_Response());
                     await UserUnitOfWork.Inventories.AddAsync(new Inventories
                     {
-                        Name = Inventory.Name,
+                        WarehouseName = Inventory.WarehouseName,
                         MobilePhone = Inventory.MobilePhone,
                         Telephone = Inventory.Telephone,
                         Notes= Inventory.Notes,
@@ -104,8 +104,8 @@ namespace ERP.Controllers.Inventory
                     var result = await UserUnitOfWork.SaveAsync();
                     if (result > 0)
                     {
-                        var Units = await UserUnitOfWork.Inventories.GetAllAsync(x => x.Name == Inventory.Name);
-                        return Ok(Units.Last(x => x.Name == Inventory.Name));
+                        var Units = await UserUnitOfWork.Inventories.GetAllAsync(x => x.WarehouseName == Inventory.WarehouseName);
+                        return Ok(Units.Last(x => x.WarehouseName == Inventory.WarehouseName));
                     }
                     return BadRequest(Constants.DataAddtion_ERROR_Response());
                 }
@@ -131,13 +131,13 @@ namespace ERP.Controllers.Inventory
                     //if Tentnat is found, set the connection stirng
                     await UserUnitOfWork.SetConnectionStringAsync(Tenant.ConnectionString);
                     // Check if it is unique
-                    if (!await UserUnitOfWork.Inventories.IsUnique(x=>x.Name == Inventory.Name))
+                    if (!await UserUnitOfWork.Inventories.IsUnique(x=>x.WarehouseName == Inventory.WarehouseName && x.Id!=Inventory.Id))
                         return BadRequest(Constants.Unique_Field_ERROR_Response());
                     //Check if the unit is found in DB
                     var InventoryFromDb = await UserUnitOfWork.Inventories.GetAsync(Inventory.Id);
                     if (InventoryFromDb != null)
                     {
-                        InventoryFromDb.Name = Inventory.Name;
+                        InventoryFromDb.WarehouseName = Inventory.WarehouseName;
                         InventoryFromDb.MobilePhone = Inventory.MobilePhone;
                         InventoryFromDb.IsMainInventory = Inventory.IsMainInventory;
                         InventoryFromDb.Telephone = Inventory.Telephone;
@@ -178,7 +178,7 @@ namespace ERP.Controllers.Inventory
 
                     if (Inventory != null)
                     {
-                        if (Inventory.Name == "Main warehouse")
+                        if (Inventory.WarehouseName == "Main warehouse")
                             return BadRequest(Constants.Delete_Default_inventory_Error_Response());
                         UserUnitOfWork.Inventories.Remove(Inventory);
                         var result = await UserUnitOfWork.SaveAsync();

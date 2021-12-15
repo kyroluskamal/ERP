@@ -1,4 +1,4 @@
-<div [class]="Constants.CSS_table_outer_Container + ' '+ 'mat-elevation-z8'"
+<div [class]="Constants.CSS_table_outer_Container + ' '+ 'mat-elevation-z2'"
      [dir]="TableDirection">
   <!-- Filter div -->
 
@@ -65,21 +65,22 @@
   </div>
   <div [class]="Constants.CSS_table_container">
     <mat-progress-bar mode="indeterminate"
-                      *ngIf="ShowProgressBar"></mat-progress-bar>
+                      *ngIf="ShowProgressbar"></mat-progress-bar>
     <div [class]="Constants.CSS_loading_shade"
-         *ngIf="isLoadingResults"
+         *ngIf="isLoadingRes"
          style="min-height: 200px;">
-      <mat-spinner *ngIf="isLoadingResults"
+      <mat-spinner *ngIf="isLoadingRes"
                    diameter="50"></mat-spinner>
     </div>
 
-    <ng-template [ngIf]="NoData&& !isLoadingResults">
+    <ng-template [ngIf]="NoData&& !isLoadingRes">
       <div style="min-height: 100px;"
            [class]="Constants.CSS_loading_shade">
         No rows are shown
       </div>
     </ng-template>
     <table mat-table
+           *ngIf="!isLoadingRes"
            [hidden]="items.length!==0"
            multiTemplateDataRows
            [class]="Table_Color_mode===Constants.dark?Constants.CSS_DarkTableBg
@@ -117,10 +118,23 @@
         <td mat-cell
             *matCellDef="let row">
 
-          <span *ngIf="!column.IsTrueOrFlase">
+          <span *ngIf="!column.IsTrueOrFlase && column.field !== RefField">
             {{row[column.field]}}
           </span>
-          <span *ngIf="column.IsTrueOrFlase">
+          <span *ngIf="!column.IsTrueOrFlase && column.field === RefField">
+            {{row[RefField]}}
+            <button mat-button
+                    *ngIf="row[RefField]===''"
+                    style="min-width: 0;line-height: 0; text-decoration: underline; padding: 0;"
+                    (click)="AddReferencialData(row)">{{Constants.Add|translate}}</button>
+            <button mat-button
+                    *ngIf="row[RefField]!==''"
+                    style="min-width: 0;line-height: 0; text-decoration: underline; padding: 0;"
+                    (click)="EditReferencialData(row)">{{Constants.Edit|translate}}</button>
+          </span>
+
+          <span *ngIf="
+               column.IsTrueOrFlase">
             <span *ngIf="column.True_faIcon || column.False_faIcon">
               <mat-icon class="mat-18"
                         [class]="Constants.CSS_green"

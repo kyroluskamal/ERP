@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ERP.Migrations.ApplicationDb
 {
-    public partial class AppDb : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -347,6 +347,23 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
+                name: "InventoryAddresses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BuildingNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FlatNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AddressLine_1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AddressLine_2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InventoryAddresses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ItemMainCategories",
                 columns: table => new
                 {
@@ -366,6 +383,7 @@ namespace ERP.Migrations.ApplicationDb
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DefaultInventoryId = table.Column<int>(type: "int", nullable: false),
+                    DefaultInventoryName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     HasExpire = table.Column<bool>(type: "bit", nullable: false),
                     IsOnline = table.Column<bool>(type: "bit", nullable: false),
@@ -1265,6 +1283,37 @@ namespace ERP.Migrations.ApplicationDb
                         principalTable: "HolidayLists",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Inventories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    WarehouseName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    MobilePhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Telephone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    IsMainInventory = table.Column<bool>(type: "bit", nullable: false),
+                    AddedBy_UserId = table.Column<int>(type: "int", nullable: true),
+                    AddedBy_UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    InventoryAddressId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Inventories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Inventories_AspNetUsers_AddedBy_UserId",
+                        column: x => x.AddedBy_UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Inventories_InventoryAddresses_InventoryAddressId",
+                        column: x => x.InventoryAddressId,
+                        principalTable: "InventoryAddresses",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -2784,6 +2833,159 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
+                name: "Inbound_Invent_Requisitions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CurrentNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Date = table.Column<DateTime>(type: "Date", nullable: false),
+                    HasNotes = table.Column<bool>(type: "bit", nullable: false),
+                    InventoryId = table.Column<int>(type: "int", nullable: false),
+                    ItemVariantsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Inbound_Invent_Requisitions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Inbound_Invent_Requisitions_Inventories_InventoryId",
+                        column: x => x.InventoryId,
+                        principalTable: "Inventories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Inbound_Invent_Requisitions_ItemVariants_ItemVariantsId",
+                        column: x => x.ItemVariantsId,
+                        principalTable: "ItemVariants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Items_In_PurchaseInvoices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AddedQuantity = table.Column<int>(type: "int", nullable: false),
+                    ItemVariantsId = table.Column<int>(type: "int", nullable: false),
+                    Purchase_invoicesId = table.Column<int>(type: "int", nullable: false),
+                    InventoriesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Items_In_PurchaseInvoices", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Items_In_PurchaseInvoices_Inventories_InventoriesId",
+                        column: x => x.InventoriesId,
+                        principalTable: "Inventories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Items_In_PurchaseInvoices_ItemVariants_ItemVariantsId",
+                        column: x => x.ItemVariantsId,
+                        principalTable: "ItemVariants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Items_In_PurchaseInvoices_Purchase_invoices_Purchase_invoicesId",
+                        column: x => x.Purchase_invoicesId,
+                        principalTable: "Purchase_invoices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Items_in_Refunds",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RefundedQuantity = table.Column<int>(type: "int", nullable: false),
+                    ItemVariantsId = table.Column<int>(type: "int", nullable: false),
+                    Purchase_RefundRequestsId = table.Column<int>(type: "int", nullable: false),
+                    InventoriesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Items_in_Refunds", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Items_in_Refunds_Inventories_InventoriesId",
+                        column: x => x.InventoriesId,
+                        principalTable: "Inventories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Items_in_Refunds_ItemVariants_ItemVariantsId",
+                        column: x => x.ItemVariantsId,
+                        principalTable: "ItemVariants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Items_in_Refunds_Purchase_RefundRequests_Purchase_RefundRequestsId",
+                        column: x => x.Purchase_RefundRequestsId,
+                        principalTable: "Purchase_RefundRequests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Items_NoEpires",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    InventoryId = table.Column<int>(type: "int", nullable: false),
+                    ItemVariantsId = table.Column<int>(type: "int", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Items_NoEpires", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Items_NoEpires_Inventories_InventoryId",
+                        column: x => x.InventoryId,
+                        principalTable: "Inventories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Items_NoEpires_ItemVariants_ItemVariantsId",
+                        column: x => x.ItemVariantsId,
+                        principalTable: "ItemVariants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Items_withEpires",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    InventoryId = table.Column<int>(type: "int", nullable: false),
+                    ItemVariantsId = table.Column<int>(type: "int", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    ExpireMonth = table.Column<byte>(type: "tinyint", maxLength: 2, nullable: false),
+                    ExoireDate = table.Column<short>(type: "smallint", maxLength: 4, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Items_withEpires", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Items_withEpires_Inventories_InventoryId",
+                        column: x => x.InventoryId,
+                        principalTable: "Inventories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Items_withEpires_ItemVariants_ItemVariantsId",
+                        column: x => x.ItemVariantsId,
+                        principalTable: "ItemVariants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ItemsVariant_RetailPrices",
                 columns: table => new
                 {
@@ -2823,6 +3025,35 @@ namespace ERP.Migrations.ApplicationDb
                     table.PrimaryKey("PK_ItemVariant_WholeSalePrices", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ItemVariant_WholeSalePrices_ItemVariants_ItemVariantsId",
+                        column: x => x.ItemVariantsId,
+                        principalTable: "ItemVariants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Outbound_Invent_Requisitions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CurrentNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Date = table.Column<DateTime>(type: "Date", nullable: false),
+                    HasNotes = table.Column<bool>(type: "bit", nullable: false),
+                    InventoryId = table.Column<int>(type: "int", nullable: false),
+                    ItemVariantsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Outbound_Invent_Requisitions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Outbound_Invent_Requisitions_Inventories_InventoryId",
+                        column: x => x.InventoryId,
+                        principalTable: "Inventories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Outbound_Invent_Requisitions_ItemVariants_ItemVariantsId",
                         column: x => x.ItemVariantsId,
                         principalTable: "ItemVariants",
                         principalColumn: "Id",
@@ -3473,30 +3704,6 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
-                name: "Inventories",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MobilePhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Telephone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    IsMainInventory = table.Column<bool>(type: "bit", nullable: false),
-                    AddedBy_EmpId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Inventories", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Inventories_Employees_AddedBy_EmpId",
-                        column: x => x.AddedBy_EmpId,
-                        principalTable: "Employees",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Loans",
                 columns: table => new
                 {
@@ -3758,6 +3965,41 @@ namespace ERP.Migrations.ApplicationDb
                         principalTable: "CreditUsages",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ItemsInSalesInvoices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Price = table.Column<decimal>(type: "Money", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    SubtotalPerItem = table.Column<decimal>(type: "Money", nullable: false),
+                    Decriptions = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ItemVariantsId = table.Column<int>(type: "int", nullable: false),
+                    SalesInvoicesId = table.Column<int>(type: "int", nullable: true),
+                    InventoriesId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ItemsInSalesInvoices", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ItemsInSalesInvoices_Inventories_InventoriesId",
+                        column: x => x.InventoriesId,
+                        principalTable: "Inventories",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ItemsInSalesInvoices_ItemVariants_ItemVariantsId",
+                        column: x => x.ItemVariantsId,
+                        principalTable: "ItemVariants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ItemsInSalesInvoices_SalesInvoices_SalesInvoicesId",
+                        column: x => x.SalesInvoicesId,
+                        principalTable: "SalesInvoices",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -4073,6 +4315,130 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_SubscriptionAttachments_Subscriptions_SubscriptionsId",
                         column: x => x.SubscriptionsId,
                         principalTable: "Subscriptions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InboundNotes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Inbound_Invent_RequisitionsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InboundNotes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InboundNotes_Inbound_Invent_Requisitions_Inbound_Invent_RequisitionsId",
+                        column: x => x.Inbound_Invent_RequisitionsId,
+                        principalTable: "Inbound_Invent_Requisitions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Addition_NoExpires",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateTime>(type: "Date", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    Items_NoEpireId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Addition_NoExpires", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Addition_NoExpires_Items_NoEpires_Items_NoEpireId",
+                        column: x => x.Items_NoEpireId,
+                        principalTable: "Items_NoEpires",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Withdraw_NoExpires",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateTime>(type: "Date", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    Items_NoEpireId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Withdraw_NoExpires", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Withdraw_NoExpires_Items_NoEpires_Items_NoEpireId",
+                        column: x => x.Items_NoEpireId,
+                        principalTable: "Items_NoEpires",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Addition_WithExpire",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateTime>(type: "Date", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    Items_withEpireId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Addition_WithExpire", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Addition_WithExpire_Items_withEpires_Items_withEpireId",
+                        column: x => x.Items_withEpireId,
+                        principalTable: "Items_withEpires",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Withdraw_WithExpires",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateTime>(type: "Date", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    Items_withEpireId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Withdraw_WithExpires", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Withdraw_WithExpires_Items_withEpires_Items_withEpireId",
+                        column: x => x.Items_withEpireId,
+                        principalTable: "Items_withEpires",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OutboundNotes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Outbound_Invent_RequisitionsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OutboundNotes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OutboundNotes_Outbound_Invent_Requisitions_Outbound_Invent_RequisitionsId",
+                        column: x => x.Outbound_Invent_RequisitionsId,
+                        principalTable: "Outbound_Invent_Requisitions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -4944,247 +5310,6 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
-                name: "Inbound_Invent_Requisitions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CurrentNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Date = table.Column<DateTime>(type: "Date", nullable: false),
-                    HasNotes = table.Column<bool>(type: "bit", nullable: false),
-                    InventoryId = table.Column<int>(type: "int", nullable: false),
-                    ItemVariantsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Inbound_Invent_Requisitions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Inbound_Invent_Requisitions_Inventories_InventoryId",
-                        column: x => x.InventoryId,
-                        principalTable: "Inventories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Inbound_Invent_Requisitions_ItemVariants_ItemVariantsId",
-                        column: x => x.ItemVariantsId,
-                        principalTable: "ItemVariants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "InventoryAddresses",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BuildingNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FlatNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AddressLine_1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AddressLine_2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    InventoryId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InventoryAddresses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_InventoryAddresses_Inventories_InventoryId",
-                        column: x => x.InventoryId,
-                        principalTable: "Inventories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Items_In_PurchaseInvoices",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AddedQuantity = table.Column<int>(type: "int", nullable: false),
-                    ItemVariantsId = table.Column<int>(type: "int", nullable: false),
-                    Purchase_invoicesId = table.Column<int>(type: "int", nullable: false),
-                    InventoriesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Items_In_PurchaseInvoices", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Items_In_PurchaseInvoices_Inventories_InventoriesId",
-                        column: x => x.InventoriesId,
-                        principalTable: "Inventories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Items_In_PurchaseInvoices_ItemVariants_ItemVariantsId",
-                        column: x => x.ItemVariantsId,
-                        principalTable: "ItemVariants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Items_In_PurchaseInvoices_Purchase_invoices_Purchase_invoicesId",
-                        column: x => x.Purchase_invoicesId,
-                        principalTable: "Purchase_invoices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Items_in_Refunds",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RefundedQuantity = table.Column<int>(type: "int", nullable: false),
-                    ItemVariantsId = table.Column<int>(type: "int", nullable: false),
-                    Purchase_RefundRequestsId = table.Column<int>(type: "int", nullable: false),
-                    InventoriesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Items_in_Refunds", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Items_in_Refunds_Inventories_InventoriesId",
-                        column: x => x.InventoriesId,
-                        principalTable: "Inventories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Items_in_Refunds_ItemVariants_ItemVariantsId",
-                        column: x => x.ItemVariantsId,
-                        principalTable: "ItemVariants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Items_in_Refunds_Purchase_RefundRequests_Purchase_RefundRequestsId",
-                        column: x => x.Purchase_RefundRequestsId,
-                        principalTable: "Purchase_RefundRequests",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Items_NoEpires",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    InventoryId = table.Column<int>(type: "int", nullable: false),
-                    ItemVariantsId = table.Column<int>(type: "int", nullable: false),
-                    Amount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Items_NoEpires", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Items_NoEpires_Inventories_InventoryId",
-                        column: x => x.InventoryId,
-                        principalTable: "Inventories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Items_NoEpires_ItemVariants_ItemVariantsId",
-                        column: x => x.ItemVariantsId,
-                        principalTable: "ItemVariants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Items_withEpires",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    InventoryId = table.Column<int>(type: "int", nullable: false),
-                    ItemVariantsId = table.Column<int>(type: "int", nullable: false),
-                    Amount = table.Column<int>(type: "int", nullable: false),
-                    ExpireMonth = table.Column<byte>(type: "tinyint", maxLength: 2, nullable: false),
-                    ExoireDate = table.Column<short>(type: "smallint", maxLength: 4, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Items_withEpires", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Items_withEpires_Inventories_InventoryId",
-                        column: x => x.InventoryId,
-                        principalTable: "Inventories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Items_withEpires_ItemVariants_ItemVariantsId",
-                        column: x => x.ItemVariantsId,
-                        principalTable: "ItemVariants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ItemsInSalesInvoices",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Price = table.Column<decimal>(type: "Money", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    SubtotalPerItem = table.Column<decimal>(type: "Money", nullable: false),
-                    Decriptions = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ItemVariantsId = table.Column<int>(type: "int", nullable: false),
-                    SalesInvoicesId = table.Column<int>(type: "int", nullable: true),
-                    InventoriesId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ItemsInSalesInvoices", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ItemsInSalesInvoices_Inventories_InventoriesId",
-                        column: x => x.InventoriesId,
-                        principalTable: "Inventories",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_ItemsInSalesInvoices_ItemVariants_ItemVariantsId",
-                        column: x => x.ItemVariantsId,
-                        principalTable: "ItemVariants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ItemsInSalesInvoices_SalesInvoices_SalesInvoicesId",
-                        column: x => x.SalesInvoicesId,
-                        principalTable: "SalesInvoices",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Outbound_Invent_Requisitions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CurrentNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Date = table.Column<DateTime>(type: "Date", nullable: false),
-                    HasNotes = table.Column<bool>(type: "bit", nullable: false),
-                    InventoryId = table.Column<int>(type: "int", nullable: false),
-                    ItemVariantsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Outbound_Invent_Requisitions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Outbound_Invent_Requisitions_Inventories_InventoryId",
-                        column: x => x.InventoryId,
-                        principalTable: "Inventories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Outbound_Invent_Requisitions_ItemVariants_ItemVariantsId",
-                        column: x => x.ItemVariantsId,
-                        principalTable: "ItemVariants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "LoanNotes",
                 columns: table => new
                 {
@@ -5420,6 +5545,80 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
+                name: "DiscountsPerItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Discount = table.Column<int>(type: "int", nullable: false),
+                    DiscountType = table.Column<bool>(type: "bit", nullable: false),
+                    ItemsInSalesInvoicesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DiscountsPerItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DiscountsPerItems_ItemsInSalesInvoices_ItemsInSalesInvoicesId",
+                        column: x => x.ItemsInSalesInvoicesId,
+                        principalTable: "ItemsInSalesInvoices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RefundedItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Reason = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ItemsInSalesInvoicesId = table.Column<int>(type: "int", nullable: true),
+                    CreditNote_ItemsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefundedItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RefundedItems_CreditNote_Items_CreditNote_ItemsId",
+                        column: x => x.CreditNote_ItemsId,
+                        principalTable: "CreditNote_Items",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RefundedItems_ItemsInSalesInvoices_ItemsInSalesInvoicesId",
+                        column: x => x.ItemsInSalesInvoicesId,
+                        principalTable: "ItemsInSalesInvoices",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TaxPer_Item_PerInvoice",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TaxValue = table.Column<int>(type: "int", nullable: false),
+                    TaxSettingsId = table.Column<int>(type: "int", nullable: false),
+                    ItemsInSalesInvoicesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TaxPer_Item_PerInvoice", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TaxPer_Item_PerInvoice_ItemsInSalesInvoices_ItemsInSalesInvoicesId",
+                        column: x => x.ItemsInSalesInvoicesId,
+                        principalTable: "ItemsInSalesInvoices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TaxPer_Item_PerInvoice_TaxSettings_TaxSettingsId",
+                        column: x => x.TaxSettingsId,
+                        principalTable: "TaxSettings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MembershipDescriptions",
                 columns: table => new
                 {
@@ -5529,204 +5728,6 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_Field_Choices_Fields_Properties_Fields_PropertiesId",
                         column: x => x.Fields_PropertiesId,
                         principalTable: "Fields_Properties",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "InboundNotes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Inbound_Invent_RequisitionsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InboundNotes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_InboundNotes_Inbound_Invent_Requisitions_Inbound_Invent_RequisitionsId",
-                        column: x => x.Inbound_Invent_RequisitionsId,
-                        principalTable: "Inbound_Invent_Requisitions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Addition_NoExpires",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<DateTime>(type: "Date", nullable: false),
-                    Amount = table.Column<int>(type: "int", nullable: false),
-                    Items_NoEpireId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Addition_NoExpires", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Addition_NoExpires_Items_NoEpires_Items_NoEpireId",
-                        column: x => x.Items_NoEpireId,
-                        principalTable: "Items_NoEpires",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Withdraw_NoExpires",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<DateTime>(type: "Date", nullable: false),
-                    Amount = table.Column<int>(type: "int", nullable: false),
-                    Items_NoEpireId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Withdraw_NoExpires", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Withdraw_NoExpires_Items_NoEpires_Items_NoEpireId",
-                        column: x => x.Items_NoEpireId,
-                        principalTable: "Items_NoEpires",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Addition_WithExpire",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<DateTime>(type: "Date", nullable: false),
-                    Amount = table.Column<int>(type: "int", nullable: false),
-                    Items_withEpireId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Addition_WithExpire", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Addition_WithExpire_Items_withEpires_Items_withEpireId",
-                        column: x => x.Items_withEpireId,
-                        principalTable: "Items_withEpires",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Withdraw_WithExpires",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<DateTime>(type: "Date", nullable: false),
-                    Amount = table.Column<int>(type: "int", nullable: false),
-                    Items_withEpireId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Withdraw_WithExpires", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Withdraw_WithExpires_Items_withEpires_Items_withEpireId",
-                        column: x => x.Items_withEpireId,
-                        principalTable: "Items_withEpires",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DiscountsPerItems",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Discount = table.Column<int>(type: "int", nullable: false),
-                    DiscountType = table.Column<bool>(type: "bit", nullable: false),
-                    ItemsInSalesInvoicesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DiscountsPerItems", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_DiscountsPerItems_ItemsInSalesInvoices_ItemsInSalesInvoicesId",
-                        column: x => x.ItemsInSalesInvoicesId,
-                        principalTable: "ItemsInSalesInvoices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RefundedItems",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Reason = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ItemsInSalesInvoicesId = table.Column<int>(type: "int", nullable: true),
-                    CreditNote_ItemsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RefundedItems", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RefundedItems_CreditNote_Items_CreditNote_ItemsId",
-                        column: x => x.CreditNote_ItemsId,
-                        principalTable: "CreditNote_Items",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RefundedItems_ItemsInSalesInvoices_ItemsInSalesInvoicesId",
-                        column: x => x.ItemsInSalesInvoicesId,
-                        principalTable: "ItemsInSalesInvoices",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TaxPer_Item_PerInvoice",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TaxValue = table.Column<int>(type: "int", nullable: false),
-                    TaxSettingsId = table.Column<int>(type: "int", nullable: false),
-                    ItemsInSalesInvoicesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TaxPer_Item_PerInvoice", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_TaxPer_Item_PerInvoice_ItemsInSalesInvoices_ItemsInSalesInvoicesId",
-                        column: x => x.ItemsInSalesInvoicesId,
-                        principalTable: "ItemsInSalesInvoices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_TaxPer_Item_PerInvoice_TaxSettings_TaxSettingsId",
-                        column: x => x.TaxSettingsId,
-                        principalTable: "TaxSettings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OutboundNotes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Outbound_Invent_RequisitionsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OutboundNotes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_OutboundNotes_Outbound_Invent_Requisitions_Outbound_Invent_RequisitionsId",
-                        column: x => x.Outbound_Invent_RequisitionsId,
-                        principalTable: "Outbound_Invent_Requisitions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -6428,14 +6429,20 @@ namespace ERP.Migrations.ApplicationDb
                 column: "AddedBy_EmployeesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Inventories_AddedBy_EmpId",
+                name: "IX_Inventories_AddedBy_UserId",
                 table: "Inventories",
-                column: "AddedBy_EmpId");
+                column: "AddedBy_UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InventoryAddresses_InventoryId",
-                table: "InventoryAddresses",
-                column: "InventoryId");
+                name: "IX_Inventories_InventoryAddressId",
+                table: "Inventories",
+                column: "InventoryAddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Inventories_WarehouseName",
+                table: "Inventories",
+                column: "WarehouseName",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Item_Per_Subcategories_ItemId",
@@ -7506,9 +7513,6 @@ namespace ERP.Migrations.ApplicationDb
                 name: "Insurance_descriptions");
 
             migrationBuilder.DropTable(
-                name: "InventoryAddresses");
-
-            migrationBuilder.DropTable(
                 name: "Item_Per_Subcategories");
 
             migrationBuilder.DropTable(
@@ -7968,6 +7972,9 @@ namespace ERP.Migrations.ApplicationDb
                 name: "SallaryComponents");
 
             migrationBuilder.DropTable(
+                name: "Employees");
+
+            migrationBuilder.DropTable(
                 name: "PaymentMethods");
 
             migrationBuilder.DropTable(
@@ -7995,36 +8002,6 @@ namespace ERP.Migrations.ApplicationDb
                 name: "EmailsTemplates");
 
             migrationBuilder.DropTable(
-                name: "COCs");
-
-            migrationBuilder.DropTable(
-                name: "ServiceSubCategories");
-
-            migrationBuilder.DropTable(
-                name: "Employees");
-
-            migrationBuilder.DropTable(
-                name: "Items");
-
-            migrationBuilder.DropTable(
-                name: "FieldsInSystem");
-
-            migrationBuilder.DropTable(
-                name: "SystemsInERP");
-
-            migrationBuilder.DropTable(
-                name: "Currencies");
-
-            migrationBuilder.DropTable(
-                name: "ServiceMainCategories");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Countries");
-
-            migrationBuilder.DropTable(
                 name: "Designations");
 
             migrationBuilder.DropTable(
@@ -8041,6 +8018,36 @@ namespace ERP.Migrations.ApplicationDb
 
             migrationBuilder.DropTable(
                 name: "VacationsPolicy_LeavePolicies");
+
+            migrationBuilder.DropTable(
+                name: "COCs");
+
+            migrationBuilder.DropTable(
+                name: "ServiceSubCategories");
+
+            migrationBuilder.DropTable(
+                name: "InventoryAddresses");
+
+            migrationBuilder.DropTable(
+                name: "Items");
+
+            migrationBuilder.DropTable(
+                name: "FieldsInSystem");
+
+            migrationBuilder.DropTable(
+                name: "SystemsInERP");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Countries");
+
+            migrationBuilder.DropTable(
+                name: "Currencies");
+
+            migrationBuilder.DropTable(
+                name: "ServiceMainCategories");
         }
     }
 }

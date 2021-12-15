@@ -1,0 +1,14 @@
+<mat-card fxFlex="100%"
+          [class]="DarkOrLight===Constants.dark?Constants.CSS_dark_for_Child_Component:Constants.CSS_Light_for_Child_Component">
+  <mat-card-title [ngClass]="ThemeColors.bg"
+                  [class]="ThemeColors.colorName==='organge'||ThemeColors.colorName==='amber'?Constants.CSS_dark_color:
+Constants.CSS_text_white"
+                  [style.font-family]="!this.translate.isRightToLeft(this.translate.GetCurrentLang())? Constants.CSS_cursive_font_NotClass + ' !important':Constants.CSS_Hacen_Casablanca_font_NotClass+' !important'"
+                  [dir]="this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'rtl':
+      !this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'ltr':'ltr'">
+    {{Constants.Warehouses|translate}}</mat-card-title>
+  <mat-card-subtitle [dir]="this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'rtl':
+      !this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'ltr':'ltr'">
+    {{this.Constants.Add_Edit_Delete | translate}} {{Constants.Warehouses|translate}}
+  </mat-card-subtitle>
+</mat-card>

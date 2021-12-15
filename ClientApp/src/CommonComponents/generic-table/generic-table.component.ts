@@ -16,7 +16,7 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
-  selector: 'generic-table',
+  selector: 'kiko-table',
   templateUrl: './generic-table.component.html',
   styleUrls: ['./generic-table.component.css']
 })
@@ -46,7 +46,10 @@ export class GenericTableComponent implements OnInit, OnChanges {
   lastPageLabel = "";
   previousPageLabel = "";
   nextPageLabel = "";
+  isLoadingRes: boolean = true;
+  ShowProgressbar: boolean = true;
   SettingsMenuOpenned: boolean = false;
+  RefField: string = "";
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<any>;
@@ -58,11 +61,14 @@ export class GenericTableComponent implements OnInit, OnChanges {
   @Input() data: any[] = []
   @Input() AddedRow: any;
   @Input() PreventDeleteFor: any;
+  @Input() ReferencialField: string = "";
   @Input() datasource: MatTableDataSource<any> = new MatTableDataSource<any>();
   @Output() rowsSelection: EventEmitter<any[]> = new EventEmitter();
   @Output() DoubleClickRow: EventEmitter<any> = new EventEmitter();
   @Output() DeleteClick: EventEmitter<any> = new EventEmitter();
   @Output() EditClick: EventEmitter<any> = new EventEmitter();
+  @Output() ReferencialField_AddClick: EventEmitter<any> = new EventEmitter();
+  @Output() ReferencialField_EditClick: EventEmitter<any> = new EventEmitter();
   constructor(
     public Constants: ConstantsService,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
@@ -99,7 +105,7 @@ export class GenericTableComponent implements OnInit, OnChanges {
       r => this.Theme_dir = r
     );
     this.dataSource = this.datasource;
-    console.log(this.data);
+    this.RefField = this.ReferencialField;
   }
 
   ngOnDestroy(): void {
@@ -110,6 +116,7 @@ export class GenericTableComponent implements OnInit, OnChanges {
     this.ThemeDirection.unsubscribe();
   }
   ngOnInit(): void {
+    console.log(this.translate.GetTranslation(this.PreventDeleteFor));
     setTimeout(() => {
       this.itemPageLabel = this.translate.GetTranslation(this.Constants.ItemPerPageLabal);
       this.firstPageLabel = this.translate.GetTranslation(this.Constants.FirstPage);
@@ -122,22 +129,30 @@ export class GenericTableComponent implements OnInit, OnChanges {
       this.displayedColumns.push(el.field);
       this.ShowHideColumns.push(el.field)
     })
-
     this.displayedColumns.push(this.Constants.Delete);
     this.displayedColumns.push(this.Constants.Edit);
     // this.setDisplayedColumns();
     this.dataSource.sort = this.sort;
+    this.ShowProgressbar = this.ShowProgressBar;
+    this.isLoadingResults = this.isLoadingRes;
+    this.RefField = this.ReferencialField;
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['data']) {
       this.dataSource = this.datasource;
-      this.isLoadingResults = false;
-      this.ShowProgressBar = false;
-      console.log(this.dataSource.data);
     }
     if (changes["AddedRow"]) {
       this.SelectedRows = [];
       this.SelectedRows.push(this.AddedRow);
+    }
+    if ("isLoadingResults" in changes) {
+      this.isLoadingRes = this.isLoadingResults;
+    }
+    if ("ShowProgressBar" in changes) {
+      this.ShowProgressbar = this.ShowProgressBar;
+    }
+    if ("ReferencialField" in changes) {
+      this.RefField = this.ReferencialField;
     }
   }
   dropListDropped(event: CdkDragDrop<string[]>) {
@@ -150,9 +165,12 @@ export class GenericTableComponent implements OnInit, OnChanges {
   handleKeyboardEvent(event: KeyboardEvent) {
     let Backspace = event.key === "Backspace";
     let Delete = event.key === "Delete";
-    let Shift = event.shiftKey
-    console.log(event.key);
-    this.ShiftDelete((Backspace && Shift) || (Delete && Shift));
+    let Shift = event.shiftKey;
+    console.log(event.key)
+    if ((Backspace && Shift) || (Delete && Shift))
+      this.ShiftDelete((Backspace && Shift) || (Delete && Shift));
+    if (event.key === "Enter" && Shift)
+      this.ShiftEnter(event.key === "Enter" && Shift);
     this.SelectionByKeyboard(event.key);
   }
   SelectRow(row: any) {
@@ -190,7 +208,6 @@ export class GenericTableComponent implements OnInit, OnChanges {
       this.dataSource._pageData(this.dataSource.sortData(this.dataSource.data, this.sort)) :
       this.dataSource._pageData(this.dataSource.data);
 
-    console.log(this.dataSource)
     let CurrentIndex = PageData.indexOf(this.SelectedRows[0]);
     if (this.SelectedRows.length > 0 && (key === this.Constants.ArrowDown
       || key === this.Constants.ArrowUp)) {
@@ -246,7 +263,10 @@ export class GenericTableComponent implements OnInit, OnChanges {
       this.SelectedRows.push(PageData[0]);
       this.rowsSelection.emit(this.SelectedRows);
     }
-    if (key === this.Constants.Enter && this.SelectedRows.length > 0) {
+
+  }
+  ShiftEnter(ShidtEnter: boolean) {
+    if (ShidtEnter && this.SelectedRows.length > 0) {
       this.Dbclick(this.SelectedRows[0])
     }
   }
@@ -283,5 +303,11 @@ export class GenericTableComponent implements OnInit, OnChanges {
       this.displayedColumns.splice(this.displayedColumns.length, 0, edit);
     }
     console.log(this.displayedColumns);
+  }
+  AddReferencialData(row: any) {
+    this.ReferencialField_AddClick.emit(row);
+  }
+  EditReferencialData(row: any) {
+    this.ReferencialField_EditClick.emit(row);
   }
 }

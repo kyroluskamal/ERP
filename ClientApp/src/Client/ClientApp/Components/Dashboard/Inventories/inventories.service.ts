@@ -26,4 +26,10 @@ export class InventoriesService {
   UpdateWarehouse(UpdatedInvent: Inventories): Observable<any> {
     return this.httpClient.put(`${RouterConstants.Inventories_Update_API}`, UpdatedInvent);
   }
+
+  //#region Inventory Address
+  GetAllAddresses() {
+
+  }
+  //#endregion
 }

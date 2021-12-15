@@ -1,21 +1,23 @@
-import { AfterViewInit, Component, ElementRef, HostListener, Inject, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { map, Observable, Subscription, tap } from 'rxjs';
+import { Subscription, tap } from 'rxjs';
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { NotificationsService } from 'src/CommonServices/NotificationService/notifications.service';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from 'src/CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
 import { CustomErrorStateMatcher } from 'src/Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
-import { ColDefs, ThemeColor } from 'src/Interfaces/interfaces';
+import { ColDefs, FormDefs, ThemeColor } from 'src/Interfaces/interfaces';
 import { Inventories } from '../../Models/inventories.model';
 import { LightDarkThemeConverterService } from '../../light-dark-theme-converter.service';
 import { InventoriesService } from '../../Inventories/inventories.service'
 import { MatBottomSheet, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { faMobileAlt, faPhone, faPenAlt, faEdit, faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
-
 import { MatTableDataSource } from '@angular/material/table';
 import { EditInventoryComponent } from '../edit-inventory/edit-inventory.component';
+import { ServerResponseHandelerService } from 'src/CommonServices/server-response-handeler.service';
+import { ClientSideValidationService } from 'src/CommonServices/client-side-validation.service';
+import { CustomValidators } from 'src/Helpers/CustomValidation/custom-validators';
+import { AddInventAddressComponent } from '../add-invent-address/add-invent-address.component';
 
 @Component({
   selector: 'app-inventories',
@@ -23,7 +25,6 @@ import { EditInventoryComponent } from '../edit-inventory/edit-inventory.compone
   styleUrls: ['./inventories.component.css']
 })
 export class InventoriesComponent implements OnInit, AfterViewInit {
-  ThemeColors: ThemeColor = JSON.parse(JSON.stringify(localStorage.getItem(this.Constants.ChoosenThemeColors)));
   faMobileAlt = faMobileAlt;
   faPhone = faPhone;
   faPenAlt = faPenAlt;
@@ -34,107 +35,195 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
   ServerErrors: string = "";
   MaxLength: number = 30;
   AddNewInventory: FormGroup = new FormGroup({});
-  LangSubscibtion: Subscription = new Subscription();
-  customErrorStateMatcher: CustomErrorStateMatcher = new CustomErrorStateMatcher()
   loading: boolean = false;
-  TableAppearance: Subscription = new Subscription();
-  ThemeSubscription: Subscription;
-  ThemeColorSubscription: Subscription;
-  ThemeDirection: Subscription;
-  AgGridTable_dir: Subscription;
-  DarkOrLight: string = "";
-  Table_Color_mode: string = "";
-  TableDirection: 'rtl' | 'ltr';
-  Theme_dir: 'rtl' | 'ltr';
+
   columns: ColDefs[] = [];
-  displayedColumns: string[] = [];
-  ShowHideColumns: string[] = [];
   AllInventories: Inventories[] = [];
-  resultsLength = 0;
-  isLoadingResults = true;
+  isLoadingResults: boolean = true;
   SelectedRows: Inventories[] = [];
   dataSource = new MatTableDataSource<any>();
   ShowProgressBar: boolean = true;
-  itemPageLabel = "";
-  firstPageLabel = "";
-  lastPageLabel = "";
-  previousPageLabel = "";
-  nextPageLabel = "";
   AddedRow: any;
   PreventDeleteFor: any;
+  ReferencialField: string = "inventoryAddress";
+  FormBuilder: FormDefs = new FormDefs();
   constructor(private NotificationService: NotificationsService,
     public Constants: ConstantsService, private bottomSheet: MatBottomSheet,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
-    private LightOrDarkConverter: LightDarkThemeConverterService, @Inject(MAT_BOTTOM_SHEET_DATA) public data: Inventories,
-    private InventoriesService: InventoriesService) {
-
-    let tem: any = localStorage.getItem(this.Constants.BodyAppeareance);
-    this.DarkOrLight = tem;
-
-    let x: any = localStorage.getItem(this.Constants.ChoosenThemeColors)
-    x = JSON.parse(x);
-    this.ThemeColors = x;
-    this.ThemeSubscription = this.LightOrDarkConverter.CurrentThemeClass$.subscribe(x => { this.DarkOrLight = x; });
-    this.ThemeColorSubscription = this.LightOrDarkConverter.ThemeColors$.subscribe(
-      x => {
-        this.ThemeColors = x;
-      }
-    );
-    let agGrid_dir: any = localStorage.getItem(this.Constants.Table_direction);
-    this.TableDirection = agGrid_dir;
-    this.AgGridTable_dir = this.LightOrDarkConverter.agGridTable_dir$.subscribe(x => {
-      this.TableDirection = x;
-      // window.location.reload();
-    });
-
-    let tableAppearence: any = localStorage.getItem(this.Constants.Table_Color_mode);
-    this.Table_Color_mode = tableAppearence;
-    this.TableAppearance = this.LightOrDarkConverter.TableTheme$.subscribe(
-      r => this.Table_Color_mode = r
-    );
-    let themeDir: any = localStorage.getItem(this.Constants.dir);
-    this.Theme_dir = themeDir;
-    this.ThemeDirection = this.LightOrDarkConverter.ThemeDir$.subscribe(
-      r => this.Theme_dir = r
-    );
-
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: Inventories, private ServerResponseHandler: ServerResponseHandelerService,
+    private InventoriesService: InventoriesService, private ClientValidaiton: ClientSideValidationService) {
   }
 
 
   ngOnDestroy(): void {
-    this.LangSubscibtion.unsubscribe();
-    this.ThemeSubscription.unsubscribe();
-    this.ThemeColorSubscription.unsubscribe();
-    this.AgGridTable_dir.unsubscribe();
-    this.TableAppearance.unsubscribe();
-    this.ThemeDirection.unsubscribe();
+
   }
   ngOnInit(): void {
-
-    this.columns = [
-      { field: 'id', display: '#' },
-      { field: 'name', display: this.Constants.Name, preventDeleteFor: this.translate.GetTranslation(this.Constants.MainWarehouse) },
-      { field: 'mobilePhone', display: "", HeaderfaIcon: this.faMobileAlt },
-      { field: 'telephone', display: "", HeaderfaIcon: this.faPhone },
-      { field: 'notes', display: this.Constants.Notes },
-      { field: 'isActive', display: this.Constants.Active, IsTrueOrFlase: true, True_faIcon: this.faCheckCircle, False_faIcon: this.faTimesCircle },
-      { field: 'isMainInventory', display: this.Constants.Main, IsTrueOrFlase: true, True_faIcon: this.faCheckCircle, False_faIcon: this.faTimesCircle },
-      { field: 'addedBy_UserName', display: this.Constants.AddedBy },
-    ];
     this.AddNewInventory = new FormGroup({
-      Name: new FormControl(null),
+      Name: new FormControl(null, [Validators.required, Validators.maxLength(this.MaxLength)]),
       IsMain: new FormControl(null),
-      Phone: new FormControl(null),
-      Mobile: new FormControl(null),
+      Phone: new FormControl(null, [CustomValidators.patternValidator(/^(\+\s?)?((?<!\+.*)\(\+?\d+([\s\-\.]?\d+)?\)|\d+)([\s\-\.]?(\(\d+([\s\-\.]?\d+)?\)|\d+))*(\s?(x|ext\.?)\s?\d+)?/, { NOT_VALID_PHONE_NUMBER: true })]),
+      Mobile: new FormControl(null, [CustomValidators.patternValidator(/^(\+\s?)?((?<!\+.*)\(\+?\d+([\s\-\.]?\d+)?\)|\d+)([\s\-\.]?(\(\d+([\s\-\.]?\d+)?\)|\d+))*(\s?(x|ext\.?)\s?\d+)?/, { NOT_VALID_PHONE_NUMBER: true })]),
       IsActive: new FormControl(null),
       Notes: new FormControl(null)
     });
 
+    this.FormBuilder = {
+      form: this.AddNewInventory,
+      Card_fxFlex: "100%",
+      Form_fxLayout: "row wrap",
+      Form_fxLayoutAlign: "space-between",
+      Button_GoogleIcon: "add_circle",
+      ButtonText: [this.Constants.Add, this.Constants.Warehouse_Singular],
+      formFieldsSpec: [{
+        type: "text",
+        formControlName: "Name",
+        appearance: "outline",
+        fxFlex: "33%",
+        fxFlex_xs: "100%",
+        mat_label: this.Constants.WarehouseName,
+
+        faIcon: faPenAlt,
+        errors: [{
+          type: 'required',
+          TranslatedMessage: [{
+            text: this.Constants.Required_field_Error,
+            needTraslation: true
+          }]
+        }, {
+          type: 'maxlength',
+          TranslatedMessage: [{
+            text: this.Constants.MaxLengthExceeded_ERROR,
+            needTraslation: true
+          }, {
+            text: this.MaxLength.toString(),
+            needTraslation: false
+          }, {
+            text: this.Constants.characters,
+            needTraslation: true
+          }]
+        }],
+        required: true,
+        disabled: false,
+        maxLength: "30"
+      }, {
+        type: "tel",
+        formControlName: "Phone",
+        appearance: "outline",
+        fxFlex: "33%",
+        fxFlex_xs: "100%",
+        mat_label: this.Constants.TelephoneNumber,
+        faIcon: faPhone,
+
+        required: false,
+        disabled: false,
+        hint: {
+          text_no_translation: "+(20)xxxxxxxxxx",
+          dir: "ltr",
+          align: "end",
+          text_to_translation: ""
+        },
+        errors: [
+          {
+            type: this.Constants.NOT_VALID_PHONE_NUMBER,
+            TranslatedMessage: [
+              {
+                text: this.Constants.NOT_VALID_PHONE_NUMBER,
+                needTraslation: true
+              }
+            ]
+          }
+        ]
+      }, {
+        type: "tel",
+        formControlName: "Mobile",
+        appearance: "outline",
+        fxFlex: "33%",
+        fxFlex_xs: "100%",
+        mat_label: this.Constants.CellPhoneNumber,
+        faIcon: faPhone,
+        required: false,
+        disabled: false,
+        hint: {
+          text_no_translation: "+(20)xxxxxxxxxx",
+          dir: "ltr",
+          align: "end",
+          text_to_translation: ""
+        },
+        errors: [
+          {
+            type: this.Constants.NOT_VALID_PHONE_NUMBER,
+            TranslatedMessage: [
+              {
+                text: this.Constants.NOT_VALID_PHONE_NUMBER,
+                needTraslation: true
+              }
+            ]
+          }
+        ]
+      }, {
+        type: "textarea",
+        formControlName: "Notes",
+        appearance: "outline",
+        fxFlex: "100%",
+        fxFlex_xs: "100%",
+        mat_label: this.Constants.Notes,
+        faIcon: faPenAlt,
+        cdkAutosizeMinRows: '5',
+        required: false,
+        disabled: false,
+      }, {
+        type: "checkbox",
+        appearance: "fill",
+        formControlName: "IsActive",
+        fxFlex: "100%",
+        fxFlex_xs: "100%",
+        mat_label: this.Constants.Active,
+        required: false,
+        disabled: false,
+      }, {
+        type: "checkbox",
+        appearance: "fill",
+        formControlName: "IsMain",
+        fxFlex: "100%",
+        fxFlex_xs: "100%",
+        mat_label: this.Constants.Main,
+        required: false,
+        disabled: false,
+      }]
+    }
+    this.isLoadingResults = true;
+    this.ShowProgressBar = true;
+    this.columns = [
+      { field: 'id', display: '#' },
+      { field: 'warehouseName', display: this.Constants.Name, preventDeleteFor: this.translate.GetTranslation(this.Constants.MainWarehouse) },
+      { field: 'mobilePhone', display: "", HeaderfaIcon: this.faMobileAlt },
+      { field: 'telephone', display: "", HeaderfaIcon: this.faPhone },
+      { field: 'notes', display: this.Constants.Notes },
+      { field: 'inventAdd', display: this.Constants.address },
+      { field: 'isActive', display: this.Constants.Active, IsTrueOrFlase: true, True_faIcon: this.faCheckCircle, False_faIcon: this.faTimesCircle },
+      { field: 'isMainInventory', display: this.Constants.Main, IsTrueOrFlase: true, True_faIcon: this.faCheckCircle, False_faIcon: this.faTimesCircle },
+      { field: 'addedBy_UserName', display: this.Constants.AddedBy },
+    ];
+
     this.InventoriesService.GetAllInventories().pipe(tap(
       r => {
         for (let x of r) {
-          if (x.name === this.Constants.MainWarehouse) {
-            x.name = this.translate.GetTranslation(this.Constants.MainWarehouse);
+          let add: any = x.inventoryAddress;
+          if (add !== null) {
+            let address = "";
+            for (let key in add) {
+              if (key !== 'id') {
+                address += add[key] + ", ";
+              }
+
+            }
+            x.inventAdd = address;
+          } else {
+            x.inventAdd = "";
+          }
+          if (x.warehouseName === this.Constants.MainWarehouse) {
+            x.warehouseName = this.translate.GetTranslation(this.Constants.MainWarehouse);
             this.PreventDeleteFor = x;
           }
         }
@@ -147,7 +236,7 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
       this.ShowProgressBar = false;
     }
     );
-    console.log(this.AllInventories);
+
   }
 
 
@@ -160,6 +249,7 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
         this.AllInventories = this.AllInventories.filter((item) => {
           return item.id !== invent.id;
         })
+        this.dataSource.paginator?.getNumberOfPages();
         this.dataSource.data = this.AllInventories;
         this.ShowProgressBar = false;
       },
@@ -180,7 +270,6 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
     this.bottomSheet.open(EditInventoryComponent, {
       data: row
     });
-
   }
 
   SelectRow(event: any) {
@@ -190,12 +279,13 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
     this.bottomSheet.open(EditInventoryComponent, {
       data: row
     });
+    this.bottomSheet._openedBottomSheetRef?.afterDismissed().subscribe({
+      next: r => console.log(r)
+    })
   }
-
-
   ShiftDelete(requiredKeys: boolean) {
     if (this.SelectedRows.length > 0 && requiredKeys) {
-      if (this.SelectedRows[0].name === this.Constants.MainWarehouse) {
+      if (this.SelectedRows[0].warehouseName === this.Constants.MainWarehouse) {
         this.NotificationService.error(this.translate.GetTranslation(this.Constants.Delete_Default_inventory_Error), '',
           this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr')
       } else {
@@ -205,26 +295,28 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
     }
   }
   ngAfterViewInit() {
-    console.log(this.AllInventories)
 
   }
-  AddNewInvetory() {
+  AddNewInvetory(formDefs: FormDefs) {
     this.ShowProgressBar = true;
-    this.isLoadingResults = true;
-
     let CurrentUser: any = localStorage.getItem(this.Constants.Client);
     CurrentUser = JSON.parse(CurrentUser);
     let newInvent: Inventories = {
       id: 0,
-      name: this.AddNewInventory.get("Name")?.value,
-      mobilePhone: this.AddNewInventory.get("Mobile")?.value,
-      telephone: this.AddNewInventory.get("Phone")?.value,
-      isActive: Boolean(this.AddNewInventory.get("IsActive")?.value),
-      isMainInventory: Boolean(this.AddNewInventory.get("IsMain")?.value),
-      notes: this.AddNewInventory.get("Notes")?.value,
+      warehouseName: formDefs.form.get("Name")?.value,
+      mobilePhone: formDefs.form.get("Mobile")?.value,
+      telephone: formDefs.form.get("Phone")?.value,
+      isActive: Boolean(formDefs.form.get("IsActive")?.value),
+      isMainInventory: Boolean(formDefs.form.get("IsMain")?.value),
+      notes: formDefs.form.get("Notes")?.value,
       addedBy_UserId: CurrentUser.userId,
       addedBy_UserName: CurrentUser.username,
       subdomain: this.Subdomain
+    }
+    if (!this.ClientValidaiton.isUnique(this.AllInventories, "warehouseName", formDefs.form.get("Name")?.value)) {
+      this.ClientValidaiton.notUniqueNotification("warehouseName");
+      this.ShowProgressBar = false;
+      return;
     }
     this.InventoriesService.AddWarehouse(newInvent).subscribe(
       {
@@ -234,49 +326,23 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
           this.SelectedRows.push(r);
           this.AddedRow = r;
           this.dataSource.data = this.AllInventories;
-          this.NotificationService.success(this.translate.GetTranslation(this.Constants.DataAddtionStatus_Success),
-            this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
+          this.ServerResponseHandler.DatatAddition_Success();
           setTimeout(() => {
             this.dataSource.paginator?.lastPage();
           }, 500);
-
         },
         error: (e) => {
-          let translatedError: string = "";
-          if (Array.isArray(e)) {
-            if (typeof (e[0].status) === "string")
-              translatedError += this.translate.GetTranslation(e[0].status);
-            if (e[0].errors) {
-              if (e[0].errors.Name)
-                for (let err of e[0].errors.Name) {
-                  if (err === this.Constants.MaxLengthExceeded_ERROR)
-                    translatedError += `(${this.translate.GetTranslation(this.Constants.WarehouseName)}) ${this.translate.GetTranslation(err)} ${this.MaxLength}
-                  ${this.translate.GetTranslation(this.Constants.characters)}`;
-                  else
-                    translatedError += `(${this.translate.GetTranslation(this.Constants.WarehouseName)}) ${this.translate.GetTranslation(err)}`
-                }
-              if (e[0].errors.Telephone) {
-                translatedError += ` (${this.translate.GetTranslation(this.Constants.TelephoneNumber)})
-                ${this.translate.GetTranslation(e[0].errors.Telephone[0])}`;
-              }
-              if (e[0].errors.MobilePhone) {
-                translatedError += ` (${this.translate.GetTranslation(this.Constants.CellPhoneNumber)})
-                ${this.translate.GetTranslation(e[0].errors.MobilePhone[0])}`;
-              }
-            }
-          } else if (e.error.status)
-            translatedError += this.translate.GetTranslation(e.error.status);
-
-          else if (e.status === 401 && e.error === null) {
-            translatedError += this.translate.GetTranslation(this.Constants.Unauthorized_Error)
-          }
-          this.NotificationService.error(translatedError, '',
-            this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
+          this.ServerResponseHandler.GetErrorNotification(e, this.MaxLength);
         }
       });
     this.AddNewInventory.reset();
-    this.isLoadingResults = false;
     this.ShowProgressBar = false
   }
 
+  AddAddress(row: Inventories) {
+    this.bottomSheet.open(AddInventAddressComponent);
+  }
+  EditAdress(row: Inventories) {
+    console.log(row);
+  }
 }

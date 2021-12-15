@@ -83,12 +83,12 @@ namespace ERP.UnitOfWork
                     Name = "Uncategorized"
                 });
             }
-
+            if(await ApplicationDbContext.Users.ToListAsync()!=null)
             if (Inventories.GetAllAsync().GetAwaiter().GetResult().Count == 0)
             {
                 await Inventories.AddAsync(new Inventories
                 {
-                    Name = "Main warehouse",
+                    WarehouseName = "Main warehouse",
                     IsActive = true,
                     IsMainInventory = true,
                     AddedBy_UserId = 1,

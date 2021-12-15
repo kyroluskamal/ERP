@@ -1,108 +1,201 @@
-import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { CdkDragDrop, CdkDragStart, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { map, Subscription } from 'rxjs';
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { NotificationsService } from 'src/CommonServices/NotificationService/notifications.service';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from 'src/CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
-import { CustomErrorStateMatcher } from 'src/Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
-import { ColDefs, ThemeColor } from 'src/Interfaces/interfaces';
+import { FormDefs } from 'src/Interfaces/interfaces';
 import { Inventories } from '../../Models/inventories.model';
-import { LightDarkThemeConverterService } from '../../light-dark-theme-converter.service';
 import { InventoriesService } from '../../Inventories/inventories.service'
 import { MatBottomSheet, MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
-import { SuppliersService } from '../../Suppliers/suppliers.service';
 import { faMobileAlt, faPhone, faPenAlt, faEdit } from '@fortawesome/free-solid-svg-icons'
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { ClientSideValidationService } from 'src/CommonServices/client-side-validation.service';
+import { ServerResponseHandelerService } from 'src/CommonServices/server-response-handeler.service';
+
 @Component({
   selector: 'app-edit-inventory',
   templateUrl: './edit-inventory.component.html',
   styleUrls: ['./edit-inventory.component.css']
 })
 export class EditInventoryComponent implements OnInit {
+  Subdomain: string = window.location.hostname.split(".")[0];
 
-  ThemeColors: ThemeColor = JSON.parse(JSON.stringify(localStorage.getItem(this.Constants.ChoosenThemeColors)));
   faMobileAlt = faMobileAlt;
   faPhone = faPhone;
   faPenAlt = faPenAlt;
   faEdit = faEdit;
-  Subdomain: string = window.location.hostname.split(".")[0];
-  ServerErrors: string = "";
+
   MaxLength: number = 30;
 
-  AddNewInventory: FormGroup = new FormGroup({});
-  LangSubscibtion: Subscription = new Subscription();
-  customErrorStateMatcher: CustomErrorStateMatcher = new CustomErrorStateMatcher()
-  loading: boolean = false;
-  TableAppearance: Subscription = new Subscription();
-  ThemeSubscription: Subscription;
-  ThemeColorSubscription: Subscription;
-  ThemeDirection: Subscription;
-  AgGridTable_dir: Subscription;
-  DarkOrLight: string = "";
-  Table_Color_mode: string = "";
-  TableDirection: 'rtl' | 'ltr';
-  Theme_dir: 'rtl' | 'ltr';
-  previousIndex: number = 0;
-  AllInventories: Inventories[] = [];
+  EditInvenoty: FormGroup = new FormGroup({});
+
+  FormBuilder: FormDefs = new FormDefs();
   constructor(private NotificationService: NotificationsService,
-    public Constants: ConstantsService,
+    public Constants: ConstantsService, private InventoriesService: InventoriesService,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
-    private LightOrDarkConverter: LightDarkThemeConverterService, @Inject(MAT_BOTTOM_SHEET_DATA) public data: Inventories,
-    private InventoriesService: InventoriesService, private _bottomSheetRef: MatBottomSheetRef<EditInventoryComponent>) {
-    let tem: any = localStorage.getItem(this.Constants.BodyAppeareance);
-    this.DarkOrLight = tem;
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: Inventories, private ClientSideValidation: ClientSideValidationService,
+    private _bottomSheetRef: MatBottomSheetRef<EditInventoryComponent>,
+    private ServerResponseHandler: ServerResponseHandelerService) {
 
-    let x: any = localStorage.getItem(this.Constants.ChoosenThemeColors)
-    x = JSON.parse(x);
-    this.ThemeColors = x;
-    this.ThemeSubscription = this.LightOrDarkConverter.CurrentThemeClass$.subscribe(x => { this.DarkOrLight = x; console.log(this.DarkOrLight) });
-    this.ThemeColorSubscription = this.LightOrDarkConverter.ThemeColors$.subscribe(
-      x => {
-        this.ThemeColors = x;
-      }
-    );
-    let agGrid_dir: any = localStorage.getItem(this.Constants.Table_direction);
-    this.TableDirection = agGrid_dir;
-    this.AgGridTable_dir = this.LightOrDarkConverter.agGridTable_dir$.subscribe(x => {
-      this.TableDirection = x;
-      // window.location.reload();
-    });
-
-    let tableAppearence: any = localStorage.getItem(this.Constants.Table_Color_mode);
-    this.Table_Color_mode = tableAppearence;
-    this.TableAppearance = this.LightOrDarkConverter.TableTheme$.subscribe(
-      r => this.Table_Color_mode = r
-    );
-    let themeDir: any = localStorage.getItem(this.Constants.dir);
-    this.Theme_dir = themeDir;
-    this.ThemeDirection = this.LightOrDarkConverter.ThemeDir$.subscribe(
-      r => this.Theme_dir = r
-    );
   }
 
 
   ngOnDestroy(): void {
-    this.LangSubscibtion.unsubscribe();
-    this.ThemeSubscription.unsubscribe();
-    this.ThemeColorSubscription.unsubscribe();
-    this.AgGridTable_dir.unsubscribe();
-    this.TableAppearance.unsubscribe();
-    this.ThemeDirection.unsubscribe();
+
   }
   ngOnInit(): void {
-
-    console.log(this.translate.GetTranslation(this.Constants.Uncategorized));
-    this.AddNewInventory = new FormGroup({
-      Name: new FormControl(this.data.name, Validators.required),
+    this.EditInvenoty = new FormGroup({
+      Name: new FormControl(this.data.warehouseName),
       IsMain: new FormControl(this.data.isMainInventory),
       Phone: new FormControl(this.data.telephone),
       Mobile: new FormControl(this.data.mobilePhone),
       IsActive: new FormControl(this.data.isActive),
       Notes: new FormControl(this.data.notes)
     });
+
+    this.FormBuilder = {
+      form: this.EditInvenoty,
+      Card_fxFlex: "100%",
+      Form_fxLayout: "row wrap",
+      Form_fxLayoutAlign: "space-between",
+      Button_GoogleIcon: "add_circle",
+      ButtonText: [this.Constants.Add, this.Constants.Warehouse_Singular],
+      formFieldsSpec: [{
+        type: "text",
+        formControlName: "Name",
+        appearance: "outline",
+        fxFlex: "33%",
+        fxFlex_xs: "100%",
+        mat_label: this.Constants.WarehouseName,
+
+        faIcon: faPenAlt,
+        // errors: [{
+        //   type: 'required',
+        //   TranslatedMessage: [{
+        //     text: this.Constants.Required_field_Error,
+        //     needTraslation: true
+        //   }]
+        // }, {
+        //   type: 'maxlength',
+        //   TranslatedMessage: [{
+        //     text: this.Constants.MaxLengthExceeded_ERROR,
+        //     needTraslation: true
+        //   }, {
+        //     text: this.MaxLength.toString(),
+        //     needTraslation: false
+        //   }, {
+        //     text: this.Constants.characters,
+        //     needTraslation: true
+        //   }]
+        // }],
+        required: false,
+        disabled: false,
+        maxLength: "30"
+      }, {
+        type: "tel",
+        formControlName: "Phone",
+        appearance: "outline",
+        fxFlex: "33%",
+        fxFlex_xs: "100%",
+        mat_label: this.Constants.TelephoneNumber,
+        faIcon: faPhone,
+
+        required: false,
+        disabled: false,
+        hint: {
+          text_no_translation: "+(20)xxxxxxxxxx",
+          dir: "ltr",
+          align: "end",
+          text_to_translation: ""
+        },
+        // errors: [
+        //   {
+        //     type: this.Constants.NOT_VALID_PHONE_NUMBER,
+        //     TranslatedMessage: [
+        //       {
+        //         text: this.Constants.NOT_VALID_PHONE_NUMBER,
+        //         needTraslation: true
+        //       }
+        //     ]
+        //   }
+        // ]
+      }, {
+        type: "tel",
+        formControlName: "Mobile",
+        appearance: "outline",
+        fxFlex: "33%",
+        fxFlex_xs: "100%",
+        mat_label: this.Constants.CellPhoneNumber,
+        faIcon: faPhone,
+        required: false,
+        disabled: false,
+        hint: {
+          text_no_translation: "+(20)xxxxxxxxxx",
+          dir: "ltr",
+          align: "end",
+          text_to_translation: ""
+        },
+        // errors: [
+        //   {
+        //     type: this.Constants.NOT_VALID_PHONE_NUMBER,
+        //     TranslatedMessage: [
+        //       {
+        //         text: this.Constants.NOT_VALID_PHONE_NUMBER,
+        //         needTraslation: true
+        //       }
+        //     ]
+        //   }
+        // ]
+      }, {
+        type: "textarea",
+        formControlName: "Notes",
+        appearance: "outline",
+        fxFlex: "100%",
+        fxFlex_xs: "100%",
+        mat_label: this.Constants.Notes,
+        faIcon: faPenAlt,
+        cdkAutosizeMinRows: '5',
+        required: false,
+        disabled: false,
+      }, {
+        type: "checkbox",
+        appearance: "fill",
+        formControlName: "IsActive",
+        fxFlex: "100%",
+        fxFlex_xs: "100%",
+        mat_label: this.Constants.Active,
+        required: false,
+        disabled: false,
+      }, {
+        type: "checkbox",
+        appearance: "fill",
+        formControlName: "IsMain",
+        fxFlex: "100%",
+        fxFlex_xs: "100%",
+        mat_label: this.Constants.Main,
+        required: false,
+        disabled: false,
+      }]
+    }
+  }
+  EditInvent(EditedInvent: FormDefs) {
+    this.data.warehouseName = EditedInvent.form.get("Name")?.value;
+    this.data.mobilePhone = EditedInvent.form.get("Mobile")?.value;
+    this.data.telephone = EditedInvent.form.get("Phone")?.value;
+    this.data.isActive = Boolean(EditedInvent.form.get("IsActive")?.value);
+    this.data.isMainInventory = Boolean(EditedInvent.form.get("IsMain")?.value);
+    this.data.notes = EditedInvent.form.get("Notes")?.value;
+    this.data.subdomain = this.Subdomain;
+
+    this.InventoriesService.UpdateWarehouse(this.data).subscribe({
+      next: r => {
+        this.ServerResponseHandler.Data_Updaed_Success();
+        this._bottomSheetRef.dismiss(this.data);
+      },
+      error: e => {
+        this.ServerResponseHandler.GetErrorNotification(e);
+      }
+    });
+
   }
 }

@@ -198,9 +198,9 @@
   "NOT_VALID_PHONE_NUMBER" : "ادخل رقم تلفون صحيح.",
   "Add_new_warehouse" : "اضف مخزن جديد",
   "Notes" : "ملاحظات",
-  "WarehouseName" : "اسم المخزن",
-  "TelephoneNumber" : "التليفون الارضي",
-  "CellPhoneNumber":"الهاتف المحمول",
+  "warehousename" : "اسم المخزن",
+  "telephone" : "التليفون الارضي",
+  "mobilephone":"الهاتف المحمول",
   "Active" : "نشط",
   "InActive" : "غير نشط",
   "Main" : "رئيسي",
@@ -217,5 +217,11 @@
   "NonMain":"غير رئيسي",
   "NoMatchedData" : "لا توجد بيانات تطابق بحثك.",
   "Found" : "تم ايجاد",
-  "results" : "نتائج"
+  "results" : "نتائج",
+  "address":"العنوان",
+  "buildingNo" : "رقم المبنى",
+  "flatNo":"رقم الشقة",
+  "addressLine_1":"السطر الاول",
+  "addressLine_2":"السطر الثاني",
+  "postalCode" : "الرقم البريدي"
 }

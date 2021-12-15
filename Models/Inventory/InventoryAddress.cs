@@ -11,8 +11,5 @@ namespace ERP.Models.Inventory
         public string AddressLine_1 { get; set; }
         public string AddressLine_2 { get; set; }
         public string PostalCode { get; set; }
-
-        public Inventories Inventory { get; set; }
-        public int InventoryId { get; set; }
     }
 }

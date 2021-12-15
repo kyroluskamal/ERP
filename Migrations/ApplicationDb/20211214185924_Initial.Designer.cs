@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERP.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211208200601_UpdateInventory")]
-    partial class UpdateInventory
+    [Migration("20211214185924_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -2791,6 +2791,9 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<string>("AddedBy_UserName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("InventoryAddressId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -2800,22 +2803,24 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<string>("MobilePhone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Telephone")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("WarehouseName")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AddedBy_UserId");
 
-                    b.HasIndex("Name")
+                    b.HasIndex("InventoryAddressId");
+
+                    b.HasIndex("WarehouseName")
                         .IsUnique();
 
                     b.ToTable("Inventories");
@@ -2842,15 +2847,10 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<string>("FlatNo")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("InventoryId")
-                        .HasColumnType("int");
-
                     b.Property<string>("PostalCode")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("InventoryId");
 
                     b.ToTable("InventoryAddresses");
                 });
@@ -3111,6 +3111,9 @@ namespace ERP.Migrations.ApplicationDb
 
                     b.Property<int>("DefaultInventoryId")
                         .HasColumnType("int");
+
+                    b.Property<string>("DefaultInventoryName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("HasDescription")
                         .HasColumnType("bit");
@@ -8029,18 +8032,13 @@ namespace ERP.Migrations.ApplicationDb
                         .WithMany()
                         .HasForeignKey("AddedBy_UserId");
 
-                    b.Navigation("ApplicationUser");
-                });
-
-            modelBuilder.Entity("ERP.Models.Inventory.InventoryAddress", b =>
-                {
-                    b.HasOne("ERP.Models.Inventory.Inventories", "Inventory")
+                    b.HasOne("ERP.Models.Inventory.InventoryAddress", "InventoryAddress")
                         .WithMany()
-                        .HasForeignKey("InventoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("InventoryAddressId");
 
-                    b.Navigation("Inventory");
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("InventoryAddress");
                 });
 
             modelBuilder.Entity("ERP.Models.Inventory.Items_NoEpire", b =>

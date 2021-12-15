@@ -1,3 +1,6 @@
+import { Direction } from "@angular/cdk/bidi";
+import { FormGroup } from "@angular/forms";
+import { MatFormFieldAppearance } from "@angular/material/form-field";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 
 export interface ExpansionPanel {
@@ -26,4 +29,58 @@ export interface ColDefs {
   True_GoogleIcon?: string;
   False_GoogleIcon?: string;
   preventDeleteFor?: string;
+}
+
+export class FormDefs {
+  form: FormGroup = new FormGroup({});
+  Card_fxFlex?: string;
+  Form_fxLayout: string = "";
+  Form_fxLayoutAlign: string = "";
+  Button_faIcon?: any;
+  Button_GoogleIcon?: string;
+  ButtonText: string[] = [];
+  formFieldsSpec: FormFields[] = [];
+}
+
+export class FormFields {
+  type: string = "";
+  formControlName: string = "";
+  appearance: MatFormFieldAppearance = "outline";
+  fxFlex?: string;
+  fxFlex_gt_xs?: string;
+  fxFlex_xs?: string;
+  mat_label: string = "";
+  faIcon?: any;
+  GoogleIcon?: string;
+  errors?: MatError[];
+  hint?: MatFormHint = new MatFormHint();
+  cdkAutosizeMinRows?: string = "";
+  required: boolean = false;
+  disabled: boolean = false;
+  maxLength?: string = "";
+  minLength?: string = "";
+  min?: string = "";
+  max?: string = "";
+  SelectData?: any[] = [];
+  PropertyNameToShowInSelection?: string = "";
+  PropertyNameToSetInValue?: string = "";
+  SelectionInsideButton_faIcon?: any;
+  SelectionInsideButton_GoogleIcon?: string = "";
+  SelectionButton_text?: string = "";
+  SelectionText_IfNoData?: string = "";
+}
+export class MatFormHint {
+  text_no_translation?: string = "";
+  text_to_translation: string = "";
+  dir: Direction = "ltr";
+  align: 'start' | 'end' = "end";
+}
+export class MatError {
+  type: string = "";
+  TranslatedMessage: { text: string, needTraslation: boolean }[] = [];
+}
+
+export interface CardTitle {
+  text: string;
+  needTranslation: boolean;
 }

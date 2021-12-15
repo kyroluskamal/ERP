@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+
+import { NotificationsService } from './NotificationService/notifications.service';
+import { TranslationService } from './translation-service.service';
 
 @Injectable({
   providedIn: 'root'
@@ -82,9 +83,9 @@ export class ConstantsService {
   Warehouses = "Warehouses";
   Warehouse_Singular = "Warehouse_Singular";
   Notes = "Notes";
-  WarehouseName = "WarehouseName";
-  TelephoneNumber = "TelephoneNumber";
-  CellPhoneNumber = "CellPhoneNumber";
+  WarehouseName = "warehousename";
+  TelephoneNumber = "telephone";
+  CellPhoneNumber = "mobilephone";
   Active = "Active";
   InActive = "InActive";
   Main = "Main";
@@ -98,6 +99,12 @@ export class ConstantsService {
   NextPage = "NextPage";
   PreviousPage = "PreviousPage";
   LastPage = "LastPage";
+  address = "address";
+  buildingNo = "buildingNo";
+  flatNo = "flatNo";
+  addressLine_1 = "addressLine_1";
+  addressLine_2 = "addressLine_2";
+  postalCode = "postalCode";
   //Notifications Messages
   LoggedInSuccessfully: string = "LoggedInSuccessfully";
   EmilConfirmationResnding = "EmilConfirmationResnding";
@@ -346,6 +353,7 @@ export class ConstantsService {
   Found = "Found";
   results = "results";
   CSS_TableSettingsMenu = "TableSettingsMenu";
+  CSS_Space_evenly = 'space-evenly'
   //Local Stoarage
   FixedSidnav = "FixedSidNav";
   ToolbarThemeClass = "ToolbarThemeClass";
@@ -357,6 +365,7 @@ export class ConstantsService {
   ToolbarAppeareance = "ToolbarAppeareance";
   dir = "dir";
   ChoosenThemeColors = "ChoosenThemeColors";
+
 
   //..............................................................ClientAppUrls
   public App_login = "login";
@@ -379,5 +388,8 @@ export class ConstantsService {
   public ArrowDown = "ArrowDown";
   public ArrowUp = "ArrowUp";
   public Enter = "Enter";
+
+
+
 
 }

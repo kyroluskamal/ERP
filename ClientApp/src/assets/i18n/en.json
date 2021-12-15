@@ -187,9 +187,9 @@
   "NOT_VALID_PHONE_NUMBER" : "Not a valid phone number",
   "Add_new_warehouse":"Add new warehouse",
   "Notes" : "Notes",
-  "WarehouseName" : "Warehouse name",
-  "TelephoneNumber" : "Telephone number",
-  "CellPhoneNumber":"Cell phone number",
+  "warehousename" : "Warehouse name",
+  "telephone" : "Telephone number",
+  "mobilephone":"Cell phone number",
   "Active" : "Active",
   "InActive" : "Inactive",
   "Main" : "Main",
@@ -206,5 +206,11 @@
   "NonMain" : "Non-main",
   "NoMatchedData" : "No data matches your search",
   "Found" : "Found",
-  "results" : "results"
+  "results" : "results",
+  "address" : "Address",
+  "buildingNo" : "Building No.",
+  "flatNo":"Flat No.",
+  "addressLine_1":"Address Line 1",
+  "addressLine_2":"Address Line 2",
+  "postalCode" : "Postal Code"
 }

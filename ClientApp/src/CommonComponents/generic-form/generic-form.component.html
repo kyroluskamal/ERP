@@ -1,0 +1,167 @@
+<mat-card [fxFlex]="FormSpec.Card_fxFlex"
+          [dir]="this.translate.isRightToLeft(this.translate.GetCurrentLang())?'rtl':'ltr'"
+          [class]="DarkOrLight===Constants.dark?Constants.CSS_dark_for_Child_Component:Constants.CSS_Light_for_Child_Component">
+  <mat-card-title [ngClass]="ThemeColors.bg"
+                  *ngIf="Title.length>0"
+                  [class]="ThemeColors.colorName==='organge'||ThemeColors.colorName==='amber'?Constants.CSS_dark_color:
+Constants.CSS_text_white"
+                  [style.font-family]="!this.translate.isRightToLeft(this.translate.GetCurrentLang())? Constants.CSS_cursive_font_NotClass + ' !important':Constants.CSS_Hacen_Casablanca_font_NotClass+' !important'">
+    <span *ngFor="let t of Title">
+      {{!t.needTranslation?t.text:t.text|translate}}
+    </span>
+  </mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="FormSpec.form"
+          [fxLayoutAlign]="FormSpec.Form_fxLayoutAlign"
+          [fxLayout]="FormSpec.Form_fxLayout"
+          (ngSubmit)="FormSpec.form.valid">
+      <ng-container *ngFor="let field of FormSpec.formFieldsSpec">
+        <mat-form-field [appearance]="field.appearance"
+                        *ngIf="field.type==='text' || field.type==='tel' || field.type==='search' || field.type==='number'"
+                        [fxFlex]="field.fxFlex? field.fxFlex:''"
+                        [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''">
+          <mat-label>
+            {{field.mat_label| translate}}
+          </mat-label>
+          <input matInput
+                 [required]="field.required"
+                 [disabled]="field.disabled"
+                 [maxlength]="field.maxLength?field.maxLength:''"
+                 [minlength]="field.minLength?field.minLength:''"
+                 [min]="field.min?field.min:''"
+                 [max]="field.max?field.max:''"
+                 [type]="field.type"
+                 value=""
+                 [formControlName]="field.formControlName"
+                 [errorStateMatcher]="customErrorStateMatcher" />
+          <mat-icon class="mat-18"
+                    matSuffix>
+            <fa-icon *ngIf="field.faIcon&&!field.GoogleIcon"
+                     [icon]="field.faIcon">
+              {{field.GoogleIcon&&!field.faIcon?field.GoogleIcon:''}}
+            </fa-icon>
+          </mat-icon>
+          <mat-hint *ngIf="field.hint"
+                    [dir]="field.hint.dir"
+                    [align]="field.hint.align">{{field.hint.text_no_translation?
+            field.hint.text_no_translation: field.hint.text_to_translation|translate}}</mat-hint>
+          <mat-error *ngFor="let e of field.errors">
+            <span *ngIf="FormSpec.form.get(field.formControlName)?.hasError(e.type)">
+              <span *ngFor="let t of e.TranslatedMessage">
+                {{!t.needTraslation?t.text:(t.text|translate) + ' '}}
+              </span>
+            </span>
+          </mat-error>
+        </mat-form-field>
+        <!-- ----------------------------------------------------------- TextArea -->
+        <mat-form-field [appearance]="field.appearance"
+                        *ngIf="field.type==='textarea'"
+                        [fxFlex]="field.fxFlex? field.fxFlex:''"
+                        [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''">
+          <mat-label>
+            {{field.mat_label| translate}}
+          </mat-label>
+          <textarea matInput
+                    [formControlName]="field.formControlName"
+                    cdkTextareaAutosize
+                    [cdkAutosizeMinRows]="field.cdkAutosizeMinRows?field.cdkAutosizeMinRows:''"></textarea>
+          <mat-icon class="mat-18"
+                    matSuffix>
+            <fa-icon *ngIf="field.faIcon&&!field.GoogleIcon"
+                     [icon]="field.faIcon">
+              {{field.GoogleIcon&&!field.faIcon?field.GoogleIcon:''}}
+            </fa-icon>
+          </mat-icon>
+          <mat-hint *ngIf="field.hint"
+                    [dir]="field.hint.dir"
+                    [align]="field.hint.align">{{field.hint.text_no_translation?
+            field.hint.text_no_translation: field.hint.text_to_translation|translate}}</mat-hint>
+
+          <mat-error *ngFor="let e of field.errors">
+            <span *ngIf="FormSpec.form.get(field.formControlName)?.hasError(e.type)">
+              {{e.TranslatedMessage }}
+            </span>
+          </mat-error>
+        </mat-form-field>
+        <!-- ----------------------------------------------------------- CheckBox -->
+        <mat-checkbox color="primary"
+                      *ngIf="field.type==='checkbox'"
+                      [fxFlex]="field.fxFlex? field.fxFlex:''"
+                      [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''"
+                      [formControlName]="field.formControlName">{{field.mat_label|translate}} </mat-checkbox>
+        <!-- ....................................................Item Inverteories Selection -->
+        <mat-form-field [appearance]="field.appearance"
+                        *ngIf="field.type==='select'"
+                        [fxFlex]="field.fxFlex? field.fxFlex:''"
+                        [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''">
+          <mat-label>{{field.mat_label| translate}}</mat-label>
+          <ng-template [ngIf]="field.SelectData!.length>0"
+                       [ngIfElse]="noData"
+                       #AllInvent>
+            <mat-select>
+              <input matInput
+                     type="search"
+                     placeholder="{{Constants.Search|translate}}">
+              <mat-divider inset></mat-divider>
+              <mat-option *ngFor="let el of field.SelectData"
+                          [value]="el[field.PropertyNameToSetInValue!]">
+                {{el[field.PropertyNameToShowInSelection!]}}
+              </mat-option>
+              <button mat-button
+                      disableRipple>
+                <mat-icon class="mat-18">
+                  <fa-icon *ngIf="field.SelectionInsideButton_faIcon && !field.SelectionInsideButton_GoogleIcon"
+                           [icon]="field.SelectionInsideButton_faIcon"></fa-icon>
+                  <span class="material-icons"
+                        *ngIf="!field.SelectionInsideButton_faIcon && field.SelectionInsideButton_GoogleIcon">
+                    {{field.SelectionInsideButton_GoogleIcon}}
+                  </span>
+                </mat-icon>&nbsp; {{field.SelectionButton_text!|translate}}
+              </button>
+            </mat-select>
+          </ng-template>
+          <ng-template #noData>
+            <mat-select>
+              <mat-option [class]="Constants.CSS_red">{{field.SelectionText_IfNoData!|translate}}</mat-option>
+              <button mat-button
+                      disableRipple>
+                <mat-icon class="mat-18">
+                  <fa-icon *ngIf="field.SelectionInsideButton_faIcon && !field.SelectionInsideButton_GoogleIcon"
+                           [icon]="field.SelectionInsideButton_faIcon"></fa-icon>
+                  <span class="material-icons"
+                        *ngIf="!field.SelectionInsideButton_faIcon && field.SelectionInsideButton_GoogleIcon">
+                    {{field.SelectionInsideButton_GoogleIcon}}
+                  </span>
+                </mat-icon>&nbsp; {{field.SelectionButton_text!|translate}}
+              </button>
+            </mat-select>
+          </ng-template>
+        </mat-form-field>
+      </ng-container>
+
+      <button mat-raised-button
+              color="primary"
+              (submit)="Form.form.valid"
+              [disabled]="Form.form.invalid"
+              [ngClass]="ThemeColors.bg + ' ' + Constants.CSS_Width100"
+              (click)="SendData()"
+              [class]="ThemeColors.colorName==='organge'||ThemeColors.colorName==='amber'?Constants.CSS_dark_color:
+    Constants.CSS_text_white"
+              aria-label="Add new product">
+        <mat-icon>
+          <mat-spinner diameter="20"
+                       color="warn"
+                       *ngIf="loading"></mat-spinner><span *ngIf="!loading"
+                class="material-icons-outlined">
+            <fa-icon *ngIf="FormSpec.Button_faIcon&&!FormSpec.Button_GoogleIcon"
+                     [icon]="FormSpec.Button_faIcon"></fa-icon>
+            {{FormSpec.Button_GoogleIcon&&!FormSpec.Button_faIcon?FormSpec.Button_GoogleIcon:''}}
+          </span>
+        </mat-icon>
+        <span *ngFor="let x of FormSpec.ButtonText">
+          {{x|translate}}&nbsp;
+        </span>
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>

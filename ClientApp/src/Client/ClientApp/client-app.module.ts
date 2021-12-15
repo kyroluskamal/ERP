@@ -27,15 +27,19 @@ import { EditInventoryComponent } from './Components/Dashboard/Inventories/edit-
 import { BadgeComponent } from 'src/CommonComponents/badge/badge.component';
 import { StylePaginatorDirective } from 'src/Directives/style-paginator.directive';
 import { GenericTableComponent } from 'src/CommonComponents/generic-table/generic-table.component';
-const Commponents = [
+import { GenericFormComponent } from '../../CommonComponents/generic-form/generic-form.component';
+import { MatCardTitleOnlyComponent } from 'src/CommonComponents/mat-card-title-only/mat-card-title-only.component';
+import { AddInventAddressComponent } from './Components/Dashboard/Inventories/add-invent-address/add-invent-address.component';
+
+const Commponents = [MatCardTitleOnlyComponent,
   ClientAppDashboardComponent, ClientAppHomeNavbarComponent, CLientAppHomeComponent,
-  ClientDashboardHomeComponent, BadgeComponent, GenericTableComponent,
+  ClientDashboardHomeComponent, BadgeComponent, GenericTableComponent, GenericFormComponent,
   ItemMainCategoriesComponent, ItemsComponentComponent, IconButtonRendererComponent,
   SelectableEditroAgFramweworkComponent, ItemUnitsComponent, NumberCellEditorComponent,
   ItemBrandsComponent, RegisterOnAppComponent, AddNewItemComponent, InventoriesComponent,
   AddNewInventoryAddressComponent, EditInventoryComponent, StylePaginatorDirective]
 @NgModule({
-  declarations: [Commponents],
+  declarations: [Commponents, AddInventAddressComponent],
   imports: [
     SharedModule, MaterialModule, ClientAppRoutingModule, CommonModule, AppRoutingModule,
     BrowserAnimationsModule,
