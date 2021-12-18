@@ -9,9 +9,8 @@ namespace ERP.Utilities.Helpers
 
         public override bool IsValid(object value)
         {
-            var reg = @"^(\+\s?)?((?<!\+.*)\(\+?\d+([\s\-\.]?\d+)?\)|\d+)([\s\-\.]?(\(\d+([\s\-\.]?\d+)?\)|\d+))*(\s?(x|ext\.?)\s?\d+)?$";
+            var reg = @"\+?(\(?[0-9]+\)?)?[0-9]+\s?((x|ext)[0-9]+)?$";
             Regex regex = new Regex(reg);
-
             return value == null ? true: regex.IsMatch(value.ToString());
         }
         

@@ -12,14 +12,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERP.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211214185924_Initial")]
-    partial class Initial
+    [Migration("20211217153452_UpdateInvetAddress")]
+    partial class UpdateInvetAddress
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("ProductVersion", "6.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -2458,8 +2458,13 @@ namespace ERP.Migrations.ApplicationDb
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Name")
-                        .IsRequired()
+                    b.Property<string>("CountryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CountryNameCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneCode")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -2475,13 +2480,20 @@ namespace ERP.Migrations.ApplicationDb
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Name")
+                    b.Property<int?>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CurrencyName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Currencies");
+                    b.HasIndex("CountryId")
+                        .IsUnique()
+                        .HasFilter("[CountryId] IS NOT NULL");
+
+                    b.ToTable("Currency");
                 });
 
             modelBuilder.Entity("ERP.Models.Generals.EmailsTemplates", b =>
@@ -2791,9 +2803,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<string>("AddedBy_UserName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("InventoryAddressId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -2818,8 +2827,6 @@ namespace ERP.Migrations.ApplicationDb
 
                     b.HasIndex("AddedBy_UserId");
 
-                    b.HasIndex("InventoryAddressId");
-
                     b.HasIndex("WarehouseName")
                         .IsUnique();
 
@@ -2842,15 +2849,41 @@ namespace ERP.Migrations.ApplicationDb
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BuildingNo")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<string>("City")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int?>("CountryId")
+                        .HasColumnType("int");
 
                     b.Property<string>("FlatNo")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<string>("Government")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int>("InventoriesId")
+                        .HasColumnType("int");
 
                     b.Property<string>("PostalCode")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<string>("StreetName")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("InventoriesId")
+                        .IsUnique();
 
                     b.ToTable("InventoryAddresses");
                 });
@@ -7943,6 +7976,15 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("WhenRemidersSent");
                 });
 
+            modelBuilder.Entity("ERP.Models.Generals.Currency", b =>
+                {
+                    b.HasOne("ERP.Models.Generals.Country", "Country")
+                        .WithOne("Currency")
+                        .HasForeignKey("ERP.Models.Generals.Currency", "CountryId");
+
+                    b.Navigation("Country");
+                });
+
             modelBuilder.Entity("ERP.Models.Insurance.Insurance_Attachments", b =>
                 {
                     b.HasOne("ERP.Models.Insurance.InsuranceAgent", "InsuranceAgent")
@@ -8032,13 +8074,24 @@ namespace ERP.Migrations.ApplicationDb
                         .WithMany()
                         .HasForeignKey("AddedBy_UserId");
 
-                    b.HasOne("ERP.Models.Inventory.InventoryAddress", "InventoryAddress")
-                        .WithMany()
-                        .HasForeignKey("InventoryAddressId");
-
                     b.Navigation("ApplicationUser");
+                });
 
-                    b.Navigation("InventoryAddress");
+            modelBuilder.Entity("ERP.Models.Inventory.InventoryAddress", b =>
+                {
+                    b.HasOne("ERP.Models.Generals.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId");
+
+                    b.HasOne("ERP.Models.Inventory.Inventories", "Inventories")
+                        .WithOne("InventoryAddress")
+                        .HasForeignKey("ERP.Models.Inventory.InventoryAddress", "InventoriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Country");
+
+                    b.Navigation("Inventories");
                 });
 
             modelBuilder.Entity("ERP.Models.Inventory.Items_NoEpire", b =>
@@ -9964,6 +10017,16 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Employees");
 
                     b.Navigation("ShiftsTimeDetails");
+                });
+
+            modelBuilder.Entity("ERP.Models.Generals.Country", b =>
+                {
+                    b.Navigation("Currency");
+                });
+
+            modelBuilder.Entity("ERP.Models.Inventory.Inventories", b =>
+                {
+                    b.Navigation("InventoryAddress");
                 });
 #pragma warning restore 612, 618
         }

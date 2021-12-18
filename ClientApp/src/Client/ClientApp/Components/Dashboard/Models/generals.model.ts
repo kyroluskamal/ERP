@@ -27,11 +27,16 @@ export class WhenRemidersSent {
 }
 export class Country {
   id: number = 0;
-  name: string = "";
+  countryNameCode: string = "";
+  countryName: string = "";
+  phoneCode: string = "";
+  currency: Currency = new Currency();
 }
 export class Currency {
   id: number = 0;
-  name: string = "";
+  currencyName: string = "";
+  country?: Country = new Country;
+  countryId?: number = 0;
 }
 export class PaymentMethods {
   id: number = 0;

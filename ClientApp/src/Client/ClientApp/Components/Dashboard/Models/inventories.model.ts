@@ -1,3 +1,5 @@
+import { Country } from "./generals.model";
+
 export class Inventories {
   id: number = 0;
   warehouseName: string = "";
@@ -19,6 +21,13 @@ export class InventoryAddress {
   flatNo: string = "";
   addressLine_1: string = "";
   addressLine_2: string = ""
-  postalCode: string = ""
-
+  postalCode: string = "";
+  country?: Country = new Country();
+  countryId?: number = 0;
+  city: string = "";
+  government: string = "";
+  streetName: string = "";
+  inventories: Inventories = new Inventories();
+  inventoriesId: number = 0;
+  subdomain: string = "";
 }

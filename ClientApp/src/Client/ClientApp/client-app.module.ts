@@ -22,14 +22,16 @@ import { TokenInterceptorInterceptor } from 'src/Interceptors/TokenInterceptor/t
 import { RegisterOnAppComponent } from './Components/register-on-app/register-on-app.component';
 import { AddNewItemComponent } from './Components/Dashboard/Items/add-new-item/add-new-item.component';
 import { InventoriesComponent } from './Components/Dashboard/Inventories/inventories/inventories.component';
-import { AddNewInventoryAddressComponent } from './Components/Dashboard/Inventories/add-new-inventory-address/add-new-inventory-address.component';
 import { EditInventoryComponent } from './Components/Dashboard/Inventories/edit-inventory/edit-inventory.component';
 import { BadgeComponent } from 'src/CommonComponents/badge/badge.component';
 import { StylePaginatorDirective } from 'src/Directives/style-paginator.directive';
 import { GenericTableComponent } from 'src/CommonComponents/generic-table/generic-table.component';
 import { GenericFormComponent } from '../../CommonComponents/generic-form/generic-form.component';
 import { MatCardTitleOnlyComponent } from 'src/CommonComponents/mat-card-title-only/mat-card-title-only.component';
-import { AddInventAddressComponent } from './Components/Dashboard/Inventories/add-invent-address/add-invent-address.component';
+import { AddInventAddressComponent } from './Components/Dashboard/Inventories/InventoryAddress/add-invent-address/add-invent-address.component';
+import { BreadcrumbModule } from 'xng-breadcrumb';
+import { EditInventAddressComponent } from './Components/Dashboard/Inventories/InventoryAddress/edit-invent-address/edit-invent-address.component';
+import { AddNewInventoryComponent } from './Components/Dashboard/Inventories/add-new-inventory/add-new-inventory.component';
 
 const Commponents = [MatCardTitleOnlyComponent,
   ClientAppDashboardComponent, ClientAppHomeNavbarComponent, CLientAppHomeComponent,
@@ -37,10 +39,10 @@ const Commponents = [MatCardTitleOnlyComponent,
   ItemMainCategoriesComponent, ItemsComponentComponent, IconButtonRendererComponent,
   SelectableEditroAgFramweworkComponent, ItemUnitsComponent, NumberCellEditorComponent,
   ItemBrandsComponent, RegisterOnAppComponent, AddNewItemComponent, InventoriesComponent,
-  AddNewInventoryAddressComponent, EditInventoryComponent, StylePaginatorDirective]
+  EditInventoryComponent, StylePaginatorDirective, AddInventAddressComponent, EditInventAddressComponent]
 @NgModule({
-  declarations: [Commponents, AddInventAddressComponent],
-  imports: [
+  declarations: [Commponents, AddNewInventoryComponent],
+  imports: [BreadcrumbModule,
     SharedModule, MaterialModule, ClientAppRoutingModule, CommonModule, AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientXsrfModule.withOptions({

@@ -100,11 +100,19 @@ export class ConstantsService {
   PreviousPage = "PreviousPage";
   LastPage = "LastPage";
   address = "address";
-  buildingNo = "buildingNo";
-  flatNo = "flatNo";
-  addressLine_1 = "addressLine_1";
-  addressLine_2 = "addressLine_2";
-  postalCode = "postalCode";
+  buildingNo = "buildingno";
+  flatNo = "flatno";
+  addressLine_1 = "addressline_1";
+  addressLine_2 = "addressline_2";
+  streetName = "streetname";
+  postalCode = "postalcode";
+  SameObject = "SameObject";
+  Save = "Save";
+  city = "city";
+  government = "government";
+  Flat_No = "Flat_No"
+  InventoryAddress = "InventoryAddress";
+  St = "St";
   //Notifications Messages
   LoggedInSuccessfully: string = "LoggedInSuccessfully";
   EmilConfirmationResnding = "EmilConfirmationResnding";
@@ -147,6 +155,7 @@ export class ConstantsService {
   PasswordRequired = "PasswordRequired";
   ConfirmPasswordNoPassswordMatch = "ConfirmPasswordNoPassswordMatch";
   Delete_Default_inventory_Error = "Delete_Default_inventory_Error";
+  Delete_Default_Error = "Delete_Default_Error";
   //Tooltip translation
   CloseSidebar = "Close sidebar";
   FixSidebar = "Fix sidebar";

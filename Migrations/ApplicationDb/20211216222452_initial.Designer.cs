@@ -4,6 +4,7 @@ using ERP.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERP.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211216222452_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2854,14 +2856,14 @@ namespace ERP.Migrations.ApplicationDb
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<int?>("CountryId")
-                        .HasColumnType("int");
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FlatNo")
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
-                    b.Property<string>("Government")
+                    b.Property<string>("Govenrment")
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
@@ -2877,8 +2879,6 @@ namespace ERP.Migrations.ApplicationDb
                         .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CountryId");
 
                     b.HasIndex("InventoriesId")
                         .IsUnique();
@@ -8077,17 +8077,11 @@ namespace ERP.Migrations.ApplicationDb
 
             modelBuilder.Entity("ERP.Models.Inventory.InventoryAddress", b =>
                 {
-                    b.HasOne("ERP.Models.Generals.Country", "Country")
-                        .WithMany()
-                        .HasForeignKey("CountryId");
-
                     b.HasOne("ERP.Models.Inventory.Inventories", "Inventories")
                         .WithOne("InventoryAddress")
                         .HasForeignKey("ERP.Models.Inventory.InventoryAddress", "InventoriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Country");
 
                     b.Navigation("Inventories");
                 });

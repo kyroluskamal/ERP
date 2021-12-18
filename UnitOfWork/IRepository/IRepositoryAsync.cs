@@ -22,6 +22,7 @@ namespace ERP.UnitOfWork.IRepository
             );
 
         Task AddAsync(T entity);
+        Task AddRangeAsync(T[] entity);
         Task RemoveAsync(int id);
         void Remove(T entity);
         void RemoveRange(IEnumerable<T> entity);

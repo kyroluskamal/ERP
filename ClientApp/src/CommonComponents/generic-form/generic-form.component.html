@@ -25,7 +25,6 @@ Constants.CSS_text_white"
           </mat-label>
           <input matInput
                  [required]="field.required"
-                 [disabled]="field.disabled"
                  [maxlength]="field.maxLength?field.maxLength:''"
                  [minlength]="field.minLength?field.minLength:''"
                  [min]="field.min?field.min:''"
@@ -155,7 +154,10 @@ Constants.CSS_text_white"
                 class="material-icons-outlined">
             <fa-icon *ngIf="FormSpec.Button_faIcon&&!FormSpec.Button_GoogleIcon"
                      [icon]="FormSpec.Button_faIcon"></fa-icon>
-            {{FormSpec.Button_GoogleIcon&&!FormSpec.Button_faIcon?FormSpec.Button_GoogleIcon:''}}
+            <span class="material-icons"
+                  *ngIf="FormSpec.Button_GoogleIcon&&!FormSpec.Button_faIcon">
+              {{FormSpec.Button_GoogleIcon}}
+            </span>
           </span>
         </mat-icon>
         <span *ngFor="let x of FormSpec.ButtonText">

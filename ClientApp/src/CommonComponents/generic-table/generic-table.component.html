@@ -5,7 +5,8 @@
   <div [class]="Table_Color_mode===Constants.dark?Constants.CSS_DarkTableBg + ' ' + Constants.CSS_TablefilterDiv
        :Constants.CSS_LightTableBg + ' ' + Constants.CSS_TablefilterDiv"
        fxLayout="row"
-       fxLayoutAlign="space-between center">
+       fxLayoutAlign="space-between center"
+       *ngIf="ShowFilterSection">
     <div fxLayout="row">
       <!-- ................................................. Search table -->
       <div fxLayout="row"
@@ -117,24 +118,23 @@
 
         <td mat-cell
             *matCellDef="let row">
-
           <span *ngIf="!column.IsTrueOrFlase && column.field !== RefField">
             {{row[column.field]}}
           </span>
           <span *ngIf="!column.IsTrueOrFlase && column.field === RefField">
             {{row[RefField]}}
+            <br *ngIf="row[RefField]">
             <button mat-button
                     *ngIf="row[RefField]===''"
-                    style="min-width: 0;line-height: 0; text-decoration: underline; padding: 0;"
+                    class="btn buttonLink"
                     (click)="AddReferencialData(row)">{{Constants.Add|translate}}</button>
             <button mat-button
                     *ngIf="row[RefField]!==''"
-                    style="min-width: 0;line-height: 0; text-decoration: underline; padding: 0;"
+                    class="btn buttonLink"
                     (click)="EditReferencialData(row)">{{Constants.Edit|translate}}</button>
           </span>
 
-          <span *ngIf="
-               column.IsTrueOrFlase">
+          <span *ngIf="column.IsTrueOrFlase">
             <span *ngIf="column.True_faIcon || column.False_faIcon">
               <mat-icon class="mat-18"
                         [class]="Constants.CSS_green"
@@ -168,9 +168,9 @@
         <th mat-header-cell
             *matHeaderCellDef> {{Constants.Delete | translate}} </th>
         <td mat-cell
-            *matCellDef="let element">
+            *matCellDef="let element; let i =index">
           <button mat-icon-button
-                  *ngIf="element.name!== PreventDeleteFor"
+                  *ngIf="element[PreventDeleteForKey]!== PreventDeleteForValue "
                   color="warn"
                   (click)="Delete(element)">
             <mat-icon class="mat-18">delete</mat-icon>
@@ -208,6 +208,7 @@
   </div>
   <mat-paginator [length]="items.length"
                  fixed
+                 *ngIf="ShowPaginator"
                  style-paginator
                  [hidden]="!isLoadingResults"
                  [class]="Table_Color_mode===Constants.dark?Constants.CSS_DarkTableBg

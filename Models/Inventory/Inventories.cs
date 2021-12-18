@@ -24,12 +24,12 @@ namespace ERP.Models.Inventory
         public bool IsMainInventory { get; set; }
 
         [ForeignKey(nameof(AddedBy_UserId))]
-        public ApplicationUser ApplicationUser { get; set; }
+        public virtual ApplicationUser ApplicationUser { get; set; }
         public int? AddedBy_UserId { get; set; } //Not Required temporary
         public string AddedBy_UserName { get; set; }
 
-        public InventoryAddress InventoryAddress { get; set; }
-        public int? InventoryAddressId { get; set; }
+        public virtual InventoryAddress InventoryAddress { get; set; }
+
         [NotMapped]
         public string Subdomain { get; set; }
     }

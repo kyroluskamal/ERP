@@ -102,5 +102,10 @@ namespace ERP.UnitOfWork.Repository.Tenants
             IQueryable<T> query = dbSet;
             return await query.Where(filter).ToListAsync() == null;
         }
+
+        public async Task AddRangeAsync(T[] entity)
+        {
+            await dbSet.AddRangeAsync(entity);
+        }
     }
 }

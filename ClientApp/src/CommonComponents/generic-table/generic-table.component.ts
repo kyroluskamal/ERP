@@ -50,6 +50,7 @@ export class GenericTableComponent implements OnInit, OnChanges {
   ShowProgressbar: boolean = true;
   SettingsMenuOpenned: boolean = false;
   RefField: string = "";
+  PreventFor: string = "";
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<any>;
@@ -60,8 +61,12 @@ export class GenericTableComponent implements OnInit, OnChanges {
   @Input() NoData: boolean = false;
   @Input() data: any[] = []
   @Input() AddedRow: any;
-  @Input() PreventDeleteFor: any;
+  @Input() PreventDeleteForValue: any;
+  @Input() PreventDeleteForKey: any;
+  @Input() PreventDeleteForIndex: any;
   @Input() ReferencialField: string = "";
+  @Input() ShowFilterSection: boolean = true;
+  @Input() ShowPaginator: boolean = true;
   @Input() datasource: MatTableDataSource<any> = new MatTableDataSource<any>();
   @Output() rowsSelection: EventEmitter<any[]> = new EventEmitter();
   @Output() DoubleClickRow: EventEmitter<any> = new EventEmitter();
@@ -116,7 +121,6 @@ export class GenericTableComponent implements OnInit, OnChanges {
     this.ThemeDirection.unsubscribe();
   }
   ngOnInit(): void {
-    console.log(this.translate.GetTranslation(this.PreventDeleteFor));
     setTimeout(() => {
       this.itemPageLabel = this.translate.GetTranslation(this.Constants.ItemPerPageLabal);
       this.firstPageLabel = this.translate.GetTranslation(this.Constants.FirstPage);
@@ -136,10 +140,12 @@ export class GenericTableComponent implements OnInit, OnChanges {
     this.ShowProgressbar = this.ShowProgressBar;
     this.isLoadingResults = this.isLoadingRes;
     this.RefField = this.ReferencialField;
+    this.PreventFor = this.PreventDeleteForValue;
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['data']) {
       this.dataSource = this.datasource;
+
     }
     if (changes["AddedRow"]) {
       this.SelectedRows = [];
@@ -150,6 +156,10 @@ export class GenericTableComponent implements OnInit, OnChanges {
     }
     if ("ShowProgressBar" in changes) {
       this.ShowProgressbar = this.ShowProgressBar;
+    }
+    if ("PreventDeleteForValue" in changes) {
+      this.PreventFor = this.PreventDeleteForValue;
+
     }
     if ("ReferencialField" in changes) {
       this.RefField = this.ReferencialField;

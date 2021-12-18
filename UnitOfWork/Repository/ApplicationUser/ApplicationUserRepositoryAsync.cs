@@ -102,5 +102,10 @@ namespace ERP.UnitOfWork.Repository.ApplicationUser
             IQueryable<T> query = dbSet;
             return await query.FirstOrDefaultAsync(filter) == null;
         }
+
+        public async Task AddRangeAsync(T[] entity)
+        {
+            await dbSet.AddRangeAsync(entity);
+        }
     }
 }

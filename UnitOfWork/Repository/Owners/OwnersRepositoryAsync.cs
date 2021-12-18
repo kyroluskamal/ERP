@@ -107,5 +107,10 @@ namespace ERP.UnitOfWork.Repository.Owners
             IQueryable<T> query = dbSet;
             return await query.Where(filter).ToListAsync() == null;
         }
+
+        public async Task AddRangeAsync(T[] entity)
+        {
+            await dbSet.AddRangeAsync(entity);
+        }
     }
 }

@@ -16,7 +16,8 @@
               (rowsSelection)="SelectRow($event)"
               (EditClick)="EditInventory($event)"
               [AddedRow]="AddedRow"
-              [PreventDeleteFor]="translate.GetTranslation(Constants.MainWarehouse)"
+              [PreventDeleteForValue]="1"
+              PreventDeleteForKey="id"
               ReferencialField="inventAdd"
               (ReferencialField_AddClick)="AddAddress($event)"
               (ReferencialField_EditClick)="EditAdress($event)">

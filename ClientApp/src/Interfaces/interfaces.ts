@@ -56,7 +56,6 @@ export class FormFields {
   hint?: MatFormHint = new MatFormHint();
   cdkAutosizeMinRows?: string = "";
   required: boolean = false;
-  disabled: boolean = false;
   maxLength?: string = "";
   minLength?: string = "";
   min?: string = "";
@@ -83,4 +82,7 @@ export class MatError {
 export interface CardTitle {
   text: string;
   needTranslation: boolean;
+}
+export interface MaxMinLengthValidation {
+  prop: string; maxLength?: number; minLength?: number;
 }

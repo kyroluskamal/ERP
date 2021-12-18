@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { RouterConstants } from 'src/Helpers/RouterConstants';
-import { Inventories } from '../Models/inventories.model';
+import { Inventories, InventoryAddress } from '../Models/inventories.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,8 +28,14 @@ export class InventoriesService {
   }
 
   //#region Inventory Address
-  GetAllAddresses() {
-
+  GetAllAddresses(): Observable<InventoryAddress[]> {
+    return this.httpClient.get<InventoryAddress[]>(`${RouterConstants.InventoryAddress_GET_API}?subomain=${this.subdomain}`);
+  }
+  AddAddress(newAddress: InventoryAddress) {
+    return this.httpClient.post<InventoryAddress>(RouterConstants.InventoryAddress_Add_API, newAddress)
+  }
+  UpdateAddress(AddToUpdate: InventoryAddress): Observable<any> {
+    return this.httpClient.put(`${RouterConstants.InventoryAddress_UPDATE_API}`, AddToUpdate);
   }
   //#endregion
 }

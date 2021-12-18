@@ -6,8 +6,8 @@ import { NotificationsService } from 'src/CommonServices/NotificationService/not
 import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from 'src/CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
 import { CustomErrorStateMatcher } from 'src/Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
-import { ColDefs, FormDefs, ThemeColor } from 'src/Interfaces/interfaces';
-import { Inventories } from '../../Models/inventories.model';
+import { ColDefs, FormDefs, MaxMinLengthValidation, ThemeColor } from 'src/Interfaces/interfaces';
+import { Inventories, InventoryAddress } from '../../Models/inventories.model';
 import { LightDarkThemeConverterService } from '../../light-dark-theme-converter.service';
 import { InventoriesService } from '../../Inventories/inventories.service'
 import { MatBottomSheet, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
@@ -17,7 +17,8 @@ import { EditInventoryComponent } from '../edit-inventory/edit-inventory.compone
 import { ServerResponseHandelerService } from 'src/CommonServices/server-response-handeler.service';
 import { ClientSideValidationService } from 'src/CommonServices/client-side-validation.service';
 import { CustomValidators } from 'src/Helpers/CustomValidation/custom-validators';
-import { AddInventAddressComponent } from '../add-invent-address/add-invent-address.component';
+import { AddInventAddressComponent } from '../InventoryAddress/add-invent-address/add-invent-address.component';
+import { EditInventAddressComponent } from '../InventoryAddress/edit-invent-address/edit-invent-address.component';
 
 @Component({
   selector: 'app-inventories',
@@ -52,6 +53,8 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: Inventories, private ServerResponseHandler: ServerResponseHandelerService,
     private InventoriesService: InventoriesService, private ClientValidaiton: ClientSideValidationService) {
+    this.PreventDeleteFor = this.translate.GetTranslation(this.Constants.MainWarehouse);
+
   }
 
 
@@ -62,11 +65,46 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
     this.AddNewInventory = new FormGroup({
       Name: new FormControl(null, [Validators.required, Validators.maxLength(this.MaxLength)]),
       IsMain: new FormControl(null),
-      Phone: new FormControl(null, [CustomValidators.patternValidator(/^(\+\s?)?((?<!\+.*)\(\+?\d+([\s\-\.]?\d+)?\)|\d+)([\s\-\.]?(\(\d+([\s\-\.]?\d+)?\)|\d+))*(\s?(x|ext\.?)\s?\d+)?/, { NOT_VALID_PHONE_NUMBER: true })]),
-      Mobile: new FormControl(null, [CustomValidators.patternValidator(/^(\+\s?)?((?<!\+.*)\(\+?\d+([\s\-\.]?\d+)?\)|\d+)([\s\-\.]?(\(\d+([\s\-\.]?\d+)?\)|\d+))*(\s?(x|ext\.?)\s?\d+)?/, { NOT_VALID_PHONE_NUMBER: true })]),
+      Phone: new FormControl(null, [CustomValidators.patternValidator(/\+?(\(?[0-9]+\)?)?[0-9]+\s?((x|ext)[0-9]+)?/, { NOT_VALID_PHONE_NUMBER: true })]),
+      Mobile: new FormControl(null, [CustomValidators.patternValidator(/\+?(\(?[0-9]+\)?)?[0-9]+\s?((x|ext)[0-9]+)?/, { NOT_VALID_PHONE_NUMBER: true })]),
       IsActive: new FormControl(null),
       Notes: new FormControl(null)
     });
+
+    this.InventoriesService.GetAllInventories().subscribe(r => {
+      console.log(r);
+      for (let x of r) {
+        let add: InventoryAddress | undefined = x.inventoryAddress;
+        if (add !== null) {
+          x.inventAdd = (add?.buildingNo !== "" ? add?.buildingNo + '-' : '') +
+            (add?.streetName !== '' ? this.translate.isRightToLeft(this.translate.GetCurrentLang()) ?
+              this.translate.GetTranslation(this.Constants.St) + ' ' + add?.streetName : add?.streetName +
+              ` ${this.translate.GetTranslation(this.Constants.St)} ` : '') +
+            (add?.addressLine_1 !== '' ? add?.addressLine_1 + ', ' : '') +
+            (add?.addressLine_2 !== '' ? add?.addressLine_2 + ', ' : '') +
+            (add?.flatNo !== '' ? this.translate.GetTranslation(this.Constants.Flat_No) + ':' + add?.flatNo + ', ' : '') +
+            (add?.city !== '' ? add?.city + ',' : '') +
+            (add?.government !== '' ? add?.government + ', ' : '') +
+            (add?.country !== null ? add?.country?.countryName : '');
+          x.inventAdd = x.inventAdd.trim();
+          if (x.inventAdd[x.inventAdd.length - 1] === ",") {
+            console.log(x.inventAdd.slice(0, x.inventAdd.length - 1))
+            x.inventAdd = x.inventAdd.slice(0, x.inventAdd.length - 1) + ".";
+          }
+        } else {
+          x.inventAdd = "";
+        }
+
+      }
+      if (r[0].warehouseName === this.Constants.MainWarehouse) {
+        r[0].warehouseName = this.translate.GetTranslation(this.Constants.MainWarehouse);
+      }
+      this.AllInventories = r;
+      this.dataSource.data = r;
+      this.isLoadingResults = false;
+      this.ShowProgressBar = false;
+    }
+    );
 
     this.FormBuilder = {
       form: this.AddNewInventory,
@@ -104,7 +142,6 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
           }]
         }],
         required: true,
-        disabled: false,
         maxLength: "30"
       }, {
         type: "tel",
@@ -116,7 +153,6 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
         faIcon: faPhone,
 
         required: false,
-        disabled: false,
         hint: {
           text_no_translation: "+(20)xxxxxxxxxx",
           dir: "ltr",
@@ -141,9 +177,8 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
         fxFlex: "33%",
         fxFlex_xs: "100%",
         mat_label: this.Constants.CellPhoneNumber,
-        faIcon: faPhone,
+        faIcon: faMobileAlt,
         required: false,
-        disabled: false,
         hint: {
           text_no_translation: "+(20)xxxxxxxxxx",
           dir: "ltr",
@@ -171,7 +206,6 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
         faIcon: faPenAlt,
         cdkAutosizeMinRows: '5',
         required: false,
-        disabled: false,
       }, {
         type: "checkbox",
         appearance: "fill",
@@ -180,7 +214,6 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
         fxFlex_xs: "100%",
         mat_label: this.Constants.Active,
         required: false,
-        disabled: false,
       }, {
         type: "checkbox",
         appearance: "fill",
@@ -189,7 +222,6 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
         fxFlex_xs: "100%",
         mat_label: this.Constants.Main,
         required: false,
-        disabled: false,
       }]
     }
     this.isLoadingResults = true;
@@ -206,37 +238,8 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
       { field: 'addedBy_UserName', display: this.Constants.AddedBy },
     ];
 
-    this.InventoriesService.GetAllInventories().pipe(tap(
-      r => {
-        for (let x of r) {
-          let add: any = x.inventoryAddress;
-          if (add !== null) {
-            let address = "";
-            for (let key in add) {
-              if (key !== 'id') {
-                address += add[key] + ", ";
-              }
 
-            }
-            x.inventAdd = address;
-          } else {
-            x.inventAdd = "";
-          }
-          if (x.warehouseName === this.Constants.MainWarehouse) {
-            x.warehouseName = this.translate.GetTranslation(this.Constants.MainWarehouse);
-            this.PreventDeleteFor = x;
-          }
-        }
-      }
-    )).subscribe(r => {
-      console.log(r);
-      this.AllInventories = r;
-      this.dataSource.data = r;
-      this.isLoadingResults = false;
-      this.ShowProgressBar = false;
-    }
-    );
-
+    console.log(this.PreventDeleteFor);
   }
 
 
@@ -244,8 +247,7 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
     this.ShowProgressBar = true;
     this.InventoriesService.DeleteWarehouse(invent.id).subscribe({
       next: r => {
-        this.NotificationService.success(this.translate.GetTranslation(r.status),
-          this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
+        this.ServerResponseHandler.GeneralSuccessResponse(r);
         this.AllInventories = this.AllInventories.filter((item) => {
           return item.id !== invent.id;
         })
@@ -267,17 +269,22 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
     })
   }
   Dbclick(row: Inventories) {
+    let x: { dataToEdit: Inventories, Array: any[] } = { dataToEdit: row, Array: this.AllInventories }
     this.bottomSheet.open(EditInventoryComponent, {
-      data: row
+      data: x
     });
+    this.bottomSheet._openedBottomSheetRef?.afterDismissed().subscribe({
+      next: r => console.log(r)
+    })
   }
 
   SelectRow(event: any) {
     this.SelectedRows = event;
   }
   EditInventory(row: Inventories) {
+    let x: { dataToEdit: Inventories, Array: any[] } = { dataToEdit: row, Array: this.AllInventories }
     this.bottomSheet.open(EditInventoryComponent, {
-      data: row
+      data: x
     });
     this.bottomSheet._openedBottomSheetRef?.afterDismissed().subscribe({
       next: r => console.log(r)
@@ -321,6 +328,7 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
     this.InventoriesService.AddWarehouse(newInvent).subscribe(
       {
         next: (r) => {
+          r.inventAdd = "";
           this.AllInventories.push(r);
           this.SelectedRows = [];
           this.SelectedRows.push(r);
@@ -332,7 +340,8 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
           }, 500);
         },
         error: (e) => {
-          this.ServerResponseHandler.GetErrorNotification(e, this.MaxLength);
+          let x: MaxMinLengthValidation[] = [{ prop: "warehouseName", maxLength: this.MaxLength }]
+          this.ServerResponseHandler.GetErrorNotification(e, x);
         }
       });
     this.AddNewInventory.reset();
@@ -340,9 +349,13 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
   }
 
   AddAddress(row: Inventories) {
-    this.bottomSheet.open(AddInventAddressComponent);
+    this.bottomSheet.open(AddInventAddressComponent, {
+      data: row
+    });
   }
   EditAdress(row: Inventories) {
-    console.log(row);
+    this.bottomSheet.open(EditInventAddressComponent, {
+      data: row
+    });
   }
 }

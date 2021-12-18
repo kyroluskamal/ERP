@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { MaxMinLengthValidation } from 'src/Interfaces/interfaces';
 import { ConstantsService } from './constants.service';
 import { NotificationsService } from './NotificationService/notifications.service';
 import { TranslationService } from './translation-service.service';
@@ -19,7 +20,13 @@ export class ServerResponseHandelerService {
     this.NotificationService.success(this.translate.GetTranslation(this.Constants.Data_SAVED_success_status),
       this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
   }
-  GetErrorNotification(e: any, maxLength: number = 30) {
+  GeneralSuccessResponse(SuncessResponse: any) {
+    console.log(SuncessResponse);
+    this.NotificationService.success(this.translate.GetTranslation(SuncessResponse.status),
+      this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
+  }
+
+  GetErrorNotification(e: any, MaxMinLenth: MaxMinLengthValidation[] = []) {
     let translatedError: string = "";
     if (Array.isArray(e)) {
       if (typeof (e[0].status) === "string")
@@ -29,7 +36,8 @@ export class ServerResponseHandelerService {
         for (let k of keys) {
           for (let err of e[0].errors[k]) {
             if (err === this.Constants.MaxLengthExceeded_ERROR) {
-              translatedError += `( ${this.translate.GetTranslation(k.toLowerCase())} ) ${this.translate.GetTranslation(err)} ${maxLength}
+              let maxLength = MaxMinLenth.filter((i) => { return i.prop.toLowerCase() === k.toLowerCase() });
+              translatedError += `( ${this.translate.GetTranslation(k.toLowerCase())} ) ${this.translate.GetTranslation(err)} ${maxLength[0].maxLength}
               ${this.translate.GetTranslation(this.Constants.characters)} `;
             } else
               translatedError += `( ${this.translate.GetTranslation(k.toLowerCase())} ) ${this.translate.GetTranslation(err)} `

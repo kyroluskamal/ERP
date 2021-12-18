@@ -43,6 +43,11 @@ export abstract class RouterConstants {
   public static Inventories_Add_API = "/api/Inventories/AddWarehouse";
   public static Inventories_Delete_API = "/api/Inventories/DeleteWarehouse";
   public static Inventories_Update_API = "/api/Inventories/Update_Warehouse";
+
+  public static InventoryAddress_Add_API = "/api/Inventories/AddAddress";
+  public static InventoryAddress_GET_API = "/api/Inventories/GetAllAddresses";
+  public static InventoryAddress_DELETE_API = "/api/Inventories/DeleteAddress";
+  public static InventoryAddress_UPDATE_API = "/api/Inventories/UpdateAddress";
   //APIURLS for Suppliers
   public static Suppliers_GetAll_API = "/api/Suppliers/AllSuppliers";
 

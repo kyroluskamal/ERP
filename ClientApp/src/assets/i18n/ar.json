@@ -219,9 +219,17 @@
   "Found" : "تم ايجاد",
   "results" : "نتائج",
   "address":"العنوان",
-  "buildingNo" : "رقم المبنى",
-  "flatNo":"رقم الشقة",
-  "addressLine_1":"السطر الاول",
-  "addressLine_2":"السطر الثاني",
-  "postalCode" : "الرقم البريدي"
+  "buildingno" : "رقم المبنى",
+  "flatno":"رقم الشقة",
+  "addressline_1":"السطر الاول",
+  "addressline_2":"السطر الثاني",
+  "postalcode" : "الرقم البريدي",
+  "Save": "حفظ",
+  "InventoryAddress" : "عنوان مخزن",
+  "streetname": "شارع",
+  "city": "مدينة",
+  "government" : "محافظة",
+  "Flat_No": "شقة",
+  "St" : "ش",
+  "Delete_Default_Error": "لا يمكنك حذف"
 }

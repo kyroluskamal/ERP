@@ -80,7 +80,7 @@ namespace ERP.Data
         public DbSet<Actions> Actions { get; set; }
         public DbSet<AutomaticReminders> AutomaticReminders { get; set; }
         public DbSet<Country> Countries { get; set; }
-        public DbSet<Currency> Currencies { get; set; }
+        public DbSet<Currency> Currency { get; set; }
         public DbSet<EmailsTemplates> EmailsTemplates { get; set; }
         public DbSet<Status> Statuses { get; set; }
         public DbSet<WhenRemidersSent> WhenRemidersSents { get; set; }
@@ -419,6 +419,16 @@ namespace ERP.Data
             builder.Entity<Suppliers>().Property(x => x.TaxID).IsRequired(false);
             builder.Entity<Suppliers>().Property(x => x.CR).IsRequired(false);
             builder.Entity<Suppliers>().Property(x => x.Email).IsRequired(false);
+            builder.Entity<Inventories>()
+                .HasOne(x => x.InventoryAddress)
+                .WithOne(x => x.Inventories)
+                .HasForeignKey<InventoryAddress>(x => x.InventoriesId);
+            builder.Entity<Country>()
+                .HasOne(x => x.Currency)
+                .WithOne(x => x.Country)
+                .HasForeignKey<Currency>(x => x.CountryId);
+          
+
             builder.Entity<ApplicationUser>()
                    .HasIndex(u => u.Email)
                    .IsUnique();

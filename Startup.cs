@@ -14,10 +14,7 @@ using ERP.Utilities;
 using ERP.Utilities.Services;
 using ERP.Utilities.Services.EmailService;
 using Microsoft.AspNetCore.Antiforgery;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -27,10 +24,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Serialization;
 using System;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ERP
 {
@@ -50,7 +45,9 @@ namespace ERP
             services.AddScoped<TenantProvider>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<ITokenService, TokenService>();
-
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
             //services.AddEntityFrameworkSqlServer().AddDbContext<OwnersDbContext>(options =>
             //        options.UseSqlServer());
             //Add Owner Identity DbContext
@@ -60,7 +57,6 @@ namespace ERP
                 {
                     builder.EnableRetryOnFailure();
                 });
-
             });
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddTransient<IRoleStore<OwnerRole>, OwnerRoleStore>();

@@ -208,9 +208,17 @@
   "Found" : "Found",
   "results" : "results",
   "address" : "Address",
-  "buildingNo" : "Building No.",
-  "flatNo":"Flat No.",
-  "addressLine_1":"Address Line 1",
-  "addressLine_2":"Address Line 2",
-  "postalCode" : "Postal Code"
+  "buildingno" : "Building No.",
+  "flatno":"Flat No.",
+  "addressline_1":"Address Line 1",
+  "addressline_2":"Address Line 2",
+  "postalcode" : "Postal Code",
+  "Save" : "Save",
+  "InventoryAddress" : "Inventory Address",
+  "streetname" : "Street name",
+  "city" : "City",
+  "government":"Government",
+  "Flat_No": "Flat No.",
+  "St" :"St",
+  "Delete_Default_Error": "You can't delete the "
 }
