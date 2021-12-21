@@ -180,7 +180,13 @@ export class EditInventoryComponent implements OnInit {
   }
   EditInvent(EditedInvent: FormDefs) {
     if (!(this.ClientSideValidation.isUnique(this.data.Array, 'warehouseName', this.EditInvenoty.get("Name")?.value, this.data.dataToEdit.id))) {
-      this.ClientSideValidation.notUniqueNotification("warehouseName");
+      this.ClientSideValidation.notUniqueNotification_Swal("warehouseName");
+      EditedInvent.form.get("Name")?.setValue(this.data.dataToEdit.warehouseName);
+      EditedInvent.form.get("Mobile")?.setValue(this.data.dataToEdit.mobilePhone);
+      EditedInvent.form.get("Phone")?.setValue(this.data.dataToEdit.telephone);
+      EditedInvent.form.get("IsActive")?.setValue(this.data.dataToEdit.isActive);
+      EditedInvent.form.get("IsMain")?.setValue(this.data.dataToEdit.isMainInventory);
+      EditedInvent.form.get("Notes")?.setValue(this.data.dataToEdit.notes);
       return;
     }
     if (this.data.dataToEdit.warehouseName === EditedInvent.form.get("Name")?.value
@@ -210,7 +216,7 @@ export class EditInventoryComponent implements OnInit {
       next: r => {
         if (r.status)
           if (r.status !== this.Constants.SameObject) {
-            this.ServerResponseHandler.GeneralSuccessResponse(r);
+            this.ServerResponseHandler.GeneralSuccessResponse_Swal(r);
             this.data.dataToEdit.warehouseName = UpdateInvent.warehouseName;
             this.data.dataToEdit.mobilePhone = UpdateInvent.mobilePhone;
             this.data.dataToEdit.telephone = UpdateInvent.telephone;
@@ -221,7 +227,7 @@ export class EditInventoryComponent implements OnInit {
         this._bottomSheetRef.dismiss(this.data);
       },
       error: e => {
-        this.ServerResponseHandler.GetErrorNotification(e);
+        this.ServerResponseHandler.GetErrorNotification_swal(e);
         EditedInvent.form.get("Name")?.setValue(this.data.dataToEdit.warehouseName);
         EditedInvent.form.get("Mobile")?.setValue(this.data.dataToEdit.mobilePhone);
         EditedInvent.form.get("Phone")?.setValue(this.data.dataToEdit.telephone);

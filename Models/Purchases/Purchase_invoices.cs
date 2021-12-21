@@ -41,7 +41,7 @@ namespace ERP.Models.Purchases
         [Column(TypeName = "bit")]
         public bool HasAttachments { get; set; }
 
-        public Currency Currency { get; set; }
+        public string Currency { get; set; }
         public int? CurrencyId { get; set; }
     }
 }

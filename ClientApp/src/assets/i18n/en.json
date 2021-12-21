@@ -220,5 +220,12 @@
   "government":"Government",
   "Flat_No": "Flat No.",
   "St" :"St",
-  "Delete_Default_Error": "You can't delete the "
+  "Delete_Default_Error": "You can't delete the ",
+  "confirm":"Confirm",
+  "DeleteConfirmation":"Delete Confirmation",
+  "DeleteInventoryWarning": "Please, notice that when you delete a warehouse, all the included items will be added to the default inventory automatically",
+  "cancel": "Cancel",
+  "error": "Error",
+  "warning":"Warning",
+  "OK" : "OK"
 }

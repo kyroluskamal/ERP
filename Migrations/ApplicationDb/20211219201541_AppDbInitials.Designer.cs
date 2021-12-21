@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERP.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211217153452_UpdateInvetAddress")]
-    partial class UpdateInvetAddress
+    [Migration("20211219201541_AppDbInitials")]
+    partial class AppDbInitials
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -868,7 +868,10 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<int>("CheckBookNo")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CurrencyId")
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CurrencyId")
                         .HasColumnType("int");
 
                     b.Property<int>("FirstSerial")
@@ -886,8 +889,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.HasKey("Id");
 
                     b.HasIndex("BankAccountsId");
-
-                    b.HasIndex("CurrencyId");
 
                     b.ToTable("CheckBooks");
                 });
@@ -1216,11 +1217,20 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<int>("CountryId")
                         .HasColumnType("int");
 
+                    b.Property<string>("CountryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CountryNameCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("CreditLimit")
                         .HasColumnType("int");
 
                     b.Property<int>("CreditPeriodLimit")
                         .HasColumnType("int");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CurrencyId")
                         .HasColumnType("int");
@@ -1263,10 +1273,6 @@ namespace ERP.Migrations.ApplicationDb
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CountryId");
-
-                    b.HasIndex("CurrencyId");
 
                     b.HasIndex("UserId");
 
@@ -2002,8 +2008,14 @@ namespace ERP.Migrations.ApplicationDb
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("CountryId")
+                    b.Property<int>("CountryId")
                         .HasColumnType("int");
+
+                    b.Property<string>("CountryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CountryNameCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("Date");
@@ -2064,8 +2076,6 @@ namespace ERP.Migrations.ApplicationDb
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CountryId");
 
                     b.HasIndex("DesignationId");
 
@@ -2189,6 +2199,9 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("Date");
 
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("CurrencyId")
                         .HasColumnType("int");
 
@@ -2234,8 +2247,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.HasKey("Id");
 
                     b.HasIndex("AddBy_empId");
-
-                    b.HasIndex("CurrencyId");
 
                     b.HasIndex("EmailsTemplatesId");
 
@@ -2448,52 +2459,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.HasIndex("WhenOptionId");
 
                     b.ToTable("AutomaticReminders");
-                });
-
-            modelBuilder.Entity("ERP.Models.Generals.Country", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("CountryName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CountryNameCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Countries");
-                });
-
-            modelBuilder.Entity("ERP.Models.Generals.Currency", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int?>("CountryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CurrencyName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CountryId")
-                        .IsUnique()
-                        .HasFilter("[CountryId] IS NOT NULL");
-
-                    b.ToTable("Currency");
                 });
 
             modelBuilder.Entity("ERP.Models.Generals.EmailsTemplates", b =>
@@ -2856,8 +2821,14 @@ namespace ERP.Migrations.ApplicationDb
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<int?>("CountryId")
+                    b.Property<int>("CountryId")
                         .HasColumnType("int");
+
+                    b.Property<string>("CountryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CountryNameCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FlatNo")
                         .HasMaxLength(15)
@@ -2879,8 +2850,6 @@ namespace ERP.Migrations.ApplicationDb
                         .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CountryId");
 
                     b.HasIndex("InventoriesId")
                         .IsUnique();
@@ -3947,6 +3916,9 @@ namespace ERP.Migrations.ApplicationDb
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("CurrencyId")
                         .HasColumnType("int");
 
@@ -3957,8 +3929,6 @@ namespace ERP.Migrations.ApplicationDb
                         .HasColumnType("Date");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CurrencyId");
 
                     b.ToTable("Contracts");
                 });
@@ -4067,6 +4037,9 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<DateTime>("ApplicationDate")
                         .HasColumnType("Date");
 
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("CurrencyId")
                         .HasColumnType("int");
 
@@ -4096,8 +4069,6 @@ namespace ERP.Migrations.ApplicationDb
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CurrencyId");
-
                     b.HasIndex("EmployeesId");
 
                     b.HasIndex("TreasuriesId");
@@ -4112,6 +4083,9 @@ namespace ERP.Migrations.ApplicationDb
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("CurrencyId")
                         .HasColumnType("int");
@@ -4138,8 +4112,6 @@ namespace ERP.Migrations.ApplicationDb
                         .HasColumnType("Money");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CurrencyId");
 
                     b.HasIndex("EmployeesId");
 
@@ -4754,6 +4726,9 @@ namespace ERP.Migrations.ApplicationDb
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("CurrencyId")
                         .HasColumnType("int");
 
@@ -4795,8 +4770,6 @@ namespace ERP.Migrations.ApplicationDb
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CurrencyId");
 
                     b.ToTable("Purchase_invoices");
                 });
@@ -5046,6 +5019,9 @@ namespace ERP.Migrations.ApplicationDb
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("CurrencyId")
                         .HasColumnType("int");
 
@@ -5075,8 +5051,6 @@ namespace ERP.Migrations.ApplicationDb
                         .HasColumnType("Money");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CurrencyId");
 
                     b.ToTable("Purchase_RefundRequests");
                 });
@@ -5335,6 +5309,9 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("Date");
 
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("CurrencyId")
                         .HasColumnType("int");
 
@@ -5361,8 +5338,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.HasKey("Id");
 
                     b.HasIndex("AddedBy_EmpId");
-
-                    b.HasIndex("CurrencyId");
 
                     b.ToTable("Commissions");
                 });
@@ -5583,6 +5558,9 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<int>("CollectedBy_EmpId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("CurrencyId")
                         .HasColumnType("int");
 
@@ -5607,8 +5585,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.HasKey("Id");
 
                     b.HasIndex("CollectedBy_EmpId");
-
-                    b.HasIndex("CurrencyId");
 
                     b.HasIndex("PaymentMethodsId");
 
@@ -6361,6 +6337,9 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("Date");
 
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("CurrencyId")
                         .HasColumnType("int");
 
@@ -6406,8 +6385,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.HasKey("Id");
 
                     b.HasIndex("COCId");
-
-                    b.HasIndex("CurrencyId");
 
                     b.ToTable("Subscriptions");
                 });
@@ -6478,28 +6455,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Supplier_CustomFields");
                 });
 
-            modelBuilder.Entity("ERP.Models.Supplier.Supplier_notes", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Note")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SuppliersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SuppliersId");
-
-                    b.ToTable("Supplier_notes");
-                });
-
             modelBuilder.Entity("ERP.Models.Supplier.SupplierAddresses", b =>
                 {
                     b.Property<int>("Id")
@@ -6543,6 +6498,12 @@ namespace ERP.Migrations.ApplicationDb
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("AddedBy_UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AddedBy_UserName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("BusinessName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -6553,6 +6514,15 @@ namespace ERP.Migrations.ApplicationDb
 
                     b.Property<int>("CountryId")
                         .HasColumnType("int");
+
+                    b.Property<string>("CountryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CountryNameCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CurrencyId")
                         .HasColumnType("int");
@@ -6568,9 +6538,6 @@ namespace ERP.Migrations.ApplicationDb
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<bool>("HasNotes")
-                        .HasColumnType("bit");
-
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -6580,6 +6547,9 @@ namespace ERP.Migrations.ApplicationDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("OpeningBalance")
                         .HasColumnType("Money");
 
@@ -6587,19 +6557,11 @@ namespace ERP.Migrations.ApplicationDb
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Telephone")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CountryId");
-
-                    b.HasIndex("CurrencyId");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("AddedBy_UserId");
 
                     b.ToTable("Suppliers");
                 });
@@ -6777,6 +6739,9 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<decimal>("Budget")
                         .HasColumnType("Money");
 
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("CurrencyId")
                         .HasColumnType("int");
 
@@ -6808,8 +6773,6 @@ namespace ERP.Migrations.ApplicationDb
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CurrencyId");
 
                     b.ToTable("WorkOrders");
                 });
@@ -7287,13 +7250,7 @@ namespace ERP.Migrations.ApplicationDb
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ERP.Models.Generals.Currency", "Currency")
-                        .WithMany()
-                        .HasForeignKey("CurrencyId");
-
                     b.Navigation("BankAccounts");
-
-                    b.Navigation("Currency");
                 });
 
             modelBuilder.Entity("ERP.Models.Checks.CheckBook_Notes", b =>
@@ -7416,18 +7373,6 @@ namespace ERP.Migrations.ApplicationDb
 
             modelBuilder.Entity("ERP.Models.COCs.COC", b =>
                 {
-                    b.HasOne("ERP.Models.Generals.Country", "Country")
-                        .WithMany()
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ERP.Models.Generals.Currency", "Currency")
-                        .WithMany()
-                        .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ERP.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -7435,10 +7380,6 @@ namespace ERP.Migrations.ApplicationDb
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
-
-                    b.Navigation("Country");
-
-                    b.Navigation("Currency");
                 });
 
             modelBuilder.Entity("ERP.Models.COCs.COC_CustomFields", b =>
@@ -7750,10 +7691,6 @@ namespace ERP.Migrations.ApplicationDb
 
             modelBuilder.Entity("ERP.Models.Employee.Employees", b =>
                 {
-                    b.HasOne("ERP.Models.Generals.Country", "Country")
-                        .WithMany()
-                        .HasForeignKey("CountryId");
-
                     b.HasOne("ERP.Models.OrganizationalStructure.Designation", "Designation")
                         .WithMany()
                         .HasForeignKey("DesignationId");
@@ -7789,8 +7726,6 @@ namespace ERP.Migrations.ApplicationDb
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
-
-                    b.Navigation("Country");
 
                     b.Navigation("Designation");
 
@@ -7837,19 +7772,11 @@ namespace ERP.Migrations.ApplicationDb
                         .WithMany()
                         .HasForeignKey("AddBy_empId");
 
-                    b.HasOne("ERP.Models.Generals.Currency", "Currency")
-                        .WithMany()
-                        .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ERP.Models.Generals.EmailsTemplates", "EmailsTemplates")
                         .WithMany()
                         .HasForeignKey("EmailsTemplatesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Currency");
 
                     b.Navigation("EmailsTemplates");
 
@@ -7976,15 +7903,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("WhenRemidersSent");
                 });
 
-            modelBuilder.Entity("ERP.Models.Generals.Currency", b =>
-                {
-                    b.HasOne("ERP.Models.Generals.Country", "Country")
-                        .WithOne("Currency")
-                        .HasForeignKey("ERP.Models.Generals.Currency", "CountryId");
-
-                    b.Navigation("Country");
-                });
-
             modelBuilder.Entity("ERP.Models.Insurance.Insurance_Attachments", b =>
                 {
                     b.HasOne("ERP.Models.Insurance.InsuranceAgent", "InsuranceAgent")
@@ -8079,17 +7997,11 @@ namespace ERP.Migrations.ApplicationDb
 
             modelBuilder.Entity("ERP.Models.Inventory.InventoryAddress", b =>
                 {
-                    b.HasOne("ERP.Models.Generals.Country", "Country")
-                        .WithMany()
-                        .HasForeignKey("CountryId");
-
                     b.HasOne("ERP.Models.Inventory.Inventories", "Inventories")
                         .WithOne("InventoryAddress")
                         .HasForeignKey("ERP.Models.Inventory.InventoryAddress", "InventoriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Country");
 
                     b.Navigation("Inventories");
                 });
@@ -8513,17 +8425,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Contract_Per_Emp");
                 });
 
-            modelBuilder.Entity("ERP.Models.Payroll.Contracts", b =>
-                {
-                    b.HasOne("ERP.Models.Generals.Currency", "Currency")
-                        .WithMany()
-                        .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Currency");
-                });
-
             modelBuilder.Entity("ERP.Models.Payroll.Contracts_Deduction", b =>
                 {
                     b.HasOne("ERP.Models.Payroll.Contracts", "Contracts")
@@ -8586,12 +8487,6 @@ namespace ERP.Migrations.ApplicationDb
 
             modelBuilder.Entity("ERP.Models.Payroll.Loans", b =>
                 {
-                    b.HasOne("ERP.Models.Generals.Currency", "Currency")
-                        .WithMany()
-                        .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ERP.Models.Employee.Employees", "Employees")
                         .WithMany()
                         .HasForeignKey("EmployeesId")
@@ -8604,8 +8499,6 @@ namespace ERP.Migrations.ApplicationDb
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Currency");
-
                     b.Navigation("Employees");
 
                     b.Navigation("Treasuries");
@@ -8613,17 +8506,11 @@ namespace ERP.Migrations.ApplicationDb
 
             modelBuilder.Entity("ERP.Models.Payroll.Payslips", b =>
                 {
-                    b.HasOne("ERP.Models.Generals.Currency", "Currency")
-                        .WithMany()
-                        .HasForeignKey("CurrencyId");
-
                     b.HasOne("ERP.Models.Employee.Employees", "Employees")
                         .WithMany()
                         .HasForeignKey("EmployeesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Currency");
 
                     b.Navigation("Employees");
                 });
@@ -8925,15 +8812,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Purchase_invoices");
                 });
 
-            modelBuilder.Entity("ERP.Models.Purchases.Purchase_invoices", b =>
-                {
-                    b.HasOne("ERP.Models.Generals.Currency", "Currency")
-                        .WithMany()
-                        .HasForeignKey("CurrencyId");
-
-                    b.Navigation("Currency");
-                });
-
             modelBuilder.Entity("ERP.Models.Purchases.Purchase_Payments", b =>
                 {
                     b.HasOne("ERP.Models.Purchases.PurchasePaymentMethods", "PurchasePaymentMethods")
@@ -9073,17 +8951,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Services");
                 });
 
-            modelBuilder.Entity("ERP.Models.Purchases.PurphaseRefund.Purchase_RefundRequests", b =>
-                {
-                    b.HasOne("ERP.Models.Generals.Currency", "Currency")
-                        .WithMany()
-                        .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Currency");
-                });
-
             modelBuilder.Entity("ERP.Models.Purchases.PurphaseRefund.Refunds_Attachments", b =>
                 {
                     b.HasOne("ERP.Models.Purchases.PurphaseRefund.Purchase_RefundRequests", "Purchase_RefundRequests")
@@ -9212,14 +9079,6 @@ namespace ERP.Migrations.ApplicationDb
                         .HasForeignKey("AddedBy_EmpId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("ERP.Models.Generals.Currency", "Currency")
-                        .WithMany()
-                        .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Currency");
 
                     b.Navigation("Employees");
                 });
@@ -9366,12 +9225,6 @@ namespace ERP.Migrations.ApplicationDb
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ERP.Models.Generals.Currency", "Currency")
-                        .WithMany()
-                        .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ERP.Models.Generals.PaymentMethods", "PaymentMethods")
                         .WithMany()
                         .HasForeignKey("PaymentMethodsId")
@@ -9383,8 +9236,6 @@ namespace ERP.Migrations.ApplicationDb
                         .HasForeignKey("PaymentStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Currency");
 
                     b.Navigation("Employees");
 
@@ -9743,13 +9594,7 @@ namespace ERP.Migrations.ApplicationDb
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ERP.Models.Generals.Currency", "Currency")
-                        .WithMany()
-                        .HasForeignKey("CurrencyId");
-
                     b.Navigation("COC");
-
-                    b.Navigation("Currency");
                 });
 
             modelBuilder.Entity("ERP.Models.Supplier.Supplier_ContactList", b =>
@@ -9782,17 +9627,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Suppliers");
                 });
 
-            modelBuilder.Entity("ERP.Models.Supplier.Supplier_notes", b =>
-                {
-                    b.HasOne("ERP.Models.Supplier.Suppliers", "Suppliers")
-                        .WithMany()
-                        .HasForeignKey("SuppliersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Suppliers");
-                });
-
             modelBuilder.Entity("ERP.Models.Supplier.SupplierAddresses", b =>
                 {
                     b.HasOne("ERP.Models.Supplier.Suppliers", "Suppliers")
@@ -9806,29 +9640,11 @@ namespace ERP.Migrations.ApplicationDb
 
             modelBuilder.Entity("ERP.Models.Supplier.Suppliers", b =>
                 {
-                    b.HasOne("ERP.Models.Generals.Country", "Country")
-                        .WithMany()
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ERP.Models.Generals.Currency", "Currency")
-                        .WithMany()
-                        .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ERP.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AddedBy_UserId");
 
                     b.Navigation("ApplicationUser");
-
-                    b.Navigation("Country");
-
-                    b.Navigation("Currency");
                 });
 
             modelBuilder.Entity("ERP.Models.TreasuriesAndBankAccount.BankAccount_Description", b =>
@@ -9869,15 +9685,6 @@ namespace ERP.Migrations.ApplicationDb
                         .IsRequired();
 
                     b.Navigation("WorkOrders");
-                });
-
-            modelBuilder.Entity("ERP.Models.WorkOrder.WorkOrders", b =>
-                {
-                    b.HasOne("ERP.Models.Generals.Currency", "Currency")
-                        .WithMany()
-                        .HasForeignKey("CurrencyId");
-
-                    b.Navigation("Currency");
                 });
 
             modelBuilder.Entity("ERP.Models.WorkOrder.WorkOrders_Attachments", b =>
@@ -10017,11 +9824,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Employees");
 
                     b.Navigation("ShiftsTimeDetails");
-                });
-
-            modelBuilder.Entity("ERP.Models.Generals.Country", b =>
-                {
-                    b.Navigation("Currency");
                 });
 
             modelBuilder.Entity("ERP.Models.Inventory.Inventories", b =>

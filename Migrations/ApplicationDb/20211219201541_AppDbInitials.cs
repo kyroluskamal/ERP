@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ERP.Migrations.ApplicationDb
 {
-    public partial class initial : Migration
+    public partial class AppDbInitials : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -205,18 +205,19 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
-                name: "Countries",
+                name: "Contracts",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CountryNameCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CountryName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneCode = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    StartDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    PayrollFrequency = table.Column<byte>(type: "tinyint", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CurrencyId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Countries", x => x.Id);
+                    table.PrimaryKey("PK_Contracts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -451,6 +452,54 @@ namespace ERP.Migrations.ApplicationDb
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PriceLists", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Purchase_invoices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateTime>(type: "Date", nullable: false),
+                    CurrentNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HasPymentTerms = table.Column<bool>(type: "bit", nullable: false),
+                    HasDiscount = table.Column<bool>(type: "bit", nullable: false),
+                    HasShippingFees = table.Column<bool>(type: "bit", nullable: false),
+                    HasNotes = table.Column<bool>(type: "bit", nullable: false),
+                    IsRecieved = table.Column<bool>(type: "bit", nullable: false),
+                    IsPartiallyPaid = table.Column<bool>(type: "bit", nullable: false),
+                    IsAlreadyPaid = table.Column<bool>(type: "bit", nullable: false),
+                    ServiceOrItem = table.Column<bool>(type: "bit", nullable: false),
+                    HasDeposits = table.Column<bool>(type: "bit", nullable: false),
+                    HasAttachments = table.Column<bool>(type: "bit", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CurrencyId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Purchase_invoices", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Purchase_RefundRequests",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CurrentNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RequestDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    RefundDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    ServiceOrItem = table.Column<bool>(type: "bit", nullable: false),
+                    HasPymentTerms = table.Column<bool>(type: "bit", nullable: false),
+                    HasShippingFees = table.Column<bool>(type: "bit", nullable: false),
+                    HasNotes = table.Column<bool>(type: "bit", nullable: false),
+                    TotalMoneyIsRefunded = table.Column<decimal>(type: "Money", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CurrencyId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Purchase_RefundRequests", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -696,6 +745,29 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
+                name: "WorkOrders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CurrentNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    StartDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    FinishDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    HasDescription = table.Column<bool>(type: "bit", nullable: false),
+                    HasCustomFields = table.Column<bool>(type: "bit", nullable: false),
+                    HasCustomAttachments = table.Column<bool>(type: "bit", nullable: false),
+                    IsItAssignedToEmp = table.Column<bool>(type: "bit", nullable: false),
+                    Budget = table.Column<decimal>(type: "Money", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CurrencyId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkOrders", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -802,6 +874,45 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
+                name: "COCs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ClientType = table.Column<bool>(type: "bit", nullable: false),
+                    CreditLimit = table.Column<int>(type: "int", nullable: false),
+                    CreditPeriodLimit = table.Column<int>(type: "int", nullable: false),
+                    TotalBalance = table.Column<decimal>(type: "Money", nullable: false),
+                    BalanceStartDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    HasEstimates = table.Column<bool>(type: "bit", nullable: false),
+                    HasCategory = table.Column<bool>(type: "bit", nullable: false),
+                    HasNote = table.Column<bool>(type: "bit", nullable: false),
+                    HasCustomFields = table.Column<bool>(type: "bit", nullable: false),
+                    NationalId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MobilePhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Telephone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProfileImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CurrencyId = table.Column<int>(type: "int", nullable: false),
+                    InvoicingMethod = table.Column<byte>(type: "tinyint", nullable: false),
+                    CountryName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CountryNameCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CountryId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_COCs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_COCs_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Inventories",
                 columns: table => new
                 {
@@ -827,6 +938,41 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
+                name: "Suppliers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BusinessName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Telephone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MobilePhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TaxID = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CR = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateCreated = table.Column<DateTime>(type: "Date", nullable: false),
+                    OpeningBalance = table.Column<decimal>(type: "Money", nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CurrencyId = table.Column<int>(type: "int", nullable: false),
+                    CountryName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CountryNameCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CountryId = table.Column<int>(type: "int", nullable: false),
+                    AddedBy_UserId = table.Column<int>(type: "int", nullable: true),
+                    AddedBy_UserName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Suppliers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Suppliers_AspNetUsers_AddedBy_UserId",
+                        column: x => x.AddedBy_UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "BankAccount_Descriptions",
                 columns: table => new
                 {
@@ -844,6 +990,32 @@ namespace ERP.Migrations.ApplicationDb
                         column: x => x.BankAccountsId,
                         principalTable: "BankAccounts",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CheckBooks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CheckBookNo = table.Column<int>(type: "int", nullable: false),
+                    FirstSerial = table.Column<int>(type: "int", nullable: false),
+                    LastSerial = table.Column<int>(type: "int", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    HasNotes = table.Column<bool>(type: "bit", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CurrencyId = table.Column<int>(type: "int", nullable: false),
+                    BankAccountsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CheckBooks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CheckBooks_BankAccounts_BankAccountsId",
+                        column: x => x.BankAccountsId,
+                        principalTable: "BankAccounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -892,25 +1064,6 @@ namespace ERP.Migrations.ApplicationDb
                         principalTable: "BusinessBranches",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Currency",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CurrencyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CountryId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Currency", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Currency_Countries_CountryId",
-                        column: x => x.CountryId,
-                        principalTable: "Countries",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -1276,6 +1429,234 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
+                name: "Purchase_Attachments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Attachments = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    Purchase_invoicesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Purchase_Attachments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Purchase_Attachments_Purchase_invoices_Purchase_invoicesId",
+                        column: x => x.Purchase_invoicesId,
+                        principalTable: "Purchase_invoices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Purchases_Deposits",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DepositsValue = table.Column<int>(type: "int", nullable: false),
+                    DepositsType = table.Column<int>(type: "int", nullable: false),
+                    Purchase_invoicesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Purchases_Deposits", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Purchases_Deposits_Purchase_invoices_Purchase_invoicesId",
+                        column: x => x.Purchase_invoicesId,
+                        principalTable: "Purchase_invoices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Purchases_discounts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DiscountValue = table.Column<int>(type: "int", nullable: false),
+                    DiscountType = table.Column<int>(type: "int", nullable: false),
+                    Purchase_invoicesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Purchases_discounts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Purchases_discounts_Purchase_invoices_Purchase_invoicesId",
+                        column: x => x.Purchase_invoicesId,
+                        principalTable: "Purchase_invoices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Purchases_paymentTerms",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Value = table.Column<int>(type: "int", nullable: false),
+                    Purchase_invoicesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Purchases_paymentTerms", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Purchases_paymentTerms_Purchase_invoices_Purchase_invoicesId",
+                        column: x => x.Purchase_invoicesId,
+                        principalTable: "Purchase_invoices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Purchases_shippingFees",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ShippingFees = table.Column<int>(type: "int", nullable: false),
+                    Purchase_invoicesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Purchases_shippingFees", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Purchases_shippingFees_Purchase_invoices_Purchase_invoicesId",
+                        column: x => x.Purchase_invoicesId,
+                        principalTable: "Purchase_invoices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PurchaseStatuses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Status = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Purchase_invoicesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PurchaseStatuses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PurchaseStatuses_Purchase_invoices_Purchase_invoicesId",
+                        column: x => x.Purchase_invoicesId,
+                        principalTable: "Purchase_invoices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Refunds_Attachments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Attachments = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    Purchase_RefundRequestsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Refunds_Attachments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Refunds_Attachments_Purchase_RefundRequests_Purchase_RefundRequestsId",
+                        column: x => x.Purchase_RefundRequestsId,
+                        principalTable: "Purchase_RefundRequests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Refunds_items_ShippingFees",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ShippingFees = table.Column<int>(type: "int", nullable: false),
+                    Purchase_RefundRequestsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Refunds_items_ShippingFees", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Refunds_items_ShippingFees_Purchase_RefundRequests_Purchase_RefundRequestsId",
+                        column: x => x.Purchase_RefundRequestsId,
+                        principalTable: "Purchase_RefundRequests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Refunds_Notes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Purchase_RefundRequestsId = table.Column<int>(type: "int", nullable: true),
+                    Purchase_RefundRequestId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Refunds_Notes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Refunds_Notes_Purchase_RefundRequests_Purchase_RefundRequestsId",
+                        column: x => x.Purchase_RefundRequestsId,
+                        principalTable: "Purchase_RefundRequests",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RefundsStatuses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Status = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Purchase_RefundRequestsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefundsStatuses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RefundsStatuses_Purchase_RefundRequests_Purchase_RefundRequestsId",
+                        column: x => x.Purchase_RefundRequestsId,
+                        principalTable: "Purchase_RefundRequests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Purchase_Payments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PurchasePaymentMethodsId = table.Column<int>(type: "int", nullable: false),
+                    Purchase_invoicesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Purchase_Payments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Purchase_Payments_Purchase_invoices_Purchase_invoicesId",
+                        column: x => x.Purchase_invoicesId,
+                        principalTable: "Purchase_invoices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Purchase_Payments_PurchasePaymentMethods_PurchasePaymentMethodsId",
+                        column: x => x.PurchasePaymentMethodsId,
+                        principalTable: "PurchasePaymentMethods",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ReceivableCheck_Attachments",
                 columns: table => new
                 {
@@ -1594,7 +1975,9 @@ namespace ERP.Migrations.ApplicationDb
                     ProfileIMage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     HasCustomFields = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    CountryId = table.Column<int>(type: "int", nullable: true),
+                    CountryName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CountryNameCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CountryId = table.Column<int>(type: "int", nullable: false),
                     DepartmentId = table.Column<int>(type: "int", nullable: true),
                     DesignationId = table.Column<int>(type: "int", nullable: true),
                     EmployeeLevelId = table.Column<int>(type: "int", nullable: true),
@@ -1612,11 +1995,6 @@ namespace ERP.Migrations.ApplicationDb
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Employees_Countries_CountryId",
-                        column: x => x.CountryId,
-                        principalTable: "Countries",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Employees_Designations_DesignationId",
                         column: x => x.DesignationId,
@@ -1704,6 +2082,456 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
+                name: "WorkOrders_Attachments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Attachments = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    WorkOrdersId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkOrders_Attachments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorkOrders_Attachments_WorkOrders_WorkOrdersId",
+                        column: x => x.WorkOrdersId,
+                        principalTable: "WorkOrders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WorkOrders_Descriptions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    WorkOrdersId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkOrders_Descriptions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorkOrders_Descriptions_WorkOrders_WorkOrdersId",
+                        column: x => x.WorkOrdersId,
+                        principalTable: "WorkOrders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WorkOrdersActions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ActionName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    WorkOrdersId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkOrdersActions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorkOrdersActions_WorkOrders_WorkOrdersId",
+                        column: x => x.WorkOrdersId,
+                        principalTable: "WorkOrders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WorkOrderStatuses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Status = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    WorkOrdersId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkOrderStatuses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorkOrderStatuses_WorkOrders_WorkOrdersId",
+                        column: x => x.WorkOrdersId,
+                        principalTable: "WorkOrders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Appointments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DateCreated = table.Column<DateTime>(type: "Date", nullable: false),
+                    AppointmentDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    Duration = table.Column<int>(type: "int", nullable: false),
+                    IsSharedWithClient = table.Column<bool>(type: "bit", nullable: false),
+                    IsRepeated = table.Column<bool>(type: "bit", nullable: false),
+                    HasNotes = table.Column<bool>(type: "bit", nullable: false),
+                    IsAssignedToStaff = table.Column<bool>(type: "bit", nullable: false),
+                    COCId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Appointments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Appointments_COCs_COCId",
+                        column: x => x.COCId,
+                        principalTable: "COCs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Booking_Clients",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BookingId = table.Column<int>(type: "int", nullable: false),
+                    COCId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Booking_Clients", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Booking_Clients_Bookings_BookingId",
+                        column: x => x.BookingId,
+                        principalTable: "Bookings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Booking_Clients_COCs_COCId",
+                        column: x => x.COCId,
+                        principalTable: "COCs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Business_COCs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BusinessName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BusinessPhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TaxRecordId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CR = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    COCId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Business_COCs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Business_COCs_COCs_COCId",
+                        column: x => x.COCId,
+                        principalTable: "COCs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Category_PerClient",
+                columns: table => new
+                {
+                    COCId = table.Column<int>(type: "int", nullable: false),
+                    COC_categoryId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Category_PerClient", x => new { x.COCId, x.COC_categoryId })
+                        .Annotation("SqlServer:Clustered", true);
+                    table.ForeignKey(
+                        name: "FK_Category_PerClient_COC_category_COC_categoryId",
+                        column: x => x.COC_categoryId,
+                        principalTable: "COC_category",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Category_PerClient_COCs_COCId",
+                        column: x => x.COCId,
+                        principalTable: "COCs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ClientNotes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    COCId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClientNotes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ClientNotes_COCs_COCId",
+                        column: x => x.COCId,
+                        principalTable: "COCs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ClientStatuses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StatusName = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Color = table.Column<string>(type: "nvarchar(7)", maxLength: 7, nullable: false),
+                    COCId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClientStatuses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ClientStatuses_COCs_COCId",
+                        column: x => x.COCId,
+                        principalTable: "COCs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "COCAddresses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BuildingNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FlatNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AddressLine_1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AddressLine_2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    COCId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_COCAddresses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_COCAddresses_COCs_COCId",
+                        column: x => x.COCId,
+                        principalTable: "COCs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ConstactList_PerCOC",
+                columns: table => new
+                {
+                    COCId = table.Column<int>(type: "int", nullable: false),
+                    COC_ContactListId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ConstactList_PerCOC", x => new { x.COCId, x.COC_ContactListId })
+                        .Annotation("SqlServer:Clustered", true);
+                    table.ForeignKey(
+                        name: "FK_ConstactList_PerCOC_COC_ContactList_COC_ContactListId",
+                        column: x => x.COC_ContactListId,
+                        principalTable: "COC_ContactList",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ConstactList_PerCOC_COCs_COCId",
+                        column: x => x.COCId,
+                        principalTable: "COCs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CreditCharges",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StartDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    CreditAmount = table.Column<int>(type: "int", nullable: false),
+                    HasDescription = table.Column<bool>(type: "bit", nullable: false),
+                    COCId = table.Column<int>(type: "int", nullable: false),
+                    CreditTypesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CreditCharges", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CreditCharges_COCs_COCId",
+                        column: x => x.COCId,
+                        principalTable: "COCs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CreditCharges_CreditTypes_CreditTypesId",
+                        column: x => x.CreditTypesId,
+                        principalTable: "CreditTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CreditUsages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UsageDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    UsedAmount = table.Column<int>(type: "int", nullable: false),
+                    HasDescription = table.Column<bool>(type: "bit", nullable: false),
+                    COCId = table.Column<int>(type: "int", nullable: false),
+                    CreditTypesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CreditUsages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CreditUsages_COCs_COCId",
+                        column: x => x.COCId,
+                        principalTable: "COCs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CreditUsages_CreditTypes_CreditTypesId",
+                        column: x => x.CreditTypesId,
+                        principalTable: "CreditTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Individual_COCs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    DateOfBirth = table.Column<DateTime>(type: "Date", nullable: false),
+                    Gender = table.Column<byte>(type: "tinyint", nullable: false),
+                    COCId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Individual_COCs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Individual_COCs_COCs_COCId",
+                        column: x => x.COCId,
+                        principalTable: "COCs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SalesInvoices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    InvoiceBumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SentToClientMethod = table.Column<bool>(type: "bit", nullable: false),
+                    HasAttachments = table.Column<bool>(type: "bit", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "Date", nullable: false),
+                    IssueDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    PaymentDue = table.Column<short>(type: "smallint", nullable: false),
+                    IsPaid = table.Column<bool>(type: "bit", nullable: false),
+                    HasSubscription = table.Column<bool>(type: "bit", nullable: false),
+                    HasDiscount = table.Column<bool>(type: "bit", nullable: false),
+                    HasCustomFields = table.Column<bool>(type: "bit", nullable: false),
+                    HasShippingDetails = table.Column<bool>(type: "bit", nullable: false),
+                    TotalValue = table.Column<decimal>(type: "Money", nullable: false),
+                    ServiceOrItem = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy_UserId = table.Column<int>(type: "int", nullable: false),
+                    COCId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SalesInvoices", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SalesInvoices_AspNetUsers_CreatedBy_UserId",
+                        column: x => x.CreatedBy_UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SalesInvoices_COCs_COCId",
+                        column: x => x.COCId,
+                        principalTable: "COCs",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Subscriptions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CurrentNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    GenerateEvery = table.Column<byte>(type: "tinyint", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    Occurrences = table.Column<int>(type: "int", nullable: false),
+                    IssueInvoiceBefore = table.Column<int>(type: "int", nullable: false),
+                    PaymentTerms = table.Column<int>(type: "int", nullable: false),
+                    DisplayDateFromAndTo = table.Column<bool>(type: "bit", nullable: false),
+                    EnableAutomaticPayment = table.Column<bool>(type: "bit", nullable: false),
+                    SendViaEmail = table.Column<bool>(type: "bit", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    HasAttachments = table.Column<bool>(type: "bit", nullable: false),
+                    HasTerms = table.Column<bool>(type: "bit", nullable: false),
+                    COCId = table.Column<int>(type: "int", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CurrencyId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Subscriptions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Subscriptions_COCs_COCId",
+                        column: x => x.COCId,
+                        principalTable: "COCs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WorkOrdersClients",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    WorkOrdersId = table.Column<int>(type: "int", nullable: false),
+                    COCid = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkOrdersClients", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorkOrdersClients_COCs_COCid",
+                        column: x => x.COCid,
+                        principalTable: "COCs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_WorkOrdersClients_WorkOrders_WorkOrdersId",
+                        column: x => x.WorkOrdersId,
+                        principalTable: "WorkOrders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "InventoryAddresses",
                 columns: table => new
                 {
@@ -1716,8 +2544,10 @@ namespace ERP.Migrations.ApplicationDb
                     AddressLine_2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PostalCode = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
                     City = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    Govenrment = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Government = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
+                    CountryName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CountryNameCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CountryId = table.Column<int>(type: "int", nullable: false),
                     InventoriesId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -1732,230 +2562,71 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
-                name: "CheckBooks",
+                name: "Supplier_ContactLists",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CheckBookNo = table.Column<int>(type: "int", nullable: false),
-                    FirstSerial = table.Column<int>(type: "int", nullable: false),
-                    LastSerial = table.Column<int>(type: "int", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    HasNotes = table.Column<bool>(type: "bit", nullable: false),
-                    CurrencyId = table.Column<int>(type: "int", nullable: true),
-                    BankAccountsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CheckBooks", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CheckBooks_BankAccounts_BankAccountsId",
-                        column: x => x.BankAccountsId,
-                        principalTable: "BankAccounts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CheckBooks_Currency_CurrencyId",
-                        column: x => x.CurrencyId,
-                        principalTable: "Currency",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "COCs",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ClientType = table.Column<bool>(type: "bit", nullable: false),
-                    CreditLimit = table.Column<int>(type: "int", nullable: false),
-                    CreditPeriodLimit = table.Column<int>(type: "int", nullable: false),
-                    TotalBalance = table.Column<decimal>(type: "Money", nullable: false),
-                    BalanceStartDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    HasEstimates = table.Column<bool>(type: "bit", nullable: false),
-                    HasCategory = table.Column<bool>(type: "bit", nullable: false),
-                    HasNote = table.Column<bool>(type: "bit", nullable: false),
-                    HasCustomFields = table.Column<bool>(type: "bit", nullable: false),
-                    NationalId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MobilePhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Telephone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProfileImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    CurrencyId = table.Column<int>(type: "int", nullable: false),
-                    InvoicingMethod = table.Column<byte>(type: "tinyint", nullable: false),
-                    CountryId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_COCs", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_COCs_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_COCs_Countries_CountryId",
-                        column: x => x.CountryId,
-                        principalTable: "Countries",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_COCs_Currency_CurrencyId",
-                        column: x => x.CurrencyId,
-                        principalTable: "Currency",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Contracts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StartDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    PayrollFrequency = table.Column<byte>(type: "tinyint", nullable: false),
-                    CurrencyId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Contracts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Contracts_Currency_CurrencyId",
-                        column: x => x.CurrencyId,
-                        principalTable: "Currency",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Purchase_invoices",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<DateTime>(type: "Date", nullable: false),
-                    CurrentNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    HasPymentTerms = table.Column<bool>(type: "bit", nullable: false),
-                    HasDiscount = table.Column<bool>(type: "bit", nullable: false),
-                    HasShippingFees = table.Column<bool>(type: "bit", nullable: false),
-                    HasNotes = table.Column<bool>(type: "bit", nullable: false),
-                    IsRecieved = table.Column<bool>(type: "bit", nullable: false),
-                    IsPartiallyPaid = table.Column<bool>(type: "bit", nullable: false),
-                    IsAlreadyPaid = table.Column<bool>(type: "bit", nullable: false),
-                    ServiceOrItem = table.Column<bool>(type: "bit", nullable: false),
-                    HasDeposits = table.Column<bool>(type: "bit", nullable: false),
-                    HasAttachments = table.Column<bool>(type: "bit", nullable: false),
-                    CurrencyId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Purchase_invoices", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Purchase_invoices_Currency_CurrencyId",
-                        column: x => x.CurrencyId,
-                        principalTable: "Currency",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Purchase_RefundRequests",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CurrentNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RequestDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    RefundDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    ServiceOrItem = table.Column<bool>(type: "bit", nullable: false),
-                    HasPymentTerms = table.Column<bool>(type: "bit", nullable: false),
-                    HasShippingFees = table.Column<bool>(type: "bit", nullable: false),
-                    HasNotes = table.Column<bool>(type: "bit", nullable: false),
-                    TotalMoneyIsRefunded = table.Column<decimal>(type: "Money", nullable: false),
-                    CurrencyId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Purchase_RefundRequests", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Purchase_RefundRequests_Currency_CurrencyId",
-                        column: x => x.CurrencyId,
-                        principalTable: "Currency",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Suppliers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BusinessName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Telephone = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
                     MobilePhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TaxID = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CR = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateCreated = table.Column<DateTime>(type: "Date", nullable: false),
-                    OpeningBalance = table.Column<decimal>(type: "Money", nullable: false),
-                    HasNotes = table.Column<bool>(type: "bit", nullable: false),
-                    CurrencyId = table.Column<int>(type: "int", nullable: false),
-                    CountryId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    SuppliersId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Suppliers", x => x.Id);
+                    table.PrimaryKey("PK_Supplier_ContactLists", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Suppliers_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Suppliers_Countries_CountryId",
-                        column: x => x.CountryId,
-                        principalTable: "Countries",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Suppliers_Currency_CurrencyId",
-                        column: x => x.CurrencyId,
-                        principalTable: "Currency",
+                        name: "FK_Supplier_ContactLists_Suppliers_SuppliersId",
+                        column: x => x.SuppliersId,
+                        principalTable: "Suppliers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "WorkOrders",
+                name: "SupplierAddresses",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CurrentNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    StartDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    FinishDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    HasDescription = table.Column<bool>(type: "bit", nullable: false),
-                    HasCustomFields = table.Column<bool>(type: "bit", nullable: false),
-                    HasCustomAttachments = table.Column<bool>(type: "bit", nullable: false),
-                    IsItAssignedToEmp = table.Column<bool>(type: "bit", nullable: false),
-                    Budget = table.Column<decimal>(type: "Money", nullable: false),
-                    CurrencyId = table.Column<int>(type: "int", nullable: true)
+                    BuildingNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FlatNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AddressLine_1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AddressLine_2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SuppliersId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WorkOrders", x => x.Id);
+                    table.PrimaryKey("PK_SupplierAddresses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_WorkOrders_Currency_CurrencyId",
-                        column: x => x.CurrencyId,
-                        principalTable: "Currency",
-                        principalColumn: "Id");
+                        name: "FK_SupplierAddresses_Suppliers_SuppliersId",
+                        column: x => x.SuppliersId,
+                        principalTable: "Suppliers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CheckBook_Notes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CheckBookId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CheckBook_Notes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CheckBook_Notes_CheckBooks_CheckBookId",
+                        column: x => x.CheckBookId,
+                        principalTable: "CheckBooks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -1996,6 +2667,31 @@ namespace ERP.Migrations.ApplicationDb
                         principalTable: "CreditNotes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CreditNtotes_Client",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    COCId = table.Column<int>(type: "int", nullable: false),
+                    CreditNoteId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CreditNtotes_Client", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CreditNtotes_Client_COCs_COCId",
+                        column: x => x.COCId,
+                        principalTable: "COCs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CreditNtotes_Client_CreditNotes_CreditNoteId",
+                        column: x => x.CreditNoteId,
+                        principalTable: "CreditNotes",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -2075,6 +2771,74 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_Inbound_Invent_Requisitions_ItemVariants_ItemVariantsId",
                         column: x => x.ItemVariantsId,
                         principalTable: "ItemVariants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Items_In_PurchaseInvoices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AddedQuantity = table.Column<int>(type: "int", nullable: false),
+                    ItemVariantsId = table.Column<int>(type: "int", nullable: false),
+                    Purchase_invoicesId = table.Column<int>(type: "int", nullable: false),
+                    InventoriesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Items_In_PurchaseInvoices", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Items_In_PurchaseInvoices_Inventories_InventoriesId",
+                        column: x => x.InventoriesId,
+                        principalTable: "Inventories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Items_In_PurchaseInvoices_ItemVariants_ItemVariantsId",
+                        column: x => x.ItemVariantsId,
+                        principalTable: "ItemVariants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Items_In_PurchaseInvoices_Purchase_invoices_Purchase_invoicesId",
+                        column: x => x.Purchase_invoicesId,
+                        principalTable: "Purchase_invoices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Items_in_Refunds",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RefundedQuantity = table.Column<int>(type: "int", nullable: false),
+                    ItemVariantsId = table.Column<int>(type: "int", nullable: false),
+                    Purchase_RefundRequestsId = table.Column<int>(type: "int", nullable: false),
+                    InventoriesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Items_in_Refunds", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Items_in_Refunds_Inventories_InventoriesId",
+                        column: x => x.InventoriesId,
+                        principalTable: "Inventories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Items_in_Refunds_ItemVariants_ItemVariantsId",
+                        column: x => x.ItemVariantsId,
+                        principalTable: "ItemVariants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Items_in_Refunds_Purchase_RefundRequests_Purchase_RefundRequestsId",
+                        column: x => x.Purchase_RefundRequestsId,
+                        principalTable: "Purchase_RefundRequests",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -2263,6 +3027,32 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
+                name: "Contracts_Deductions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ContractsId = table.Column<int>(type: "int", nullable: false),
+                    SalaryDetuctionId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contracts_Deductions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Contracts_Deductions_Contracts_ContractsId",
+                        column: x => x.ContractsId,
+                        principalTable: "Contracts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Contracts_Deductions_SalaryDetuction_SalaryDetuctionId",
+                        column: x => x.SalaryDetuctionId,
+                        principalTable: "SalaryDetuction",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SalaryStructures_Deduction",
                 columns: table => new
                 {
@@ -2284,6 +3074,32 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_SalaryStructures_Deduction_SalaryStructures_SalaryStructuresId",
                         column: x => x.SalaryStructuresId,
                         principalTable: "SalaryStructures",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Contracts_earns",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ContractsId = table.Column<int>(type: "int", nullable: false),
+                    SalaryEarningId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contracts_earns", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Contracts_earns_Contracts_ContractsId",
+                        column: x => x.ContractsId,
+                        principalTable: "Contracts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Contracts_earns_SalaryEarnings_SalaryEarningId",
+                        column: x => x.SalaryEarningId,
+                        principalTable: "SalaryEarnings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -2338,6 +3154,33 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
+                name: "COC_CustomFields",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    COCId = table.Column<int>(type: "int", nullable: false),
+                    Fields_Per_ServiceId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_COC_CustomFields", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_COC_CustomFields_COCs_COCId",
+                        column: x => x.COCId,
+                        principalTable: "COCs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_COC_CustomFields_Fields_Per_Service_Fields_Per_ServiceId",
+                        column: x => x.Fields_Per_ServiceId,
+                        principalTable: "Fields_Per_Service",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Fields_validation_Foreach_Services",
                 columns: table => new
                 {
@@ -2385,6 +3228,33 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_Items_CustomFields_Items_ItemId",
                         column: x => x.ItemId,
                         principalTable: "Items",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Supplier_CustomFields",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SuppliersId = table.Column<int>(type: "int", nullable: false),
+                    Fields_Per_ServiceId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Supplier_CustomFields", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Supplier_CustomFields_Fields_Per_Service_Fields_Per_ServiceId",
+                        column: x => x.Fields_Per_ServiceId,
+                        principalTable: "Fields_Per_Service",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Supplier_CustomFields_Suppliers_SuppliersId",
+                        column: x => x.SuppliersId,
+                        principalTable: "Suppliers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -2508,6 +3378,7 @@ namespace ERP.Migrations.ApplicationDb
                     CalculationType = table.Column<byte>(type: "tinyint", nullable: false),
                     Percent = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CurrencyId = table.Column<int>(type: "int", nullable: false),
                     AddedBy_EmpId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -2515,14 +3386,40 @@ namespace ERP.Migrations.ApplicationDb
                 {
                     table.PrimaryKey("PK_Commissions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Commissions_Currency_CurrencyId",
-                        column: x => x.CurrencyId,
-                        principalTable: "Currency",
+                        name: "FK_Commissions_Employees_AddedBy_EmpId",
+                        column: x => x.AddedBy_EmpId,
+                        principalTable: "Employees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Contract_Per_Emps",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    JoinDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    ContractSignDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    EndOfTestPeriodDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    DurationOrEndDate = table.Column<bool>(type: "bit", nullable: false),
+                    HasAttachments = table.Column<bool>(type: "bit", nullable: false),
+                    ContractsId = table.Column<int>(type: "int", nullable: false),
+                    EmployeesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contract_Per_Emps", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Contract_Per_Emps_Contracts_ContractsId",
+                        column: x => x.ContractsId,
+                        principalTable: "Contracts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Commissions_Employees_AddedBy_EmpId",
-                        column: x => x.AddedBy_EmpId,
+                        name: "FK_Contract_Per_Emps_Employees_EmployeesId",
+                        column: x => x.EmployeesId,
                         principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -2665,18 +3562,13 @@ namespace ERP.Migrations.ApplicationDb
                     DaysToExpire = table.Column<byte>(type: "tinyint", nullable: false),
                     EstimateFor = table.Column<byte>(type: "tinyint", nullable: false),
                     AddBy_empId = table.Column<int>(type: "int", nullable: true),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CurrencyId = table.Column<int>(type: "int", nullable: false),
                     EmailsTemplatesId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Estimates", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Estimates_Currency_CurrencyId",
-                        column: x => x.CurrencyId,
-                        principalTable: "Currency",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Estimates_EmailsTemplates_EmailsTemplatesId",
                         column: x => x.EmailsTemplatesId,
@@ -2730,18 +3622,13 @@ namespace ERP.Migrations.ApplicationDb
                     InstallmentCount = table.Column<byte>(type: "tinyint", nullable: false),
                     PeriodOfInstallment = table.Column<byte>(type: "tinyint", nullable: false),
                     EmployeesId = table.Column<int>(type: "int", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CurrencyId = table.Column<int>(type: "int", nullable: false),
                     TreasuriesId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Loans", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Loans_Currency_CurrencyId",
-                        column: x => x.CurrencyId,
-                        principalTable: "Currency",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Loans_Employees_EmployeesId",
                         column: x => x.EmployeesId,
@@ -2810,16 +3697,12 @@ namespace ERP.Migrations.ApplicationDb
                     TotalDeduction = table.Column<decimal>(type: "Money", nullable: false),
                     NetPay = table.Column<decimal>(type: "Money", nullable: false),
                     EmployeesId = table.Column<int>(type: "int", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CurrencyId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Payslips", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Payslips_Currency_CurrencyId",
-                        column: x => x.CurrencyId,
-                        principalTable: "Currency",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Payslips_Employees_EmployeesId",
                         column: x => x.EmployeesId,
@@ -2842,17 +3725,12 @@ namespace ERP.Migrations.ApplicationDb
                     CollectedBy_EmpId = table.Column<int>(type: "int", nullable: false),
                     PaymentStatusId = table.Column<int>(type: "int", nullable: false),
                     PaymentMethodsId = table.Column<int>(type: "int", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CurrencyId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SalesInvoicePayments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SalesInvoicePayments_Currency_CurrencyId",
-                        column: x => x.CurrencyId,
-                        principalTable: "Currency",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_SalesInvoicePayments_Employees_CollectedBy_EmpId",
                         column: x => x.CollectedBy_EmpId,
@@ -2869,987 +3747,6 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_SalesInvoicePayments_SalesInvoice_PaymentStatus_PaymentStatusId",
                         column: x => x.PaymentStatusId,
                         principalTable: "SalesInvoice_PaymentStatus",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CheckBook_Notes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CheckBookId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CheckBook_Notes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CheckBook_Notes_CheckBooks_CheckBookId",
-                        column: x => x.CheckBookId,
-                        principalTable: "CheckBooks",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Appointments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DateCreated = table.Column<DateTime>(type: "Date", nullable: false),
-                    AppointmentDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    Duration = table.Column<int>(type: "int", nullable: false),
-                    IsSharedWithClient = table.Column<bool>(type: "bit", nullable: false),
-                    IsRepeated = table.Column<bool>(type: "bit", nullable: false),
-                    HasNotes = table.Column<bool>(type: "bit", nullable: false),
-                    IsAssignedToStaff = table.Column<bool>(type: "bit", nullable: false),
-                    COCId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Appointments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Appointments_COCs_COCId",
-                        column: x => x.COCId,
-                        principalTable: "COCs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Booking_Clients",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BookingId = table.Column<int>(type: "int", nullable: false),
-                    COCId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Booking_Clients", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Booking_Clients_Bookings_BookingId",
-                        column: x => x.BookingId,
-                        principalTable: "Bookings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Booking_Clients_COCs_COCId",
-                        column: x => x.COCId,
-                        principalTable: "COCs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Business_COCs",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BusinessName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BusinessPhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TaxRecordId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CR = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    COCId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Business_COCs", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Business_COCs_COCs_COCId",
-                        column: x => x.COCId,
-                        principalTable: "COCs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Category_PerClient",
-                columns: table => new
-                {
-                    COCId = table.Column<int>(type: "int", nullable: false),
-                    COC_categoryId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Category_PerClient", x => new { x.COCId, x.COC_categoryId })
-                        .Annotation("SqlServer:Clustered", true);
-                    table.ForeignKey(
-                        name: "FK_Category_PerClient_COC_category_COC_categoryId",
-                        column: x => x.COC_categoryId,
-                        principalTable: "COC_category",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Category_PerClient_COCs_COCId",
-                        column: x => x.COCId,
-                        principalTable: "COCs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ClientNotes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    COCId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ClientNotes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ClientNotes_COCs_COCId",
-                        column: x => x.COCId,
-                        principalTable: "COCs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ClientStatuses",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StatusName = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Color = table.Column<string>(type: "nvarchar(7)", maxLength: 7, nullable: false),
-                    COCId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ClientStatuses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ClientStatuses_COCs_COCId",
-                        column: x => x.COCId,
-                        principalTable: "COCs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "COC_CustomFields",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    COCId = table.Column<int>(type: "int", nullable: false),
-                    Fields_Per_ServiceId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_COC_CustomFields", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_COC_CustomFields_COCs_COCId",
-                        column: x => x.COCId,
-                        principalTable: "COCs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_COC_CustomFields_Fields_Per_Service_Fields_Per_ServiceId",
-                        column: x => x.Fields_Per_ServiceId,
-                        principalTable: "Fields_Per_Service",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "COCAddresses",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BuildingNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FlatNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AddressLine_1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AddressLine_2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    COCId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_COCAddresses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_COCAddresses_COCs_COCId",
-                        column: x => x.COCId,
-                        principalTable: "COCs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ConstactList_PerCOC",
-                columns: table => new
-                {
-                    COCId = table.Column<int>(type: "int", nullable: false),
-                    COC_ContactListId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ConstactList_PerCOC", x => new { x.COCId, x.COC_ContactListId })
-                        .Annotation("SqlServer:Clustered", true);
-                    table.ForeignKey(
-                        name: "FK_ConstactList_PerCOC_COC_ContactList_COC_ContactListId",
-                        column: x => x.COC_ContactListId,
-                        principalTable: "COC_ContactList",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ConstactList_PerCOC_COCs_COCId",
-                        column: x => x.COCId,
-                        principalTable: "COCs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CreditCharges",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StartDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    CreditAmount = table.Column<int>(type: "int", nullable: false),
-                    HasDescription = table.Column<bool>(type: "bit", nullable: false),
-                    COCId = table.Column<int>(type: "int", nullable: false),
-                    CreditTypesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CreditCharges", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CreditCharges_COCs_COCId",
-                        column: x => x.COCId,
-                        principalTable: "COCs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CreditCharges_CreditTypes_CreditTypesId",
-                        column: x => x.CreditTypesId,
-                        principalTable: "CreditTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CreditNtotes_Client",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    COCId = table.Column<int>(type: "int", nullable: false),
-                    CreditNoteId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CreditNtotes_Client", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CreditNtotes_Client_COCs_COCId",
-                        column: x => x.COCId,
-                        principalTable: "COCs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CreditNtotes_Client_CreditNotes_CreditNoteId",
-                        column: x => x.CreditNoteId,
-                        principalTable: "CreditNotes",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CreditUsages",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UsageDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    UsedAmount = table.Column<int>(type: "int", nullable: false),
-                    HasDescription = table.Column<bool>(type: "bit", nullable: false),
-                    COCId = table.Column<int>(type: "int", nullable: false),
-                    CreditTypesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CreditUsages", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CreditUsages_COCs_COCId",
-                        column: x => x.COCId,
-                        principalTable: "COCs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CreditUsages_CreditTypes_CreditTypesId",
-                        column: x => x.CreditTypesId,
-                        principalTable: "CreditTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Individual_COCs",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    DateOfBirth = table.Column<DateTime>(type: "Date", nullable: false),
-                    Gender = table.Column<byte>(type: "tinyint", nullable: false),
-                    COCId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Individual_COCs", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Individual_COCs_COCs_COCId",
-                        column: x => x.COCId,
-                        principalTable: "COCs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SalesInvoices",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    InvoiceBumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SentToClientMethod = table.Column<bool>(type: "bit", nullable: false),
-                    HasAttachments = table.Column<bool>(type: "bit", nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "Date", nullable: false),
-                    IssueDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    PaymentDue = table.Column<short>(type: "smallint", nullable: false),
-                    IsPaid = table.Column<bool>(type: "bit", nullable: false),
-                    HasSubscription = table.Column<bool>(type: "bit", nullable: false),
-                    HasDiscount = table.Column<bool>(type: "bit", nullable: false),
-                    HasCustomFields = table.Column<bool>(type: "bit", nullable: false),
-                    HasShippingDetails = table.Column<bool>(type: "bit", nullable: false),
-                    TotalValue = table.Column<decimal>(type: "Money", nullable: false),
-                    ServiceOrItem = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedBy_UserId = table.Column<int>(type: "int", nullable: false),
-                    COCId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SalesInvoices", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SalesInvoices_AspNetUsers_CreatedBy_UserId",
-                        column: x => x.CreatedBy_UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_SalesInvoices_COCs_COCId",
-                        column: x => x.COCId,
-                        principalTable: "COCs",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Subscriptions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CurrentNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    GenerateEvery = table.Column<byte>(type: "tinyint", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    Occurrences = table.Column<int>(type: "int", nullable: false),
-                    IssueInvoiceBefore = table.Column<int>(type: "int", nullable: false),
-                    PaymentTerms = table.Column<int>(type: "int", nullable: false),
-                    DisplayDateFromAndTo = table.Column<bool>(type: "bit", nullable: false),
-                    EnableAutomaticPayment = table.Column<bool>(type: "bit", nullable: false),
-                    SendViaEmail = table.Column<bool>(type: "bit", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    HasAttachments = table.Column<bool>(type: "bit", nullable: false),
-                    HasTerms = table.Column<bool>(type: "bit", nullable: false),
-                    COCId = table.Column<int>(type: "int", nullable: false),
-                    CurrencyId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Subscriptions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Subscriptions_COCs_COCId",
-                        column: x => x.COCId,
-                        principalTable: "COCs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Subscriptions_Currency_CurrencyId",
-                        column: x => x.CurrencyId,
-                        principalTable: "Currency",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Contract_Per_Emps",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    JoinDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    ContractSignDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    EndOfTestPeriodDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    DurationOrEndDate = table.Column<bool>(type: "bit", nullable: false),
-                    HasAttachments = table.Column<bool>(type: "bit", nullable: false),
-                    ContractsId = table.Column<int>(type: "int", nullable: false),
-                    EmployeesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Contract_Per_Emps", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Contract_Per_Emps_Contracts_ContractsId",
-                        column: x => x.ContractsId,
-                        principalTable: "Contracts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Contract_Per_Emps_Employees_EmployeesId",
-                        column: x => x.EmployeesId,
-                        principalTable: "Employees",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Contracts_Deductions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ContractsId = table.Column<int>(type: "int", nullable: false),
-                    SalaryDetuctionId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Contracts_Deductions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Contracts_Deductions_Contracts_ContractsId",
-                        column: x => x.ContractsId,
-                        principalTable: "Contracts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Contracts_Deductions_SalaryDetuction_SalaryDetuctionId",
-                        column: x => x.SalaryDetuctionId,
-                        principalTable: "SalaryDetuction",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Contracts_earns",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ContractsId = table.Column<int>(type: "int", nullable: false),
-                    SalaryEarningId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Contracts_earns", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Contracts_earns_Contracts_ContractsId",
-                        column: x => x.ContractsId,
-                        principalTable: "Contracts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Contracts_earns_SalaryEarnings_SalaryEarningId",
-                        column: x => x.SalaryEarningId,
-                        principalTable: "SalaryEarnings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Items_In_PurchaseInvoices",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AddedQuantity = table.Column<int>(type: "int", nullable: false),
-                    ItemVariantsId = table.Column<int>(type: "int", nullable: false),
-                    Purchase_invoicesId = table.Column<int>(type: "int", nullable: false),
-                    InventoriesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Items_In_PurchaseInvoices", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Items_In_PurchaseInvoices_Inventories_InventoriesId",
-                        column: x => x.InventoriesId,
-                        principalTable: "Inventories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Items_In_PurchaseInvoices_ItemVariants_ItemVariantsId",
-                        column: x => x.ItemVariantsId,
-                        principalTable: "ItemVariants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Items_In_PurchaseInvoices_Purchase_invoices_Purchase_invoicesId",
-                        column: x => x.Purchase_invoicesId,
-                        principalTable: "Purchase_invoices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Purchase_Attachments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Attachments = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    Purchase_invoicesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Purchase_Attachments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Purchase_Attachments_Purchase_invoices_Purchase_invoicesId",
-                        column: x => x.Purchase_invoicesId,
-                        principalTable: "Purchase_invoices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Purchase_Payments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PurchasePaymentMethodsId = table.Column<int>(type: "int", nullable: false),
-                    Purchase_invoicesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Purchase_Payments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Purchase_Payments_Purchase_invoices_Purchase_invoicesId",
-                        column: x => x.Purchase_invoicesId,
-                        principalTable: "Purchase_invoices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Purchase_Payments_PurchasePaymentMethods_PurchasePaymentMethodsId",
-                        column: x => x.PurchasePaymentMethodsId,
-                        principalTable: "PurchasePaymentMethods",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Purchases_Deposits",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DepositsValue = table.Column<int>(type: "int", nullable: false),
-                    DepositsType = table.Column<int>(type: "int", nullable: false),
-                    Purchase_invoicesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Purchases_Deposits", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Purchases_Deposits_Purchase_invoices_Purchase_invoicesId",
-                        column: x => x.Purchase_invoicesId,
-                        principalTable: "Purchase_invoices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Purchases_discounts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DiscountValue = table.Column<int>(type: "int", nullable: false),
-                    DiscountType = table.Column<int>(type: "int", nullable: false),
-                    Purchase_invoicesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Purchases_discounts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Purchases_discounts_Purchase_invoices_Purchase_invoicesId",
-                        column: x => x.Purchase_invoicesId,
-                        principalTable: "Purchase_invoices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Purchases_paymentTerms",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<int>(type: "int", nullable: false),
-                    Purchase_invoicesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Purchases_paymentTerms", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Purchases_paymentTerms_Purchase_invoices_Purchase_invoicesId",
-                        column: x => x.Purchase_invoicesId,
-                        principalTable: "Purchase_invoices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Purchases_shippingFees",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ShippingFees = table.Column<int>(type: "int", nullable: false),
-                    Purchase_invoicesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Purchases_shippingFees", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Purchases_shippingFees_Purchase_invoices_Purchase_invoicesId",
-                        column: x => x.Purchase_invoicesId,
-                        principalTable: "Purchase_invoices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PurchaseStatuses",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Status = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    Purchase_invoicesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PurchaseStatuses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PurchaseStatuses_Purchase_invoices_Purchase_invoicesId",
-                        column: x => x.Purchase_invoicesId,
-                        principalTable: "Purchase_invoices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Items_in_Refunds",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RefundedQuantity = table.Column<int>(type: "int", nullable: false),
-                    ItemVariantsId = table.Column<int>(type: "int", nullable: false),
-                    Purchase_RefundRequestsId = table.Column<int>(type: "int", nullable: false),
-                    InventoriesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Items_in_Refunds", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Items_in_Refunds_Inventories_InventoriesId",
-                        column: x => x.InventoriesId,
-                        principalTable: "Inventories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Items_in_Refunds_ItemVariants_ItemVariantsId",
-                        column: x => x.ItemVariantsId,
-                        principalTable: "ItemVariants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Items_in_Refunds_Purchase_RefundRequests_Purchase_RefundRequestsId",
-                        column: x => x.Purchase_RefundRequestsId,
-                        principalTable: "Purchase_RefundRequests",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Refunds_Attachments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Attachments = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    Purchase_RefundRequestsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Refunds_Attachments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Refunds_Attachments_Purchase_RefundRequests_Purchase_RefundRequestsId",
-                        column: x => x.Purchase_RefundRequestsId,
-                        principalTable: "Purchase_RefundRequests",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Refunds_items_ShippingFees",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ShippingFees = table.Column<int>(type: "int", nullable: false),
-                    Purchase_RefundRequestsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Refunds_items_ShippingFees", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Refunds_items_ShippingFees_Purchase_RefundRequests_Purchase_RefundRequestsId",
-                        column: x => x.Purchase_RefundRequestsId,
-                        principalTable: "Purchase_RefundRequests",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Refunds_Notes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Purchase_RefundRequestsId = table.Column<int>(type: "int", nullable: true),
-                    Purchase_RefundRequestId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Refunds_Notes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Refunds_Notes_Purchase_RefundRequests_Purchase_RefundRequestsId",
-                        column: x => x.Purchase_RefundRequestsId,
-                        principalTable: "Purchase_RefundRequests",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RefundsStatuses",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Status = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    Purchase_RefundRequestsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RefundsStatuses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RefundsStatuses_Purchase_RefundRequests_Purchase_RefundRequestsId",
-                        column: x => x.Purchase_RefundRequestsId,
-                        principalTable: "Purchase_RefundRequests",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Supplier_ContactLists",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    Telephone = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    MobilePhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SuppliersId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Supplier_ContactLists", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Supplier_ContactLists_Suppliers_SuppliersId",
-                        column: x => x.SuppliersId,
-                        principalTable: "Suppliers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Supplier_CustomFields",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SuppliersId = table.Column<int>(type: "int", nullable: false),
-                    Fields_Per_ServiceId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Supplier_CustomFields", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Supplier_CustomFields_Fields_Per_Service_Fields_Per_ServiceId",
-                        column: x => x.Fields_Per_ServiceId,
-                        principalTable: "Fields_Per_Service",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Supplier_CustomFields_Suppliers_SuppliersId",
-                        column: x => x.SuppliersId,
-                        principalTable: "Suppliers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Supplier_notes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SuppliersId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Supplier_notes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Supplier_notes_Suppliers_SuppliersId",
-                        column: x => x.SuppliersId,
-                        principalTable: "Suppliers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SupplierAddresses",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BuildingNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FlatNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AddressLine_1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AddressLine_2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SuppliersId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SupplierAddresses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SupplierAddresses_Suppliers_SuppliersId",
-                        column: x => x.SuppliersId,
-                        principalTable: "Suppliers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "WorkOrders_Attachments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Attachments = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    WorkOrdersId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WorkOrders_Attachments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_WorkOrders_Attachments_WorkOrders_WorkOrdersId",
-                        column: x => x.WorkOrdersId,
-                        principalTable: "WorkOrders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "WorkOrders_Descriptions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    WorkOrdersId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WorkOrders_Descriptions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_WorkOrders_Descriptions_WorkOrders_WorkOrdersId",
-                        column: x => x.WorkOrdersId,
-                        principalTable: "WorkOrders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "WorkOrdersActions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ActionName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    WorkOrdersId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WorkOrdersActions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_WorkOrdersActions_WorkOrders_WorkOrdersId",
-                        column: x => x.WorkOrdersId,
-                        principalTable: "WorkOrders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "WorkOrdersClients",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    WorkOrdersId = table.Column<int>(type: "int", nullable: false),
-                    COCid = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WorkOrdersClients", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_WorkOrdersClients_COCs_COCid",
-                        column: x => x.COCid,
-                        principalTable: "COCs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_WorkOrdersClients_WorkOrders_WorkOrdersId",
-                        column: x => x.WorkOrdersId,
-                        principalTable: "WorkOrders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -3881,21 +3778,433 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
-                name: "WorkOrderStatuses",
+                name: "Appointments_Actions",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Status = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    WorkOrdersId = table.Column<int>(type: "int", nullable: false)
+                    Actions = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    AppointmentsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WorkOrderStatuses", x => x.Id);
+                    table.PrimaryKey("PK_Appointments_Actions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_WorkOrderStatuses_WorkOrders_WorkOrdersId",
-                        column: x => x.WorkOrdersId,
-                        principalTable: "WorkOrders",
+                        name: "FK_Appointments_Actions_Appointments_AppointmentsId",
+                        column: x => x.AppointmentsId,
+                        principalTable: "Appointments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Appointments_Notes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AppointmentsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Appointments_Notes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Appointments_Notes_Appointments_AppointmentsId",
+                        column: x => x.AppointmentsId,
+                        principalTable: "Appointments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CreditCharge_descriptions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreditChargeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CreditCharge_descriptions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CreditCharge_descriptions_CreditCharges_CreditChargeId",
+                        column: x => x.CreditChargeId,
+                        principalTable: "CreditCharges",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CreditUsage_descriptions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreditUsageId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CreditUsage_descriptions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CreditUsage_descriptions_CreditUsages_CreditUsageId",
+                        column: x => x.CreditUsageId,
+                        principalTable: "CreditUsages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ItemsInSalesInvoices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Price = table.Column<decimal>(type: "Money", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    SubtotalPerItem = table.Column<decimal>(type: "Money", nullable: false),
+                    Decriptions = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ItemVariantsId = table.Column<int>(type: "int", nullable: false),
+                    SalesInvoicesId = table.Column<int>(type: "int", nullable: true),
+                    InventoriesId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ItemsInSalesInvoices", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ItemsInSalesInvoices_Inventories_InventoriesId",
+                        column: x => x.InventoriesId,
+                        principalTable: "Inventories",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ItemsInSalesInvoices_ItemVariants_ItemVariantsId",
+                        column: x => x.ItemVariantsId,
+                        principalTable: "ItemVariants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ItemsInSalesInvoices_SalesInvoices_SalesInvoicesId",
+                        column: x => x.SalesInvoicesId,
+                        principalTable: "SalesInvoices",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Memberships",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    JoinDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    ExpireDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    ToleranceDays = table.Column<int>(type: "int", nullable: false),
+                    HasDescription = table.Column<bool>(type: "bit", nullable: false),
+                    COCId = table.Column<int>(type: "int", nullable: false),
+                    PackagesId = table.Column<int>(type: "int", nullable: false),
+                    SalesInvoicesId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Memberships", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Memberships_COCs_COCId",
+                        column: x => x.COCId,
+                        principalTable: "COCs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Memberships_Packages_PackagesId",
+                        column: x => x.PackagesId,
+                        principalTable: "Packages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Memberships_SalesInvoices_SalesInvoicesId",
+                        column: x => x.SalesInvoicesId,
+                        principalTable: "SalesInvoices",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SalesInvoice_AutomaticReminders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SalesInvoicesId = table.Column<int>(type: "int", nullable: false),
+                    AutomaticRemindersId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SalesInvoice_AutomaticReminders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SalesInvoice_AutomaticReminders_AutomaticReminders_AutomaticRemindersId",
+                        column: x => x.AutomaticRemindersId,
+                        principalTable: "AutomaticReminders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SalesInvoice_AutomaticReminders_SalesInvoices_SalesInvoicesId",
+                        column: x => x.SalesInvoicesId,
+                        principalTable: "SalesInvoices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SalesInvoice_TotalDsicounts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TotalDiscount = table.Column<decimal>(type: "Money", nullable: false),
+                    DiscountType = table.Column<bool>(type: "bit", nullable: false),
+                    SalesInvoicesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SalesInvoice_TotalDsicounts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SalesInvoice_TotalDsicounts_SalesInvoices_SalesInvoicesId",
+                        column: x => x.SalesInvoicesId,
+                        principalTable: "SalesInvoices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SalesInvoices_Attachments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Attachments = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    SalesInvoicesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SalesInvoices_Attachments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SalesInvoices_Attachments_SalesInvoices_SalesInvoicesId",
+                        column: x => x.SalesInvoicesId,
+                        principalTable: "SalesInvoices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SalesSettings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SalesInvoicesId = table.Column<int>(type: "int", nullable: false),
+                    Fields_Per_ServiceId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SalesSettings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SalesSettings_Fields_Per_Service_Fields_Per_ServiceId",
+                        column: x => x.Fields_Per_ServiceId,
+                        principalTable: "Fields_Per_Service",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SalesSettings_SalesInvoices_SalesInvoicesId",
+                        column: x => x.SalesInvoicesId,
+                        principalTable: "SalesInvoices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ShippingDetails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ShippingFees = table.Column<decimal>(type: "Money", nullable: false),
+                    ShowingInInvoiceOptions = table.Column<byte>(type: "tinyint", nullable: false),
+                    SalesInvoicesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShippingDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShippingDetails_SalesInvoices_SalesInvoicesId",
+                        column: x => x.SalesInvoicesId,
+                        principalTable: "SalesInvoices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Statuses_For_EachInvoice",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SalesInvoicesId = table.Column<int>(type: "int", nullable: false),
+                    SalesInvoicesStatusId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Statuses_For_EachInvoice", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Statuses_For_EachInvoice_SalesInvoices_SalesInvoicesId",
+                        column: x => x.SalesInvoicesId,
+                        principalTable: "SalesInvoices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Statuses_For_EachInvoice_SalesInvoicesStatuses_SalesInvoicesStatusId",
+                        column: x => x.SalesInvoicesStatusId,
+                        principalTable: "SalesInvoicesStatuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Terms_Per_Invoice",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TaxValue = table.Column<int>(type: "int", nullable: false),
+                    SalesInvoicesId = table.Column<int>(type: "int", nullable: false),
+                    SalesTermsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Terms_Per_Invoice", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Terms_Per_Invoice_SalesInvoices_SalesInvoicesId",
+                        column: x => x.SalesInvoicesId,
+                        principalTable: "SalesInvoices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Terms_Per_Invoice_TermsAndConditions_SalesTermsId",
+                        column: x => x.SalesTermsId,
+                        principalTable: "TermsAndConditions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Subscription_AutomaticReminders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SubscriptionsId = table.Column<int>(type: "int", nullable: false),
+                    AutomaticRemindersId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Subscription_AutomaticReminders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Subscription_AutomaticReminders_AutomaticReminders_AutomaticRemindersId",
+                        column: x => x.AutomaticRemindersId,
+                        principalTable: "AutomaticReminders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Subscription_AutomaticReminders_Subscriptions_SubscriptionsId",
+                        column: x => x.SubscriptionsId,
+                        principalTable: "Subscriptions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Subscription_Invoices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FromDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    ToDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    SalesInvoicesId = table.Column<int>(type: "int", nullable: false),
+                    SubscriptionsId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Subscription_Invoices", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Subscription_Invoices_SalesInvoices_SalesInvoicesId",
+                        column: x => x.SalesInvoicesId,
+                        principalTable: "SalesInvoices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Subscription_Invoices_Subscriptions_SubscriptionsId",
+                        column: x => x.SubscriptionsId,
+                        principalTable: "Subscriptions",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Subscription_Notes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SubscriptionsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Subscription_Notes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Subscription_Notes_Subscriptions_SubscriptionsId",
+                        column: x => x.SubscriptionsId,
+                        principalTable: "Subscriptions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Subscription_Terms",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Terms = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SubscriptionsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Subscription_Terms", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Subscription_Terms_Subscriptions_SubscriptionsId",
+                        column: x => x.SubscriptionsId,
+                        principalTable: "Subscriptions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SubscriptionAttachments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Attachments = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    SubscriptionsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SubscriptionAttachments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SubscriptionAttachments_Subscriptions_SubscriptionsId",
+                        column: x => x.SubscriptionsId,
+                        principalTable: "Subscriptions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -4246,6 +4555,35 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
+                name: "ServicesInSalesInvices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Price = table.Column<decimal>(type: "Money", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    SubtotalPerItem = table.Column<decimal>(type: "Money", nullable: false),
+                    Decriptions = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ServicesId = table.Column<int>(type: "int", nullable: false),
+                    SalesInvoicesId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServicesInSalesInvices", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ServicesInSalesInvices_SalesInvoices_SalesInvoicesId",
+                        column: x => x.SalesInvoicesId,
+                        principalTable: "SalesInvoices",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ServicesInSalesInvices_Services_ServicesId",
+                        column: x => x.ServicesId,
+                        principalTable: "Services",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ServiceTaxSettings",
                 columns: table => new
                 {
@@ -4572,6 +4910,67 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_CommissionsNotes_Commissions_CommissionsId",
                         column: x => x.CommissionsId,
                         principalTable: "Commissions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ContractDurations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Amount = table.Column<decimal>(type: "Money", nullable: false),
+                    MonthOrYear = table.Column<bool>(type: "bit", nullable: false),
+                    Contract_Per_EmpId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContractDurations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ContractDurations_Contract_Per_Emps_Contract_Per_EmpId",
+                        column: x => x.Contract_Per_EmpId,
+                        principalTable: "Contract_Per_Emps",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ContractEndDates",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EndDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    Contract_Per_EmpId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContractEndDates", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ContractEndDates_Contract_Per_Emps_Contract_Per_EmpId",
+                        column: x => x.Contract_Per_EmpId,
+                        principalTable: "Contract_Per_Emps",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ContractsAttachments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Attachments = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    Contract_Per_EmpId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContractsAttachments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ContractsAttachments_Contract_Per_Emps_Contract_Per_EmpId",
+                        column: x => x.Contract_Per_EmpId,
+                        principalTable: "Contract_Per_Emps",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -5036,549 +5435,6 @@ namespace ERP.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
-                name: "Appointments_Actions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Actions = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    AppointmentsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Appointments_Actions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Appointments_Actions_Appointments_AppointmentsId",
-                        column: x => x.AppointmentsId,
-                        principalTable: "Appointments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Appointments_Notes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AppointmentsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Appointments_Notes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Appointments_Notes_Appointments_AppointmentsId",
-                        column: x => x.AppointmentsId,
-                        principalTable: "Appointments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CreditCharge_descriptions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreditChargeId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CreditCharge_descriptions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CreditCharge_descriptions_CreditCharges_CreditChargeId",
-                        column: x => x.CreditChargeId,
-                        principalTable: "CreditCharges",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CreditUsage_descriptions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreditUsageId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CreditUsage_descriptions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CreditUsage_descriptions_CreditUsages_CreditUsageId",
-                        column: x => x.CreditUsageId,
-                        principalTable: "CreditUsages",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ItemsInSalesInvoices",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Price = table.Column<decimal>(type: "Money", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    SubtotalPerItem = table.Column<decimal>(type: "Money", nullable: false),
-                    Decriptions = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ItemVariantsId = table.Column<int>(type: "int", nullable: false),
-                    SalesInvoicesId = table.Column<int>(type: "int", nullable: true),
-                    InventoriesId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ItemsInSalesInvoices", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ItemsInSalesInvoices_Inventories_InventoriesId",
-                        column: x => x.InventoriesId,
-                        principalTable: "Inventories",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_ItemsInSalesInvoices_ItemVariants_ItemVariantsId",
-                        column: x => x.ItemVariantsId,
-                        principalTable: "ItemVariants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ItemsInSalesInvoices_SalesInvoices_SalesInvoicesId",
-                        column: x => x.SalesInvoicesId,
-                        principalTable: "SalesInvoices",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Memberships",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    JoinDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    ExpireDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    ToleranceDays = table.Column<int>(type: "int", nullable: false),
-                    HasDescription = table.Column<bool>(type: "bit", nullable: false),
-                    COCId = table.Column<int>(type: "int", nullable: false),
-                    PackagesId = table.Column<int>(type: "int", nullable: false),
-                    SalesInvoicesId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Memberships", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Memberships_COCs_COCId",
-                        column: x => x.COCId,
-                        principalTable: "COCs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Memberships_Packages_PackagesId",
-                        column: x => x.PackagesId,
-                        principalTable: "Packages",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Memberships_SalesInvoices_SalesInvoicesId",
-                        column: x => x.SalesInvoicesId,
-                        principalTable: "SalesInvoices",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SalesInvoice_AutomaticReminders",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SalesInvoicesId = table.Column<int>(type: "int", nullable: false),
-                    AutomaticRemindersId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SalesInvoice_AutomaticReminders", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SalesInvoice_AutomaticReminders_AutomaticReminders_AutomaticRemindersId",
-                        column: x => x.AutomaticRemindersId,
-                        principalTable: "AutomaticReminders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_SalesInvoice_AutomaticReminders_SalesInvoices_SalesInvoicesId",
-                        column: x => x.SalesInvoicesId,
-                        principalTable: "SalesInvoices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SalesInvoice_TotalDsicounts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TotalDiscount = table.Column<decimal>(type: "Money", nullable: false),
-                    DiscountType = table.Column<bool>(type: "bit", nullable: false),
-                    SalesInvoicesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SalesInvoice_TotalDsicounts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SalesInvoice_TotalDsicounts_SalesInvoices_SalesInvoicesId",
-                        column: x => x.SalesInvoicesId,
-                        principalTable: "SalesInvoices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SalesInvoices_Attachments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Attachments = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    SalesInvoicesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SalesInvoices_Attachments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SalesInvoices_Attachments_SalesInvoices_SalesInvoicesId",
-                        column: x => x.SalesInvoicesId,
-                        principalTable: "SalesInvoices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SalesSettings",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SalesInvoicesId = table.Column<int>(type: "int", nullable: false),
-                    Fields_Per_ServiceId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SalesSettings", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SalesSettings_Fields_Per_Service_Fields_Per_ServiceId",
-                        column: x => x.Fields_Per_ServiceId,
-                        principalTable: "Fields_Per_Service",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_SalesSettings_SalesInvoices_SalesInvoicesId",
-                        column: x => x.SalesInvoicesId,
-                        principalTable: "SalesInvoices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ServicesInSalesInvices",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Price = table.Column<decimal>(type: "Money", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    SubtotalPerItem = table.Column<decimal>(type: "Money", nullable: false),
-                    Decriptions = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ServicesId = table.Column<int>(type: "int", nullable: false),
-                    SalesInvoicesId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ServicesInSalesInvices", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ServicesInSalesInvices_SalesInvoices_SalesInvoicesId",
-                        column: x => x.SalesInvoicesId,
-                        principalTable: "SalesInvoices",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_ServicesInSalesInvices_Services_ServicesId",
-                        column: x => x.ServicesId,
-                        principalTable: "Services",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ShippingDetails",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ShippingFees = table.Column<decimal>(type: "Money", nullable: false),
-                    ShowingInInvoiceOptions = table.Column<byte>(type: "tinyint", nullable: false),
-                    SalesInvoicesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ShippingDetails", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ShippingDetails_SalesInvoices_SalesInvoicesId",
-                        column: x => x.SalesInvoicesId,
-                        principalTable: "SalesInvoices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Statuses_For_EachInvoice",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SalesInvoicesId = table.Column<int>(type: "int", nullable: false),
-                    SalesInvoicesStatusId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Statuses_For_EachInvoice", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Statuses_For_EachInvoice_SalesInvoices_SalesInvoicesId",
-                        column: x => x.SalesInvoicesId,
-                        principalTable: "SalesInvoices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Statuses_For_EachInvoice_SalesInvoicesStatuses_SalesInvoicesStatusId",
-                        column: x => x.SalesInvoicesStatusId,
-                        principalTable: "SalesInvoicesStatuses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Terms_Per_Invoice",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TaxValue = table.Column<int>(type: "int", nullable: false),
-                    SalesInvoicesId = table.Column<int>(type: "int", nullable: false),
-                    SalesTermsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Terms_Per_Invoice", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Terms_Per_Invoice_SalesInvoices_SalesInvoicesId",
-                        column: x => x.SalesInvoicesId,
-                        principalTable: "SalesInvoices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Terms_Per_Invoice_TermsAndConditions_SalesTermsId",
-                        column: x => x.SalesTermsId,
-                        principalTable: "TermsAndConditions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Subscription_AutomaticReminders",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SubscriptionsId = table.Column<int>(type: "int", nullable: false),
-                    AutomaticRemindersId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Subscription_AutomaticReminders", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Subscription_AutomaticReminders_AutomaticReminders_AutomaticRemindersId",
-                        column: x => x.AutomaticRemindersId,
-                        principalTable: "AutomaticReminders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Subscription_AutomaticReminders_Subscriptions_SubscriptionsId",
-                        column: x => x.SubscriptionsId,
-                        principalTable: "Subscriptions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Subscription_Invoices",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FromDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    ToDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    SalesInvoicesId = table.Column<int>(type: "int", nullable: false),
-                    SubscriptionsId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Subscription_Invoices", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Subscription_Invoices_SalesInvoices_SalesInvoicesId",
-                        column: x => x.SalesInvoicesId,
-                        principalTable: "SalesInvoices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Subscription_Invoices_Subscriptions_SubscriptionsId",
-                        column: x => x.SubscriptionsId,
-                        principalTable: "Subscriptions",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Subscription_Notes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SubscriptionsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Subscription_Notes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Subscription_Notes_Subscriptions_SubscriptionsId",
-                        column: x => x.SubscriptionsId,
-                        principalTable: "Subscriptions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Subscription_Terms",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Terms = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SubscriptionsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Subscription_Terms", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Subscription_Terms_Subscriptions_SubscriptionsId",
-                        column: x => x.SubscriptionsId,
-                        principalTable: "Subscriptions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SubscriptionAttachments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Attachments = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    SubscriptionsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SubscriptionAttachments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SubscriptionAttachments_Subscriptions_SubscriptionsId",
-                        column: x => x.SubscriptionsId,
-                        principalTable: "Subscriptions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ContractDurations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Amount = table.Column<decimal>(type: "Money", nullable: false),
-                    MonthOrYear = table.Column<bool>(type: "bit", nullable: false),
-                    Contract_Per_EmpId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ContractDurations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ContractDurations_Contract_Per_Emps_Contract_Per_EmpId",
-                        column: x => x.Contract_Per_EmpId,
-                        principalTable: "Contract_Per_Emps",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ContractEndDates",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    EndDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    Contract_Per_EmpId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ContractEndDates", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ContractEndDates_Contract_Per_Emps_Contract_Per_EmpId",
-                        column: x => x.Contract_Per_EmpId,
-                        principalTable: "Contract_Per_Emps",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ContractsAttachments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Attachments = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    Contract_Per_EmpId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ContractsAttachments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ContractsAttachments_Contract_Per_Emps_Contract_Per_EmpId",
-                        column: x => x.Contract_Per_EmpId,
-                        principalTable: "Contract_Per_Emps",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Field_Choices",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ChoiceName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Choicevalue = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Fields_PropertiesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Field_Choices", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Field_Choices_Fields_Properties_Fields_PropertiesId",
-                        column: x => x.Fields_PropertiesId,
-                        principalTable: "Fields_Properties",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "DiscountsPerItems",
                 columns: table => new
                 {
@@ -5741,6 +5597,27 @@ namespace ERP.Migrations.ApplicationDb
                         name: "FK_TaxPerService_PerInvoices_TaxSettings_TaxSettingsId",
                         column: x => x.TaxSettingsId,
                         principalTable: "TaxSettings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Field_Choices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ChoiceName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Choicevalue = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Fields_PropertiesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Field_Choices", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Field_Choices_Fields_Properties_Fields_PropertiesId",
+                        column: x => x.Fields_PropertiesId,
+                        principalTable: "Fields_Properties",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -5951,11 +5828,6 @@ namespace ERP.Migrations.ApplicationDb
                 column: "BankAccountsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CheckBooks_CurrencyId",
-                table: "CheckBooks",
-                column: "CurrencyId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ClientNotes_COCId",
                 table: "ClientNotes",
                 column: "COCId");
@@ -5981,16 +5853,6 @@ namespace ERP.Migrations.ApplicationDb
                 column: "COCId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_COCs_CountryId",
-                table: "COCs",
-                column: "CountryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_COCs_CurrencyId",
-                table: "COCs",
-                column: "CurrencyId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_COCs_UserId",
                 table: "COCs",
                 column: "UserId");
@@ -5999,11 +5861,6 @@ namespace ERP.Migrations.ApplicationDb
                 name: "IX_Commissions_AddedBy_EmpId",
                 table: "Commissions",
                 column: "AddedBy_EmpId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Commissions_CurrencyId",
-                table: "Commissions",
-                column: "CurrencyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Commissions_ItemCats_CommissionsId",
@@ -6084,11 +5941,6 @@ namespace ERP.Migrations.ApplicationDb
                 name: "IX_ContractEndDates_Contract_Per_EmpId",
                 table: "ContractEndDates",
                 column: "Contract_Per_EmpId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Contracts_CurrencyId",
-                table: "Contracts",
-                column: "CurrencyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Contracts_Deductions_ContractsId",
@@ -6201,13 +6053,6 @@ namespace ERP.Migrations.ApplicationDb
                 column: "CreditTypesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Currency_CountryId",
-                table: "Currency",
-                column: "CountryId",
-                unique: true,
-                filter: "[CountryId] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_DaysOff_HolidayLists_HolidayListsId",
                 table: "DaysOff_HolidayLists",
                 column: "HolidayListsId");
@@ -6252,11 +6097,6 @@ namespace ERP.Migrations.ApplicationDb
                 name: "IX_EmployeeNotes_EmployeeId",
                 table: "EmployeeNotes",
                 column: "EmployeeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Employees_CountryId",
-                table: "Employees",
-                column: "CountryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_DesignationId",
@@ -6317,11 +6157,6 @@ namespace ERP.Migrations.ApplicationDb
                 name: "IX_Estimates_AddBy_empId",
                 table: "Estimates",
                 column: "AddBy_empId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Estimates_CurrencyId",
-                table: "Estimates",
-                column: "CurrencyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Estimates_EmailsTemplatesId",
@@ -6622,11 +6457,6 @@ namespace ERP.Migrations.ApplicationDb
                 column: "LoansId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Loans_CurrencyId",
-                table: "Loans",
-                column: "CurrencyId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Loans_EmployeesId",
                 table: "Loans",
                 column: "EmployeesId");
@@ -6752,11 +6582,6 @@ namespace ERP.Migrations.ApplicationDb
                 column: "PayableCheckId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Payslips_CurrencyId",
-                table: "Payslips",
-                column: "CurrencyId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Payslips_EmployeesId",
                 table: "Payslips",
                 column: "EmployeesId");
@@ -6807,11 +6632,6 @@ namespace ERP.Migrations.ApplicationDb
                 column: "Purchase_invoicesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Purchase_invoices_CurrencyId",
-                table: "Purchase_invoices",
-                column: "CurrencyId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Purchase_Payments_Purchase_invoicesId",
                 table: "Purchase_Payments",
                 column: "Purchase_invoicesId");
@@ -6830,11 +6650,6 @@ namespace ERP.Migrations.ApplicationDb
                 name: "IX_Purchase_RefundedServices_ServicesId",
                 table: "Purchase_RefundedServices",
                 column: "ServicesId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Purchase_RefundRequests_CurrencyId",
-                table: "Purchase_RefundRequests",
-                column: "CurrencyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Purchases_Deposits_Purchase_invoicesId",
@@ -6985,11 +6800,6 @@ namespace ERP.Migrations.ApplicationDb
                 name: "IX_SalesInvoicePayments_CollectedBy_EmpId",
                 table: "SalesInvoicePayments",
                 column: "CollectedBy_EmpId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SalesInvoicePayments_CurrencyId",
-                table: "SalesInvoicePayments",
-                column: "CurrencyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SalesInvoicePayments_PaymentMethodsId",
@@ -7157,11 +6967,6 @@ namespace ERP.Migrations.ApplicationDb
                 column: "COCId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Subscriptions_CurrencyId",
-                table: "Subscriptions",
-                column: "CurrencyId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Supplier_ContactLists_SuppliersId",
                 table: "Supplier_ContactLists",
                 column: "SuppliersId");
@@ -7177,29 +6982,14 @@ namespace ERP.Migrations.ApplicationDb
                 column: "SuppliersId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Supplier_notes_SuppliersId",
-                table: "Supplier_notes",
-                column: "SuppliersId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_SupplierAddresses_SuppliersId",
                 table: "SupplierAddresses",
                 column: "SuppliersId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Suppliers_CountryId",
+                name: "IX_Suppliers_AddedBy_UserId",
                 table: "Suppliers",
-                column: "CountryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Suppliers_CurrencyId",
-                table: "Suppliers",
-                column: "CurrencyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Suppliers_UserId",
-                table: "Suppliers",
-                column: "UserId");
+                column: "AddedBy_UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TaxPer_Item_PerInvoice_ItemsInSalesInvoicesId",
@@ -7271,11 +7061,6 @@ namespace ERP.Migrations.ApplicationDb
                 name: "IX_Withdraw_WithExpires_Items_withEpireId",
                 table: "Withdraw_WithExpires",
                 column: "Items_withEpireId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WorkOrders_CurrencyId",
-                table: "WorkOrders",
-                column: "CurrencyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkOrders_Attachments_WorkOrdersId",
@@ -7759,9 +7544,6 @@ namespace ERP.Migrations.ApplicationDb
                 name: "Supplier_CustomFields");
 
             migrationBuilder.DropTable(
-                name: "Supplier_notes");
-
-            migrationBuilder.DropTable(
                 name: "SupplierAddresses");
 
             migrationBuilder.DropTable(
@@ -8062,13 +7844,7 @@ namespace ERP.Migrations.ApplicationDb
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Currency");
-
-            migrationBuilder.DropTable(
                 name: "ServiceMainCategories");
-
-            migrationBuilder.DropTable(
-                name: "Countries");
         }
     }
 }

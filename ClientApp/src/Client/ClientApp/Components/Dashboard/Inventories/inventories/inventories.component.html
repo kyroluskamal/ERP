@@ -20,10 +20,10 @@
               PreventDeleteForKey="id"
               ReferencialField="inventAdd"
               (ReferencialField_AddClick)="AddAddress($event)"
-              (ReferencialField_EditClick)="EditAdress($event)">
-  </kiko-table>
+              (ReferencialField_EditClick)="EditAdress($event)"
+              (ReferencialField_DeleteClick)="DeleteAddress($event)"
+              (ClickAddButton)="AddNewInvent($event)"
+              [AddButtonText]="AddButtonText">
 
-  <kiko-form *ngIf="FormBuilder"
-             [Form]="FormBuilder"
-             (GetValue)="AddNewInvetory($event)"></kiko-form>
+  </kiko-table>
 </div>

@@ -30,7 +30,7 @@ namespace ERP.Models.Purchases.PurphaseRefund
         [Column(TypeName = "Money")]
         public decimal TotalMoneyIsRefunded { get; set; }
 
-        public Currency Currency { get; set; }
+        public string Currency { get; set; }
         public int CurrencyId { get; set; }
     }
 }

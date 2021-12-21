@@ -1,26 +1,33 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { FormControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from 'src/CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
 import { CustomErrorStateMatcher } from 'src/Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
-import { ColDefs, ThemeColor } from 'src/Interfaces/interfaces';
+import { CardTitle, ColDefs, SweetAlertData, ThemeColor } from 'src/Interfaces/interfaces';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatButton } from '@angular/material/button';
 import { LightDarkThemeConverterService } from 'src/Client/ClientApp/Components/Dashboard/light-dark-theme-converter.service';
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
-import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
+import { MediaChange, MediaObserver } from '@angular/flex-layout';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'kiko-table',
   templateUrl: './generic-table.component.html',
-  styleUrls: ['./generic-table.component.css']
+  styleUrls: ['./generic-table.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
-export class GenericTableComponent implements OnInit, OnChanges {
+export class GenericTableComponent implements OnInit, OnChanges, OnDestroy {
   ThemeColors: ThemeColor = JSON.parse(JSON.stringify(localStorage.getItem(this.Constants.ChoosenThemeColors)));
   Subdomain: string = window.location.hostname.split(".")[0];
   faEdit = faEdit;
@@ -51,6 +58,10 @@ export class GenericTableComponent implements OnInit, OnChanges {
   SettingsMenuOpenned: boolean = false;
   RefField: string = "";
   PreventFor: string = "";
+  AddButton_Text: CardTitle[] = [];
+  MediaSubscription: Subscription = new Subscription();
+  FilterSectionHeight: string = "";
+  expandedElement: any | null;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<any>;
@@ -68,16 +79,21 @@ export class GenericTableComponent implements OnInit, OnChanges {
   @Input() ShowFilterSection: boolean = true;
   @Input() ShowPaginator: boolean = true;
   @Input() datasource: MatTableDataSource<any> = new MatTableDataSource<any>();
+  @Input() AddButtonText: CardTitle[] = [];
+  @Input() HasCollabsableRow: boolean = false;
+  @Input() CollabsableDataKeys: string[] = [];
   @Output() rowsSelection: EventEmitter<any[]> = new EventEmitter();
   @Output() DoubleClickRow: EventEmitter<any> = new EventEmitter();
   @Output() DeleteClick: EventEmitter<any> = new EventEmitter();
   @Output() EditClick: EventEmitter<any> = new EventEmitter();
   @Output() ReferencialField_AddClick: EventEmitter<any> = new EventEmitter();
   @Output() ReferencialField_EditClick: EventEmitter<any> = new EventEmitter();
+  @Output() ReferencialField_DeleteClick: EventEmitter<any> = new EventEmitter();
+  @Output() ClickAddButton: EventEmitter<boolean> = new EventEmitter();
   constructor(
     public Constants: ConstantsService,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
-    private LightOrDarkConverter: LightDarkThemeConverterService,
+    private LightOrDarkConverter: LightDarkThemeConverterService, private mediaObserver: MediaObserver,
   ) {
 
     let tem: any = localStorage.getItem(this.Constants.BodyAppeareance);
@@ -141,6 +157,7 @@ export class GenericTableComponent implements OnInit, OnChanges {
     this.isLoadingResults = this.isLoadingRes;
     this.RefField = this.ReferencialField;
     this.PreventFor = this.PreventDeleteForValue;
+    this.AddButton_Text = this.AddButtonText;
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['data']) {
@@ -164,6 +181,9 @@ export class GenericTableComponent implements OnInit, OnChanges {
     if ("ReferencialField" in changes) {
       this.RefField = this.ReferencialField;
     }
+    if ("AddButtonText" in changes) {
+      this.AddButton_Text = this.AddButtonText;
+    }
   }
   dropListDropped(event: CdkDragDrop<string[]>) {
     if (event) {
@@ -176,11 +196,13 @@ export class GenericTableComponent implements OnInit, OnChanges {
     let Backspace = event.key === "Backspace";
     let Delete = event.key === "Delete";
     let Shift = event.shiftKey;
-    console.log(event.key)
     if ((Backspace && Shift) || (Delete && Shift))
       this.ShiftDelete((Backspace && Shift) || (Delete && Shift));
     if (event.key === "Enter" && Shift)
       this.ShiftEnter(event.key === "Enter" && Shift);
+    if (event.ctrlKey && event.key === "/") {
+      this.AddClicked();
+    }
     this.SelectionByKeyboard(event.key);
   }
   SelectRow(row: any) {
@@ -195,6 +217,15 @@ export class GenericTableComponent implements OnInit, OnChanges {
 
 
   ngAfterViewInit() {
+    this.MediaSubscription = this.mediaObserver.asObservable().subscribe(
+      (response: MediaChange[]) => {
+        if (response.some(x => x.mqAlias === 'xs')) {
+          this.FilterSectionHeight = "100px"
+
+        } else {
+          this.FilterSectionHeight = '50px';
+        }
+      });
     setTimeout(() => {
       this.paginator._intl.itemsPerPageLabel = this.itemPageLabel
       this.paginator._intl.firstPageLabel = this.firstPageLabel;
@@ -210,8 +241,9 @@ export class GenericTableComponent implements OnInit, OnChanges {
     this.DoubleClickRow.emit(row);
   }
   ShiftDelete(requiredKeys: boolean) {
-    if (requiredKeys && this.SelectedRows.length > 0)
+    if (requiredKeys && this.SelectedRows.length > 0) {
       this.Delete(this.SelectedRows[0]);
+    }
   }
   SelectionByKeyboard(key: string) {
     let PageData = (this.dataSource.sort?.direction === 'desc' || this.dataSource.sort?.direction === 'asc') ?
@@ -282,7 +314,6 @@ export class GenericTableComponent implements OnInit, OnChanges {
   }
   Filter(value: string) {
     this.dataSource.filter = value.trim().toLocaleLowerCase();
-    console.log(this.dataSource.filteredData)
   }
 
   TableSettingClick() {
@@ -312,12 +343,17 @@ export class GenericTableComponent implements OnInit, OnChanges {
       this.displayedColumns.splice(this.displayedColumns.length, 0, del);
       this.displayedColumns.splice(this.displayedColumns.length, 0, edit);
     }
-    console.log(this.displayedColumns);
   }
   AddReferencialData(row: any) {
     this.ReferencialField_AddClick.emit(row);
   }
   EditReferencialData(row: any) {
     this.ReferencialField_EditClick.emit(row);
+  }
+  DeleteReferencialData(row: any) {
+    this.ReferencialField_DeleteClick.emit(row);
+  }
+  AddClicked() {
+    this.ClickAddButton.emit(true);
   }
 }

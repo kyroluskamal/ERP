@@ -1,5 +1,6 @@
 ﻿using ERP.Models.Employee;
 using ERP.Models.Generals;
+using ERP.Utilities.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,19 +22,17 @@ namespace ERP.Models.Supplier
         [Required(ErrorMessage = "Required_field")]
         [MaxLength(30, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string LastName { get; set; }
-        [MaxLength(30, ErrorMessage = "MaxLengthExceeded_ERROR")]
+        [DataType(DataType.PhoneNumber)]
+        [PhoneNumber(ErrorMessage = "NOT_VALID_PHONE_NUMBER")]
         public string Telephone { get; set; }
-
         [Required(ErrorMessage = "Required_field")]
         [DataType(DataType.PhoneNumber)]
-        [RegularExpression(@"+?^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
+        [PhoneNumber(ErrorMessage = "NOT_VALID_PHONE_NUMBER")]
         public string MobilePhone { get; set; }
         public string TaxID { get; set; }
         public string CR { get; set; }
-
         [EmailAddress(ErrorMessage = "IncorrecEmail")]
         public string Email { get; set; }
-
         [Required(ErrorMessage = "Required_field")]
         [DataType(DataType.Date)]
         [Column(TypeName = "Date")]
@@ -41,15 +40,17 @@ namespace ERP.Models.Supplier
         [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "Money")]
         public decimal OpeningBalance { get; set; }
-        [Column(TypeName = "bit")]
-        public bool HasNotes { get; set; }
-
-        public Currency Currency { get; set; }
+        public string Notes { get; set; }
+        public string Currency { get; set; }
         public int CurrencyId { get; set; }
-        public Country Country { get; set; }
+        public string CountryName { get; set; }
+        public string CountryNameCode { get; set; }
         public int CountryId { get; set; }
-        [ForeignKey(nameof(UserId))]
+        [ForeignKey(nameof(AddedBy_UserId))]
         public ApplicationUser ApplicationUser { get; set; }
-        public int UserId { get; set; }
+        public int? AddedBy_UserId { get; set; } //Not Required temporary
+        public string AddedBy_UserName { get; set; }
+        [NotMapped]
+        public string Subdomain { get; set; }
     }
 }

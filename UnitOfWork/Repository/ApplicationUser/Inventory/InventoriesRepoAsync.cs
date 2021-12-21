@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ERP.UnitOfWork.Repository.ApplicationUser.Inventory
 {
-    public class InventoriesRepoAsync : ApplicationUserRepositoryAsync<Inventories>, IInventoriesRepoAsync
+    public class InventoriesRepoAsync : OwnerRepositoryAsync<Inventories>, IInventoriesRepoAsync
     {
         public InventoriesRepoAsync(ApplicationDbContext applicationDbContext) : base(applicationDbContext)
         {

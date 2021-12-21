@@ -11,7 +11,6 @@ namespace ERP.Areas.Owners.Data
     {
         public OwnersDbContext(DbContextOptions<OwnersDbContext> options) : base(options)
         {
-            //Database.Migrate();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -19,6 +18,8 @@ namespace ERP.Areas.Owners.Data
             base.OnConfiguring(optionsBuilder);
         }
 
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<Currency> Currencies { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -40,7 +41,10 @@ namespace ERP.Areas.Owners.Data
                 .HasMany(x => x.UserRole)
                 .WithOne(x => x.Role)
                 .HasForeignKey(x => x.RoleId).IsRequired();
-
+            modelBuilder.Entity<Country>()
+               .HasOne(x => x.Currency)
+               .WithOne(x => x.Country)
+               .HasForeignKey<Currency>(x => x.CountryId);
             modelBuilder.Entity<OwnerUserRole>().HasKey(p => new { p.UserId, p.RoleId });
 
             modelBuilder.Entity<OwnerRole>()

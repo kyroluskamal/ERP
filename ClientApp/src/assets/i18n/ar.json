@@ -231,5 +231,12 @@
   "government" : "محافظة",
   "Flat_No": "شقة",
   "St" : "ش",
-  "Delete_Default_Error": "لا يمكنك حذف"
+  "Delete_Default_Error": "لا يمكنك حذف",
+  "confirm": "تأكيد",
+  "DeleteConfirmation" : "تأكيد الحذف",
+  "DeleteInventoryWarning":"الرجاء العلم انه عند حذف مخزن، سيتم اضافة جميع المنتجات الموجودة به الى المخزن الافتراضي.",
+  "cancel":"إلغاء",
+  "error": "خطأ",
+  "warning": "تحذير",
+  "OK":"حسناً"
 }

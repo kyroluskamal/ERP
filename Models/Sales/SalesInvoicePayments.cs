@@ -34,7 +34,7 @@ namespace ERP.Models.Sales
         public PaymentMethods PaymentMethods { get; set; }
         public int PaymentMethodsId { get; set; }
 
-        public Currency Currency { get; set; }
+        public string Currency { get; set; }
         public int CurrencyId { get; set; }
     }
 }

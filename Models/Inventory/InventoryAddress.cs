@@ -22,8 +22,9 @@ namespace ERP.Models.Inventory
         public string City { get; set; }
         [MaxLength(30, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string Government { get; set; }
-        public Country Country { get; set; }
-        public int? CountryId { get; set; }
+        public string CountryName { get; set; }
+        public string CountryNameCode { get; set; }
+        public int CountryId { get; set; }
         [ForeignKey(nameof(InventoriesId))]
         public virtual Inventories Inventories { get; set; }
         public int InventoriesId { get; set; }

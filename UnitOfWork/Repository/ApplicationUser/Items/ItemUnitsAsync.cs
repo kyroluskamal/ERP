@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ERP.UnitOfWork.Repository.ApplicationUser.Items
 {
-    public class ItemUnitsAsync : ApplicationUserRepositoryAsync<Units>, IItemUnitsAsync
+    public class ItemUnitsAsync : OwnerRepositoryAsync<Units>, IItemUnitsAsync
     {
         public ItemUnitsAsync(ApplicationDbContext applicationDbContext) : base(applicationDbContext)
         {

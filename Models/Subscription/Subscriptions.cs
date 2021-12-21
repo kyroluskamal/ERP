@@ -43,7 +43,7 @@ namespace ERP.Models.Subscription
         public COC COC { get; set; }
         public int COCId { get; set; }
 
-        public Currency Currency { get; set; }
+        public string Currency { get; set; }
         public int? CurrencyId { get; set; }
     }
 }

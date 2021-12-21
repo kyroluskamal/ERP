@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ERP.Models.Generals
+namespace ERP.Areas.Owners.Models
 {
     public class Country
     {

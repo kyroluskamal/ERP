@@ -70,6 +70,7 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
   ChoosenThemeColor: any;
   MediaSubscription: Subscription = new Subscription();
   Table_color_mode: string;
+  CurrentUrl: string = "";
   @ViewChild("SideNavToggleButtonOnSmallScreen", { read: ElementRef }) SideNavToggleButtonOnSmallScreen: ElementRef<HTMLButtonElement> = {} as ElementRef<HTMLButtonElement>;
   @ViewChild("pinButton", { read: ElementRef }) pinButton: ElementRef<HTMLButtonElement> = {} as ElementRef<HTMLButtonElement>;
   @ViewChild("FullscreenButton", { read: ElementRef }) FullscreenButton: ElementRef<HTMLButtonElement> = {} as ElementRef<HTMLButtonElement>;
@@ -82,9 +83,7 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
     private ClientAccountService: ClientAccountService, private renderer: Renderer2,
     private vr: ViewContainerRef,
     private LightDarkThemeConverter: LightDarkThemeConverterService, private router: Router) {
-    this.ClientAccountService.currentUserOvservable.subscribe(
-      r => console.log(r)
-    );
+    this.ClientAccountService.currentUserOvservable.subscribe();
 
     if (localStorage.getItem(this.Constants.ChoosenThemeColors)) {
       let temp: any = localStorage.getItem(this.Constants.ChoosenThemeColors)
@@ -111,7 +110,13 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
     }
     this.agGridTableDirection.setValue(this.agGridTable_dir);
     this.LightDarkThemeConverter.ChangeAgGridTable_dir(this.agGridTable_dir);
-
+    this.router.events
+      .pipe(
+        filter(e => e instanceof NavigationEnd)
+      )
+      .subscribe((navEnd: any) => {
+        this.CurrentUrl = navEnd.urlAfterRedirects;
+      });
     //Set Ag-grid dark or light mode
     if (localStorage.getItem(this.Constants.Table_Color_mode)) {
       this.Table_color_mode = localStorage.getItem(this.Constants.Table_Color_mode) === this.Constants.light ?
@@ -179,6 +184,15 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
       this.SideNav_Content_class = this.dir === 'rtl' ? this.Constants.CSS_sidenav_content_nonPinned_RTL : this.Constants.CSS_sidenav_content_nonPinned_LTR;
     }
     if (!this.pinned) this.SideNavItems.forEach(i => i.expanded = false);
+    else {
+      for (let item of this.SideNavItems) {
+        for (let link of item.links) {
+          if (this.CurrentUrl.includes(link.link)) {
+            item.expanded = true;
+          }
+        }
+      }
+    }
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     )
@@ -227,6 +241,14 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
     if (this.pinned === false) {
       for (let item of this.SideNavItems) {
         item.expanded = false;
+      }
+    } else {
+      for (let item of this.SideNavItems) {
+        for (let link of item.links) {
+          if (this.CurrentUrl.includes(link.link)) {
+            item.expanded = true;
+          }
+        }
       }
     }
   }

@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
+#nullable disable
+
 namespace ERP.Migrations.TenantsDb
 {
-    public partial class TenantsInitial : Migration
+    public partial class TenantsInitials : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -24,8 +24,8 @@ namespace ERP.Models.Checks
         [Column(TypeName = "bit")]
         public bool HasNotes { get; set; }
 
-        public Currency Currency { get; set; }
-        public int? CurrencyId { get; set; }
+        public string Currency { get; set; }
+        public int CurrencyId { get; set; }
 
         public BankAccounts BankAccounts { get; set; }
         public int BankAccountsId { get; set; }

@@ -1,7 +1,9 @@
-﻿namespace ERP.Areas.Owners.Data.DbInitializer
+﻿using System.Threading.Tasks;
+
+namespace ERP.Areas.Owners.Data.DbInitializer
 {
     public interface IOwnerDbInitializer
     {
-        void Initialize();
+        Task Initialize();
     }
 }

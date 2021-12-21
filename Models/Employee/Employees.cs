@@ -53,8 +53,9 @@ namespace ERP.Models.Employee
         public ApplicationUser ApplicationUser { get; set; }
         public int UserId { get; set; }
 
-        public Country Country { get; set; }
-        public int? CountryId { get; set; }
+        public string CountryName { get; set; }
+        public string CountryNameCode { get; set; }
+        public int CountryId { get; set; }
         public Department Department { get; set; }
         public int? DepartmentId { get; set; }
         public Designation Designation { get; set; }

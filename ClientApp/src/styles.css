@@ -700,7 +700,7 @@ form[dir="rtl"] .mat-icon span.ng-star-inserted{
   background: #2c41a9;
 }
 .mat-button-toggle-label-content {
-  font-family: var(--calibri) !important;
+  font-family: var(--Calibri) !important;
   font-weight: bold !important;
 }
 
@@ -1089,11 +1089,9 @@ table tr{
 .mat-column-isActive{
 width:6%;
 }
-.mat-column-isMainInventory{
-width:6%;
-}
+
 .mat-column-id{
-width:8%;
+max-width:8%;
 }
 .mat-column-notes{
   width: 25% !important;
@@ -1160,9 +1158,13 @@ width:8%;
   font-weight: bold;
   margin: 0 10px;
 }
+[dir='rtl'] .TablefilterDiv button span{
+  font-family: var(--Almarai);
+}
 .mat-paginator-range-label{
   width:100px;
 }
+
 .paginator-Buttons{
   border: none;
   width:25px;
@@ -1207,4 +1209,37 @@ mat-paginator .mat-icon-button.mat-button-disabled, button.paginator-Buttons:dis
 }
 .mat-checkbox fa-icon{
   padding: 10px;
+}
+
+.swal2-container{
+  font-family: var(--NotoSansArabic) !important;
+}
+h2#swal2-title{
+  font-family: var(--Almarai) !important;
+  font-size: 1.9rem;
+  color:#007bff;
+}
+tr:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr:not(.example-expanded-row):active {
+  background: #efefef;
+}
+.rtl{
+  direction: rtl;
+}
+.ltr{
+  direction: ltr;
+}
+.SwalHtmlContent{
+  font:inherit;
+  font-weight: normal;
+  font-size:1.9rem !important;
+}
+.SwalErrorTitle{
+  color: #f44336 !important;
+}
+.SwalWarningTitle{
+  color: #ffc107 !important;
 }

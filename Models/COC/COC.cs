@@ -44,15 +44,14 @@ namespace ERP.Models.COCs
 
         public string Telephone { get; set; }
         public byte[] ProfileImage { get; set; }
-        [ForeignKey(nameof(CurrencyId))]
-        public Currency Currency { get; set; }
+        public string Currency { get; set; }
         public int CurrencyId { get; set; }
 
         [Column(TypeName = "tinyint")]
         public int InvoicingMethod { get; set; }
 
-        [ForeignKey(nameof(CountryId))]
-        public Country Country { get; set; }
+        public string CountryName { get; set; }
+        public string CountryNameCode { get; set; }
         public int CountryId { get; set; }
 
         [ForeignKey(nameof(UserId))]

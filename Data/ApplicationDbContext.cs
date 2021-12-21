@@ -79,8 +79,6 @@ namespace ERP.Data
         #region Generals dbsets
         public DbSet<Actions> Actions { get; set; }
         public DbSet<AutomaticReminders> AutomaticReminders { get; set; }
-        public DbSet<Country> Countries { get; set; }
-        public DbSet<Currency> Currency { get; set; }
         public DbSet<EmailsTemplates> EmailsTemplates { get; set; }
         public DbSet<Status> Statuses { get; set; }
         public DbSet<WhenRemidersSent> WhenRemidersSents { get; set; }
@@ -247,7 +245,6 @@ namespace ERP.Data
         #region Suppliers
         public DbSet<Suppliers> Suppliers { get; set; }
         public DbSet<SupplierAddresses> SupplierAddresses { get; set; }
-        public DbSet<Supplier_notes> Supplier_notes { get; set; }
         public DbSet<Supplier_CustomFields> Supplier_CustomFields { get; set; }
         public DbSet<Supplier_ContactList> Supplier_ContactLists { get; set; }
         #endregion
@@ -423,10 +420,7 @@ namespace ERP.Data
                 .HasOne(x => x.InventoryAddress)
                 .WithOne(x => x.Inventories)
                 .HasForeignKey<InventoryAddress>(x => x.InventoriesId);
-            builder.Entity<Country>()
-                .HasOne(x => x.Currency)
-                .WithOne(x => x.Country)
-                .HasForeignKey<Currency>(x => x.CountryId);
+           
           
 
             builder.Entity<ApplicationUser>()

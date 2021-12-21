@@ -38,7 +38,7 @@ namespace ERP.Models.WorkOrder
         [Column(TypeName = "Money")]
         public decimal Budget { get; set; }
 
-        public Currency Currency { get; set; }
+        public string Currency { get; set; }
         public int? CurrencyId { get; set; }
     }
 }

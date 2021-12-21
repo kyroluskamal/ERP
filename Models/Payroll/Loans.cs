@@ -41,7 +41,7 @@ namespace ERP.Models.Payroll
         public Employees Employees { get; set; }
         public int EmployeesId { get; set; }
 
-        public Currency Currency { get; set; }
+        public string Currency { get; set; }
         public int CurrencyId { get; set; }
 
         public Treasuries Treasuries { get; set; }

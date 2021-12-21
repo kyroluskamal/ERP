@@ -1,5 +1,4 @@
-﻿using ERP.UnitOfWork.IRepository.ApplicationUser.Generals;
-using ERP.UnitOfWork.IRepository.ApplicationUser.Inventory;
+﻿using ERP.UnitOfWork.IRepository.ApplicationUser.Inventory;
 using ERP.UnitOfWork.IRepository.ApplicationUser.Items;
 using ERP.UnitOfWork.IRepository.ApplicationUser.SuppliersRepo;
 using System;
@@ -16,7 +15,6 @@ namespace ERP.UnitOfWork
         IItemsSubCatRepoAsync Item_SubCats { get; }
         IItemUnitsAsync ItemUnits { get; }
         IBrandsAsync ItemBrands { get; }
-        ICountryRepoAsync Countries { get; }
 
         Task SetConnectionStringAsync(string ConnectionString);
         Task<int> SaveAsync();

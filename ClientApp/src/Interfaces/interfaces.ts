@@ -2,6 +2,7 @@ import { Direction } from "@angular/cdk/bidi";
 import { FormGroup } from "@angular/forms";
 import { MatFormFieldAppearance } from "@angular/material/form-field";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { SweetAlertIcon, SweetAlertOptions } from "sweetalert2";
 
 export interface ExpansionPanel {
   title: string;
@@ -85,4 +86,17 @@ export interface CardTitle {
 }
 export interface MaxMinLengthValidation {
   prop: string; maxLength?: number; minLength?: number;
+}
+
+export interface SweetAlertData {
+  title?: CardTitle[];
+  text?: CardTitle[];
+  ConfirmButton_FaIcon?: any;
+  ConfirmButton_GoogleIcon?: string;
+  CancelButton_FaIcon?: any;
+  CancelButton_GoogleIcon?: string;
+  DenyButton_FaIcon?: any;
+  DenyButton_GoogleIcon?: string;
+  OtherOptions: SweetAlertOptions,
+  direction: string
 }

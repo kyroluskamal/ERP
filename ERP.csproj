@@ -66,6 +66,7 @@
     <Folder Include="ClientApp\src\Interceptors\ErrorHandling\" />
     <Folder Include="ClientApp\src\Interceptors\TokenInterceptor\" />
     <Folder Include="ClientApp\src\Owners\Dashboard\Employers\" />
+    <Folder Include="Controllers\NewFolder\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">

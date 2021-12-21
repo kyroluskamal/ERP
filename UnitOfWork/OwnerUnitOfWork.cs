@@ -1,6 +1,8 @@
 ﻿using ERP.Areas.Owners.Data;
 using ERP.UnitOfWork.IRepository.Owners;
+using ERP.UnitOfWork.IRepository.Owners.Generals;
 using ERP.UnitOfWork.Repository.Owners;
+using ERP.UnitOfWork.Repository.Owners.Generals;
 using System.Threading.Tasks;
 
 namespace ERP.UnitOfWork
@@ -10,11 +12,13 @@ namespace ERP.UnitOfWork
         private OwnersDbContext OwnersDbContext { get; }
         public IOwnersRepository Owners { get; private set; }
 
+        public ICountryRepoAsync Countries { get; private set; }
 
         public OwnerUnitOfWork(OwnersDbContext ownersDbContext)
         {
             OwnersDbContext = ownersDbContext;
-            Owners = new OwnerRepository(OwnersDbContext);
+            Owners = new OwnerRepository(ownersDbContext);
+            Countries = new CountryRepoAsync(ownersDbContext);
         }
 
 
@@ -23,7 +27,7 @@ namespace ERP.UnitOfWork
             await OwnersDbContext.DisposeAsync();
         }
 
-        public async Task<int> Save()
+        public async Task<int> SaveAsync()
         {
             return await OwnersDbContext.SaveChangesAsync();
         }

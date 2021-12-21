@@ -37,5 +37,8 @@ export class InventoriesService {
   UpdateAddress(AddToUpdate: InventoryAddress): Observable<any> {
     return this.httpClient.put(`${RouterConstants.InventoryAddress_UPDATE_API}`, AddToUpdate);
   }
+  DeleteAddress(id: number): Observable<any> {
+    return this.httpClient.delete(`${RouterConstants.InventoryAddress_DELETE_API}?Subdomain=${this.subdomain}&id=${id}`)
+  }
   //#endregion
 }

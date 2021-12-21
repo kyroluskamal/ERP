@@ -1,6 +1,7 @@
-﻿using ERP.Models.Generals;
+﻿using ERP.Areas.Owners.Models;
+using ERP.Models.Generals;
 
-namespace ERP.UnitOfWork.IRepository.ApplicationUser.Generals
+namespace ERP.UnitOfWork.IRepository.Owners.Generals
 {
     public interface ICountryRepoAsync : IRepositoryAsync<Country>
     {

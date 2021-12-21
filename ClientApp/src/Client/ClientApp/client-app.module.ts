@@ -32,6 +32,8 @@ import { AddInventAddressComponent } from './Components/Dashboard/Inventories/In
 import { BreadcrumbModule } from 'xng-breadcrumb';
 import { EditInventAddressComponent } from './Components/Dashboard/Inventories/InventoryAddress/edit-invent-address/edit-invent-address.component';
 import { AddNewInventoryComponent } from './Components/Dashboard/Inventories/add-new-inventory/add-new-inventory.component';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { SuppliersComponent } from './Components/Dashboard/Suppliers/suppliers/suppliers.component';
 
 const Commponents = [MatCardTitleOnlyComponent,
   ClientAppDashboardComponent, ClientAppHomeNavbarComponent, CLientAppHomeComponent,
@@ -39,10 +41,11 @@ const Commponents = [MatCardTitleOnlyComponent,
   ItemMainCategoriesComponent, ItemsComponentComponent, IconButtonRendererComponent,
   SelectableEditroAgFramweworkComponent, ItemUnitsComponent, NumberCellEditorComponent,
   ItemBrandsComponent, RegisterOnAppComponent, AddNewItemComponent, InventoriesComponent,
-  EditInventoryComponent, StylePaginatorDirective, AddInventAddressComponent, EditInventAddressComponent]
+  EditInventoryComponent, StylePaginatorDirective, AddInventAddressComponent,
+  EditInventAddressComponent, AddNewInventoryComponent, SuppliersComponent]
 @NgModule({
-  declarations: [Commponents, AddNewInventoryComponent],
-  imports: [BreadcrumbModule,
+  declarations: [Commponents],
+  imports: [BreadcrumbModule, SweetAlert2Module,
     SharedModule, MaterialModule, ClientAppRoutingModule, CommonModule, AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientXsrfModule.withOptions({

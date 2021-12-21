@@ -16,6 +16,7 @@ import { CommoneResetPasswordComponent } from '../CommonComponents/commone-reset
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ClientAppModule } from 'src/Client/ClientApp/client-app.module';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 @NgModule({
   declarations: [
     AppComponent, NotFoundComponent, CommoneResetPasswordComponent,
@@ -34,7 +35,7 @@ import { ClientAppModule } from 'src/Client/ClientApp/client-app.module';
       cookieName: 'XSRF-TOKEN',
       headerName: 'scfD1z5dp2',
     }),
-
+    SweetAlert2Module.forRoot()
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorHandlingInterceptor, multi: true },

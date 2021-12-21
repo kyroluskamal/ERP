@@ -113,6 +113,11 @@ export class ConstantsService {
   Flat_No = "Flat_No"
   InventoryAddress = "InventoryAddress";
   St = "St";
+  confirm = "confirm";
+  DeleteConfirmation = "DeleteConfirmation";
+  DeleteInventoryWarning = "DeleteInventoryWarning";
+  cancel = "cancel";
+  OK = "OK";
   //Notifications Messages
   LoggedInSuccessfully: string = "LoggedInSuccessfully";
   EmilConfirmationResnding = "EmilConfirmationResnding";
@@ -156,6 +161,8 @@ export class ConstantsService {
   ConfirmPasswordNoPassswordMatch = "ConfirmPasswordNoPassswordMatch";
   Delete_Default_inventory_Error = "Delete_Default_inventory_Error";
   Delete_Default_Error = "Delete_Default_Error";
+  error = "error";
+  warning = "warning";
   //Tooltip translation
   CloseSidebar = "Close sidebar";
   FixSidebar = "Fix sidebar";
@@ -362,7 +369,9 @@ export class ConstantsService {
   Found = "Found";
   results = "results";
   CSS_TableSettingsMenu = "TableSettingsMenu";
-  CSS_Space_evenly = 'space-evenly'
+  CSS_Space_evenly = 'space-evenly';
+  CSS_SwalWarningTitle = "SwalWarningTitle";
+  CSS_SwalErrorTitle = "SwalErrorTitle";
   //Local Stoarage
   FixedSidnav = "FixedSidNav";
   ToolbarThemeClass = "ToolbarThemeClass";
