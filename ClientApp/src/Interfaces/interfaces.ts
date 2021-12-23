@@ -1,4 +1,6 @@
 import { Direction } from "@angular/cdk/bidi";
+import { ComponentType } from "@angular/cdk/portal";
+import { Type } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { MatFormFieldAppearance } from "@angular/material/form-field";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
@@ -8,7 +10,8 @@ export interface ExpansionPanel {
   title: string;
   expanded: boolean;
   links: { link: string, LinkText: string, state: boolean }[];
-  iconName: string;
+  GoogleIconName?: string;
+  faIcon?: any;
 }
 
 export interface ThemeColor {
@@ -68,6 +71,7 @@ export class FormFields {
   SelectionInsideButton_GoogleIcon?: string = "";
   SelectionButton_text?: string = "";
   SelectionText_IfNoData?: string = "";
+  SelectionBottomSheetComponent?: ComponentType<unknown>;
 }
 export class MatFormHint {
   text_no_translation?: string = "";
@@ -99,4 +103,56 @@ export interface SweetAlertData {
   DenyButton_GoogleIcon?: string;
   OtherOptions: SweetAlertOptions,
   direction: string
+}
+
+export interface SelectedDataTransfer {
+  property: string;
+  SelectedData: any[];
+}
+
+export interface AbstractApi {
+  ip_address: string;
+  city: string;
+  city_geoname_id: number;
+  region: string;
+  region_iso_code: string;
+  region_geoname_id: number;
+  postal_code: string,
+  country: string;
+  country_code: string;
+  country_geoname_id: number;
+  country_is_eu: boolean;
+  continent: string;
+  continent_code: string;
+  continent_geoname_id: number;
+  longitude: number;
+  latitude: number;
+  security: {
+    is_vpn: boolean;
+  },
+  timezone: {
+    name: string;
+    abbreviation: string;
+    gmt_offset: number;
+    current_time: string;
+    is_dst: boolean;
+  },
+  flag: {
+    emoji: string;
+    unicode: string;
+    png: string;
+    svg: string;
+  },
+  currency: {
+    currency_name: string;
+    currency_code: string;
+  },
+  connection: {
+    autonomous_system_number: number;
+    autonomous_system_organization: string;
+    connection_type: string;
+    isp_name: string;
+    organization_name: string;
+  }
+
 }

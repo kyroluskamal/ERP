@@ -1,1 +1,28 @@
-<p>suppliers works!</p>
+<div fxLayout="column"
+     fxLayoutGap="16px">
+    <mat-card-title-only [Title]="Constants.Warehouses"
+                         [Subtitle]="translate.GetTranslation(Constants.Add_Edit_Delete) + ' '
+                     + translate.GetTranslation(Constants.Warehouses)">
+    </mat-card-title-only>
+    <!-- <kiko-table [columns]="
+                     columns"
+                [data]="AllSuppliers"
+                [datasource]="dataSource"
+                [isLoadingResults]="isLoadingResults"
+                [ShowProgressBar]="ShowProgressBar"
+                [NoData]="AllSuppliers.length===0 && !isLoadingResults"
+                (DeleteClick)="Delete($event)"
+                (DoubleClickRow)="Dbclick($event)"
+                (rowsSelection)="SelectRow($event)"
+                (EditClick)="EditInventory($event)"
+                [AddedRow]="AddedRow"
+                [PreventDeleteForValue]="1"
+                PreventDeleteForKey="id"
+                ReferencialField="inventAdd"
+                (ReferencialField_AddClick)="AddAddress($event)"
+                (ReferencialField_EditClick)="EditAdress($event)"
+                (ReferencialField_DeleteClick)="DeleteAddress($event)"
+                (ClickAddButton)="AddNewInvent($event)"
+                [AddButtonText]="AddButtonText">
+    </kiko-table> -->
+</div>

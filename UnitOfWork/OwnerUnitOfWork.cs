@@ -14,11 +14,14 @@ namespace ERP.UnitOfWork
 
         public ICountryRepoAsync Countries { get; private set; }
 
+        public ICurrencyRepoAsync Currencies { get; private set; }
+
         public OwnerUnitOfWork(OwnersDbContext ownersDbContext)
         {
             OwnersDbContext = ownersDbContext;
             Owners = new OwnerRepository(ownersDbContext);
             Countries = new CountryRepoAsync(ownersDbContext);
+            Currencies = new CurrencyRepoAsync(ownersDbContext);
         }
 
 

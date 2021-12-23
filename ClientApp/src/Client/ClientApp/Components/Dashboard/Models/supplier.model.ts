@@ -12,10 +12,12 @@ export class Suppliers {
   email: string = "";
   dateCreated: Date = new Date();
   openingBalance: number = 0;
-  hasNotes: boolean = false;
-  currency: Currency = new Currency();
+  notes: string = "";
+  currency: string = "";
   currencyId: number = 0;
-  country: Country = new Country();
+  country: string = "";
   countryId: number = 0;
-  userId: number = 0;
+  AddedBy_UserId: number = 0;
+  AddedBy_UserName: string = "";
+  subdomain: string = "";
 }

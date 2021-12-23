@@ -17,11 +17,12 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ClientAppModule } from 'src/Client/ClientApp/client-app.module';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 @NgModule({
   declarations: [
     AppComponent, NotFoundComponent, CommoneResetPasswordComponent,
   ],
-  imports: [
+  imports: [FontAwesomeModule,
     BrowserModule, BrowserAnimationsModule, MaterialModule, SharedModule,
     OwnerModule, CommonModule, ClientModule, ClientAppModule, AppRoutingModule,
     TranslateModule.forRoot({
@@ -43,7 +44,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
   ],
   bootstrap: [AppComponent],
-  exports: [NotFoundComponent]
+  exports: [NotFoundComponent, FontAwesomeModule]
 })
 export class AppModule { }
 // AOT compilation support

@@ -4,7 +4,8 @@ import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bott
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { ServerResponseHandelerService } from 'src/CommonServices/server-response-handeler.service';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
-import { CardTitle, FormDefs, MaxMinLengthValidation } from 'src/Interfaces/interfaces';
+import { CardTitle, FormDefs, MaxMinLengthValidation, SelectedDataTransfer } from 'src/Interfaces/interfaces';
+import { GeneralsService } from '../../../Generals/generals.service';
 import { Inventories, InventoryAddress } from '../../../Models/inventories.model';
 import { InventoriesService } from '../../inventories.service';
 @Component({
@@ -24,8 +25,11 @@ export class EditInventAddressComponent implements OnInit {
   CityMaxLength = 30;
   GovernmentMaxLength = 30;
   StreetNameMaxLength = 30;
+  AllSelectionData: SelectedDataTransfer[] = []
+
   constructor(public Constants: ConstantsService, private InventoreisService: InventoriesService,
-    @Inject(MAT_BOTTOM_SHEET_DATA) public data: Inventories, private _bottomSheetRef: MatBottomSheetRef<InventoryAddress>,
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: Inventories, private GeneralsService: GeneralsService,
+    private _bottomSheetRef: MatBottomSheetRef<InventoryAddress>,
     private ServerHandler: ServerResponseHandelerService, private translate: TranslationService) {
     this.EditAddress = new FormGroup({
       buildingno: new FormControl(this.data.inventoryAddress?.buildingNo, [Validators.maxLength(this.BuildingNoMaxLength)]),
@@ -35,8 +39,11 @@ export class EditInventAddressComponent implements OnInit {
       postalcode: new FormControl(this.data.inventoryAddress?.postalCode, [Validators.maxLength(this.PostalCodeMaxLength)]),
       city: new FormControl(this.data.inventoryAddress?.city, [Validators.maxLength(this.CityMaxLength)]),
       government: new FormControl(this.data.inventoryAddress?.government, [Validators.maxLength(this.GovernmentMaxLength)]),
-      streetname: new FormControl(this.data.inventoryAddress?.streetName, [Validators.maxLength(this.StreetNameMaxLength)])
+      streetname: new FormControl(this.data.inventoryAddress?.streetName, [Validators.maxLength(this.StreetNameMaxLength)]),
+      country: new FormControl(this.data.inventoryAddress?.countryId, [Validators.required])
     });
+    this.AllSelectionData.push({ property: 'countryName', SelectedData: this.GeneralsService.Country })
+
     this.Title = [
       { text: this.Constants.Edit, needTranslation: true },
       { text: this.Constants.address, needTranslation: true },
@@ -49,12 +56,12 @@ export class EditInventAddressComponent implements OnInit {
       Form_fxLayout: "row wrap",
       Form_fxLayoutAlign: "space-between",
       Button_GoogleIcon: "add_circle",
-      ButtonText: [this.Constants.Save],
+      ButtonText: [this.Constants.Add],
       formFieldsSpec: [{
         type: "text",
         formControlName: this.Constants.buildingNo,
         appearance: "outline",
-        fxFlex: "33%",
+        fxFlex: "24%",
         fxFlex_xs: "100%",
         mat_label: this.Constants.buildingNo,
         required: false,
@@ -76,7 +83,7 @@ export class EditInventAddressComponent implements OnInit {
         type: "text",
         formControlName: this.Constants.flatNo,
         appearance: "outline",
-        fxFlex: "33%",
+        fxFlex: "24%",
         fxFlex_xs: "100%",
         mat_label: this.Constants.flatNo,
         required: false,
@@ -98,7 +105,7 @@ export class EditInventAddressComponent implements OnInit {
         type: "text",
         formControlName: this.Constants.streetName,
         appearance: "outline",
-        fxFlex: "33%",
+        fxFlex: "24%",
         fxFlex_xs: "100%",
         mat_label: this.Constants.streetName,
         required: false,
@@ -116,6 +123,17 @@ export class EditInventAddressComponent implements OnInit {
           }]
         }],
         maxLength: this.StreetNameMaxLength.toString()
+      }, {
+        type: "select",
+        formControlName: this.Constants.country,
+        appearance: "outline",
+        fxFlex: "24%",
+        fxFlex_xs: "100%",
+        mat_label: this.Constants.country,
+        required: true,
+        SelectData: this.GeneralsService.Country,
+        PropertyNameToSetInValue: 'id',
+        PropertyNameToShowInSelection: "countryName",
       }, {
         type: "text",
         formControlName: this.Constants.city,
@@ -189,7 +207,7 @@ export class EditInventAddressComponent implements OnInit {
         fxFlex: "49%",
         fxFlex_xs: "100%",
         mat_label: this.Constants.addressLine_1,
-        required: true,
+        required: false,
         errors: [{
           type: 'required',
           TranslatedMessage: [{
@@ -213,6 +231,22 @@ export class EditInventAddressComponent implements OnInit {
 
   }
   EditInventAddress(AddToEdit: FormDefs) {
+    let currentCountry = this.GeneralsService.Country.find(x => x.id === AddToEdit.form.get(this.Constants.country)?.value);
+    if (
+      this.data.inventoryAddress?.buildingNo === AddToEdit.form.get(this.Constants.buildingNo)?.value
+      && this.data.inventoryAddress?.flatNo === AddToEdit.form.get(this.Constants.flatNo)?.value
+      && this.data.inventoryAddress?.streetName === AddToEdit.form.get(this.Constants.streetName)?.value
+      && this.data.inventoryAddress?.addressLine_1 === AddToEdit.form.get(this.Constants.addressLine_1)?.value
+      && this.data.inventoryAddress?.addressLine_2 === AddToEdit.form.get(this.Constants.addressLine_2)?.value
+      && this.data.inventoryAddress?.city === AddToEdit.form.get(this.Constants.city)?.value
+      && this.data.inventoryAddress?.government === AddToEdit.form.get(this.Constants.government)?.value
+      && this.data.inventoryAddress?.postalCode === AddToEdit.form.get(this.Constants.postalCode)?.value
+      && this.data.inventoryAddress?.countryId === AddToEdit.form.get(this.Constants.country)?.value
+    ) {
+      this._bottomSheetRef.dismiss();
+      return;
+    }
+
     let UpdatedAddress: InventoryAddress = {
       id: this.data.inventoryAddress?.id!,
       buildingNo: AddToEdit.form.get(this.Constants.buildingNo)?.value,
@@ -223,6 +257,9 @@ export class EditInventAddressComponent implements OnInit {
       city: AddToEdit.form.get(this.Constants.city)?.value,
       government: AddToEdit.form.get(this.Constants.government)?.value,
       postalCode: AddToEdit.form.get(this.Constants.postalCode)?.value,
+      countryId: AddToEdit.form.get(this.Constants.country)?.value,
+      countryName: currentCountry?.countryName,
+      countryNameCode: currentCountry?.countryNameCode!,
       inventoriesId: this.data.inventoryAddress?.inventoriesId!,
       inventories: this.data.inventoryAddress?.inventories!,
       subdomain: this.subdomain
@@ -240,7 +277,7 @@ export class EditInventAddressComponent implements OnInit {
               (UpdatedAddress?.flatNo !== '' ? this.translate.GetTranslation(this.Constants.Flat_No) + ':' + UpdatedAddress?.flatNo + ', ' : '') +
               (UpdatedAddress?.city !== '' ? UpdatedAddress?.city + ',' : '') +
               (UpdatedAddress?.government !== '' ? UpdatedAddress?.government + ', ' : '') +
-              (UpdatedAddress?.country !== null ? UpdatedAddress?.country?.countryName : '');
+              (UpdatedAddress?.countryName !== "" ? UpdatedAddress?.countryName : '');
             this.data.inventAdd = this.data.inventAdd.trim();
             if (this.data.inventAdd[this.data.inventAdd.length - 1] === ",") {
               this.data.inventAdd = this.data.inventAdd.slice(0, this.data.inventAdd.length - 1) + ".";
@@ -268,6 +305,7 @@ export class EditInventAddressComponent implements OnInit {
         AddToEdit.form.get(this.Constants.city)?.setValue(this.data.inventoryAddress?.city);
         AddToEdit.form.get(this.Constants.government)?.setValue(this.data.inventoryAddress?.government);
         AddToEdit.form.get(this.Constants.postalCode)?.setValue(this.data.inventoryAddress?.postalCode);
+        AddToEdit.form.get(this.Constants.country)?.setValue(this.data.inventoryAddress?.countryId);
       }
     })
   }

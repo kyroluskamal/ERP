@@ -34,6 +34,7 @@ export class Country {
 }
 export class Currency {
   id: number = 0;
+  currencySymbol: string = "";
   currencyName: string = "";
   country?: Country = new Country;
   countryId?: number = 0;

@@ -74,8 +74,10 @@ namespace ERP.Areas.Owners.Data.DbInitializer
                 Owner user = OwnerDbContext.Users.Where(u => u.Email == "kyroluskamal@gmail.com").FirstOrDefault();
 
                 if (!UserManager.IsInRoleAsync(user, Constants.SuperAdmin_Role).GetAwaiter().GetResult())
-                    UserManager.AddToRoleAsync(user, Constants.SuperAdmin_Role);
+                    await UserManager.AddToRoleAsync(user, Constants.SuperAdmin_Role);
             }
+
+
             if (OwnerDbContext.Countries.ToListAsync().GetAwaiter().GetResult().Count == 0)
             {
                 Country[] countries = new Country[] {
@@ -326,5 +328,7 @@ namespace ERP.Areas.Owners.Data.DbInitializer
                 await OwnersUnitOfWork.Countries.AddRangeAsync(countries);
             }
         }
+
+
     }
 }

@@ -257,6 +257,9 @@ namespace ERP.Controllers.Inventory
                         FlatNo = address.FlatNo,
                         StreetName = address.StreetName,
                         City =address.City,
+                        CountryName = address.CountryName,
+                        CountryNameCode = address.CountryNameCode,
+                        CountryId = address.CountryId,
                         Government = address.Government,
                         InventoriesId = address.InventoriesId
                     }); ;
@@ -330,6 +333,9 @@ namespace ERP.Controllers.Inventory
                         && AddressFromDb.AddressLine_2 == address.AddressLine_2
                         && AddressFromDb.StreetName == address.StreetName
                         && AddressFromDb.City == address.City
+                        && AddressFromDb.CountryId == address.CountryId
+                        && AddressFromDb.CountryName == address.CountryName
+                        && AddressFromDb.CountryNameCode == address.CountryNameCode
                         && AddressFromDb.Government == address.Government
                         && AddressFromDb.PostalCode == address.PostalCode) 
                             return StatusCode(200, new { status = "SameObject" });
@@ -341,7 +347,10 @@ namespace ERP.Controllers.Inventory
                         AddressFromDb.PostalCode = address.PostalCode;
                         AddressFromDb.StreetName = address.StreetName;
                         AddressFromDb.City = address.City;
-                        AddressFromDb.Government = address.City;
+                        AddressFromDb.CountryNameCode = address.CountryNameCode;
+                        AddressFromDb.CountryName = address.CountryName;
+                        AddressFromDb.CountryId = address.CountryId;
+                        AddressFromDb.Government = address.Government;
 
                         int result = await UserUnitOfWork.SaveAsync();
                         if (result > 0)

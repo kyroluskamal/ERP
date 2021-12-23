@@ -12,6 +12,7 @@ import { SideNav_items } from '.././SideNavItems'
 import { LightDarkThemeConverterService } from '../light-dark-theme-converter.service';
 import { ClientAccountService } from 'src/Client/MainDomain/Authentication/client-account-service.service';
 import { ExpansionPanel, ThemeColor } from 'src/Interfaces/interfaces';
+import { GeneralsService } from '../Generals/generals.service';
 
 
 
@@ -81,7 +82,7 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
   constructor(public Constants: ConstantsService, public translate: TranslationService,
     private Notifications: NotificationsService, private mediaObserver: MediaObserver,
     private ClientAccountService: ClientAccountService, private renderer: Renderer2,
-    private vr: ViewContainerRef,
+    private vr: ViewContainerRef, private GeneralsService: GeneralsService,
     private LightDarkThemeConverter: LightDarkThemeConverterService, private router: Router) {
     this.ClientAccountService.currentUserOvservable.subscribe();
 

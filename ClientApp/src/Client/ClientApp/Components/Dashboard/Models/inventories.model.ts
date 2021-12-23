@@ -22,7 +22,8 @@ export class InventoryAddress {
   addressLine_1: string = "";
   addressLine_2: string = ""
   postalCode: string = "";
-  country?: Country = new Country();
+  countryName?: string = "";
+  countryNameCode: string = ""
   countryId?: number = 0;
   city: string = "";
   government: string = "";

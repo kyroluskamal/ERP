@@ -88,42 +88,59 @@ Constants.CSS_text_white"
                       [fxFlex]="field.fxFlex? field.fxFlex:''"
                       [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''"
                       [formControlName]="field.formControlName">{{field.mat_label|translate}} </mat-checkbox>
-        <!-- ....................................................Item Inverteories Selection -->
+
+        <!-- .................................................... Selection -->
         <mat-form-field [appearance]="field.appearance"
                         *ngIf="field.type==='select'"
                         [fxFlex]="field.fxFlex? field.fxFlex:''"
                         [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''">
           <mat-label>{{field.mat_label| translate}}</mat-label>
-          <ng-template [ngIf]="field.SelectData!.length>0"
+          <!-- <ng-template [ngIf]="field.SelectData!.length>0"
                        [ngIfElse]="noData"
-                       #AllInvent>
-            <mat-select>
-              <input matInput
-                     type="search"
-                     placeholder="{{Constants.Search|translate}}">
-              <mat-divider inset></mat-divider>
-              <mat-option *ngFor="let el of field.SelectData"
-                          [value]="el[field.PropertyNameToSetInValue!]">
-                {{el[field.PropertyNameToShowInSelection!]}}
-              </mat-option>
-              <button mat-button
-                      disableRipple>
-                <mat-icon class="mat-18">
-                  <fa-icon *ngIf="field.SelectionInsideButton_faIcon && !field.SelectionInsideButton_GoogleIcon"
-                           [icon]="field.SelectionInsideButton_faIcon"></fa-icon>
-                  <span class="material-icons"
-                        *ngIf="!field.SelectionInsideButton_faIcon && field.SelectionInsideButton_GoogleIcon">
-                    {{field.SelectionInsideButton_GoogleIcon}}
-                  </span>
-                </mat-icon>&nbsp; {{field.SelectionButton_text!|translate}}
-              </button>
-            </mat-select>
-          </ng-template>
+                       #AllInvent> -->
+          <mat-select [formControlName]="field.formControlName">
+            <input matInput
+                   #SearchInput
+                   (input)="Search(SearchInput.value,field.PropertyNameToShowInSelection!)"
+                   type="search"
+                   placeholder="{{Constants.Search|translate}}">
+            <mat-divider inset></mat-divider>
+            <mat-option *ngIf="SearchInput.value!==''&&field.SelectData?.length===0"
+                        [class]="Constants.CSS_blue">{{Constants.NoMatchedData_inSelection|translate}}</mat-option>
+            <mat-option *ngIf="field.SelectionText_IfNoData && SearchInput.value!==''&&field.SelectData?.length===0"
+                        [class]="Constants.CSS_red">{{field.SelectionText_IfNoData!|translate}}</mat-option>
+            <mat-option *ngFor="let el of field.SelectData"
+                        [value]="el[field.PropertyNameToSetInValue!]">
+              {{el[field.PropertyNameToShowInSelection!]}}
+            </mat-option>
+            <button mat-button
+                    *ngIf="field.SelectionBottomSheetComponent"
+                    disableRipple
+                    (click)="OpenButtomSheet(field.SelectionBottomSheetComponent!)">
+              <mat-icon class="mat-18">
+                <fa-icon *ngIf="field.SelectionInsideButton_faIcon && !field.SelectionInsideButton_GoogleIcon"
+                         [icon]="field.SelectionInsideButton_faIcon"></fa-icon>
+                <span class="material-icons"
+                      *ngIf="!field.SelectionInsideButton_faIcon && field.SelectionInsideButton_GoogleIcon">
+                  {{field.SelectionInsideButton_GoogleIcon}}
+                </span>
+              </mat-icon>&nbsp; {{field.SelectionButton_text!|translate}}
+            </button>
+          </mat-select>
+          <!-- </ng-template>
           <ng-template #noData>
             <mat-select>
-              <mat-option [class]="Constants.CSS_red">{{field.SelectionText_IfNoData!|translate}}</mat-option>
+              <input matInput
+                     #SearchInput
+                     (input)="Search(SearchInput.value, field.PropertyNameToShowInSelection!)"
+                     type="search"
+                     placeholder="{{Constants.Search|translate}}">
+              <mat-option *ngIf="SearchInput.value!==''&&field.SelectData?.length===0">No Matched data</mat-option>
+              
               <button mat-button
-                      disableRipple>
+                      *ngIf="field.SelectionBottomSheetComponent"
+                      disableRipple
+                      (click)="OpenButtomSheet(field.SelectionBottomSheetComponent!)">
                 <mat-icon class="mat-18">
                   <fa-icon *ngIf="field.SelectionInsideButton_faIcon && !field.SelectionInsideButton_GoogleIcon"
                            [icon]="field.SelectionInsideButton_faIcon"></fa-icon>
@@ -134,7 +151,7 @@ Constants.CSS_text_white"
                 </mat-icon>&nbsp; {{field.SelectionButton_text!|translate}}
               </button>
             </mat-select>
-          </ng-template>
+          </ng-template> -->
         </mat-form-field>
       </ng-container>
 

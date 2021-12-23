@@ -197,7 +197,7 @@
   "Warehouses": "المخازن",
   "NOT_VALID_PHONE_NUMBER" : "ادخل رقم تلفون صحيح.",
   "Add_new_warehouse" : "اضف مخزن جديد",
-  "Notes" : "ملاحظات",
+  "notes" : "ملاحظات",
   "warehousename" : "اسم المخزن",
   "telephone" : "التليفون الارضي",
   "mobilephone":"الهاتف المحمول",
@@ -238,5 +238,8 @@
   "cancel":"إلغاء",
   "error": "خطأ",
   "warning": "تحذير",
-  "OK":"حسناً"
+  "OK":"حسناً",
+  "businessname" : "اسم الشركة",
+  "country" : "الدولة",
+  "NoMatchedData_inSelection":"لا توجد اختيارات تطابق بحثك"
 }

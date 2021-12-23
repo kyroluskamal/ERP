@@ -1,11 +1,8 @@
 import { ConstantsService } from "src/CommonServices/constants.service";
 import { RouterConstants } from "src/Helpers/RouterConstants";
-interface ExpansionPanel {
-  title: string;
-  expanded: boolean;
-  links: { link: string, LinkText: string, state: boolean }[];
-  iconName: string;
-}
+import { faParachuteBox } from '@fortawesome/free-solid-svg-icons';
+import { ExpansionPanel } from "src/Interfaces/interfaces";
+
 
 let Constants = new ConstantsService();
 export let SideNav_items: ExpansionPanel[] = [{
@@ -30,12 +27,19 @@ export let SideNav_items: ExpansionPanel[] = [{
       LinkText: Constants.App_AddNewItem, state: false
     }
   ],
-  iconName: "inventory_2"
+  GoogleIconName: "inventory_2"
 }, {
   title: "Warehouses",
   expanded: false,
   links: [
     { link: RouterConstants.App_Warehouses, LinkText: Constants.App_Warehouses, state: false }
   ],
-  iconName: "warehouse"
+  GoogleIconName: "warehouse"
+}, {
+  title: "Suppliers",
+  expanded: false,
+  links: [
+    { link: RouterConstants.App_Suppliers, LinkText: Constants.App_Suppliers, state: false }
+  ],
+  faIcon: faParachuteBox
 }];

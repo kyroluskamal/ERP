@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
 import { ConstantsService } from 'src/CommonServices/constants.service';
-import { NotificationsService } from 'src/CommonServices/NotificationService/notifications.service';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from 'src/CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
 import { CardTitle, ColDefs, FormDefs, SweetAlertData } from 'src/Interfaces/interfaces';
@@ -15,7 +14,6 @@ import { ClientSideValidationService } from 'src/CommonServices/client-side-vali
 import { AddInventAddressComponent } from '../InventoryAddress/add-invent-address/add-invent-address.component';
 import { EditInventAddressComponent } from '../InventoryAddress/edit-invent-address/edit-invent-address.component';
 import { AddNewInventoryComponent } from '../add-new-inventory/add-new-inventory.component';
-import { SweetAlertOptions } from 'sweetalert2';
 
 @Component({
   selector: 'app-inventories',
@@ -42,12 +40,11 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
   ReferencialField: string = "inventoryAddress";
   FormBuilder: FormDefs = new FormDefs();
   AddButtonText: CardTitle[] = [];
-  constructor(private NotificationService: NotificationsService,
+  constructor(
     public Constants: ConstantsService, private bottomSheet: MatBottomSheet,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
-    @Inject(MAT_BOTTOM_SHEET_DATA) public data: Inventories, private ServerResponseHandler: ServerResponseHandelerService,
+    private ServerResponseHandler: ServerResponseHandelerService,
     private InventoriesService: InventoriesService, private ClientValidaiton: ClientSideValidationService) {
-    this.PreventDeleteFor = this.translate.GetTranslation(this.Constants.MainWarehouse);
   }
 
   ngOnInit(): void {
@@ -64,7 +61,7 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
             (add?.flatNo !== '' ? this.translate.GetTranslation(this.Constants.Flat_No) + ':' + add?.flatNo + ', ' : '') +
             (add?.city !== '' ? add?.city + ',' : '') +
             (add?.government !== '' ? add?.government + ', ' : '') +
-            (add?.country !== null ? add?.country?.countryName : '');
+            (add?.countryName !== null ? add?.countryName : '');
           x.inventAdd = x.inventAdd.trim();
           if (x.inventAdd[x.inventAdd.length - 1] === ",") {
             console.log(x.inventAdd.slice(0, x.inventAdd.length - 1))

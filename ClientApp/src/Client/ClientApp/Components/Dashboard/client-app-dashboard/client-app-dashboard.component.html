@@ -35,14 +35,18 @@
     ------------------------------------------------------------------------------------- -->
     <mat-accordion multi>
       <mat-expansion-panel hideToggle
-                           *ngFor="let item of SideNavItems let i = index"
+                           *ngFor="let item of SideNavItems; let i = index"
                            [expanded]="item.expanded">
         <mat-expansion-panel-header (click)="OpenExpAndCloseAll(i)"
                                     [ngClass]="{'expansionIsExpanded': item.expanded}">
           <mat-panel-title>
-            <mat-icon><span class=" material-icons">
-                {{item.iconName}}
+            <mat-icon *ngIf="item.GoogleIconName"><span class=" material-icons">
+                {{item.GoogleIconName}}
               </span></mat-icon>
+            <mat-icon class="mat-18"
+                      *ngIf="item.faIcon">
+              <fa-icon [icon]="item.faIcon"></fa-icon>
+            </mat-icon>
             <span [class]="Display">{{item.title |translate}}</span>
           </mat-panel-title>
 

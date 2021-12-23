@@ -51,6 +51,9 @@ export abstract class RouterConstants {
   //APIURLS for Suppliers
   public static Suppliers_GetAll_API = "/api/Suppliers/AllSuppliers";
 
+  //APIURLS for Generals
+  public static Country_GetAll_API = "/api/Owners/Generals/GetCountries";
+
   //Client URLs
   public static Client_EmailConfirmationUrl: string = "client/emailconfirmation";
   public static Owner_EmailConfirmationUrl: string = "owners/emailconfirmation";
@@ -75,5 +78,5 @@ export abstract class RouterConstants {
   //for Warehouses
   public static App_Warehouses = "Warehouses";
   public static App_AddNewWarehouse = "AddNewWarehouse";
-
+  public static App_Suppliers = "Suppliers";
 }

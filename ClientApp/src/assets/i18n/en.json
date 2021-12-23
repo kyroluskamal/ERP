@@ -186,7 +186,7 @@
   "Warehouses" : "Warehouses",
   "NOT_VALID_PHONE_NUMBER" : "Not a valid phone number",
   "Add_new_warehouse":"Add new warehouse",
-  "Notes" : "Notes",
+  "notes" : "Notes",
   "warehousename" : "Warehouse name",
   "telephone" : "Telephone number",
   "mobilephone":"Cell phone number",
@@ -227,5 +227,8 @@
   "cancel": "Cancel",
   "error": "Error",
   "warning":"Warning",
-  "OK" : "OK"
+  "OK" : "OK",
+  "businessname" : "Business Name",
+  "country":"Country",
+  "NoMatchedData_inSelection": "No matched choices"
 }

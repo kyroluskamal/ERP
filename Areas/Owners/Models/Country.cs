@@ -9,5 +9,6 @@ namespace ERP.Areas.Owners.Models
         public string CountryName { get; set; }
         public string PhoneCode { get; set; }
         public Currency Currency { get; set; }
+        public int? CurrencyId { get; set; }
     }
 }

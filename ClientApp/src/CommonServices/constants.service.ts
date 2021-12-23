@@ -82,7 +82,7 @@ export class ConstantsService {
   Supplier_Singular = "Supplier_Singular";
   Warehouses = "Warehouses";
   Warehouse_Singular = "Warehouse_Singular";
-  Notes = "Notes";
+  Notes = "notes";
   WarehouseName = "warehousename";
   TelephoneNumber = "telephone";
   CellPhoneNumber = "mobilephone";
@@ -118,6 +118,11 @@ export class ConstantsService {
   DeleteInventoryWarning = "DeleteInventoryWarning";
   cancel = "cancel";
   OK = "OK";
+  businessName = "businessname";
+  country = "country";
+  countryName = "countryName";
+  CountryNameCode = "CountryNameCode";
+  NoMatchedData_inSelection = "NoMatchedData_inSelection";
   //Notifications Messages
   LoggedInSuccessfully: string = "LoggedInSuccessfully";
   EmilConfirmationResnding = "EmilConfirmationResnding";
@@ -400,6 +405,9 @@ export class ConstantsService {
   //for inventories
   public App_Warehouses = "Warehouses";
   public App_AddNewWarehouse = "Add_new_warehouse";
+
+  //for Suppliers
+  public App_Suppliers = "Suppliers";
 
 
   //Keyboard Keys

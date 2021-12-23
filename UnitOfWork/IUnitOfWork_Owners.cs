@@ -9,6 +9,7 @@ namespace ERP.UnitOfWork
     {
         IOwnersRepository Owners { get; }
         ICountryRepoAsync Countries { get; }
+        ICurrencyRepoAsync Currencies { get; }
 
         Task<int> SaveAsync();
     }
