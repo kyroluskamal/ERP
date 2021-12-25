@@ -219,6 +219,7 @@ namespace ERP
             app.UseAuthentication();
             app.UseAuthorization();
             ownerDbInitializer.Initialize();
+
             //  app.UseEndpoints(endpoints =>
             //  {
             //      endpoints.MapControllerRoute(

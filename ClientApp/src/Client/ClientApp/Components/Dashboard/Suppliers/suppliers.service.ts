@@ -16,4 +16,7 @@ export class SuppliersService {
   GetAllSuppliers(): Observable<Suppliers[]> {
     return this.httpClient.get<Suppliers[]>(`${RouterConstants.Suppliers_GetAll_API}?subomain=${this.subdomain}`);
   }
+  AddNewSupplier(newSupplier: Suppliers): Observable<Suppliers> {
+    return this.httpClient.post<Suppliers>(RouterConstants.Suppliers_ADD_API, newSupplier);
+  }
 }

@@ -9,6 +9,7 @@ import { ItemBrandsComponent } from './Components/Dashboard/Items/item-brands/it
 import { ItemMainCategoriesComponent } from './Components/Dashboard/Items/item-main-categories/item-main-categories.component';
 import { ItemUnitsComponent } from './Components/Dashboard/Items/item-units/item-units.component';
 import { ItemsComponentComponent } from './Components/Dashboard/Items/items-component/items-component.component';
+import { SuppliersComponent } from './Components/Dashboard/Suppliers/suppliers/suppliers.component';
 import { LoginOnAppComponent } from './Components/login-on-app/login-on-app.component';
 
 
@@ -30,6 +31,11 @@ const routes: Routes = [
         {
           path: RouterConstants.App_Warehouses, children: [
             { path: "", component: InventoriesComponent, data: { breadcrumb: 'Warehouses' } },
+          ]
+        },
+        {
+          path: RouterConstants.App_Suppliers, children: [
+            { path: "", component: SuppliersComponent, data: { breadcrumb: 'Suppliers' } },
           ]
         }
       ]

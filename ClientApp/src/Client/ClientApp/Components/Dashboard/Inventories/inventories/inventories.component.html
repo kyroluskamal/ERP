@@ -1,8 +1,7 @@
 <div fxLayout="column"
      fxLayoutGap="16px">
-  <mat-card-title-only [Title]="Constants.Warehouses"
-                       [Subtitle]="translate.GetTranslation(Constants.Add_Edit_Delete) + ' '
-                     + translate.GetTranslation(Constants.Warehouses)">
+  <mat-card-title-only [Title]="Title"
+                       [Subtitle]="Subtitle">
   </mat-card-title-only>
   <kiko-table [columns]="
                      columns"
@@ -19,11 +18,12 @@
               [PreventDeleteForValue]="1"
               PreventDeleteForKey="id"
               ReferencialField="inventAdd"
+              [RowDeleted]="RowDeleted"
               (ReferencialField_AddClick)="AddAddress($event)"
               (ReferencialField_EditClick)="EditAdress($event)"
               (ReferencialField_DeleteClick)="DeleteAddress($event)"
               (ClickAddButton)="AddNewInvent($event)"
-              [AddButtonText]="AddButtonText">
+              [ToolTipText_input]="translate.GetTranslation(this.Constants.Add) + ' ' + translate.GetTranslation(this.Constants.Warehouse_Singular)">
 
   </kiko-table>
 </div>

@@ -254,8 +254,8 @@ export class AddInventAddressComponent implements OnInit {
       next: r => {
         this.data.inventAdd = (r?.buildingNo !== "" ? r?.buildingNo + '-' : '') +
           (r?.streetName !== '' ? this.translate.isRightToLeft(this.translate.GetCurrentLang()) ?
-            this.translate.GetTranslation(this.Constants.St) + ' ' + r?.streetName : r?.streetName +
-            ` ${this.translate.GetTranslation(this.Constants.St)} ` : '') +
+            this.translate.GetTranslation(this.Constants.St) + ' ' + r?.streetName + ", " : r?.streetName +
+            ` ${this.translate.GetTranslation(this.Constants.St)}, ` : '') +
           (r?.addressLine_1 !== '' ? r?.addressLine_1 + ', ' : '') +
           (r?.addressLine_2 !== '' ? r?.addressLine_2 + ', ' : '') +
           (r?.flatNo !== '' ? this.translate.GetTranslation(this.Constants.Flat_No) + ':' + r?.flatNo + ', ' : '') +

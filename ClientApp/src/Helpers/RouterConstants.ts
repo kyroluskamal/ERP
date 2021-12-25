@@ -50,9 +50,13 @@ export abstract class RouterConstants {
   public static InventoryAddress_UPDATE_API = "/api/Inventories/UpdateAddress";
   //APIURLS for Suppliers
   public static Suppliers_GetAll_API = "/api/Suppliers/AllSuppliers";
+  public static Suppliers_ADD_API = "/api/Suppliers/AddSupplier";
+  public static Suppliers_UPDATE_API = "/api/Suppliers/UpdateSupplier";
+  public static Suppliers_DELETE_API = "/api/Suppliers/DeleteSupplier";
 
   //APIURLS for Generals
   public static Country_GetAll_API = "/api/Owners/Generals/GetCountries";
+  public static Currency_GetAll_API = "/api/Owners/Generals/GetCurrencies";
 
   //Client URLs
   public static Client_EmailConfirmationUrl: string = "client/emailconfirmation";

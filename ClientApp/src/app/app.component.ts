@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { ClientAccountService } from '../Client/MainDomain/Authentication/client-account-service.service';
 import { ConstantsService } from '../CommonServices/constants.service';
 import { OwnerAccountService } from '../Owners/Services/Authentication/Owner-account-service.service';
@@ -21,12 +22,13 @@ export class AppComponent implements OnInit {
   //constructor
   constructor(private router: Router, public ClientAccountService: ClientAccountService,
     public OwnerAccountService: OwnerAccountService, private titleService: Title,
-    public Constants: ConstantsService) {
+    public Constants: ConstantsService, private translate: TranslationService) {
     this.subdomain = window.location.host.split(".")[0];
   }
 
   //ngOnInit
   ngOnInit(): void {
+    this.translate.GetTranslation(this.Constants.Active)
     this.router.events
       .pipe(
         filter(e => e instanceof NavigationEnd)

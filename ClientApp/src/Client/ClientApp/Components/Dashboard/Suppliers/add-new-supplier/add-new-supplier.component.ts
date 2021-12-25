@@ -12,13 +12,14 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ServerResponseHandelerService } from 'src/CommonServices/server-response-handeler.service';
 import { ClientSideValidationService } from 'src/CommonServices/client-side-validation.service';
 import { CustomValidators } from 'src/Helpers/CustomValidation/custom-validators';
+import { Suppliers } from '../../Models/supplier.model';
+import { SuppliersService } from '../suppliers.service';
 @Component({
-  selector: 'app-add-new-inventory',
-  templateUrl: './add-new-inventory.component.html',
-  styleUrls: ['./add-new-inventory.component.css']
+  selector: 'app-add-new-supplier',
+  templateUrl: './add-new-supplier.component.html',
+  styleUrls: ['./add-new-supplier.component.css']
 })
-export class AddNewInventoryComponent implements OnInit {
-
+export class AddNewSupplierComponent implements OnInit {
   faMobileAlt = faMobileAlt;
   faPhone = faPhone;
   faPenAlt = faPenAlt;
@@ -35,10 +36,10 @@ export class AddNewInventoryComponent implements OnInit {
     public Constants: ConstantsService, private bottomSheet: MatBottomSheet,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: {
-      dataSource: MatTableDataSource<Inventories>, ShowBrogressBar: boolean,
-      addedRow: any, AllInvent: Inventories[], SelectedRows: Inventories[]
-    }, private ServerResponseHandler: ServerResponseHandelerService, private _bottomSheetRef: MatBottomSheetRef<AddNewInventoryComponent>,
-    private InventoriesService: InventoriesService, private ClientValidaiton: ClientSideValidationService) {
+      dataSource: MatTableDataSource<Suppliers>, ShowBrogressBar: boolean,
+      addedRow: any, AllSuppliers: Suppliers[], SelectedRows: Suppliers[]
+    }, private ServerResponseHandler: ServerResponseHandelerService, private _bottomSheetRef: MatBottomSheetRef<AddNewSupplierComponent>,
+    private SuppliersService: SuppliersService, private ClientValidaiton: ClientSideValidationService) {
 
   }
 
@@ -177,52 +178,52 @@ export class AddNewInventoryComponent implements OnInit {
 
 
 
-  AddNewInvetory(formDefs: FormDefs) {
-    this.data.ShowBrogressBar = true;
-    let CurrentUser: any = localStorage.getItem(this.Constants.Client);
-    CurrentUser = JSON.parse(CurrentUser);
-    let newInvent: Inventories = {
-      id: 0,
-      warehouseName: formDefs.form.get("Name")?.value,
-      mobilePhone: formDefs.form.get("Mobile")?.value,
-      telephone: formDefs.form.get("Phone")?.value,
-      isActive: Boolean(formDefs.form.get("IsActive")?.value),
-      isMainInventory: Boolean(formDefs.form.get("IsMain")?.value),
-      notes: formDefs.form.get("Notes")?.value,
-      addedBy_UserId: CurrentUser.userId,
-      addedBy_UserName: CurrentUser.username,
-      subdomain: this.Subdomain
-    }
-    if (this.data)
-      if (!this.ClientValidaiton.isUnique(this.data.AllInvent, "warehouseName", formDefs.form.get("Name")?.value)) {
-        this.ClientValidaiton.notUniqueNotification_Swal("warehouseName");
+  // AddNewInvetory(formDefs: FormDefs) {
+  //   this.data.ShowBrogressBar = true;
+  //   let CurrentUser: any = localStorage.getItem(this.Constants.Client);
+  //   CurrentUser = JSON.parse(CurrentUser);
+  //   let newInvent: Inventories = {
+  //     id: 0,
+  //     warehouseName: formDefs.form.get("Name")?.value,
+  //     mobilePhone: formDefs.form.get("Mobile")?.value,
+  //     telephone: formDefs.form.get("Phone")?.value,
+  //     isActive: Boolean(formDefs.form.get("IsActive")?.value),
+  //     isMainInventory: Boolean(formDefs.form.get("IsMain")?.value),
+  //     notes: formDefs.form.get("Notes")?.value,
+  //     addedBy_UserId: CurrentUser.userId,
+  //     addedBy_UserName: CurrentUser.username,
+  //     subdomain: this.Subdomain
+  //   }
+  //   if (this.data)
+  //     if (!this.ClientValidaiton.isUnique(this.data.AllSuppliers, "warehouseName", formDefs.form.get("Name")?.value)) {
+  //       this.ClientValidaiton.notUniqueNotification_Swal("warehouseName");
 
-        this.data.ShowBrogressBar = false;
-        return;
-      }
-    this.InventoriesService.AddWarehouse(newInvent).subscribe(
-      {
-        next: (r) => {
-          r.inventAdd = "";
-          if (this.data) {
-            this.data.AllInvent.push(r);
-            this.data.SelectedRows = [];
-            this.data.SelectedRows.push(r);
-            this.data.addedRow = r;
-            this.data.dataSource.data = this.data.AllInvent;
-          }
-          this.ServerResponseHandler.DatatAddition_Success_Swal();
-          setTimeout(() => {
-            this.data.dataSource.paginator?.lastPage();
-          }, 500);
-          this._bottomSheetRef.dismiss(this.data);
-        },
-        error: (e) => {
-          let x: MaxMinLengthValidation[] = [{ prop: "warehouseName", maxLength: this.MaxLength }]
-          this.ServerResponseHandler.GetErrorNotification_swal(e, x);
-        }
-      });
-    this.AddNewInventory.reset();
-    this.data.ShowBrogressBar = false
-  }
+  //       this.data.ShowBrogressBar = false;
+  //       return;
+  //     }
+  //   this.SuppliersService.AddNewSupplier(newInvent).subscribe(
+  //     {
+  //       next: (r) => {
+  //         r.inventAdd = "";
+  //         if (this.data) {
+  //           this.data.AllSuppliers.push(r);
+  //           this.data.SelectedRows = [];
+  //           this.data.SelectedRows.push(r);
+  //           this.data.addedRow = r;
+  //           this.data.dataSource.data = this.data.AllSuppliers;
+  //         }
+  //         this.ServerResponseHandler.DatatAddition_Success_Swal();
+  //         setTimeout(() => {
+  //           this.data.dataSource.paginator?.lastPage();
+  //         }, 500);
+  //         this._bottomSheetRef.dismiss(this.data);
+  //       },
+  //       error: (e) => {
+  //         let x: MaxMinLengthValidation[] = [{ prop: "warehouseName", maxLength: this.MaxLength }]
+  //         this.ServerResponseHandler.GetErrorNotification_swal(e, x);
+  //       }
+  //     });
+  //   this.AddNewInventory.reset();
+  //   this.data.ShowBrogressBar = false
+  // }
 }

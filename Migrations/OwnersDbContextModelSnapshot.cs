@@ -36,10 +36,18 @@ namespace ERP.Migrations
                     b.Property<string>("CountryNameCode")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CurrencyCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CurrencyId")
+                        .HasColumnType("int");
+
                     b.Property<string>("PhoneCode")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CurrencyId");
 
                     b.ToTable("Countries");
                 });
@@ -52,18 +60,17 @@ namespace ERP.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("CountryId")
-                        .HasColumnType("int");
+                    b.Property<string>("CurrencyCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CurrencyName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("CurrencySymbol")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("CountryId")
-                        .IsUnique()
-                        .HasFilter("[CountryId] IS NOT NULL");
+                    b.HasKey("Id");
 
                     b.ToTable("Currencies");
                 });
@@ -288,13 +295,13 @@ namespace ERP.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ERP.Areas.Owners.Models.Currency", b =>
+            modelBuilder.Entity("ERP.Areas.Owners.Models.Country", b =>
                 {
-                    b.HasOne("ERP.Areas.Owners.Models.Country", "Country")
-                        .WithOne("Currency")
-                        .HasForeignKey("ERP.Areas.Owners.Models.Currency", "CountryId");
+                    b.HasOne("ERP.Areas.Owners.Models.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId");
 
-                    b.Navigation("Country");
+                    b.Navigation("Currency");
                 });
 
             modelBuilder.Entity("ERP.Areas.Owners.Models.Identity.OwnerUserRole", b =>
@@ -350,11 +357,6 @@ namespace ERP.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ERP.Areas.Owners.Models.Country", b =>
-                {
-                    b.Navigation("Currency");
                 });
 
             modelBuilder.Entity("ERP.Areas.Owners.Models.Identity.OwnerRole", b =>

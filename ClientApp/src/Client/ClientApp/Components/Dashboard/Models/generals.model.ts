@@ -30,14 +30,15 @@ export class Country {
   countryNameCode: string = "";
   countryName: string = "";
   phoneCode: string = "";
+  currencyCode: string = "";
   currency: Currency = new Currency();
+  currencyId: number = 0;
 }
 export class Currency {
   id: number = 0;
   currencySymbol: string = "";
   currencyName: string = "";
-  country?: Country = new Country;
-  countryId?: number = 0;
+  currencyCode: string = "";
 }
 export class PaymentMethods {
   id: number = 0;

@@ -230,5 +230,6 @@
   "OK" : "OK",
   "businessname" : "Business Name",
   "country":"Country",
-  "NoMatchedData_inSelection": "No matched choices"
+  "NoMatchedData_inSelection": "No matched choices",
+  "Suppliers" : "Suppliers"
 }

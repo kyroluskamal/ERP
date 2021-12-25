@@ -99,11 +99,13 @@ Constants.CSS_text_white"
                        [ngIfElse]="noData"
                        #AllInvent> -->
           <mat-select [formControlName]="field.formControlName">
-            <input matInput
-                   #SearchInput
-                   (input)="Search(SearchInput.value,field.PropertyNameToShowInSelection!)"
-                   type="search"
-                   placeholder="{{Constants.Search|translate}}">
+            <div style="position: sticky; top:0px;z-index: 1000;background-color: aliceblue;">
+              <input matInput
+                     #SearchInput
+                     (input)="Search(SearchInput.value,field.PropertyNameToShowInSelection!)"
+                     type="search"
+                     placeholder="{{Constants.Search|translate}}">
+            </div>
             <mat-divider inset></mat-divider>
             <mat-option *ngIf="SearchInput.value!==''&&field.SelectData?.length===0"
                         [class]="Constants.CSS_blue">{{Constants.NoMatchedData_inSelection|translate}}</mat-option>

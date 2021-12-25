@@ -34,6 +34,7 @@ import { EditInventAddressComponent } from './Components/Dashboard/Inventories/I
 import { AddNewInventoryComponent } from './Components/Dashboard/Inventories/add-new-inventory/add-new-inventory.component';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { SuppliersComponent } from './Components/Dashboard/Suppliers/suppliers/suppliers.component';
+import { AddNewSupplierComponent } from './Components/Dashboard/Suppliers/add-new-supplier/add-new-supplier.component';
 
 const Commponents = [MatCardTitleOnlyComponent,
   ClientAppDashboardComponent, ClientAppHomeNavbarComponent, CLientAppHomeComponent,
@@ -44,7 +45,7 @@ const Commponents = [MatCardTitleOnlyComponent,
   EditInventoryComponent, StylePaginatorDirective, AddInventAddressComponent,
   EditInventAddressComponent, AddNewInventoryComponent, SuppliersComponent]
 @NgModule({
-  declarations: [Commponents],
+  declarations: [Commponents, AddNewSupplierComponent],
   imports: [BreadcrumbModule, SweetAlert2Module,
     SharedModule, MaterialModule, ClientAppRoutingModule, CommonModule, AppRoutingModule,
     BrowserAnimationsModule,

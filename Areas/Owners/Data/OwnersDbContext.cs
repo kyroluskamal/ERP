@@ -41,10 +41,7 @@ namespace ERP.Areas.Owners.Data
                 .HasMany(x => x.UserRole)
                 .WithOne(x => x.Role)
                 .HasForeignKey(x => x.RoleId).IsRequired();
-            modelBuilder.Entity<Country>()
-               .HasOne(x => x.Currency)
-               .WithOne(x => x.Country)
-               .HasForeignKey<Currency>(x => x.CountryId);
+          
             modelBuilder.Entity<OwnerUserRole>().HasKey(p => new { p.UserId, p.RoleId });
 
             modelBuilder.Entity<OwnerRole>()

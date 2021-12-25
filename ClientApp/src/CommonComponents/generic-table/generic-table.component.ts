@@ -4,8 +4,7 @@ import { Subscription } from 'rxjs';
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from 'src/CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
-import { CustomErrorStateMatcher } from 'src/Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
-import { CardTitle, ColDefs, SweetAlertData, ThemeColor } from 'src/Interfaces/interfaces';
+import { CardTitle, ColDefs, ThemeColor } from 'src/Interfaces/interfaces';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
@@ -14,7 +13,6 @@ import { LightDarkThemeConverterService } from 'src/Client/ClientApp/Components/
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-
 @Component({
   selector: 'kiko-table',
   templateUrl: './generic-table.component.html',
@@ -61,7 +59,9 @@ export class GenericTableComponent implements OnInit, OnChanges, OnDestroy {
   AddButton_Text: CardTitle[] = [];
   MediaSubscription: Subscription = new Subscription();
   FilterSectionHeight: string = "";
-  expandedElement: any | null;
+  expandedElement: any | null = null;
+  noData: boolean = true;
+  ToolTipText: string = "";
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<any>;
@@ -73,14 +73,16 @@ export class GenericTableComponent implements OnInit, OnChanges, OnDestroy {
   @Input() data: any[] = []
   @Input() AddedRow: any;
   @Input() PreventDeleteForValue: any;
-  @Input() PreventDeleteForKey: any;
+  @Input() PreventDeleteForKey: string = "";
   @Input() PreventDeleteForIndex: any;
   @Input() ReferencialField: string = "";
+  @Input() ToolTipText_input: string = "";
   @Input() ShowFilterSection: boolean = true;
   @Input() ShowPaginator: boolean = true;
   @Input() datasource: MatTableDataSource<any> = new MatTableDataSource<any>();
   @Input() AddButtonText: CardTitle[] = [];
   @Input() HasCollabsableRow: boolean = false;
+  @Input() RowDeleted: boolean = false;
   @Input() CollabsableDataKeys: string[] = [];
   @Output() rowsSelection: EventEmitter<any[]> = new EventEmitter();
   @Output() DoubleClickRow: EventEmitter<any> = new EventEmitter();
@@ -127,6 +129,7 @@ export class GenericTableComponent implements OnInit, OnChanges, OnDestroy {
     );
     this.dataSource = this.datasource;
     this.RefField = this.ReferencialField;
+    this.noData = this.NoData;
   }
 
   ngOnDestroy(): void {
@@ -148,21 +151,28 @@ export class GenericTableComponent implements OnInit, OnChanges, OnDestroy {
     this.columns.filter((el) => {
       this.displayedColumns.push(el.field);
       this.ShowHideColumns.push(el.field)
-    })
-    this.displayedColumns.push(this.Constants.Delete);
-    this.displayedColumns.push(this.Constants.Edit);
+    });
+    if (this.HasCollabsableRow) {
+      this.displayedColumns.unshift('expand');
+    }
+    // this.displayedColumns.push(this.Constants.Delete);
+    // this.displayedColumns.push(this.Constants.Edit);
     // this.setDisplayedColumns();
+    this.datasource.sort = this.sort;
     this.dataSource.sort = this.sort;
     this.ShowProgressbar = this.ShowProgressBar;
     this.isLoadingResults = this.isLoadingRes;
     this.RefField = this.ReferencialField;
     this.PreventFor = this.PreventDeleteForValue;
     this.AddButton_Text = this.AddButtonText;
+
+
+    this.ToolTipText = this.ToolTipText_input;
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['data']) {
       this.dataSource = this.datasource;
-
+      this.dataSource.sort = this.sort;
     }
     if (changes["AddedRow"]) {
       this.SelectedRows = [];
@@ -174,15 +184,23 @@ export class GenericTableComponent implements OnInit, OnChanges, OnDestroy {
     if ("ShowProgressBar" in changes) {
       this.ShowProgressbar = this.ShowProgressBar;
     }
+    if ("NoData" in changes) {
+      this.noData = this.NoData;
+    }
     if ("PreventDeleteForValue" in changes) {
       this.PreventFor = this.PreventDeleteForValue;
-
     }
     if ("ReferencialField" in changes) {
       this.RefField = this.ReferencialField;
     }
     if ("AddButtonText" in changes) {
       this.AddButton_Text = this.AddButtonText;
+    }
+    if ("ToolTipText_input" in changes) {
+      this.ToolTipText = this.ToolTipText_input;
+    }
+    if ("RowDeleted" in changes) {
+      this.SelectedRows = [];
     }
   }
   dropListDropped(event: CdkDragDrop<string[]>) {
@@ -242,7 +260,7 @@ export class GenericTableComponent implements OnInit, OnChanges, OnDestroy {
   }
   ShiftDelete(requiredKeys: boolean) {
     if (requiredKeys && this.SelectedRows.length > 0) {
-      this.Delete(this.SelectedRows[0]);
+      this.Delete();
     }
   }
   SelectionByKeyboard(key: string) {
@@ -320,28 +338,26 @@ export class GenericTableComponent implements OnInit, OnChanges, OnDestroy {
     this.tableSetting._elementRef.nativeElement.style = "transform: rotate(100deg); transition:300ms"
     this.tableSetting._elementRef.nativeElement.style = ""
   }
-  Delete(row: any) {
-    this.DeleteClick.emit(row);
+  Delete() {
+    if (this.SelectedRows.length > 0) {
+      this.DeleteClick.emit(this.SelectedRows);
+    }
   }
-  Edit(row: any) {
-    this.EditClick.emit(row);
+  Edit() {
+    if (this.SelectedRows.length > 0) {
+      this.EditClick.emit(this.SelectedRows[0]);
+    }
   }
   SettingChange(col: ColDefs, index: number) {
     let colIndex = this.displayedColumns.indexOf(col.field);
-    let edit = this.displayedColumns[this.displayedColumns.length - 1];
-    let del = this.displayedColumns[this.displayedColumns.length - 2];
     if (colIndex !== -1) {
       this.displayedColumns = this.displayedColumns.filter((i) => {
         return i != col.field;
       })
     } else if (colIndex === -1) {
-      this.displayedColumns.pop()
-      this.displayedColumns.pop();
       this.displayedColumns.push(col.field);
       this.displayedColumns.sort((a, b) => this.ShowHideColumns.indexOf(a) -
         this.ShowHideColumns.indexOf(b));
-      this.displayedColumns.splice(this.displayedColumns.length, 0, del);
-      this.displayedColumns.splice(this.displayedColumns.length, 0, edit);
     }
   }
   AddReferencialData(row: any) {

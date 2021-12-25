@@ -56,7 +56,7 @@ export class EditInventAddressComponent implements OnInit {
       Form_fxLayout: "row wrap",
       Form_fxLayoutAlign: "space-between",
       Button_GoogleIcon: "add_circle",
-      ButtonText: [this.Constants.Add],
+      ButtonText: [this.Constants.Save],
       formFieldsSpec: [{
         type: "text",
         formControlName: this.Constants.buildingNo,
@@ -270,8 +270,8 @@ export class EditInventAddressComponent implements OnInit {
           if (r.status !== this.Constants.SameObject) {
             this.data.inventAdd = (UpdatedAddress?.buildingNo !== "" ? UpdatedAddress?.buildingNo + '-' : '') +
               (UpdatedAddress?.streetName !== '' ? this.translate.isRightToLeft(this.translate.GetCurrentLang()) ?
-                this.translate.GetTranslation(this.Constants.St) + ' ' + UpdatedAddress?.streetName : UpdatedAddress?.streetName +
-                ` ${this.translate.GetTranslation(this.Constants.St)} ` : '') +
+                this.translate.GetTranslation(this.Constants.St) + ' ' + UpdatedAddress?.streetName + ", " : UpdatedAddress?.streetName +
+                ` ${this.translate.GetTranslation(this.Constants.St)}, ` : '') +
               (UpdatedAddress?.addressLine_1 !== '' ? UpdatedAddress?.addressLine_1 + ', ' : '') +
               (UpdatedAddress?.addressLine_2 !== '' ? UpdatedAddress?.addressLine_2 + ', ' : '') +
               (UpdatedAddress?.flatNo !== '' ? this.translate.GetTranslation(this.Constants.Flat_No) + ':' + UpdatedAddress?.flatNo + ', ' : '') +

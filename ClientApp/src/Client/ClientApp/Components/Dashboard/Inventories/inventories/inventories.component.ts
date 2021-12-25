@@ -39,7 +39,10 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
   PreventDeleteFor: any;
   ReferencialField: string = "inventoryAddress";
   FormBuilder: FormDefs = new FormDefs();
-  AddButtonText: CardTitle[] = [];
+  ToolTipText_input: string = "";
+  Title: CardTitle[] = [];
+  Subtitle: CardTitle[] = [];
+  RowDeleted: boolean = false;
   constructor(
     public Constants: ConstantsService, private bottomSheet: MatBottomSheet,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
@@ -48,14 +51,17 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.Title = [{ text: this.Constants.Warehouses, needTranslation: true }];
+    this.Subtitle = [{ text: this.Constants.Add_Edit_Delete, needTranslation: true },
+    { text: this.Constants.Warehouses, needTranslation: true }]
     this.InventoriesService.GetAllInventories().subscribe(r => {
       for (let x of r) {
         let add: InventoryAddress | undefined = x.inventoryAddress;
         if (add !== null) {
           x.inventAdd = (add?.buildingNo !== "" ? add?.buildingNo + '-' : '') +
             (add?.streetName !== '' ? this.translate.isRightToLeft(this.translate.GetCurrentLang()) ?
-              this.translate.GetTranslation(this.Constants.St) + ' ' + add?.streetName : add?.streetName +
-              ` ${this.translate.GetTranslation(this.Constants.St)} ` : '') +
+              this.translate.GetTranslation(this.Constants.St) + ' ' + add?.streetName + ", " : add?.streetName +
+              ` ${this.translate.GetTranslation(this.Constants.St)}, ` : '') +
             (add?.addressLine_1 !== '' ? add?.addressLine_1 + ', ' : '') +
             (add?.addressLine_2 !== '' ? add?.addressLine_2 + ', ' : '') +
             (add?.flatNo !== '' ? this.translate.GetTranslation(this.Constants.Flat_No) + ':' + add?.flatNo + ', ' : '') +
@@ -81,10 +87,8 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
       this.ShowProgressBar = false;
     }
     );
-    this.AddButtonText = [
-      { text: this.Constants.Add, needTranslation: true },
-      { text: this.Constants.Warehouse_Singular, needTranslation: true }
-    ]
+
+
     this.isLoadingResults = true;
     this.ShowProgressBar = true;
     this.columns = [
@@ -101,9 +105,10 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
   }
 
 
-  Delete(invent: Inventories) {
+  Delete(invent: Inventories[]) {
+    this.SelectedRows = invent;
     this.ShowProgressBar = true;
-    if (invent.id === 1) {
+    if (invent[0].id === 1) {
       this.ClientValidaiton.Error_swal(this.Constants.Delete_Default_inventory_Error)
         .then(r => { this.ShowProgressBar = false; });
       return;
@@ -111,16 +116,17 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
     this.ClientValidaiton.Warning(this.translate.GetTranslation(this.Constants.DeleteInventoryWarning))
       .then(r => {
         if (r.isConfirmed) {
-          this.InventoriesService.DeleteWarehouse(invent.id).subscribe({
+          this.InventoriesService.DeleteWarehouse(invent[0].id).subscribe({
             next: r => {
               this.ServerResponseHandler.GeneralSuccessResponse_Swal(r);
               this.AllInventories = this.AllInventories.filter((item) => {
-                return item.id !== invent.id;
+                return item.id !== invent[0].id;
               })
               this.dataSource.paginator?.getNumberOfPages();
               this.dataSource.data = this.AllInventories;
               this.ShowProgressBar = false;
-              this.SelectedRows = [];
+              invent = [];
+              this.RowDeleted = true;
             },
             error: e => {
               this.ShowProgressBar = false;
@@ -128,9 +134,12 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
               this.ShowProgressBar = false;
             }
           });
+        } else {
+          this.RowDeleted = false;
         }
         this.ShowProgressBar = false;
       })
+    this.RowDeleted = false;
   }
   Dbclick(row: Inventories) {
     let x: { dataToEdit: Inventories, Array: any[] } = { dataToEdit: row, Array: this.AllInventories }
@@ -148,11 +157,7 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
       data: x
     });
   }
-  ShiftDelete(requiredKeys: boolean) {
-    if (this.SelectedRows.length > 0 && requiredKeys) {
-      this.Delete(this.SelectedRows[0]);
-    }
-  }
+
   ngAfterViewInit() {
 
   }

@@ -1022,7 +1022,7 @@ mat-paginator{
 }
 tr.mat-row{
   display: table-row;
-  height: auto !important;
+  height: 2.3rem !important;
 }
 table th, table td{
   padding: 0 5px 0 5px !important;
@@ -1153,14 +1153,14 @@ max-width:8%;
 .LightTableBg.TablefilterDiv input{
   color:#1a202e;
 }
-[dir='rtl'] .TablefilterDiv span{
+ /* [dir='rtl'] .TablefilterDiv span{
   font-family: var(--Calibri);
   font-weight: bold;
   margin: 0 10px;
-}
-[dir='rtl'] .TablefilterDiv button span{
-  font-family: var(--Almarai);
-}
+} */
+.TablefilterDiv button span{
+  font-weight: normal !important;
+} 
 .mat-paginator-range-label{
   width:100px;
 }
@@ -1219,11 +1219,11 @@ h2#swal2-title{
   font-size: 1.9rem;
   color:#007bff;
 }
-tr:not(.example-expanded-row):hover {
+.Light-for-Child-Component tr:not(.details-Row):hover {
   background: whitesmoke;
 }
 
-tr:not(.example-expanded-row):active {
+.Light-for-Child-Component tr:not(.details-Row):active {
   background: #efefef;
 }
 .rtl{

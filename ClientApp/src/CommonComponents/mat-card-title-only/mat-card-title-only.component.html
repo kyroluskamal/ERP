@@ -6,9 +6,14 @@ Constants.CSS_text_white"
                   [style.font-family]="!this.translate.isRightToLeft(this.translate.GetCurrentLang())? Constants.CSS_cursive_font_NotClass + ' !important':Constants.CSS_Hacen_Casablanca_font_NotClass+' !important'"
                   [dir]="this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'rtl':
       !this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'ltr':'ltr'">
-    {{Constants.Warehouses|translate}}</mat-card-title>
+    <span *ngFor="let t of Title">
+      {{!t.needTranslation?t.text:t.text|translate}}
+    </span>
+  </mat-card-title>
   <mat-card-subtitle [dir]="this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'rtl':
       !this.translate.isRightToLeft(this.translate.GetCurrentLang())&& (Theme_dir==='rtl'||'ltr')?'ltr':'ltr'">
-    {{this.Constants.Add_Edit_Delete | translate}} {{Constants.Warehouses|translate}}
+    <span *ngFor="let t of Subtitle">
+      {{!t.needTranslation?t.text:t.text|translate}}
+    </span>
   </mat-card-subtitle>
 </mat-card>

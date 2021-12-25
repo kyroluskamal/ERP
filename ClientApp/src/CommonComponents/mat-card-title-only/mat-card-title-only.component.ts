@@ -5,7 +5,7 @@ import { NotificationsService } from 'src/CommonServices/NotificationService/not
 import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from 'src/CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
 import { CustomErrorStateMatcher } from 'src/Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
-import { ThemeColor } from 'src/Interfaces/interfaces';
+import { CardTitle, ThemeColor } from 'src/Interfaces/interfaces';
 import { MatBottomSheet, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { faMobileAlt, faPhone, faPenAlt, faEdit, faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 
@@ -26,8 +26,8 @@ export class MatCardTitleOnlyComponent implements OnInit {
   ThemeDirection: Subscription;
   DarkOrLight: string = "";
   Theme_dir: 'rtl' | 'ltr';
-  @Input() Title: string = "";
-  @Input() Subtitle: string = "";
+  @Input() Title: CardTitle[] = [];
+  @Input() Subtitle: CardTitle[] = [];
   constructor(
     public Constants: ConstantsService,
     public translate: TranslationService,

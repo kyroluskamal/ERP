@@ -1,6 +1,13 @@
 .btn{
   padding: 0 !important;
 }
-*{
+*:not(.material-icons){
   font-weight: bold !important;
+}
+.details-Row{
+  height: 0px !important;
+}
+.element-detail {
+  overflow: hidden;
+
 }

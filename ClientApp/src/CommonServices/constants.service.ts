@@ -123,6 +123,7 @@ export class ConstantsService {
   countryName = "countryName";
   CountryNameCode = "CountryNameCode";
   NoMatchedData_inSelection = "NoMatchedData_inSelection";
+  Suppliers = "Suppliers";
   //Notifications Messages
   LoggedInSuccessfully: string = "LoggedInSuccessfully";
   EmilConfirmationResnding = "EmilConfirmationResnding";

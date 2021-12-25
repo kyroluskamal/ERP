@@ -17,7 +17,7 @@ export class Suppliers {
   currencyId: number = 0;
   country: string = "";
   countryId: number = 0;
-  AddedBy_UserId: number = 0;
-  AddedBy_UserName: string = "";
+  addedBy_UserId: number = 0;
+  addedBy_UserName: string = "";
   subdomain: string = "";
 }

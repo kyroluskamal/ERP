@@ -33,7 +33,9 @@ export class SuppliersComponent implements OnInit {
   AddedRow: any;
   PreventDeleteFor: any;
   FormBuilder: FormDefs = new FormDefs();
-  AddButtonText: CardTitle[] = [];
+  Title: CardTitle[] = [];
+  Subtitle: CardTitle[] = [];
+  CollapsibleDataKeys: string[] = [];
   constructor(
     public Constants: ConstantsService, private bottomSheet: MatBottomSheet,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
@@ -43,6 +45,9 @@ export class SuppliersComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.Title = [{ text: this.Constants.Suppliers, needTranslation: true }];
+    this.Subtitle = [{ text: this.Constants.Add_Edit_Delete, needTranslation: true },
+    { text: this.Constants.Suppliers, needTranslation: true }]
     this.SuppliersService.GetAllSuppliers().subscribe(r => {
       this.AllSuppliers = r;
       this.dataSource.data = r;
@@ -50,23 +55,16 @@ export class SuppliersComponent implements OnInit {
       this.ShowProgressBar = false;
     }
     );
-    this.AddButtonText = [
-      { text: this.Constants.Add, needTranslation: true },
-      { text: this.Constants.Supplier_Singular, needTranslation: true }
-    ]
     this.isLoadingResults = true;
     this.ShowProgressBar = true;
     this.columns = [
       { field: 'id', display: '#' },
-      { field: 'businessName', display: "" },
+      { field: 'businessName', display: "Name" },
       { field: 'mobilePhone', display: "", HeaderfaIcon: this.faMobileAlt },
-      { field: 'telephone', display: "", HeaderfaIcon: this.faPhone },
-      { field: 'notes', display: this.Constants.Notes },
-      { field: 'inventAdd', display: this.Constants.address },
-      { field: 'isActive', display: this.Constants.Active, IsTrueOrFlase: true, True_faIcon: this.faCheckCircle, False_faIcon: this.faTimesCircle },
-      { field: 'isMainInventory', display: this.Constants.Main, IsTrueOrFlase: true, True_faIcon: this.faCheckCircle, False_faIcon: this.faTimesCircle },
+      { field: 'openingBalance', display: "Balance" },
       { field: 'addedBy_UserName', display: this.Constants.AddedBy },
     ];
+    this.CollapsibleDataKeys = ['notes', 'email', "firstName"];
   }
 
 
@@ -108,24 +106,17 @@ export class SuppliersComponent implements OnInit {
   //   });
   // }
 
-  // SelectRow(event: any) {
-  //   this.SelectedRows = event;
-  // }
+  SelectRow(event: any) {
+    this.SelectedRows = event;
+  }
   // EditInventory(row: Inventories) {
   //   let x: { dataToEdit: Inventories, Array: any[] } = { dataToEdit: row, Array: this.AllInventories }
   //   this.bottomSheet.open(EditInventoryComponent, {
   //     data: x
   //   });
   // }
-  // ShiftDelete(requiredKeys: boolean) {
-  //   if (this.SelectedRows.length > 0 && requiredKeys) {
-  //     this.Delete(this.SelectedRows[0]);
-  //   }
-  // }
-  // ngAfterViewInit() {
 
-  // }
-  // AddNewInvent(AddClicked: boolean) {
+  // AddSupplier(AddClicked: boolean) {
   //   if (AddClicked) {
   //     this.ShowProgressBar = true;
   //     const AddInventBottomSheet = this.bottomSheet.open(AddNewInventoryComponent, {
@@ -147,25 +138,5 @@ export class SuppliersComponent implements OnInit {
   //   }
   // }
 
-  // AddAddress(row: Inventories) {
-  //   this.bottomSheet.open(AddInventAddressComponent, {
-  //     data: row
-  //   });
-  // }
-  // EditAdress(row: Inventories) {
-  //   this.bottomSheet.open(EditInventAddressComponent, {
-  //     data: row
-  //   });
-  // }
-  // DeleteAddress(row: Inventories) {
-  //   this.InventoriesService.DeleteAddress(row.inventoryAddress?.id!).subscribe({
-  //     next: r => {
-  //       this.ServerResponseHandler.GeneralSuccessResponse_Swal(r);
-  //       row.inventAdd = "";
-  //     },
-  //     error: e => {
-  //       this.ServerResponseHandler.GetErrorNotification_swal(e);
-  //     }
-  //   })
-  // }
+
 }
