@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { ServerResponseHandelerService } from 'src/CommonServices/server-response-handeler.service';
+import { SpinnerService } from 'src/CommonServices/spinner.service';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { CardTitle, FormDefs, MaxMinLengthValidation, SelectedDataTransfer } from 'src/Interfaces/interfaces';
 import { GeneralsService } from '../../../Generals/generals.service';
@@ -29,20 +30,20 @@ export class AddInventAddressComponent implements OnInit {
   StreetNameMaxLength = 30;
   AllSelectionData: SelectedDataTransfer[] = []
   constructor(public Constants: ConstantsService, private InventoreisService: InventoriesService,
-    private GeneralsService: GeneralsService,
+    private GeneralsService: GeneralsService, private spinner: SpinnerService,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: Inventories, private _bottomSheetRef: MatBottomSheetRef<InventoryAddress>,
     private ServerHandler: ServerResponseHandelerService, private translate: TranslationService) {
     navigator.geolocation.getCurrentPosition((position) => console.log(position))
     this.AddAddress = new FormGroup({
-      buildingno: new FormControl("", [Validators.maxLength(this.BuildingNoMaxLength)]),
-      flatno: new FormControl("", [Validators.maxLength(this.FlatNoMaxLength)]),
-      addressline_1: new FormControl("", [Validators.required]),
-      addressline_2: new FormControl(""),
-      postalcode: new FormControl("", [Validators.maxLength(this.PostalCodeMaxLength)]),
+      buildingNo: new FormControl("", [Validators.maxLength(this.BuildingNoMaxLength)]),
+      flatNo: new FormControl("", [Validators.maxLength(this.FlatNoMaxLength)]),
+      addressLine_1: new FormControl("", [Validators.required]),
+      addressLine_2: new FormControl(""),
+      postalCode: new FormControl("", [Validators.maxLength(this.PostalCodeMaxLength)]),
       city: new FormControl("", [Validators.maxLength(this.CityMaxLength)]),
       government: new FormControl("", [Validators.maxLength(this.GovernmentMaxLength)]),
-      streetname: new FormControl("", [Validators.maxLength(this.StreetNameMaxLength)]),
-      country: new FormControl(this.GeneralsService.GetCountryId_by_countryCode(), [Validators.required])
+      streetName: new FormControl("", [Validators.maxLength(this.StreetNameMaxLength)]),
+      countryName: new FormControl(this.GeneralsService.GetCountryId_by_countryCode(), [Validators.required])
     });
     this.AllSelectionData.push({ property: 'countryName', SelectedData: this.GeneralsService.Country })
     this.Title = [
@@ -58,172 +59,175 @@ export class AddInventAddressComponent implements OnInit {
       Form_fxLayoutAlign: "space-between",
       Button_GoogleIcon: "add_circle",
       ButtonText: [this.Constants.Add],
-      formFieldsSpec: [{
-        type: "text",
-        formControlName: this.Constants.buildingNo,
-        appearance: "outline",
-        fxFlex: "24%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.buildingNo,
-        required: false,
-        errors: [{
-          type: 'maxlength',
-          TranslatedMessage: [{
-            text: this.Constants.MaxLengthExceeded_ERROR,
-            needTraslation: true
-          }, {
-            text: this.BuildingNoMaxLength.toString(),
-            needTraslation: false
-          }, {
-            text: this.Constants.characters,
-            needTraslation: true
-          }]
-        }],
-        maxLength: this.BuildingNoMaxLength.toString()
-      }, {
-        type: "text",
-        formControlName: this.Constants.flatNo,
-        appearance: "outline",
-        fxFlex: "24%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.flatNo,
-        required: false,
-        errors: [{
-          type: 'maxlength',
-          TranslatedMessage: [{
-            text: this.Constants.MaxLengthExceeded_ERROR,
-            needTraslation: true
-          }, {
-            text: this.FlatNoMaxLength.toString(),
-            needTraslation: false
-          }, {
-            text: this.Constants.characters,
-            needTraslation: true
-          }]
-        }],
-        maxLength: this.FlatNoMaxLength.toString()
-      }, {
-        type: "text",
-        formControlName: this.Constants.streetName,
-        appearance: "outline",
-        fxFlex: "24%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.streetName,
-        required: false,
-        errors: [{
-          type: 'maxlength',
-          TranslatedMessage: [{
-            text: this.Constants.MaxLengthExceeded_ERROR,
-            needTraslation: true
-          }, {
-            text: this.StreetNameMaxLength.toString(),
-            needTraslation: false
-          }, {
-            text: this.Constants.characters,
-            needTraslation: true
-          }]
-        }],
-        maxLength: this.StreetNameMaxLength.toString()
-      }, {
-        type: "select",
-        formControlName: this.Constants.country,
-        appearance: "outline",
-        fxFlex: "24%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.country,
-        required: true,
-        SelectData: this.GeneralsService.Country,
-        PropertyNameToSetInValue: 'id',
-        PropertyNameToShowInSelection: "countryName",
-      }, {
-        type: "text",
-        formControlName: this.Constants.city,
-        appearance: "outline",
-        fxFlex: "33%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.city,
-        required: false,
-        errors: [{
-          type: 'maxlength',
-          TranslatedMessage: [{
-            text: this.Constants.MaxLengthExceeded_ERROR,
-            needTraslation: true
-          }, {
-            text: this.CityMaxLength.toString(),
-            needTraslation: false
-          }, {
-            text: this.Constants.characters,
-            needTraslation: true
-          }]
-        }],
-        maxLength: this.CityMaxLength.toString()
-      }, {
-        type: "text",
-        formControlName: this.Constants.government,
-        appearance: "outline",
-        fxFlex: "33%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.government,
-        required: false,
-        errors: [{
-          type: 'maxlength',
-          TranslatedMessage: [{
-            text: this.Constants.MaxLengthExceeded_ERROR,
-            needTraslation: true
-          }, {
-            text: this.GovernmentMaxLength.toString(),
-            needTraslation: false
-          }, {
-            text: this.Constants.characters,
-            needTraslation: true
-          }]
-        }],
-        maxLength: this.GovernmentMaxLength.toString()
-      }, {
-        type: "text",
-        formControlName: this.Constants.postalCode,
-        appearance: "outline",
-        fxFlex: "33%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.postalCode,
-        required: false,
-        errors: [{
-          type: 'maxlength',
-          TranslatedMessage: [{
-            text: this.Constants.MaxLengthExceeded_ERROR,
-            needTraslation: true
-          }, {
-            text: this.PostalCodeMaxLength.toString(),
-            needTraslation: false
-          }, {
-            text: this.Constants.characters,
-            needTraslation: true
-          }]
-        }],
-        maxLength: this.PostalCodeMaxLength.toString()
-      }, {
-        type: "text",
-        formControlName: this.Constants.addressLine_1,
-        appearance: "outline",
-        fxFlex: "49%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.addressLine_1,
-        required: false,
-        errors: [{
-          type: 'required',
-          TranslatedMessage: [{
-            text: this.Constants.Required_field_Error,
-            needTraslation: true
-          }]
-        }],
-      }, {
-        type: "text",
-        formControlName: this.Constants.addressLine_2,
-        appearance: "outline",
-        fxFlex: "49%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.addressLine_2,
-        required: false
+      formSections: [{
+        fxFlex: "100%",
+        formFieldsSpec: [{
+          type: "text",
+          formControlName: this.Constants.buildingNo,
+          appearance: "outline",
+          fxFlex: "24%",
+          fxFlex_xs: "100%",
+          mat_label: this.Constants.buildingNo,
+          required: false,
+          errors: [{
+            type: 'maxlength',
+            TranslatedMessage: [{
+              text: this.Constants.MaxLengthExceeded_ERROR,
+              needTraslation: true
+            }, {
+              text: this.BuildingNoMaxLength.toString(),
+              needTraslation: false
+            }, {
+              text: this.Constants.characters,
+              needTraslation: true
+            }]
+          }],
+          maxLength: this.BuildingNoMaxLength.toString()
+        }, {
+          type: "text",
+          formControlName: this.Constants.flatNo,
+          appearance: "outline",
+          fxFlex: "24%",
+          fxFlex_xs: "100%",
+          mat_label: this.Constants.flatNo,
+          required: false,
+          errors: [{
+            type: 'maxlength',
+            TranslatedMessage: [{
+              text: this.Constants.MaxLengthExceeded_ERROR,
+              needTraslation: true
+            }, {
+              text: this.FlatNoMaxLength.toString(),
+              needTraslation: false
+            }, {
+              text: this.Constants.characters,
+              needTraslation: true
+            }]
+          }],
+          maxLength: this.FlatNoMaxLength.toString()
+        }, {
+          type: "text",
+          formControlName: this.Constants.streetName,
+          appearance: "outline",
+          fxFlex: "24%",
+          fxFlex_xs: "100%",
+          mat_label: this.Constants.streetName,
+          required: false,
+          errors: [{
+            type: 'maxlength',
+            TranslatedMessage: [{
+              text: this.Constants.MaxLengthExceeded_ERROR,
+              needTraslation: true
+            }, {
+              text: this.StreetNameMaxLength.toString(),
+              needTraslation: false
+            }, {
+              text: this.Constants.characters,
+              needTraslation: true
+            }]
+          }],
+          maxLength: this.StreetNameMaxLength.toString()
+        }, {
+          type: "select",
+          formControlName: this.Constants.countryName,
+          appearance: "outline",
+          fxFlex: "24%",
+          fxFlex_xs: "100%",
+          mat_label: this.Constants.countryName,
+          required: true,
+          SelectData: this.GeneralsService.Country,
+          PropertyNameToSetInValue: 'id',
+          PropertyNameToShowInSelection: "countryName",
+        }, {
+          type: "text",
+          formControlName: this.Constants.city,
+          appearance: "outline",
+          fxFlex: "33%",
+          fxFlex_xs: "100%",
+          mat_label: this.Constants.city,
+          required: false,
+          errors: [{
+            type: 'maxlength',
+            TranslatedMessage: [{
+              text: this.Constants.MaxLengthExceeded_ERROR,
+              needTraslation: true
+            }, {
+              text: this.CityMaxLength.toString(),
+              needTraslation: false
+            }, {
+              text: this.Constants.characters,
+              needTraslation: true
+            }]
+          }],
+          maxLength: this.CityMaxLength.toString()
+        }, {
+          type: "text",
+          formControlName: this.Constants.government,
+          appearance: "outline",
+          fxFlex: "33%",
+          fxFlex_xs: "100%",
+          mat_label: this.Constants.government,
+          required: false,
+          errors: [{
+            type: 'maxlength',
+            TranslatedMessage: [{
+              text: this.Constants.MaxLengthExceeded_ERROR,
+              needTraslation: true
+            }, {
+              text: this.GovernmentMaxLength.toString(),
+              needTraslation: false
+            }, {
+              text: this.Constants.characters,
+              needTraslation: true
+            }]
+          }],
+          maxLength: this.GovernmentMaxLength.toString()
+        }, {
+          type: "text",
+          formControlName: this.Constants.postalCode,
+          appearance: "outline",
+          fxFlex: "33%",
+          fxFlex_xs: "100%",
+          mat_label: this.Constants.postalCode,
+          required: false,
+          errors: [{
+            type: 'maxlength',
+            TranslatedMessage: [{
+              text: this.Constants.MaxLengthExceeded_ERROR,
+              needTraslation: true
+            }, {
+              text: this.PostalCodeMaxLength.toString(),
+              needTraslation: false
+            }, {
+              text: this.Constants.characters,
+              needTraslation: true
+            }]
+          }],
+          maxLength: this.PostalCodeMaxLength.toString()
+        }, {
+          type: "text",
+          formControlName: this.Constants.addressLine_1,
+          appearance: "outline",
+          fxFlex: "49%",
+          fxFlex_xs: "100%",
+          mat_label: this.Constants.addressLine_1,
+          required: true,
+          errors: [{
+            type: 'required',
+            TranslatedMessage: [{
+              text: this.Constants.Required_field_Error,
+              needTraslation: true
+            }]
+          }],
+        }, {
+          type: "text",
+          formControlName: this.Constants.addressLine_2,
+          appearance: "outline",
+          fxFlex: "49%",
+          fxFlex_xs: "100%",
+          mat_label: this.Constants.addressLine_2,
+          required: false
+        }]
       }]
     }
   }
@@ -232,6 +236,7 @@ export class AddInventAddressComponent implements OnInit {
 
   }
   AddNewAddress(newAddress: FormDefs) {
+    this.spinner.fullScreenSpinner();
     let newAdd: InventoryAddress = {
       id: 0,
       buildingNo: newAddress.form.get(this.Constants.buildingNo)?.value,
@@ -244,9 +249,9 @@ export class AddInventAddressComponent implements OnInit {
       postalCode: newAddress.form.get(this.Constants.postalCode)?.value,
       inventoriesId: this.data.id,
       inventories: this.data,
-      countryNameCode: this.GeneralsService.Country.find(x => x.id === newAddress.form.get(this.Constants.country)?.value)?.countryNameCode!,
-      countryName: this.GeneralsService.Country.find(x => x.id === newAddress.form.get(this.Constants.country)?.value)?.countryName!,
-      countryId: newAddress.form.get(this.Constants.country)?.value,
+      countryNameCode: this.GeneralsService.Country.find(x => x.id === newAddress.form.get(this.Constants.countryName)?.value)?.countryNameCode!,
+      countryName: this.GeneralsService.Country.find(x => x.id === newAddress.form.get(this.Constants.countryName)?.value)?.countryName!,
+      countryId: newAddress.form.get(this.Constants.countryName)?.value,
 
       subdomain: this.subdomain
     }
@@ -267,6 +272,7 @@ export class AddInventAddressComponent implements OnInit {
           this.data.inventAdd = this.data.inventAdd.slice(0, this.data.inventAdd.length - 1) + ".";
         }
         this.data.inventoryAddress = r;
+        this.spinner.removeSpinner();
         this.ServerHandler.DatatAddition_Success_Swal();
         this._bottomSheetRef.dismiss();
       },
@@ -278,7 +284,8 @@ export class AddInventAddressComponent implements OnInit {
           { prop: this.Constants.streetName, maxLength: 30 },
           { prop: this.Constants.city, maxLength: 30 },
           { prop: this.Constants.government, maxLength: 30 }
-        ]
+        ];
+        this.spinner.removeSpinner();
         this.ServerHandler.GetErrorNotification_swal(e, x);
       }
     })

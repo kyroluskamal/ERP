@@ -11,3 +11,18 @@
   overflow: hidden;
 
 }
+.mat-paginator-outer-container{
+  font-weight: normal;
+}
+.mat-column-expand{
+  width: 5px !important;
+}
+section{
+  padding: 5px;
+}
+section p:first-child{
+  text-align: center;
+  padding: 5px;
+  font-family: "Scheherazade New";
+  font-size: 18px;
+}

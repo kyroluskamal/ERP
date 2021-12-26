@@ -41,6 +41,7 @@
     "flag-icon-css": "^3.5.0",
     "ngx-cookie-service": "^13.0.1",
     "ngx-flag-icon-css": "^1.0.1",
+    "ngx-spinner": "^13.0.0",
     "rxjs": "^7.4.0",
     "sweetalert2": "^11.3.0",
     "tslib": "^2.3.1",

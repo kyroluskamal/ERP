@@ -23,7 +23,7 @@
               (ReferencialField_EditClick)="EditAdress($event)"
               (ReferencialField_DeleteClick)="DeleteAddress($event)"
               (ClickAddButton)="AddNewInvent($event)"
-              [ToolTipText_input]="translate.GetTranslation(this.Constants.Add) + ' ' + translate.GetTranslation(this.Constants.Warehouse_Singular)">
+              [ToolTipText_input]="translate.GetTranslation(this.Constants.Add.toLowerCase()) + ' ' + translate.GetTranslation(this.Constants.Warehouse_Singular.toLowerCase())">
 
   </kiko-table>
 </div>

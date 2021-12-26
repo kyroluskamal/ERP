@@ -13,6 +13,7 @@ import { ClientSideValidationService } from 'src/CommonServices/client-side-vali
 import { ServerResponseHandelerService } from 'src/CommonServices/server-response-handeler.service';
 import { faSave } from '@fortawesome/free-solid-svg-icons'
 import { CustomValidators } from 'src/Helpers/CustomValidation/custom-validators';
+import { SpinnerService } from 'src/CommonServices/spinner.service';
 @Component({
   selector: 'app-edit-inventory',
   templateUrl: './edit-inventory.component.html',
@@ -31,7 +32,7 @@ export class EditInventoryComponent implements OnInit {
   EditInvenoty: FormGroup = new FormGroup({});
   Title: CardTitle[] = [];
   FormBuilder: FormDefs = new FormDefs();
-  constructor(
+  constructor(private spinner: SpinnerService,
     public Constants: ConstantsService, private InventoriesService: InventoriesService,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: { dataToEdit: Inventories, Array: any[] }, private ClientSideValidation: ClientSideValidationService,
@@ -66,129 +67,122 @@ export class EditInventoryComponent implements OnInit {
       Form_fxLayoutAlign: "space-between",
       Button_GoogleIcon: "save",
       ButtonText: [this.Constants.Save],
-      formFieldsSpec: [{
-        type: "text",
-        formControlName: "Name",
-        appearance: "outline",
-        fxFlex: "33%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.WarehouseName,
+      formSections: [{
+        fxFlex: "100%",
+        formFieldsSpec: [{
+          type: "text",
+          formControlName: "Name",
+          appearance: "outline",
+          fxFlex: "33%",
+          fxFlex_xs: "100%",
+          mat_label: this.Constants.WarehouseName,
 
-        faIcon: faPenAlt,
-        errors: [{
-          type: 'required',
-          TranslatedMessage: [{
-            text: this.Constants.Required_field_Error,
-            needTraslation: true
-          }]
+          faIcon: faPenAlt,
+          errors: [{
+            type: 'required',
+            TranslatedMessage: [{
+              text: this.Constants.Required_field_Error,
+              needTraslation: true
+            }]
+          }, {
+            type: 'maxlength',
+            TranslatedMessage: [{
+              text: this.Constants.MaxLengthExceeded_ERROR,
+              needTraslation: true
+            }, {
+              text: this.MaxLength.toString(),
+              needTraslation: false
+            }, {
+              text: this.Constants.characters,
+              needTraslation: true
+            }]
+          }],
+          required: false,
+          maxLength: "30"
         }, {
-          type: 'maxlength',
-          TranslatedMessage: [{
-            text: this.Constants.MaxLengthExceeded_ERROR,
-            needTraslation: true
-          }, {
-            text: this.MaxLength.toString(),
-            needTraslation: false
-          }, {
-            text: this.Constants.characters,
-            needTraslation: true
-          }]
-        }],
-        required: false,
-        maxLength: "30"
-      }, {
-        type: "tel",
-        formControlName: "Phone",
-        appearance: "outline",
-        fxFlex: "33%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.TelephoneNumber,
-        faIcon: faPhone,
+          type: "tel",
+          formControlName: "Phone",
+          appearance: "outline",
+          fxFlex: "33%",
+          fxFlex_xs: "100%",
+          mat_label: this.Constants.TelephoneNumber,
+          faIcon: faPhone,
 
-        required: false,
-        hint: {
-          text_no_translation: "+(20)xxxxxxxxxx",
-          dir: "ltr",
-          align: "end",
-          text_to_translation: ""
-        },
-        errors: [
-          {
-            type: this.Constants.NOT_VALID_PHONE_NUMBER,
-            TranslatedMessage: [
-              {
-                text: this.Constants.NOT_VALID_PHONE_NUMBER,
-                needTraslation: true
-              }
-            ]
-          }
-        ]
-      }, {
-        type: "tel",
-        formControlName: "Mobile",
-        appearance: "outline",
-        fxFlex: "33%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.CellPhoneNumber,
-        faIcon: faPhone,
-        required: false,
-        hint: {
-          text_no_translation: "+(20)xxxxxxxxxx",
-          dir: "ltr",
-          align: "end",
-          text_to_translation: ""
-        },
-        errors: [
-          {
-            type: this.Constants.NOT_VALID_PHONE_NUMBER,
-            TranslatedMessage: [
-              {
-                text: this.Constants.NOT_VALID_PHONE_NUMBER,
-                needTraslation: true
-              }
-            ]
-          }
-        ]
-      }, {
-        type: "textarea",
-        formControlName: "Notes",
-        appearance: "outline",
-        fxFlex: "100%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.Notes,
-        faIcon: faPenAlt,
-        cdkAutosizeMinRows: '5',
-        required: false,
-      }, {
-        type: "checkbox",
-        appearance: "fill",
-        formControlName: "IsActive",
-        fxFlex: "100%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.Active,
-        required: false,
-      }, {
-        type: "checkbox",
-        appearance: "fill",
-        formControlName: "IsMain",
-        fxFlex: "100%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.Main,
-        required: false,
+          required: false,
+          hint: {
+            text_no_translation: "+(20)xxxxxxxxxx",
+            dir: "ltr",
+            align: "end",
+            text_to_translation: ""
+          },
+          errors: [
+            {
+              type: this.Constants.NOT_VALID_PHONE_NUMBER,
+              TranslatedMessage: [
+                {
+                  text: this.Constants.NOT_VALID_PHONE_NUMBER,
+                  needTraslation: true
+                }
+              ]
+            }
+          ]
+        }, {
+          type: "tel",
+          formControlName: "Mobile",
+          appearance: "outline",
+          fxFlex: "33%",
+          fxFlex_xs: "100%",
+          mat_label: this.Constants.CellPhoneNumber,
+          faIcon: faPhone,
+          required: false,
+          hint: {
+            text_no_translation: "+(20)xxxxxxxxxx",
+            dir: "ltr",
+            align: "end",
+            text_to_translation: ""
+          },
+          errors: [
+            {
+              type: this.Constants.NOT_VALID_PHONE_NUMBER,
+              TranslatedMessage: [
+                {
+                  text: this.Constants.NOT_VALID_PHONE_NUMBER,
+                  needTraslation: true
+                }
+              ]
+            }
+          ]
+        }, {
+          type: "textarea",
+          formControlName: "Notes",
+          appearance: "outline",
+          fxFlex: "100%",
+          fxFlex_xs: "100%",
+          mat_label: this.Constants.Notes,
+          faIcon: faPenAlt,
+          cdkAutosizeMinRows: '5',
+          required: false,
+        }, {
+          type: "checkbox",
+          appearance: "fill",
+          formControlName: "IsActive",
+          fxFlex: "100%",
+          fxFlex_xs: "100%",
+          mat_label: this.Constants.Active,
+          required: false,
+        }, {
+          type: "checkbox",
+          appearance: "fill",
+          formControlName: "IsMain",
+          fxFlex: "100%",
+          fxFlex_xs: "100%",
+          mat_label: this.Constants.Main,
+          required: false,
+        }]
       }]
     }
   }
   EditInvent(EditedInvent: FormDefs) {
-    if (!(this.ClientSideValidation.isUnique(this.data.Array, 'warehouseName', this.EditInvenoty.get("Name")?.value, this.data.dataToEdit.id))) {
-      this.ClientSideValidation.notUniqueNotification_Swal("warehouseName");
-      EditedInvent.form.get("Name")?.setValue(this.data.dataToEdit.warehouseName);
-      EditedInvent.form.get("Mobile")?.setValue(this.data.dataToEdit.mobilePhone);
-      EditedInvent.form.get("Phone")?.setValue(this.data.dataToEdit.telephone);
-      EditedInvent.form.get("IsActive")?.setValue(this.data.dataToEdit.isActive);
-      EditedInvent.form.get("IsMain")?.setValue(this.data.dataToEdit.isMainInventory);
-      EditedInvent.form.get("Notes")?.setValue(this.data.dataToEdit.notes);
-      return;
-    }
     if (this.data.dataToEdit.warehouseName === EditedInvent.form.get("Name")?.value
       && this.data.dataToEdit.mobilePhone === EditedInvent.form.get("Mobile")?.value
       && this.data.dataToEdit.telephone === EditedInvent.form.get("Phone")?.value
@@ -196,6 +190,18 @@ export class EditInventoryComponent implements OnInit {
       && this.data.dataToEdit.isMainInventory === Boolean(EditedInvent.form.get("IsMain")?.value)
       && this.data.dataToEdit.notes === EditedInvent.form.get("Notes")?.value) {
       this._bottomSheetRef.dismiss();
+      return;
+    }
+    this.spinner.fullScreenSpinner();
+    if (!(this.ClientSideValidation.isUnique(this.data.Array, 'warehouseName', this.EditInvenoty.get("Name")?.value, this.data.dataToEdit.id))) {
+      this.spinner.removeSpinner();
+      this.ClientSideValidation.notUniqueNotification_Swal("warehouseName");
+      EditedInvent.form.get("Name")?.setValue(this.data.dataToEdit.warehouseName);
+      EditedInvent.form.get("Mobile")?.setValue(this.data.dataToEdit.mobilePhone);
+      EditedInvent.form.get("Phone")?.setValue(this.data.dataToEdit.telephone);
+      EditedInvent.form.get("IsActive")?.setValue(this.data.dataToEdit.isActive);
+      EditedInvent.form.get("IsMain")?.setValue(this.data.dataToEdit.isMainInventory);
+      EditedInvent.form.get("Notes")?.setValue(this.data.dataToEdit.notes);
       return;
     }
     let UpdateInvent: Inventories = {
@@ -216,6 +222,7 @@ export class EditInventoryComponent implements OnInit {
       next: r => {
         if (r.status)
           if (r.status !== this.Constants.SameObject) {
+            this.spinner.removeSpinner();
             this.ServerResponseHandler.GeneralSuccessResponse_Swal(r);
             this.data.dataToEdit.warehouseName = UpdateInvent.warehouseName;
             this.data.dataToEdit.mobilePhone = UpdateInvent.mobilePhone;
@@ -227,6 +234,7 @@ export class EditInventoryComponent implements OnInit {
         this._bottomSheetRef.dismiss(this.data);
       },
       error: e => {
+        this.spinner.removeSpinner();
         this.ServerResponseHandler.GetErrorNotification_swal(e);
         EditedInvent.form.get("Name")?.setValue(this.data.dataToEdit.warehouseName);
         EditedInvent.form.get("Mobile")?.setValue(this.data.dataToEdit.mobilePhone);

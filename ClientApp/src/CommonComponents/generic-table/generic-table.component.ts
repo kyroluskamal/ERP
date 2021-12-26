@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from 'src/CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
-import { CardTitle, ColDefs, ThemeColor } from 'src/Interfaces/interfaces';
+import { CardTitle, ColDefs, TableSlidingSections, ThemeColor } from 'src/Interfaces/interfaces';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
@@ -13,6 +13,7 @@ import { LightDarkThemeConverterService } from 'src/Client/ClientApp/Components/
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { SpinnerService } from 'src/CommonServices/spinner.service';
 @Component({
   selector: 'kiko-table',
   templateUrl: './generic-table.component.html',
@@ -62,6 +63,8 @@ export class GenericTableComponent implements OnInit, OnChanges, OnDestroy {
   expandedElement: any | null = null;
   noData: boolean = true;
   ToolTipText: string = "";
+  gridCols: number = 3;
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<any>;
@@ -83,7 +86,7 @@ export class GenericTableComponent implements OnInit, OnChanges, OnDestroy {
   @Input() AddButtonText: CardTitle[] = [];
   @Input() HasCollabsableRow: boolean = false;
   @Input() RowDeleted: boolean = false;
-  @Input() CollabsableDataKeys: string[] = [];
+  @Input() CollabsableDataSections: TableSlidingSections[] = [];
   @Output() rowsSelection: EventEmitter<any[]> = new EventEmitter();
   @Output() DoubleClickRow: EventEmitter<any> = new EventEmitter();
   @Output() DeleteClick: EventEmitter<any> = new EventEmitter();
@@ -93,7 +96,7 @@ export class GenericTableComponent implements OnInit, OnChanges, OnDestroy {
   @Output() ReferencialField_DeleteClick: EventEmitter<any> = new EventEmitter();
   @Output() ClickAddButton: EventEmitter<boolean> = new EventEmitter();
   constructor(
-    public Constants: ConstantsService,
+    public Constants: ConstantsService, private spinner: SpinnerService,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
     private LightOrDarkConverter: LightDarkThemeConverterService, private mediaObserver: MediaObserver,
   ) {
@@ -140,6 +143,7 @@ export class GenericTableComponent implements OnInit, OnChanges, OnDestroy {
     this.ThemeDirection.unsubscribe();
   }
   ngOnInit(): void {
+
     setTimeout(() => {
       this.itemPageLabel = this.translate.GetTranslation(this.Constants.ItemPerPageLabal);
       this.firstPageLabel = this.translate.GetTranslation(this.Constants.FirstPage);
@@ -161,12 +165,16 @@ export class GenericTableComponent implements OnInit, OnChanges, OnDestroy {
     this.datasource.sort = this.sort;
     this.dataSource.sort = this.sort;
     this.ShowProgressbar = this.ShowProgressBar;
-    this.isLoadingResults = this.isLoadingRes;
+    this.isLoadingRes = this.isLoadingResults;
     this.RefField = this.ReferencialField;
     this.PreventFor = this.PreventDeleteForValue;
     this.AddButton_Text = this.AddButtonText;
 
-
+    if (this.isLoadingResults) {
+      this.spinner.InsideContainerSpinner();
+    } else {
+      this.spinner.removeSpinner();
+    }
     this.ToolTipText = this.ToolTipText_input;
   }
   ngOnChanges(changes: SimpleChanges) {
@@ -180,6 +188,9 @@ export class GenericTableComponent implements OnInit, OnChanges, OnDestroy {
     }
     if ("isLoadingResults" in changes) {
       this.isLoadingRes = this.isLoadingResults;
+      if (this.isLoadingResults) {
+        this.spinner.InsideContainerSpinner();
+      } else this.spinner.removeSpinner();
     }
     if ("ShowProgressBar" in changes) {
       this.ShowProgressbar = this.ShowProgressBar;

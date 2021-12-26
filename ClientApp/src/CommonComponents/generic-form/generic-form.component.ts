@@ -7,7 +7,7 @@ import { CustomErrorStateMatcher } from 'src/Helpers/CustomErrorStateMatcher/cus
 import { CardTitle, FormDefs, SelectedDataTransfer, ThemeColor } from 'src/Interfaces/interfaces';
 
 import { LightDarkThemeConverterService } from 'src/Client/ClientApp/Components/Dashboard/light-dark-theme-converter.service';
-import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { ComponentType } from '@angular/cdk/portal';
 
 @Component({
@@ -30,8 +30,9 @@ export class GenericFormComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() Form: FormDefs = new FormDefs();
   @Input() Title: CardTitle[] = [];
   @Input() AllSelectedData: SelectedDataTransfer[] = [];
+  @Input() showCloseButton: boolean = false;
   @Output() GetValue: EventEmitter<FormDefs> = new EventEmitter();
-  constructor(
+  constructor(private _bottomSheetRef: MatBottomSheetRef<any>,
     public Constants: ConstantsService, private componentFactoryResolver: ComponentFactoryResolver,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
     private LightOrDarkConverter: LightDarkThemeConverterService, private bottomSheet: MatBottomSheet
@@ -87,16 +88,21 @@ export class GenericFormComponent implements OnInit, OnChanges, AfterViewInit {
   Search(value: string, PropertyToSearch: string) {
     let tempData = this.AllSelectedData.filter(x => { return x.property === PropertyToSearch })[0].SelectedData;
     let filteredData = tempData.filter(x => { return x[PropertyToSearch].toLowerCase().includes(value.toLowerCase()) })
-    for (let field of this.FormSpec.formFieldsSpec) {
-      if (field.SelectData) {
-        if (field.PropertyNameToShowInSelection === PropertyToSearch) {
-          if (value !== "")
-            field.SelectData = [...filteredData];
-          else if (value === "") {
-            field.SelectData = [...tempData]
+    for (let section of this.FormSpec.formSections) {
+      for (let field of section.formFieldsSpec) {
+        if (field.SelectData) {
+          if (field.PropertyNameToShowInSelection === PropertyToSearch) {
+            if (value !== "")
+              field.SelectData = [...filteredData];
+            else if (value === "") {
+              field.SelectData = [...tempData]
+            }
           }
         }
       }
     }
+  }
+  BottomSheetDismiss() {
+    this._bottomSheetRef.dismiss();
   }
 }

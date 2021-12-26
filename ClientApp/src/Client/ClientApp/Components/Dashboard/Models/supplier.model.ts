@@ -8,16 +8,19 @@ export class Suppliers {
   telephone: string = "";
   mobilePhone: string = "";
   taxID: string = "";
-  CR: string = "";
+  cr: string = "";
   email: string = "";
   dateCreated: Date = new Date();
+  openingBalanceDate: Date = new Date();
   openingBalance: number = 0;
+  balance: number = 0;
   notes: string = "";
   currency: string = "";
   currencyId: number = 0;
-  country: string = "";
+  countryName: string = "";
   countryId: number = 0;
   addedBy_UserId: number = 0;
   addedBy_UserName: string = "";
+  logo: any;
   subdomain: string = "";
 }

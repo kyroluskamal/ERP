@@ -1219,12 +1219,21 @@ h2#swal2-title{
   font-size: 1.9rem;
   color:#007bff;
 }
-.Light-for-Child-Component tr:not(.details-Row):hover {
+.LightTableBg
+ tr:not(.details-Row):hover {
   background: whitesmoke;
 }
 
-.Light-for-Child-Component tr:not(.details-Row):active {
+.LightTableBg tr:not(.details-Row):active {
   background: #efefef;
+}
+.DarkTableBg
+ tr:not(.details-Row):hover {
+  background: rgb(51, 51, 51);
+}
+
+.DarkTableBg tr:not(.details-Row):active {
+  background: rgb(44, 44, 44);;
 }
 .rtl{
   direction: rtl;
@@ -1242,4 +1251,7 @@ h2#swal2-title{
 }
 .SwalWarningTitle{
   color: #ffc107 !important;
+}
+.mat-bottom-sheet-container{
+  padding:0 !important;
 }

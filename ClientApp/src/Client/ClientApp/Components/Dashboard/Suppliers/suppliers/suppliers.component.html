@@ -1,17 +1,19 @@
 <div fxLayout="column"
      fxLayoutGap="16px">
-    <mat-card-title-only [Title]="Title"
-                         [Subtitle]="Subtitle">
-    </mat-card-title-only>
-    <kiko-table [columns]="columns"
-                [data]="AllSuppliers"
-                [datasource]="dataSource"
-                [isLoadingResults]="isLoadingResults"
-                [ShowProgressBar]="ShowProgressBar"
-                PreventDeleteForKey="id"
-                PreventDeleteForValue="0"
-                [NoData]="AllSuppliers.length===0 && !isLoadingResults"
-                [AddedRow]="AddedRow"
-                [HasCollabsableRow]="true"
-                [CollabsableDataKeys]="CollapsibleDataKeys"></kiko-table>
+     <mat-card-title-only [Title]="Title"
+                          [Subtitle]="Subtitle">
+     </mat-card-title-only>
+     <kiko-table [columns]="columns"
+                 [data]="AllSuppliers"
+                 [datasource]="dataSource"
+                 [isLoadingResults]="isLoadingResults"
+                 [ShowProgressBar]="ShowProgressBar"
+                 PreventDeleteForKey="id"
+                 PreventDeleteForValue="0"
+                 [NoData]="AllSuppliers.length===0 && !isLoadingResults"
+                 [AddedRow]="AddedRow"
+                 [HasCollabsableRow]="true"
+                 [CollabsableDataSections]="CollapsibleDataSections"
+                 [ToolTipText_input]="translate.GetTranslation(Constants.Add.toLowerCase()) + ' ' + translate.GetTranslation(Constants.Supplier_Singular.toLowerCase())">
+     </kiko-table>
 </div>

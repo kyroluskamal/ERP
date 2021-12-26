@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from 'src/CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
-import { CardTitle, ColDefs, FormDefs, SweetAlertData } from 'src/Interfaces/interfaces';
+import { CardTitle, ColDefs, FormDefs, SweetAlertData, TableSlidingSections } from 'src/Interfaces/interfaces';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { faMobileAlt, faPhone, faPenAlt, faEdit, faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import { MatTableDataSource } from '@angular/material/table';
@@ -35,7 +35,7 @@ export class SuppliersComponent implements OnInit {
   FormBuilder: FormDefs = new FormDefs();
   Title: CardTitle[] = [];
   Subtitle: CardTitle[] = [];
-  CollapsibleDataKeys: string[] = [];
+  CollapsibleDataSections: TableSlidingSections[] = [];
   constructor(
     public Constants: ConstantsService, private bottomSheet: MatBottomSheet,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
@@ -49,6 +49,7 @@ export class SuppliersComponent implements OnInit {
     this.Subtitle = [{ text: this.Constants.Add_Edit_Delete, needTranslation: true },
     { text: this.Constants.Suppliers, needTranslation: true }]
     this.SuppliersService.GetAllSuppliers().subscribe(r => {
+
       this.AllSuppliers = r;
       this.dataSource.data = r;
       this.isLoadingResults = false;
@@ -59,12 +60,27 @@ export class SuppliersComponent implements OnInit {
     this.ShowProgressBar = true;
     this.columns = [
       { field: 'id', display: '#' },
-      { field: 'businessName', display: "Name" },
-      { field: 'mobilePhone', display: "", HeaderfaIcon: this.faMobileAlt },
-      { field: 'openingBalance', display: "Balance" },
-      { field: 'addedBy_UserName', display: this.Constants.AddedBy },
+      { field: this.Constants.logo, display: this.Constants.logo },
+      { field: this.Constants.businessName, display: this.Constants.businessName },
+      { field: this.Constants.CellPhoneNumber, display: "", HeaderfaIcon: this.faMobileAlt },
+      { field: this.Constants.balance, display: this.Constants.balance },
+      { field: this.Constants.addedBy_UserName, display: this.Constants.addedBy_UserName },
+      { field: this.Constants.dateCreated, display: this.Constants.dateCreated },
+      { field: this.Constants.Notes, display: this.Constants.Notes },
     ];
-    this.CollapsibleDataKeys = ['notes', 'email', "firstName"];
+    this.CollapsibleDataSections = [
+      {
+        sectionName: [{ text: this.Constants.SupplierDetails, needTranslation: true }], fxFlex: '48%', fxFlex_sm: "48%",
+        keys: [this.Constants.firstName, this.Constants.lastName,
+        this.Constants.CellPhoneNumber, this.Constants.TelephoneNumber,
+        this.Constants.countryName, this.Constants.taxID, this.Constants.cr]
+      },
+      {
+        sectionName: [{ text: this.Constants.AccountDetails, needTranslation: true }], fxFlex: '48%', fxFlex_sm: "48%",
+        keys: [this.Constants.email, this.Constants.openingBalance,
+        this.Constants.openingBalanceDate, this.Constants.countryName, this.Constants.currency]
+      }
+    ];
   }
 
 

@@ -63,115 +63,118 @@ export class AddNewSupplierComponent implements OnInit {
       Form_fxLayoutAlign: "space-between",
       Button_GoogleIcon: "add_circle",
       ButtonText: [this.Constants.Add, this.Constants.Warehouse_Singular],
-      formFieldsSpec: [{
-        type: "text",
-        formControlName: "Name",
-        appearance: "outline",
-        fxFlex: "33%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.WarehouseName,
+      formSections: [{
+        fxFlex: "100%",
+        formFieldsSpec: [{
+          type: "text",
+          formControlName: "Name",
+          appearance: "outline",
+          fxFlex: "33%",
+          fxFlex_xs: "100%",
+          mat_label: this.Constants.WarehouseName,
 
-        faIcon: faPenAlt,
-        errors: [{
-          type: 'required',
-          TranslatedMessage: [{
-            text: this.Constants.Required_field_Error,
-            needTraslation: true
-          }]
+          faIcon: faPenAlt,
+          errors: [{
+            type: 'required',
+            TranslatedMessage: [{
+              text: this.Constants.Required_field_Error,
+              needTraslation: true
+            }]
+          }, {
+            type: 'maxlength',
+            TranslatedMessage: [{
+              text: this.Constants.MaxLengthExceeded_ERROR,
+              needTraslation: true
+            }, {
+              text: this.MaxLength.toString(),
+              needTraslation: false
+            }, {
+              text: this.Constants.characters,
+              needTraslation: true
+            }]
+          }],
+          required: true,
+          maxLength: "30"
         }, {
-          type: 'maxlength',
-          TranslatedMessage: [{
-            text: this.Constants.MaxLengthExceeded_ERROR,
-            needTraslation: true
-          }, {
-            text: this.MaxLength.toString(),
-            needTraslation: false
-          }, {
-            text: this.Constants.characters,
-            needTraslation: true
-          }]
-        }],
-        required: true,
-        maxLength: "30"
-      }, {
-        type: "tel",
-        formControlName: "Phone",
-        appearance: "outline",
-        fxFlex: "33%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.TelephoneNumber,
-        faIcon: faPhone,
+          type: "tel",
+          formControlName: "Phone",
+          appearance: "outline",
+          fxFlex: "33%",
+          fxFlex_xs: "100%",
+          mat_label: this.Constants.TelephoneNumber,
+          faIcon: faPhone,
 
-        required: false,
-        hint: {
-          text_no_translation: "+(20)xxxxxxxxxx",
-          dir: "ltr",
-          align: "end",
-          text_to_translation: ""
-        },
-        errors: [
-          {
-            type: this.Constants.NOT_VALID_PHONE_NUMBER,
-            TranslatedMessage: [
-              {
-                text: this.Constants.NOT_VALID_PHONE_NUMBER,
-                needTraslation: true
-              }
-            ]
-          }
-        ]
-      }, {
-        type: "tel",
-        formControlName: "Mobile",
-        appearance: "outline",
-        fxFlex: "33%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.CellPhoneNumber,
-        faIcon: faMobileAlt,
-        required: false,
-        hint: {
-          text_no_translation: "+(20)xxxxxxxxxx",
-          dir: "ltr",
-          align: "end",
-          text_to_translation: ""
-        },
-        errors: [
-          {
-            type: this.Constants.NOT_VALID_PHONE_NUMBER,
-            TranslatedMessage: [
-              {
-                text: this.Constants.NOT_VALID_PHONE_NUMBER,
-                needTraslation: true
-              }
-            ]
-          }
-        ]
-      }, {
-        type: "textarea",
-        formControlName: "Notes",
-        appearance: "outline",
-        fxFlex: "100%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.Notes,
-        faIcon: faPenAlt,
-        cdkAutosizeMinRows: '5',
-        required: false,
-      }, {
-        type: "checkbox",
-        appearance: "fill",
-        formControlName: "IsActive",
-        fxFlex: "100%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.Active,
-        required: false,
-      }, {
-        type: "checkbox",
-        appearance: "fill",
-        formControlName: "IsMain",
-        fxFlex: "100%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.Main,
-        required: false,
+          required: false,
+          hint: {
+            text_no_translation: "+(20)xxxxxxxxxx",
+            dir: "ltr",
+            align: "end",
+            text_to_translation: ""
+          },
+          errors: [
+            {
+              type: this.Constants.NOT_VALID_PHONE_NUMBER,
+              TranslatedMessage: [
+                {
+                  text: this.Constants.NOT_VALID_PHONE_NUMBER,
+                  needTraslation: true
+                }
+              ]
+            }
+          ]
+        }, {
+          type: "tel",
+          formControlName: "Mobile",
+          appearance: "outline",
+          fxFlex: "33%",
+          fxFlex_xs: "100%",
+          mat_label: this.Constants.CellPhoneNumber,
+          faIcon: faMobileAlt,
+          required: false,
+          hint: {
+            text_no_translation: "+(20)xxxxxxxxxx",
+            dir: "ltr",
+            align: "end",
+            text_to_translation: ""
+          },
+          errors: [
+            {
+              type: this.Constants.NOT_VALID_PHONE_NUMBER,
+              TranslatedMessage: [
+                {
+                  text: this.Constants.NOT_VALID_PHONE_NUMBER,
+                  needTraslation: true
+                }
+              ]
+            }
+          ]
+        }, {
+          type: "textarea",
+          formControlName: "Notes",
+          appearance: "outline",
+          fxFlex: "100%",
+          fxFlex_xs: "100%",
+          mat_label: this.Constants.Notes,
+          faIcon: faPenAlt,
+          cdkAutosizeMinRows: '5',
+          required: false,
+        }, {
+          type: "checkbox",
+          appearance: "fill",
+          formControlName: "IsActive",
+          fxFlex: "100%",
+          fxFlex_xs: "100%",
+          mat_label: this.Constants.Active,
+          required: false,
+        }, {
+          type: "checkbox",
+          appearance: "fill",
+          formControlName: "IsMain",
+          fxFlex: "100%",
+          fxFlex_xs: "100%",
+          mat_label: this.Constants.Main,
+          required: false,
+        }]
       }]
     }
   }

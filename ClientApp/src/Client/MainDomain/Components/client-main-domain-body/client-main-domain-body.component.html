@@ -1,5 +1,6 @@
-<app-client-main-domain-nav-bar #MainDomainToolbar (LoginClick)="OnloginClick($event)"
-  (LogOutClick)="OnLogoutClick($event)"></app-client-main-domain-nav-bar>
+<app-client-main-domain-nav-bar #MainDomainToolbar
+                                (LoginClick)="OnloginClick($event)"
+                                (LogOutClick)="OnLogoutClick($event)"></app-client-main-domain-nav-bar>
 <span class="bubble bubble1"></span>
 <span class="bubble bubble2"></span>
 <span class="bubble bubble3"></span>
@@ -12,24 +13,38 @@
 <span class="bubble bubble13"></span>
 <main>
 
-  <section fxLayout="column" fxLayoutGap="50px" fxLayoutAlign="center center" fxLayout.xs="column">
+  <section fxLayout="column"
+           fxLayoutGap="50px"
+           fxLayoutAlign="center center"
+           fxLayout.xs="column">
     <header>
-      <h1 [style.font-size]='FirstSec_Header_fontSize' [class]="Constants.BounceUp_Class"
-        [style.line-height]='FirstSec_Header_LineSpace' [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
+      <h1 [style.font-size]='FirstSec_Header_fontSize'
+          [class]="Constants.BounceUp_Class"
+          [style.line-height]='FirstSec_Header_LineSpace'
+          [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
         {{'MainDomainFirstSectionTitle'| translate}}
       </h1>
     </header>
-    <button mat-raised-button *ngIf="currentUserName===null" (click)="dialogHandler.OpenClientRegisterDialog()" class="btn btn-success
+    <button mat-raised-button
+            *ngIf="currentUserName===null"
+            (click)="dialogHandler.OpenClientRegisterDialog()"
+            class="btn btn-success
       LelezarFont
       font-size-1-5rem">
       {{'Create account now'|translate}}</button>
     <!-- GO to Dashboard Button -->
-    <a mat-raised-button *ngIf="currentUserName!==null" [href]="UrlWithSubdomain + '/dashboard'" class="btn btn-black
+    <a mat-raised-button
+       *ngIf="currentUserName!==null"
+       [href]="UrlWithSubdomain + '/dashboard'"
+       class="btn btn-black
       LelezarFont
       font-size-1-5rem">
       {{"Go to Dashboard"|translate}}</a>
-    <mat-list fxLayout="row" fxLayout.xs="column" fxFill fxLayoutAlign="center"
-      [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
+    <mat-list fxLayout="row"
+              fxLayout.xs="column"
+              fxFill
+              fxLayoutAlign="center"
+              [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
       <mat-list-item class="text-white">
         <mat-icon>check_circle</mat-icon>&nbsp;
         {{'Free 30-day trial'|translate}}
@@ -50,18 +65,29 @@
   <section [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
     <div>
       <header>
-        <h2 [style.font-size]='FirstSec_Header_fontSize' class="animate__animated animate__bounce"
-          [style.line-height]='FirstSec_Header_LineSpace'
-          [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
+        <h2 [style.font-size]='FirstSec_Header_fontSize'
+            class="animate__animated animate__bounce"
+            [style.line-height]='FirstSec_Header_LineSpace'
+            [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
           {{'Who are we?'| translate}}
         </h2>
       </header>
-      <article [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'" [fxLayout.gt-sm]="selected&&translate.isRightToLeft(selected)?
-        'row':'row reverse'" fxLayout.lt-md="column" fxLayout.sm="row">
-        <p fxFlexOrder.lt-sm="2" fxFlex.lt-sm="100%" fxFlex.sm="100%" fxFlex.gt-sm="50%">
+      <article [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'"
+               [fxLayout.gt-sm]="selected&&translate.isRightToLeft(selected)?
+        'row':'row reverse'"
+               fxLayout.lt-md="column"
+               fxLayout.sm="row">
+        <p fxFlexOrder.lt-sm="2"
+           fxFlex.lt-sm="100%"
+           fxFlex.sm="100%"
+           fxFlex.gt-sm="50%">
           {{'Who are we answer'| translate}}
         </p>
-        <div fxFlexOrder.lt-sm="1" fxFlex.sm="100%" fxFlex.lt-sm="100%" fxFlex.gt-sm="50%" style="box-shadow: 0 0 50px
+        <div fxFlexOrder.lt-sm="1"
+             fxFlex.sm="100%"
+             fxFlex.lt-sm="100%"
+             fxFlex.gt-sm="50%"
+             style="box-shadow: 0 0 50px
           50px
           white inset
           !important;
@@ -74,73 +100,101 @@
     </div>
   </section>
   <!-------------------------------------------------------------------------------------- Third Section ------------------------->
-  <section AnimateOnScroll animationName="{{Constants.FadeUp}}"
-    [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
+  <section AnimateOnScroll
+           animationName="{{Constants.FadeUp}}"
+           [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
     <div>
-      <h2 [style.font-size]='FirstSec_Header_fontSize' [style.line-height]='FirstSec_Header_LineSpace'
-        [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
+      <h2 [style.font-size]='FirstSec_Header_fontSize'
+          [style.line-height]='FirstSec_Header_LineSpace'
+          [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
         {{'OurIntegratedApps'| translate}}
       </h2>
 
 
-      <mat-grid-list cols={{gridCols}} gutterSize="15px" rowHeight="190px">
+      <mat-grid-list [cols]='gridCols'
+                     gutterSize="15px"
+                     rowHeight="190px">
         <mat-grid-tile>
           <mat-grid-tile-header [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
-            <mat-icon class="text-success" fxFlex.xs="15%" fxFlex="10%" fxLayoutAlign="start">receipt</mat-icon>
+            <mat-icon class="text-success"
+                      fxFlex.xs="15%"
+                      fxFlex="10%"
+                      fxLayoutAlign="start">receipt</mat-icon>
             {{"Sales" | translate}}
           </mat-grid-tile-header>
-          <div class="mat-grid-list-text" [style]="selected&&translate.isRightToLeft(selected)?
+          <div class="mat-grid-list-text"
+               [style]="selected&&translate.isRightToLeft(selected)?
             'padding-right:53px; text-align:justify':'padding-left:53px'">
             {{"SalesText" | translate}}
           </div>
         </mat-grid-tile>
         <mat-grid-tile>
           <mat-grid-tile-header [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
-            <mat-icon class="text-warning" fxFlex="10%" fxFlex.xs="15%" fxLayoutAlign="start">attach_money</mat-icon>
+            <mat-icon class="text-warning"
+                      fxFlex="10%"
+                      fxFlex.xs="15%"
+                      fxLayoutAlign="start">attach_money</mat-icon>
             {{"Accounting" | translate}}
           </mat-grid-tile-header>
-          <div class="mat-grid-list-text" [style]="selected&&translate.isRightToLeft(selected)?
+          <div class="mat-grid-list-text"
+               [style]="selected&&translate.isRightToLeft(selected)?
             'padding-right:53px; text-align:justify':'padding-left:53px'">
             {{"Accounting Explain" | translate}}
           </div>
         </mat-grid-tile>
         <mat-grid-tile>
           <mat-grid-tile-header [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
-            <mat-icon fxFlex="10%" fxFlex.xs="15%" fxLayoutAlign="start" class="text-primary">inventory_2</mat-icon>
+            <mat-icon fxFlex="10%"
+                      fxFlex.xs="15%"
+                      fxLayoutAlign="start"
+                      class="text-primary">inventory_2</mat-icon>
             {{"Inventory" | translate}}
           </mat-grid-tile-header>
-          <div class="mat-grid-list-text" [style]="selected&&translate.isRightToLeft(selected)?
+          <div class="mat-grid-list-text"
+               [style]="selected&&translate.isRightToLeft(selected)?
             'padding-right:53px; text-align:justify':'padding-left:53px'">
             {{"InventoryText" | translate}}
           </div>
         </mat-grid-tile>
         <mat-grid-tile>
           <mat-grid-tile-header [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
-            <mat-icon fxFlex="10%" fxLayoutAlign="start" class="text-danger" fxFlex.xs="15%">group</mat-icon>
+            <mat-icon fxFlex="10%"
+                      fxLayoutAlign="start"
+                      class="text-danger"
+                      fxFlex.xs="15%">group</mat-icon>
             {{"HR" | translate}}
           </mat-grid-tile-header>
-          <div class="mat-grid-list-text" [style]="selected&&translate.isRightToLeft(selected)?
+          <div class="mat-grid-list-text"
+               [style]="selected&&translate.isRightToLeft(selected)?
             'padding-right:53px; text-align:justify':'padding-left:53px'">
             {{"HRtext" | translate}}
           </div>
         </mat-grid-tile>
         <mat-grid-tile>
           <mat-grid-tile-header [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
-            <mat-icon fxFlex="10%" fxLayoutAlign="start" class="text-info" fxFlex.xs="15%">assignment</mat-icon>
+            <mat-icon fxFlex="10%"
+                      fxLayoutAlign="start"
+                      class="text-info"
+                      fxFlex.xs="15%">assignment</mat-icon>
             {{"Workflow" | translate}}
           </mat-grid-tile-header>
-          <div class="mat-grid-list-text" [style]="selected&&translate.isRightToLeft(selected)?
+          <div class="mat-grid-list-text"
+               [style]="selected&&translate.isRightToLeft(selected)?
             'padding-right:53px; text-align:justify':'padding-left:53px'">
             {{"WorkFlowText" | translate}}
           </div>
         </mat-grid-tile>
         <mat-grid-tile>
           <mat-grid-tile-header [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
-            <mat-icon fxFlex="10%" fxLayoutAlign="start" style="color:
-              #5cce2d;" fxFlex.xs="15%">support_agent</mat-icon>
+            <mat-icon fxFlex="10%"
+                      fxLayoutAlign="start"
+                      style="color:
+              #5cce2d;"
+                      fxFlex.xs="15%">support_agent</mat-icon>
             {{"CRM" | translate}}
           </mat-grid-tile-header>
-          <div class="mat-grid-list-text" [style]="selected&&translate.isRightToLeft(selected)?
+          <div class="mat-grid-list-text"
+               [style]="selected&&translate.isRightToLeft(selected)?
             'padding-right:53px; text-align:justify':'padding-left:53px'">
             {{"CRMtext" | translate}}
           </div>
@@ -149,84 +203,137 @@
     </div>
   </section>
   <!----------------------------------------------------------------------- fourth Section ------------------------->
-  <section [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'" AnimateOnScroll animationName="FadeUp">
+  <section [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'"
+           AnimateOnScroll
+           animationName="FadeUp">
     <div>
       <header>
-        <h2 [style.font-size]='FirstSec_Header_fontSize' [style.line-height]='FirstSec_Header_LineSpace'
-          [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
+        <h2 [style.font-size]='FirstSec_Header_fontSize'
+            [style.line-height]='FirstSec_Header_LineSpace'
+            [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
           {{'Robust Online Sales Management Software'| translate}}
         </h2>
       </header>
-      <article [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'" [fxLayout.gt-sm]="selected&&translate.isRightToLeft(selected)?
-        'row':'row reverse'" fxLayout.lt-md="column" fxLayout.md="column">
-        <img src="../../../../assets/sales.png" alt="Sales image" fxFlex="50%" fxFlex.lt-sm="100%"
-          style="padding: 10px;" fxFlexOrder.lt-sm="1">
-        <p fxFlexOrder.lt-sm="2" fxFlex.lt-sm="100%" fxFlex.sm="100%" fxFlex.gt-sm="50%">
+      <article [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'"
+               [fxLayout.gt-sm]="selected&&translate.isRightToLeft(selected)?
+        'row':'row reverse'"
+               fxLayout.lt-md="column"
+               fxLayout.md="column">
+        <img src="../../../../assets/sales.png"
+             alt="Sales image"
+             fxFlex="50%"
+             fxFlex.lt-sm="100%"
+             style="padding: 10px;"
+             fxFlexOrder.lt-sm="1">
+        <p fxFlexOrder.lt-sm="2"
+           fxFlex.lt-sm="100%"
+           fxFlex.sm="100%"
+           fxFlex.gt-sm="50%">
           {{'SalesSectionText'| translate}}
         </p>
       </article>
     </div>
   </section>
   <!---------------------------------------------------------------------- Fifth Section ------------------------->
-  <section AnimateOnScroll animationName="FadeUp" [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
+  <section AnimateOnScroll
+           animationName="FadeUp"
+           [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
     <div>
       <header>
-        <h2 [style.font-size]='FirstSec_Header_fontSize' [style.line-height]='FirstSec_Header_LineSpace'
-          [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
+        <h2 [style.font-size]='FirstSec_Header_fontSize'
+            [style.line-height]='FirstSec_Header_LineSpace'
+            [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
           {{"End-to-end Accounting and Bookkeeping"| translate}}
         </h2>
       </header>
-      <article [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'" [fxLayout.gt-sm]="selected&&translate.isRightToLeft(selected)?
-        'row':'row reverse'" fxLayout.lt-md="column" fxLayout.md="column">
-        <p fxFlexOrder.lt-sm="2" fxFlex.lt-sm="100%" fxFlex.sm="100%" fxFlex.gt-sm="50%">
+      <article [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'"
+               [fxLayout.gt-sm]="selected&&translate.isRightToLeft(selected)?
+        'row':'row reverse'"
+               fxLayout.lt-md="column"
+               fxLayout.md="column">
+        <p fxFlexOrder.lt-sm="2"
+           fxFlex.lt-sm="100%"
+           fxFlex.sm="100%"
+           fxFlex.gt-sm="50%">
           {{"AccountingSection"| translate}}
         </p>
-        <img src="../../../../assets/Accounting.png" alt="Accounting image" fxFlex="50%" fxFlex.lt-sm="100%"
-          style="padding: 10px;" fxFlexOrder.lt-sm="1">
+        <img src="../../../../assets/Accounting.png"
+             alt="Accounting image"
+             fxFlex="50%"
+             fxFlex.lt-sm="100%"
+             style="padding: 10px;"
+             fxFlexOrder.lt-sm="1">
       </article>
     </div>
   </section>
   <!----------------------------------------------------------------------------------- Sixith Section ------------------------->
-  <section AnimateOnScroll animationName="FadeUp" [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
+  <section AnimateOnScroll
+           animationName="FadeUp"
+           [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
     <div>
       <header>
-        <h2 [style.font-size]='FirstSec_Header_fontSize' [style.line-height]='FirstSec_Header_LineSpace'
-          [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
+        <h2 [style.font-size]='FirstSec_Header_fontSize'
+            [style.line-height]='FirstSec_Header_LineSpace'
+            [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
           {{"Convenient Operations, beyond ERP"| translate}}
         </h2>
       </header>
-      <article [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'" [fxLayout.gt-sm]="selected&&translate.isRightToLeft(selected)?
-        'row':'row reverse'" fxLayout.lt-sm="column" fxLayout.sm="column">
-        <img src="../../../../assets/workflow_2.png" alt="Workflow image" fxFlex="50%" fxFlex.lt-sm="100%"
-          style="padding: 10px;" fxFlexOrder.lt-sm="1">
-        <p fxFlexOrder.lt-sm="2" fxFlex.lt-sm="100%" fxFlex.sm="100%" fxFlex.gt-sm="50%">
+      <article [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'"
+               [fxLayout.gt-sm]="selected&&translate.isRightToLeft(selected)?
+        'row':'row reverse'"
+               fxLayout.lt-sm="column"
+               fxLayout.sm="column">
+        <img src="../../../../assets/workflow_2.png"
+             alt="Workflow image"
+             fxFlex="50%"
+             fxFlex.lt-sm="100%"
+             style="padding: 10px;"
+             fxFlexOrder.lt-sm="1">
+        <p fxFlexOrder.lt-sm="2"
+           fxFlex.lt-sm="100%"
+           fxFlex.sm="100%"
+           fxFlex.gt-sm="50%">
           {{"WorkflowSection"| translate}}
         </p>
       </article>
     </div>
   </section>
   <!----------------------------------------------------------------------------------- Sevenith Section ------------------------->
-  <section AnimateOnScroll animationName="FadeUp" [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
+  <section AnimateOnScroll
+           animationName="FadeUp"
+           [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
     <div>
       <header>
-        <h2 [style.font-size]='FirstSec_Header_fontSize' [style.line-height]='FirstSec_Header_LineSpace'
-          [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
+        <h2 [style.font-size]='FirstSec_Header_fontSize'
+            [style.line-height]='FirstSec_Header_LineSpace'
+            [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
           {{"Online CRM Software to Put your Clients first"| translate}}
         </h2>
       </header>
-      <article [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'" [fxLayout.gt-sm]="selected&&translate.isRightToLeft(selected)?
-        'row':'row reverse'" fxLayout.lt-sm="column" fxLayout.sm="column">
-        <p fxFlexOrder.lt-sm="2" fxFlex.lt-sm="100%" fxFlex.sm="100%" fxFlex.gt-sm="50%">
+      <article [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'"
+               [fxLayout.gt-sm]="selected&&translate.isRightToLeft(selected)?
+        'row':'row reverse'"
+               fxLayout.lt-sm="column"
+               fxLayout.sm="column">
+        <p fxFlexOrder.lt-sm="2"
+           fxFlex.lt-sm="100%"
+           fxFlex.sm="100%"
+           fxFlex.gt-sm="50%">
           {{"CRMSection"| translate}}
         </p>
-        <img src="../../../../assets/CRM.png" alt="Accounting image" fxFlex="50%" fxFlex.lt-sm="100%"
-          style="padding: 10px;" fxFlexOrder.lt-sm="1">
+        <img src="../../../../assets/CRM.png"
+             alt="Accounting image"
+             fxFlex="50%"
+             fxFlex.lt-sm="100%"
+             style="padding: 10px;"
+             fxFlexOrder.lt-sm="1">
       </article>
     </div>
   </section>
 </main>
 <footer>
-  <mat-grid-list cols={{gridCols}} gutterSize="15px">
+  <mat-grid-list cols={{gridCols}}
+                 gutterSize="15px">
     <mat-grid-tile>
       <mat-grid-tile-header [dir]="selected&&translate.isRightToLeft(selected)?'rtl':'ltr'">
         TEST

@@ -16,7 +16,7 @@ export class GeneralsService {
   GeoData: any
   constructor(private httpClient: HttpClient, public Constants: ConstantsService) {
     this.Countries().subscribe(r => this.Country = r);
-    this.Get_GEO_Data().subscribe((r) => this.GeoData = r);
+    this.Get_GEO_Data().subscribe((r) => { this.GeoData = r; console.log(r) });
     this.GetCurrencies().subscribe(r => this.Currencies = r);
   }
 

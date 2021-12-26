@@ -14,6 +14,7 @@ import { ClientSideValidationService } from 'src/CommonServices/client-side-vali
 import { AddInventAddressComponent } from '../InventoryAddress/add-invent-address/add-invent-address.component';
 import { EditInventAddressComponent } from '../InventoryAddress/edit-invent-address/edit-invent-address.component';
 import { AddNewInventoryComponent } from '../add-new-inventory/add-new-inventory.component';
+import { SpinnerService } from 'src/CommonServices/spinner.service';
 
 @Component({
   selector: 'app-inventories',
@@ -39,11 +40,10 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
   PreventDeleteFor: any;
   ReferencialField: string = "inventoryAddress";
   FormBuilder: FormDefs = new FormDefs();
-  ToolTipText_input: string = "";
   Title: CardTitle[] = [];
   Subtitle: CardTitle[] = [];
   RowDeleted: boolean = false;
-  constructor(
+  constructor(private spinner: SpinnerService,
     public Constants: ConstantsService, private bottomSheet: MatBottomSheet,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
     private ServerResponseHandler: ServerResponseHandelerService,
@@ -100,7 +100,7 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
       { field: 'inventAdd', display: this.Constants.address },
       { field: 'isActive', display: this.Constants.Active, IsTrueOrFlase: true, True_faIcon: this.faCheckCircle, False_faIcon: this.faTimesCircle },
       { field: 'isMainInventory', display: this.Constants.Main, IsTrueOrFlase: true, True_faIcon: this.faCheckCircle, False_faIcon: this.faTimesCircle },
-      { field: 'addedBy_UserName', display: this.Constants.AddedBy },
+      { field: 'addedBy_UserName', display: this.Constants.addedBy_UserName },
     ];
   }
 
@@ -109,6 +109,7 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
     this.SelectedRows = invent;
     this.ShowProgressBar = true;
     if (invent[0].id === 1) {
+      this.spinner.removeSpinner();
       this.ClientValidaiton.Error_swal(this.Constants.Delete_Default_inventory_Error)
         .then(r => { this.ShowProgressBar = false; });
       return;
@@ -116,8 +117,10 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
     this.ClientValidaiton.Warning(this.translate.GetTranslation(this.Constants.DeleteInventoryWarning))
       .then(r => {
         if (r.isConfirmed) {
+          this.spinner.fullScreenSpinner();
           this.InventoriesService.DeleteWarehouse(invent[0].id).subscribe({
             next: r => {
+              this.spinner.removeSpinner();
               this.ServerResponseHandler.GeneralSuccessResponse_Swal(r);
               this.AllInventories = this.AllInventories.filter((item) => {
                 return item.id !== invent[0].id;
@@ -130,6 +133,7 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
             },
             error: e => {
               this.ShowProgressBar = false;
+              this.spinner.removeSpinner();
               this.ServerResponseHandler.GetErrorNotification_swal(e);
               this.ShowProgressBar = false;
             }
@@ -194,12 +198,15 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
     });
   }
   DeleteAddress(row: Inventories) {
+    this.spinner.fullScreenSpinner()
     this.InventoriesService.DeleteAddress(row.inventoryAddress?.id!).subscribe({
       next: r => {
+        this.spinner.removeSpinner();
         this.ServerResponseHandler.GeneralSuccessResponse_Swal(r);
         row.inventAdd = "";
       },
       error: e => {
+        this.spinner.removeSpinner();
         this.ServerResponseHandler.GetErrorNotification_swal(e);
       }
     })

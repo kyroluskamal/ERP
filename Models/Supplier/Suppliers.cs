@@ -16,16 +16,13 @@ namespace ERP.Models.Supplier
         [Required(ErrorMessage = "Required_field")]
         [MaxLength(50, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string BusinessName { get; set; }
-        [Required(ErrorMessage = "Required_field")]
         [MaxLength(30, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string FirstName { get; set; }
-        [Required(ErrorMessage = "Required_field")]
         [MaxLength(30, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string LastName { get; set; }
         [DataType(DataType.PhoneNumber)]
         [PhoneNumber(ErrorMessage = "NOT_VALID_PHONE_NUMBER")]
         public string Telephone { get; set; }
-        [Required(ErrorMessage = "Required_field")]
         [DataType(DataType.PhoneNumber)]
         [PhoneNumber(ErrorMessage = "NOT_VALID_PHONE_NUMBER")]
         public string MobilePhone { get; set; }
@@ -38,8 +35,15 @@ namespace ERP.Models.Supplier
         [Column(TypeName = "Date")]
         public DateTime DateCreated { get; set; }
         [Required(ErrorMessage = "Required_field")]
+        [DataType(DataType.Date)]
+        [Column(TypeName = "Date")]
+        public DateTime OpeningBalanceDate { get; set; }
+        [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "Money")]
         public decimal OpeningBalance { get; set; }
+        [Column(TypeName = "Money")]
+        public decimal Balance { get; set; }
+        public byte[] Logo { get; set; }
         public string Notes { get; set; }
         public string Currency { get; set; }
         public int CurrencyId { get; set; }

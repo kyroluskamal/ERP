@@ -12,6 +12,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ServerResponseHandelerService } from 'src/CommonServices/server-response-handeler.service';
 import { ClientSideValidationService } from 'src/CommonServices/client-side-validation.service';
 import { CustomValidators } from 'src/Helpers/CustomValidation/custom-validators';
+import { SpinnerService } from 'src/CommonServices/spinner.service';
 @Component({
   selector: 'app-add-new-inventory',
   templateUrl: './add-new-inventory.component.html',
@@ -31,7 +32,7 @@ export class AddNewInventoryComponent implements OnInit {
   MaxLength: number = 30;
   AddNewInventory: FormGroup = new FormGroup({});
   FormBuilder: FormDefs = new FormDefs();
-  constructor(
+  constructor(private spinner: SpinnerService,
     public Constants: ConstantsService, private bottomSheet: MatBottomSheet,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: {
@@ -62,122 +63,128 @@ export class AddNewInventoryComponent implements OnInit {
       Form_fxLayoutAlign: "space-between",
       Button_GoogleIcon: "add_circle",
       ButtonText: [this.Constants.Add, this.Constants.Warehouse_Singular],
-      formFieldsSpec: [{
-        type: "text",
-        formControlName: "Name",
-        appearance: "outline",
-        fxFlex: "33%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.WarehouseName,
+      formSections: [
+        {
+          fxFlex: "100%",
+          formFieldsSpec: [{
+            type: "text",
+            formControlName: "Name",
+            appearance: "outline",
+            fxFlex: "33%",
+            fxFlex_xs: "100%",
+            mat_label: this.Constants.WarehouseName,
 
-        faIcon: faPenAlt,
-        errors: [{
-          type: 'required',
-          TranslatedMessage: [{
-            text: this.Constants.Required_field_Error,
-            needTraslation: true
-          }]
-        }, {
-          type: 'maxlength',
-          TranslatedMessage: [{
-            text: this.Constants.MaxLengthExceeded_ERROR,
-            needTraslation: true
-          }, {
-            text: this.MaxLength.toString(),
-            needTraslation: false
-          }, {
-            text: this.Constants.characters,
-            needTraslation: true
-          }]
-        }],
-        required: true,
-        maxLength: "30"
-      }, {
-        type: "tel",
-        formControlName: "Phone",
-        appearance: "outline",
-        fxFlex: "33%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.TelephoneNumber,
-        faIcon: faPhone,
-
-        required: false,
-        hint: {
-          text_no_translation: "+(20)xxxxxxxxxx",
-          dir: "ltr",
-          align: "end",
-          text_to_translation: ""
-        },
-        errors: [
-          {
-            type: this.Constants.NOT_VALID_PHONE_NUMBER,
-            TranslatedMessage: [
-              {
-                text: this.Constants.NOT_VALID_PHONE_NUMBER,
+            faIcon: faPenAlt,
+            errors: [{
+              type: 'required',
+              TranslatedMessage: [{
+                text: this.Constants.Required_field_Error,
                 needTraslation: true
+              }]
+            }, {
+              type: 'maxlength',
+              TranslatedMessage: [{
+                text: this.Constants.MaxLengthExceeded_ERROR,
+                needTraslation: true
+              }, {
+                text: this.MaxLength.toString(),
+                needTraslation: false
+              }, {
+                text: this.Constants.characters,
+                needTraslation: true
+              }]
+            }],
+            required: true,
+            maxLength: "30"
+          }, {
+            type: "tel",
+            formControlName: "Phone",
+            appearance: "outline",
+            fxFlex: "33%",
+            fxFlex_xs: "100%",
+            mat_label: this.Constants.TelephoneNumber,
+            faIcon: faPhone,
+
+            required: false,
+            hint: {
+              text_no_translation: "+(20)xxxxxxxxxx",
+              dir: "ltr",
+              align: "end",
+              text_to_translation: ""
+            },
+            errors: [
+              {
+                type: this.Constants.NOT_VALID_PHONE_NUMBER,
+                TranslatedMessage: [
+                  {
+                    text: this.Constants.NOT_VALID_PHONE_NUMBER,
+                    needTraslation: true
+                  }
+                ]
               }
             ]
-          }
-        ]
-      }, {
-        type: "tel",
-        formControlName: "Mobile",
-        appearance: "outline",
-        fxFlex: "33%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.CellPhoneNumber,
-        faIcon: faMobileAlt,
-        required: false,
-        hint: {
-          text_no_translation: "+(20)xxxxxxxxxx",
-          dir: "ltr",
-          align: "end",
-          text_to_translation: ""
-        },
-        errors: [
-          {
-            type: this.Constants.NOT_VALID_PHONE_NUMBER,
-            TranslatedMessage: [
+          }, {
+            type: "tel",
+            formControlName: "Mobile",
+            appearance: "outline",
+            fxFlex: "33%",
+            fxFlex_xs: "100%",
+            mat_label: this.Constants.CellPhoneNumber,
+            faIcon: faMobileAlt,
+            required: false,
+            hint: {
+              text_no_translation: "+(20)xxxxxxxxxx",
+              dir: "ltr",
+              align: "end",
+              text_to_translation: ""
+            },
+            errors: [
               {
-                text: this.Constants.NOT_VALID_PHONE_NUMBER,
-                needTraslation: true
+                type: this.Constants.NOT_VALID_PHONE_NUMBER,
+                TranslatedMessage: [
+                  {
+                    text: this.Constants.NOT_VALID_PHONE_NUMBER,
+                    needTraslation: true
+                  }
+                ]
               }
             ]
-          }
-        ]
-      }, {
-        type: "textarea",
-        formControlName: "Notes",
-        appearance: "outline",
-        fxFlex: "100%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.Notes,
-        faIcon: faPenAlt,
-        cdkAutosizeMinRows: '5',
-        required: false,
-      }, {
-        type: "checkbox",
-        appearance: "fill",
-        formControlName: "IsActive",
-        fxFlex: "100%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.Active,
-        required: false,
-      }, {
-        type: "checkbox",
-        appearance: "fill",
-        formControlName: "IsMain",
-        fxFlex: "100%",
-        fxFlex_xs: "100%",
-        mat_label: this.Constants.Main,
-        required: false,
-      }]
+          }, {
+            type: "textarea",
+            formControlName: "Notes",
+            appearance: "outline",
+            fxFlex: "100%",
+            fxFlex_xs: "100%",
+            mat_label: this.Constants.Notes,
+            faIcon: faPenAlt,
+            cdkAutosizeMinRows: '5',
+            required: false,
+          }, {
+            type: "checkbox",
+            appearance: "fill",
+            formControlName: "IsActive",
+            fxFlex: "100%",
+            fxFlex_xs: "100%",
+            mat_label: this.Constants.Active,
+            required: false,
+          }, {
+            type: "checkbox",
+            appearance: "fill",
+            formControlName: "IsMain",
+            fxFlex: "100%",
+            fxFlex_xs: "100%",
+            mat_label: this.Constants.Main,
+            required: false,
+          }]
+        }
+      ]
     }
   }
 
 
 
   AddNewInvetory(formDefs: FormDefs) {
+    this.spinner.fullScreenSpinner();
     this.data.ShowBrogressBar = true;
     let CurrentUser: any = localStorage.getItem(this.Constants.Client);
     CurrentUser = JSON.parse(CurrentUser);
@@ -196,8 +203,8 @@ export class AddNewInventoryComponent implements OnInit {
     if (this.data)
       if (!this.ClientValidaiton.isUnique(this.data.AllInvent, "warehouseName", formDefs.form.get("Name")?.value)) {
         this.ClientValidaiton.notUniqueNotification_Swal("warehouseName");
-
         this.data.ShowBrogressBar = false;
+        this.spinner.removeSpinner();
         return;
       }
     this.InventoriesService.AddWarehouse(newInvent).subscribe(
@@ -211,14 +218,15 @@ export class AddNewInventoryComponent implements OnInit {
             this.data.addedRow = r;
             this.data.dataSource.data = this.data.AllInvent;
           }
+          this.spinner.removeSpinner();
           this.ServerResponseHandler.DatatAddition_Success_Swal();
           setTimeout(() => {
             this.data.dataSource.paginator?.lastPage();
           }, 500);
-          this._bottomSheetRef.dismiss(this.data);
         },
         error: (e) => {
           let x: MaxMinLengthValidation[] = [{ prop: "warehouseName", maxLength: this.MaxLength }]
+          this.spinner.removeSpinner();
           this.ServerResponseHandler.GetErrorNotification_swal(e, x);
         }
       });

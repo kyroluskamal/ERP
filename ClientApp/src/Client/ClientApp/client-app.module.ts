@@ -35,6 +35,7 @@ import { AddNewInventoryComponent } from './Components/Dashboard/Inventories/add
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { SuppliersComponent } from './Components/Dashboard/Suppliers/suppliers/suppliers.component';
 import { AddNewSupplierComponent } from './Components/Dashboard/Suppliers/add-new-supplier/add-new-supplier.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 const Commponents = [MatCardTitleOnlyComponent,
   ClientAppDashboardComponent, ClientAppHomeNavbarComponent, CLientAppHomeComponent,
@@ -46,7 +47,7 @@ const Commponents = [MatCardTitleOnlyComponent,
   EditInventAddressComponent, AddNewInventoryComponent, SuppliersComponent]
 @NgModule({
   declarations: [Commponents, AddNewSupplierComponent],
-  imports: [BreadcrumbModule, SweetAlert2Module,
+  imports: [BreadcrumbModule, SweetAlert2Module, NgxSpinnerModule,
     SharedModule, MaterialModule, ClientAppRoutingModule, CommonModule, AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientXsrfModule.withOptions({

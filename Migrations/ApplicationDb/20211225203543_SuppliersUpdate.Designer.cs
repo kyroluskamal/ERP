@@ -4,6 +4,7 @@ using ERP.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERP.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211225203543_SuppliersUpdate")]
+    partial class SuppliersUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -6502,9 +6504,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<string>("AddedBy_UserName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Balance")
-                        .HasColumnType("Money");
-
                     b.Property<string>("BusinessName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -6541,9 +6540,6 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<string>("LastName")
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
-
-                    b.Property<byte[]>("Logo")
-                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("MobilePhone")
                         .HasColumnType("nvarchar(max)");

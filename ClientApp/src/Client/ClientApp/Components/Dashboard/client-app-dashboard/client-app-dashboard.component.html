@@ -243,7 +243,7 @@
         <button mat-raised-button
                 [ngClass]="ChoosenThemeColor.bg"
                 [class]="ChoosenThemeColor.colorName==='organge'||ChoosenThemeColor.colorName==='amber'?Constants.CSS_dark_color:
-          Constants.CSS_text_white">{{"Add"|translate}}</button>
+          Constants.CSS_text_white">{{Constants.Add.toLowerCase()|translate}}</button>
         <!-- Language selector -->
         <button mat-icon-button
                 aria-label="menu toggle"
@@ -301,6 +301,7 @@
     <div class="BodyPadding">
       <xng-breadcrumb></xng-breadcrumb>
       <swal></swal>
+      <ngx-spinner name="general"></ngx-spinner>
       <router-outlet [class]="BodyThemeClass"
                      #DashBoardOutlet="outlet"></router-outlet>
     </div>

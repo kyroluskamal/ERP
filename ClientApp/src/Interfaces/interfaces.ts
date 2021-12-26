@@ -43,9 +43,14 @@ export class FormDefs {
   Button_faIcon?: any;
   Button_GoogleIcon?: string;
   ButtonText: string[] = [];
-  formFieldsSpec: FormFields[] = [];
+  formSections: formSections[] = [];
 }
 
+export class formSections {
+  sectionTitle?: CardTitle[] = [];
+  fxFlex: string = "";
+  formFieldsSpec: FormFields[] = [];
+}
 export class FormFields {
   type: string = "";
   formControlName: string = "";
@@ -154,5 +159,12 @@ export interface AbstractApi {
     isp_name: string;
     organization_name: string;
   }
+}
 
+export interface TableSlidingSections {
+  sectionName: CardTitle[];
+  fxFlex?: string;
+  fxFlex_sm?: string;
+  girdCols?: number;
+  keys: string[];
 }
