@@ -68,22 +68,22 @@ export class ServerResponseHandelerService {
     let translatedError: string = "";
     if (Array.isArray(e)) {
       if (typeof (e[0].status) === "string")
-        translatedError += `${this.translate.GetTranslation(e[0].status)}<br>`;
+        translatedError += `${this.translate.GetTranslation(e[0].status.toLowerCase())}<br>`;
       if (e[0].errors) {
         let keys = Object.keys(e[0].errors);
         for (let k of keys) {
           for (let err of e[0].errors[k]) {
             if (err === this.Constants.MaxLengthExceeded_ERROR) {
               let maxLength = MaxMinLenth.filter((i) => { return i.prop.toLowerCase() === k.toLowerCase() });
-              translatedError += `<strong>( ${this.translate.GetTranslation(k.toLowerCase())} )</strong> ${this.translate.GetTranslation(err)} <strong>${maxLength[0].maxLength}</strong>
+              translatedError += `<strong>( ${this.translate.GetTranslation(k.toLowerCase())} )</strong> ${this.translate.GetTranslation(err.toLowerCase())} <strong>${maxLength[0].maxLength}</strong>
               ${this.translate.GetTranslation(this.Constants.characters)}<br>`;
             } else
-              translatedError += `<strong>( ${this.translate.GetTranslation(k.toLowerCase())} )</strong> ${this.translate.GetTranslation(err)}<br>`
+              translatedError += `<strong>( ${this.translate.GetTranslation(k.toLowerCase())} )</strong> ${this.translate.GetTranslation(err.toLowerCase())}<br>`
           }
         }
       }
     } else if (e.error.status)
-      translatedError += `${this.translate.GetTranslation(e.error.status)}<br>`;
+      translatedError += `${this.translate.GetTranslation(e.error.status.toLowerCase())}<br>`;
 
     else if (e.status === 401 && e.error === null) {
       translatedError += `${this.translate.GetTranslation(this.Constants.Unauthorized_Error)}<br>`;

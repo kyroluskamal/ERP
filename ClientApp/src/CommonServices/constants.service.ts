@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { MatFormFieldAppearance } from '@angular/material/form-field';
 
 import { NotificationsService } from './NotificationService/notifications.service';
 import { TranslationService } from './translation-service.service';
@@ -137,6 +138,8 @@ export class ConstantsService {
   OtherDetails = "OtherDetails";
   currency = "currency";
   logo = "logo";
+  currencyId = "currencyId";
+  countryId = "countryId";
   //Notifications Messages
   LoggedInSuccessfully: string = "LoggedInSuccessfully";
   EmilConfirmationResnding = "EmilConfirmationResnding";
@@ -183,6 +186,8 @@ export class ConstantsService {
   error = "error";
   warning = "warning";
   close = "close";
+  FormFieldInputAppearance: MatFormFieldAppearance = 'outline';
+  currencyCode = "currencyCode";
   //Tooltip translation
   CloseSidebar = "Close sidebar";
   FixSidebar = "Fix sidebar";

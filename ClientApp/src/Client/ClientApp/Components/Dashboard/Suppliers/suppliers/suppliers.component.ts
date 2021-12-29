@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from 'src/CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
-import { CardTitle, ColDefs, FormDefs, SweetAlertData, TableSlidingSections } from 'src/Interfaces/interfaces';
+import { CardTitle, ColDefs, FormDefs, MatBottomSheetDismissData, SweetAlertData, TableSlidingSections } from 'src/Interfaces/interfaces';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { faMobileAlt, faPhone, faPenAlt, faEdit, faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,6 +10,7 @@ import { ServerResponseHandelerService } from 'src/CommonServices/server-respons
 import { ClientSideValidationService } from 'src/CommonServices/client-side-validation.service';
 import { Suppliers } from '../../Models/supplier.model';
 import { SuppliersService } from '../suppliers.service';
+import { AddNewSupplierComponent } from '../add-new-supplier/add-new-supplier.component';
 @Component({
   selector: 'app-suppliers',
   templateUrl: './suppliers.component.html',
@@ -71,14 +72,15 @@ export class SuppliersComponent implements OnInit {
     this.CollapsibleDataSections = [
       {
         sectionName: [{ text: this.Constants.SupplierDetails, needTranslation: true }], fxFlex: '48%', fxFlex_sm: "48%",
-        keys: [this.Constants.firstName, this.Constants.lastName,
+        keys: [this.Constants.businessName, this.Constants.firstName, this.Constants.lastName,
         this.Constants.CellPhoneNumber, this.Constants.TelephoneNumber,
         this.Constants.countryName, this.Constants.taxID, this.Constants.cr]
       },
       {
         sectionName: [{ text: this.Constants.AccountDetails, needTranslation: true }], fxFlex: '48%', fxFlex_sm: "48%",
-        keys: [this.Constants.email, this.Constants.openingBalance,
-        this.Constants.openingBalanceDate, this.Constants.countryName, this.Constants.currency]
+        keys: [this.Constants.dateCreated, this.Constants.email, this.Constants.openingBalance,
+        this.Constants.openingBalanceDate, this.Constants.balance, this.Constants.currency, this.Constants.Notes,
+        this.Constants.addedBy_UserName]
       }
     ];
   }
@@ -132,27 +134,25 @@ export class SuppliersComponent implements OnInit {
   //   });
   // }
 
-  // AddSupplier(AddClicked: boolean) {
-  //   if (AddClicked) {
-  //     this.ShowProgressBar = true;
-  //     const AddInventBottomSheet = this.bottomSheet.open(AddNewInventoryComponent, {
-  //       data: {
-  //         dataSource: this.dataSource, ShowBrogressBar: this.ShowProgressBar,
-  //         addedRow: this.AddedRow, AllInvent: this.AllInventories, SelectedRows: this.SelectedRows
-  //       }
-  //     });
-  //     AddInventBottomSheet.afterDismissed().subscribe((r: {
-  //       dataSource: MatTableDataSource<Inventories>, ShowBrogressBar: boolean,
-  //       addedRow: any, AllInvent: Inventories[], SelectedRows: Inventories[]
-  //     }) => {
-  //       this.ShowProgressBar = r.ShowBrogressBar;
-  //       this.SelectedRows = [];
-  //       this.AddedRow = r.addedRow;
-  //       this.SelectedRows.push(r.addedRow);
-  //     });
-  //     this.ShowProgressBar = false;
-  //   }
-  // }
+  AddSupplier(AddClicked: boolean) {
+    if (AddClicked) {
+      this.ShowProgressBar = true;
+      let data: MatBottomSheetDismissData<Suppliers> = {
+        dataSource: this.dataSource, ShowBrogressBar: this.ShowProgressBar,
+        addedRow: this.AddedRow, data: this.AllSuppliers, SelectedRows: this.SelectedRows
+      }
+      const AddInventBottomSheet = this.bottomSheet.open(AddNewSupplierComponent, {
+        data: data
+      });
+      AddInventBottomSheet.afterDismissed().subscribe((r: MatBottomSheetDismissData<Suppliers>) => {
+        this.ShowProgressBar = r.ShowBrogressBar;
+        this.SelectedRows = [];
+        this.AddedRow = r.addedRow;
+        this.SelectedRows.push(r.addedRow);
+      });
+      this.ShowProgressBar = false;
+    }
+  }
 
 
 }

@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from 'src/CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
-import { CardTitle, ColDefs, FormDefs, SweetAlertData } from 'src/Interfaces/interfaces';
+import { CardTitle, ColDefs, DataToEdit_PassToBottomSheet, FormDefs, MatBottomSheetDismissData, SweetAlertData } from 'src/Interfaces/interfaces';
 import { Inventories, InventoryAddress } from '../../Models/inventories.model';
 import { InventoriesService } from '../../Inventories/inventories.service'
 import { MatBottomSheet, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
@@ -51,6 +51,7 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+
     this.Title = [{ text: this.Constants.Warehouses, needTranslation: true }];
     this.Subtitle = [{ text: this.Constants.Add_Edit_Delete, needTranslation: true },
     { text: this.Constants.Warehouses, needTranslation: true }]
@@ -156,7 +157,7 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
     this.SelectedRows = event;
   }
   EditInventory(row: Inventories) {
-    let x: { dataToEdit: Inventories, Array: any[] } = { dataToEdit: row, Array: this.AllInventories }
+    let x: DataToEdit_PassToBottomSheet<Inventories> = { dataToEdit: row, Array: this.AllInventories }
     this.bottomSheet.open(EditInventoryComponent, {
       data: x
     });
@@ -168,16 +169,14 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
   AddNewInvent(AddClicked: boolean) {
     if (AddClicked) {
       this.ShowProgressBar = true;
+      let data: MatBottomSheetDismissData<Inventories> = {
+        dataSource: this.dataSource, ShowBrogressBar: this.ShowProgressBar,
+        addedRow: this.AddedRow, data: this.AllInventories, SelectedRows: this.SelectedRows
+      }
       const AddInventBottomSheet = this.bottomSheet.open(AddNewInventoryComponent, {
-        data: {
-          dataSource: this.dataSource, ShowBrogressBar: this.ShowProgressBar,
-          addedRow: this.AddedRow, AllInvent: this.AllInventories, SelectedRows: this.SelectedRows
-        }
+        data: data
       });
-      AddInventBottomSheet.afterDismissed().subscribe((r: {
-        dataSource: MatTableDataSource<Inventories>, ShowBrogressBar: boolean,
-        addedRow: any, AllInvent: Inventories[], SelectedRows: Inventories[]
-      }) => {
+      AddInventBottomSheet.afterDismissed().subscribe((r: MatBottomSheetDismissData<Inventories>) => {
         this.ShowProgressBar = r.ShowBrogressBar;
         this.SelectedRows = [];
         this.AddedRow = r.addedRow;

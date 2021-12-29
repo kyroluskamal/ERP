@@ -14,6 +14,7 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { SpinnerService } from 'src/CommonServices/spinner.service';
+import { FormControl } from '@angular/forms';
 @Component({
   selector: 'kiko-table',
   templateUrl: './generic-table.component.html',
@@ -133,6 +134,7 @@ export class GenericTableComponent implements OnInit, OnChanges, OnDestroy {
     this.dataSource = this.datasource;
     this.RefField = this.ReferencialField;
     this.noData = this.NoData;
+
   }
 
   ngOnDestroy(): void {

@@ -45,7 +45,7 @@ export class AddInventAddressComponent implements OnInit {
       streetName: new FormControl("", [Validators.maxLength(this.StreetNameMaxLength)]),
       countryName: new FormControl(this.GeneralsService.GetCountryId_by_countryCode(), [Validators.required])
     });
-    this.AllSelectionData.push({ property: 'countryName', SelectedData: this.GeneralsService.Country })
+    this.AllSelectionData.push({ property: this.Constants.countryName, SelectedData: this.GeneralsService.Country })
     this.Title = [
       { text: this.Constants.Add, needTranslation: true },
       { text: this.Constants.address, needTranslation: true },
@@ -137,7 +137,7 @@ export class AddInventAddressComponent implements OnInit {
           required: true,
           SelectData: this.GeneralsService.Country,
           PropertyNameToSetInValue: 'id',
-          PropertyNameToShowInSelection: "countryName",
+          PropertyNameToShowInSelection: this.Constants.countryName,
         }, {
           type: "text",
           formControlName: this.Constants.city,

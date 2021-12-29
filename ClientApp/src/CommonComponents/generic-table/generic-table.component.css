@@ -26,3 +26,15 @@ section p:first-child{
   font-family: "Scheherazade New";
   font-size: 18px;
 }
+
+.DetailsTable tr:nth-child(odd){
+  background-color: rgb(209, 209, 209);
+}
+
+.DarkTableBg .DetailsTable tr:nth-child(odd){
+  background-color: black;
+}
+
+.DetailsTable td{
+  padding: 6px !important;
+}

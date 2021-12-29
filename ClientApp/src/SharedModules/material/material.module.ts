@@ -28,11 +28,15 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 const MaterialComponents = [
-  MatButtonModule, MatToolbarModule, MatIconModule, MatDialogModule, MatListModule,
+  MatButtonModule, MatToolbarModule, MatIconModule, MatDialogModule, MatListModule, MatDatepickerModule,
   MatBottomSheetModule, MatInputModule, MatFormFieldModule, CommonModule, MatSnackBarModule,
-  MatCheckboxModule, MatProgressSpinnerModule, MatGridListModule, MatSidenavModule,
+  MatCheckboxModule, MatProgressSpinnerModule, MatGridListModule, MatSidenavModule, MatNativeDateModule,
+  MatMomentDateModule,
   FlexLayoutModule, MatSelectModule, MatMenuModule, MatExpansionModule, MatTooltipModule,
   MatButtonToggleModule, MatSlideToggleModule, MatTableModule, AgGridModule.withComponents([]),
   MatCardModule, MatProgressBarModule, FontAwesomeModule, MatPaginatorModule, MatSortModule, DragDropModule

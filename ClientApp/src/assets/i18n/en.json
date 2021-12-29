@@ -139,9 +139,9 @@
   "Unit" : "Unit",
   "Units" : "Units",
   "Categories" : "Categories",
-  "MaxLengthExceeded_ERROR" : "You can write up to ",
+  "maxlengthexceeded_error" : "You can write up to ",
   "characters": " character(s)",
-  "Negative_Value_ERROR" : "Enter positive numbers greater than 0 only.",
+  "negative_nalue_error" : "Enter positive numbers greater than 0 only.",
   "in": " in",
   "field": " field",
   "Brand_Name_Singular": "Brand Name",
@@ -179,7 +179,7 @@
   "NoItemBrandsAdded" : "No brands are added. Add new brand.",
   "Select_ItemBrand" : "Select item brand",
   "ItemVariants_Prices_Details" : "Item variants and prices details",
-  "IncorrecEmail" : "Enter correct email. Email should contain @",
+  "incorrecemail" : "Enter correct email. Email should contain @",
   "SelectDefaultSupplier":"Select default supplier",
   "NoSupplierAdded" : "No suppliers are added. Add new supplier",
   "supplier_singular" : "Supplier",
@@ -245,5 +245,6 @@
   "otherdetails" : "Other Details",
   "currency": "Currency",
   "logo":"Logo",
-  "close":"Close"
+  "close":"Close",
+  "nan":"Please, Enter a valid number"
 }

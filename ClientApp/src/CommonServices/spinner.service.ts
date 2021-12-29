@@ -16,6 +16,7 @@ export class SpinnerService {
       size: "large",
       bdColor: "rgba(0, 0, 0, 0.25)",
       color: "white",
+      zIndex: 2000
     });
   }
   InsideContainerSpinner() {

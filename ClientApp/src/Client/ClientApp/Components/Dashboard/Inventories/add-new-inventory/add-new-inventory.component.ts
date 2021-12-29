@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from 'src/CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
-import { CardTitle, FormDefs, MaxMinLengthValidation, ThemeColor } from 'src/Interfaces/interfaces';
+import { CardTitle, FormDefs, MatBottomSheetDismissData, MaxMinLengthValidation, ThemeColor } from 'src/Interfaces/interfaces';
 import { Inventories } from '../../Models/inventories.model';
 import { InventoriesService } from '../../Inventories/inventories.service'
 import { MatBottomSheet, MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
@@ -35,15 +35,17 @@ export class AddNewInventoryComponent implements OnInit {
   constructor(private spinner: SpinnerService,
     public Constants: ConstantsService, private bottomSheet: MatBottomSheet,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
-    @Inject(MAT_BOTTOM_SHEET_DATA) public data: {
-      dataSource: MatTableDataSource<Inventories>, ShowBrogressBar: boolean,
-      addedRow: any, AllInvent: Inventories[], SelectedRows: Inventories[]
-    }, private ServerResponseHandler: ServerResponseHandelerService, private _bottomSheetRef: MatBottomSheetRef<AddNewInventoryComponent>,
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: MatBottomSheetDismissData<Inventories>,
+    private ServerResponseHandler: ServerResponseHandelerService, private _bottomSheetRef: MatBottomSheetRef<AddNewInventoryComponent>,
     private InventoriesService: InventoriesService, private ClientValidaiton: ClientSideValidationService) {
 
   }
 
   ngOnInit(): void {
+    this._bottomSheetRef.backdropClick().subscribe(r => {
+      this.data.ShowBrogressBar = false;
+      this._bottomSheetRef.dismiss(this.data)
+    });
     this.AddNewInventory = new FormGroup({
       Name: new FormControl(null, [Validators.required, Validators.maxLength(this.MaxLength)]),
       IsMain: new FormControl(null),
@@ -201,7 +203,7 @@ export class AddNewInventoryComponent implements OnInit {
       subdomain: this.Subdomain
     }
     if (this.data)
-      if (!this.ClientValidaiton.isUnique(this.data.AllInvent, "warehouseName", formDefs.form.get("Name")?.value)) {
+      if (!this.ClientValidaiton.isUnique(this.data.data, "warehouseName", formDefs.form.get("Name")?.value)) {
         this.ClientValidaiton.notUniqueNotification_Swal("warehouseName");
         this.data.ShowBrogressBar = false;
         this.spinner.removeSpinner();
@@ -212,11 +214,12 @@ export class AddNewInventoryComponent implements OnInit {
         next: (r) => {
           r.inventAdd = "";
           if (this.data) {
-            this.data.AllInvent.push(r);
+            this.data.data.push(r);
             this.data.SelectedRows = [];
             this.data.SelectedRows.push(r);
             this.data.addedRow = r;
-            this.data.dataSource.data = this.data.AllInvent;
+            this.data.ShowBrogressBar = false;
+            this.data.dataSource.data = this.data.data;
           }
           this.spinner.removeSpinner();
           this.ServerResponseHandler.DatatAddition_Success_Swal();
@@ -227,10 +230,17 @@ export class AddNewInventoryComponent implements OnInit {
         error: (e) => {
           let x: MaxMinLengthValidation[] = [{ prop: "warehouseName", maxLength: this.MaxLength }]
           this.spinner.removeSpinner();
+          this.data.ShowBrogressBar = false;
           this.ServerResponseHandler.GetErrorNotification_swal(e, x);
         }
       });
     this.AddNewInventory.reset();
     this.data.ShowBrogressBar = false
+  }
+  CloseBottomSheet(event: boolean) {
+    if (event) {
+      this.data.ShowBrogressBar = false;
+      this._bottomSheetRef.dismiss(this.data);
+    }
   }
 }

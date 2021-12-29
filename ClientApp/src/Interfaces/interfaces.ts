@@ -3,6 +3,7 @@ import { ComponentType } from "@angular/cdk/portal";
 import { Type } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { MatFormFieldAppearance } from "@angular/material/form-field";
+import { MatTableDataSource } from "@angular/material/table";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { SweetAlertIcon, SweetAlertOptions } from "sweetalert2";
 
@@ -168,3 +169,13 @@ export interface TableSlidingSections {
   girdCols?: number;
   keys: string[];
 }
+
+export interface MatBottomSheetDismissData<T> {
+  dataSource: MatTableDataSource<T>;
+  ShowBrogressBar: boolean;
+  addedRow: any;
+  data: T[];
+  SelectedRows: T[];
+}
+
+export interface DataToEdit_PassToBottomSheet<T> { dataToEdit: T, Array: any[] }

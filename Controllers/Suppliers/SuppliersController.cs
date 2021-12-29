@@ -9,10 +9,12 @@ using ERP.Utilities.Services;
 using ERP.Utilities.Services.EmailService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -86,6 +88,7 @@ namespace ERP.Controllers.Supply
 
                     if (!await UserUnitOfWork.Suppliers.IsUnique(x => x.BusinessName == Supplier.BusinessName))
                         return BadRequest(Constants.Unique_Field_ERROR_Response());
+                    
                     await UserUnitOfWork.Suppliers.AddAsync(new Suppliers
                     {
                         BusinessName = Supplier.BusinessName,
@@ -97,11 +100,16 @@ namespace ERP.Controllers.Supply
                         CR = Supplier.CR,
                         Email = Supplier.Email,
                         DateCreated = DateTime.Today,
+                        OpeningBalanceDate = Supplier.OpeningBalanceDate,
+                        OpeningBalance = Supplier.OpeningBalance,
+                        Balance = Supplier.OpeningBalance,
+                        Logo = Supplier.Logo,
                         Notes = Supplier.Notes,
                         Currency = Supplier.Currency,
                         CurrencyId = Supplier.CurrencyId,
                         CountryName = Supplier.CountryName,
                         CountryNameCode = Supplier.CountryNameCode,
+                        CountryId = Supplier.CurrencyId,
                         AddedBy_UserId = Supplier.AddedBy_UserId,
                         AddedBy_UserName = Supplier.AddedBy_UserName
                     });
@@ -154,11 +162,16 @@ namespace ERP.Controllers.Supply
                         && SupplierFromDb.TaxID == Supplier.TaxID
                         && SupplierFromDb.CR == Supplier.CR
                         && SupplierFromDb.Email == Supplier.Email
+                        && SupplierFromDb.OpeningBalanceDate == Supplier.OpeningBalanceDate
+                        && SupplierFromDb.Logo == Supplier.Logo
                         && SupplierFromDb.Notes == Supplier.Notes
                         && SupplierFromDb.Currency == Supplier.Currency
                         && SupplierFromDb.CurrencyId == Supplier.CurrencyId
                         && SupplierFromDb.CountryName == Supplier.CountryName
                         && SupplierFromDb.CountryNameCode == Supplier.CountryNameCode
+                        && SupplierFromDb.CountryId == Supplier.CurrencyId
+                        && SupplierFromDb.AddedBy_UserId == Supplier.AddedBy_UserId
+                        && SupplierFromDb.AddedBy_UserName == Supplier.AddedBy_UserName
                        ) return StatusCode(200, new { status = "SameObject" });
 
                         SupplierFromDb.BusinessName = Supplier.BusinessName;
@@ -169,11 +182,16 @@ namespace ERP.Controllers.Supply
                         SupplierFromDb.TaxID = Supplier.TaxID;
                         SupplierFromDb.CR = Supplier.CR;
                         SupplierFromDb.Email = Supplier.Email;
+                        SupplierFromDb.OpeningBalanceDate = Supplier.OpeningBalanceDate;
+                        SupplierFromDb.Logo = Supplier.Logo;
                         SupplierFromDb.Notes = Supplier.Notes;
                         SupplierFromDb.Currency = Supplier.Currency;
                         SupplierFromDb.CurrencyId = Supplier.CurrencyId;
                         SupplierFromDb.CountryName = Supplier.CountryName;
                         SupplierFromDb.CountryNameCode = Supplier.CountryNameCode;
+                        SupplierFromDb.CountryId = Supplier.CurrencyId;
+                        SupplierFromDb.AddedBy_UserId = Supplier.AddedBy_UserId;
+                        SupplierFromDb.AddedBy_UserName = Supplier.AddedBy_UserName;
 
                         var result = await UserUnitOfWork.SaveAsync();
                         if (result > 0)
@@ -222,6 +240,21 @@ namespace ERP.Controllers.Supply
         #endregion
 
         //HelperMedthod
+        private byte[] GetByteArrayFromImage(IFormFile file)
+        {
+            using (var target = new MemoryStream())
+            {
+                file.CopyTo(target);
+                return target.ToArray();
+            }
+        }
+        public byte[] ConvertToBytes(IFormFile image)
+        {
+            byte[] imageBytes = null;
+            BinaryReader reader = new BinaryReader(image.OpenReadStream());
+            imageBytes = reader.ReadBytes((int)image.Length);
+            return imageBytes;
+        }
         private bool CheckManuallyChanged_Subdomain(string subdomain)
         {
             return subdomain == HttpContext.Request.Host.Host.Split('.')[0];

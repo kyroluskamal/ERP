@@ -4,7 +4,7 @@ import { ConstantsService } from 'src/CommonServices/constants.service';
 import { NotificationsService } from 'src/CommonServices/NotificationService/notifications.service';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from 'src/CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
-import { CardTitle, FormDefs } from 'src/Interfaces/interfaces';
+import { CardTitle, DataToEdit_PassToBottomSheet, FormDefs } from 'src/Interfaces/interfaces';
 import { Inventories } from '../../Models/inventories.model';
 import { InventoriesService } from '../../Inventories/inventories.service'
 import { MatBottomSheet, MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
@@ -35,7 +35,7 @@ export class EditInventoryComponent implements OnInit {
   constructor(private spinner: SpinnerService,
     public Constants: ConstantsService, private InventoriesService: InventoriesService,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
-    @Inject(MAT_BOTTOM_SHEET_DATA) public data: { dataToEdit: Inventories, Array: any[] }, private ClientSideValidation: ClientSideValidationService,
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: DataToEdit_PassToBottomSheet<Inventories>, private ClientSideValidation: ClientSideValidationService,
     private _bottomSheetRef: MatBottomSheetRef<EditInventoryComponent>,
     private ServerResponseHandler: ServerResponseHandelerService) {
 

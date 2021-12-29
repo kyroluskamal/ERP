@@ -1,14 +1,14 @@
-import { AfterViewInit, Component, ComponentFactoryResolver, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, Type } from '@angular/core';
+import { AfterViewInit, Component, ComponentFactoryResolver, EventEmitter, Inject, Input, LOCALE_ID, OnChanges, OnInit, Output, SimpleChanges, Type } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from 'src/CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
 import { CustomErrorStateMatcher } from 'src/Helpers/CustomErrorStateMatcher/custom-error-state-matcher';
-import { CardTitle, FormDefs, SelectedDataTransfer, ThemeColor } from 'src/Interfaces/interfaces';
-
+import { CardTitle, FormDefs, MatBottomSheetDismissData, SelectedDataTransfer, ThemeColor } from 'src/Interfaces/interfaces';
 import { LightDarkThemeConverterService } from 'src/Client/ClientApp/Components/Dashboard/light-dark-theme-converter.service';
 import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { ComponentType } from '@angular/cdk/portal';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'kiko-form',
@@ -27,11 +27,15 @@ export class GenericFormComponent implements OnInit, OnChanges, AfterViewInit {
   loading: boolean = false;
   FormSpec: FormDefs = new FormDefs();
   temp: any[] = [];
+  oneFileName: string = "";
   @Input() Form: FormDefs = new FormDefs();
   @Input() Title: CardTitle[] = [];
   @Input() AllSelectedData: SelectedDataTransfer[] = [];
   @Input() showCloseButton: boolean = false;
   @Output() GetValue: EventEmitter<FormDefs> = new EventEmitter();
+  @Output() BottomSheetDismissed: EventEmitter<boolean> = new EventEmitter();
+  DateFormControl: FormControl = new FormControl();
+
   constructor(private _bottomSheetRef: MatBottomSheetRef<any>,
     public Constants: ConstantsService, private componentFactoryResolver: ComponentFactoryResolver,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
@@ -63,7 +67,6 @@ export class GenericFormComponent implements OnInit, OnChanges, AfterViewInit {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["Form"]) {
       this.FormSpec = this.Form;
-      console.log(this.FormSpec)
     }
   }
 
@@ -85,16 +88,17 @@ export class GenericFormComponent implements OnInit, OnChanges, AfterViewInit {
   OpenButtomSheet(component: ComponentType<unknown>) {
     this.bottomSheet.open(component);
   }
-  Search(value: string, PropertyToSearch: string) {
+  Search(event: any, PropertyToSearch: string) {
+    console.log(event.target.value)
     let tempData = this.AllSelectedData.filter(x => { return x.property === PropertyToSearch })[0].SelectedData;
-    let filteredData = tempData.filter(x => { return x[PropertyToSearch].toLowerCase().includes(value.toLowerCase()) })
+    let filteredData = tempData.filter(x => { return x[PropertyToSearch].toLowerCase().includes(event.target.value.toLowerCase()) })
     for (let section of this.FormSpec.formSections) {
       for (let field of section.formFieldsSpec) {
         if (field.SelectData) {
           if (field.PropertyNameToShowInSelection === PropertyToSearch) {
-            if (value !== "")
+            if (event.target.value !== "")
               field.SelectData = [...filteredData];
-            else if (value === "") {
+            else if (event.target.value === "") {
               field.SelectData = [...tempData]
             }
           }
@@ -103,6 +107,30 @@ export class GenericFormComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
   BottomSheetDismiss() {
-    this._bottomSheetRef.dismiss();
+    this.BottomSheetDismissed.emit(true);
+  }
+  onFileSelected(event: any, formContolName: string) {
+    let file: File = event.target.files[0];
+    console.log(formContolName);
+    this.oneFileName = file.name;
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      const bytes = e.target.result;
+      this.FormSpec.form.get(formContolName)?.setValue(bytes);
+    };
+    reader.readAsDataURL(file);
+    // var fileByteArray: any[] = [];
+    // reader.readAsArrayBuffer(file);
+    // reader.onloadend = (evt: any) => {
+    //   if (evt.target.readyState == FileReader.DONE) {
+    //     var arrayBuffer = evt.target.result;
+    //     let array = new Uint8Array(arrayBuffer);
+    //     for (var i = 0; i < array.length; i++) {
+    //       fileByteArray.push(array[i]);
+    //     }
+    //     console.log(fileByteArray)
+    //     this.FormSpec.form.get(formContolName)?.setValue(fileByteArray);
+    //   }
+    // }
   }
 }

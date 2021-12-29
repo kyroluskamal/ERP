@@ -1024,7 +1024,7 @@ tr.mat-row{
   display: table-row;
   height: 2.3rem !important;
 }
-table th, table td{
+table th:not(.mat-calendar-body-cell), table td:not(.mat-calendar-body-cell){
   padding: 0 5px 0 5px !important;
 }
 .badge{

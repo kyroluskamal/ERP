@@ -13,11 +13,16 @@ export class GeneralsService {
 
   public Country: Country[] = [];
   public Currencies: Currency[] = [];
+  public CurrenctCurrencyId: number = 0;
   GeoData: any
   constructor(private httpClient: HttpClient, public Constants: ConstantsService) {
     this.Countries().subscribe(r => this.Country = r);
-    this.Get_GEO_Data().subscribe((r) => { this.GeoData = r; console.log(r) });
-    this.GetCurrencies().subscribe(r => this.Currencies = r);
+    this.Get_GEO_Data().subscribe((r) => { this.GeoData = r; console.log(r); });
+
+    this.GetCurrencies().subscribe(r => {
+      this.Currencies = r;
+      this.CurrenctCurrencyId = this.Currencies.find(x => x.currencyCode === this.Country.find(x => x.countryNameCode === this.GeoData.country_code)?.currencyCode)?.id!;
+    });
   }
 
   Countries(): Observable<Country[]> {

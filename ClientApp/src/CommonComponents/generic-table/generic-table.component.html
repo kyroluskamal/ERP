@@ -97,7 +97,7 @@
               <mat-icon class="mat-18"
                         *ngIf="col.HeaderGoogleIcon">{{col.HeaderGoogleIcon}}</mat-icon>
               <span *ngIf="!col.HeaderGoogleIcon&&!col.HeaderfaIcon">
-                {{col.display|translate}}
+                {{col.display.toLowerCase()|translate}}
               </span>
             </mat-checkbox>
           </span>
@@ -117,7 +117,7 @@
     <div style="min-height: 200px;"
          *ngIf="isLoadingRes">
       <ngx-spinner name="inside">
-        <p class="loading">{{Constants.loading|translate}}</p>
+
       </ngx-spinner>
     </div>
     <ng-template [ngIf]="NoData&& !isLoadingRes">
@@ -178,9 +178,13 @@
 
         <td mat-cell
             *matCellDef="let row">
-          <span *ngIf="!column.IsTrueOrFlase && column.field !== RefField">
-            {{column.field.includes('date')?(row[column.field]|date:'longDate'):
-            column.field.includes('Balance')?(row[column.field]| number:'1.2-2'):row[column.field]}}
+          <img *ngIf="column.field.includes('logo')||column.field.includes('image')"
+               [src]="row[column.field]"
+               width="100px" />
+          <span
+                *ngIf="!column.IsTrueOrFlase && column.field !== RefField &&(!column.field.includes('logo')&&!column.field.includes('image'))">
+            {{column.field.includes('date')||column.field.includes('Date')?(row[column.field]|date:'longDate'):
+            column.field.includes('Balance')&&!column.field.includes('Date')?(row[column.field]|number:'1.2-2'):row[column.field]}}
           </span>
           <span *ngIf="!column.IsTrueOrFlase && column.field === RefField">
             {{row[RefField]}}
@@ -257,12 +261,21 @@
                     {{!t.needTranslation?t.text:t.text.toLowerCase()|translate}}
                   </span>
                 </p>
-                <p *ngFor="let key of section.keys"
+                <table class="DetailsTable"
+                       style="width: 100%;">
+                  <tr *ngFor="let key of section.keys">
+                    <td style="width:30%; text-align: justify;">{{key.toLowerCase()|translate}}</td>
+                    <td style="width:70%; text-align: justify;">
+                      {{key.includes('date')||key.includes('Date')?(element[key]|date:'longDate'):
+                      key.includes('Balance')&&(!key.includes('Date')||key.includes('date'))?(element[key]|
+                      number:'1.2-2'):element[key]}}</td>
+                  </tr>
+                </table>
+                <!-- <p *ngFor="let key of section.keys"
                    [dir]="translate.isRightToLeft(translate.GetCurrentLang())?'rtl':'ltr'">
                   {{key.toLowerCase()|translate}}
                   :
-                  {{key.includes('date')?(element[key]|date:'longDate'):
-                  key.includes('Balance')?(element[key]| number:'1.2-2'):element[key]}}</p>
+                </p> -->
               </section>
             </div>
           </div>
@@ -276,7 +289,7 @@
          Constants.CSS_text_white"
           *matHeaderRowDef="displayedColumns; sticky: true"></tr>
       <tr mat-row
-          (click)="SelectRow(row) ; expandedElement=expandedElement === row ? null : row"
+          (click)="SelectRow(row) ; expandedElement=expandedElement === SelectedRows[0] ? null : SelectedRows[0]"
           (dblclick)="Dbclick(row)"
           [class]="SelectedRows.includes(row) && Table_Color_mode===Constants.dark?  Constants.CSS_DarkRowSelection:
          SelectedRows.includes(row) && Table_Color_mode===Constants.light?Constants.CSS_LightRowSelection:'' "

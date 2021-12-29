@@ -36,9 +36,9 @@ export class Country {
 }
 export class Currency {
   id: number = 0;
-  currencySymbol: string = "";
   currencyName: string = "";
   currencyCode: string = "";
+  currencySymbol: string = "";
 }
 export class PaymentMethods {
   id: number = 0;

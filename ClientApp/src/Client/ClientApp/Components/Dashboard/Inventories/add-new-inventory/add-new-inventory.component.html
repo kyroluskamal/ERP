@@ -2,4 +2,5 @@
            [Form]="FormBuilder"
            [Title]="Title"
            [showCloseButton]="true"
+           (BottomSheetDismissed)="CloseBottomSheet($event)"
            (GetValue)="AddNewInvetory($event)"></kiko-form>

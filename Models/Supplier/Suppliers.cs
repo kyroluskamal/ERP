@@ -20,14 +20,17 @@ namespace ERP.Models.Supplier
         public string FirstName { get; set; }
         [MaxLength(30, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string LastName { get; set; }
+        [DisplayFormat(ConvertEmptyStringToNull = true)]
         [DataType(DataType.PhoneNumber)]
         [PhoneNumber(ErrorMessage = "NOT_VALID_PHONE_NUMBER")]
         public string Telephone { get; set; }
+        [DisplayFormat(ConvertEmptyStringToNull = true)]
         [DataType(DataType.PhoneNumber)]
         [PhoneNumber(ErrorMessage = "NOT_VALID_PHONE_NUMBER")]
         public string MobilePhone { get; set; }
         public string TaxID { get; set; }
         public string CR { get; set; }
+        [DisplayFormat(ConvertEmptyStringToNull = true)]
         [EmailAddress(ErrorMessage = "IncorrecEmail")]
         public string Email { get; set; }
         [Required(ErrorMessage = "Required_field")]
@@ -40,10 +43,11 @@ namespace ERP.Models.Supplier
         public DateTime OpeningBalanceDate { get; set; }
         [Required(ErrorMessage = "Required_field")]
         [Column(TypeName = "Money")]
+        [RegularExpression(@"[0-9]+(\.[0-9]+)?", ErrorMessage ="NaN")]
         public decimal OpeningBalance { get; set; }
         [Column(TypeName = "Money")]
         public decimal Balance { get; set; }
-        public byte[] Logo { get; set; }
+        public string Logo { get; set; }
         public string Notes { get; set; }
         public string Currency { get; set; }
         public int CurrencyId { get; set; }
