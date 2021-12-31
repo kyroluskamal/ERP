@@ -134,7 +134,7 @@
   "Main_Categories" : "التصنيفات الرئيسية",
   "Add_Edit_Delete" : "أضف وعدل واحذف",
   "Uncategorized": "بدون تصنيف",
-  "Unique_Field_ERROR" : "لايمكن تكرار قيم في هذا الحقل. أضف قيماً فريدة.",
+  "unique_field_error" : "لايمكن تكرار قيم في هذا الحقل. أضف قيماً فريدة.",
   "Please, write the name of the category" : "من فضلك، ادخل اسم التصنيف الرئيسي.",
   "Search table" : "ابحث في الجدول",
   "loading" : "تحميل...",
@@ -158,7 +158,7 @@
   "Units" : "الوحدات",
   "maxlengthexceeded_error" : "يمكنك الكتابة حتى  ",
   "characters": " حرفاً",
-  "negative_nalue_error" : "ادخل ارقاما موجبة اكبر من الصفر فقط.",
+  "negative_value_error" : "ادخل ارقاما موجبة فقط.",
   "in" : " في",
   "field" : " حقل",
   "Brand_Name_Singular": "علامة تجارية",
@@ -257,5 +257,6 @@
   "currency" : "العملة",
   "logo" : "شعار الشركة",
   "close": "إغلاق",
-  "nan":"من فضلك، ادخل رقم فقط."
+  "nan":"من فضلك، ادخل رقم فقط.",
+  "chooseimage":"اختر صورة."
 }

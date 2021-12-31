@@ -1255,3 +1255,6 @@ h2#swal2-title{
 .mat-bottom-sheet-container{
   padding:0 !important;
 }
+.mat-bottom-sheet-container{
+  max-height: 100vh !important;
+}

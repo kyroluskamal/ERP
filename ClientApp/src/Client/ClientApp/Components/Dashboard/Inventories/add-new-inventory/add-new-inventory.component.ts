@@ -29,7 +29,7 @@ export class AddNewInventoryComponent implements OnInit {
   faCheckCircle = faCheckCircle;
   faTimesCircle = faTimesCircle;
   Subdomain: string = window.location.hostname.split(".")[0];
-  MaxLength: number = 30;
+
   AddNewInventory: FormGroup = new FormGroup({});
   FormBuilder: FormDefs = new FormDefs();
   constructor(private spinner: SpinnerService,
@@ -44,13 +44,14 @@ export class AddNewInventoryComponent implements OnInit {
   ngOnInit(): void {
     this._bottomSheetRef.backdropClick().subscribe(r => {
       this.data.ShowBrogressBar = false;
+      this.spinner.removeSpinner();
       this._bottomSheetRef.dismiss(this.data)
     });
     this.AddNewInventory = new FormGroup({
-      Name: new FormControl(null, [Validators.required, Validators.maxLength(this.MaxLength)]),
+      Name: new FormControl(null, [Validators.required, Validators.maxLength(this.Constants.MaxLength30)]),
       IsMain: new FormControl(null),
-      Phone: new FormControl(null, [CustomValidators.patternValidator(/\+?(\(?[0-9]+\)?)?[0-9]+\s?((x|ext)[0-9]+)?/, { NOT_VALID_PHONE_NUMBER: true })]),
-      Mobile: new FormControl(null, [CustomValidators.patternValidator(/\+?(\(?[0-9]+\)?)?[0-9]+\s?((x|ext)[0-9]+)?/, { NOT_VALID_PHONE_NUMBER: true })]),
+      Phone: new FormControl(null, [CustomValidators.patternValidator(this.Constants.PhoneRegex, { NOT_VALID_PHONE_NUMBER: true })]),
+      Mobile: new FormControl(null, [CustomValidators.patternValidator(this.Constants.PhoneRegex, { NOT_VALID_PHONE_NUMBER: true })]),
       IsActive: new FormControl(null),
       Notes: new FormControl(null)
     });
@@ -89,7 +90,7 @@ export class AddNewInventoryComponent implements OnInit {
                 text: this.Constants.MaxLengthExceeded_ERROR,
                 needTraslation: true
               }, {
-                text: this.MaxLength.toString(),
+                text: this.Constants.MaxLength30.toString(),
                 needTraslation: false
               }, {
                 text: this.Constants.characters,
@@ -97,7 +98,7 @@ export class AddNewInventoryComponent implements OnInit {
               }]
             }],
             required: true,
-            maxLength: "30"
+            maxLength: this.Constants.MaxLength30
           }, {
             type: "tel",
             formControlName: "Phone",
@@ -186,7 +187,7 @@ export class AddNewInventoryComponent implements OnInit {
 
 
   AddNewInvetory(formDefs: FormDefs) {
-    this.spinner.fullScreenSpinner();
+    this.spinner.fullScreenSpinnerForForm();
     this.data.ShowBrogressBar = true;
     let CurrentUser: any = localStorage.getItem(this.Constants.Client);
     CurrentUser = JSON.parse(CurrentUser);
@@ -228,7 +229,7 @@ export class AddNewInventoryComponent implements OnInit {
           }, 500);
         },
         error: (e) => {
-          let x: MaxMinLengthValidation[] = [{ prop: "warehouseName", maxLength: this.MaxLength }]
+          let x: MaxMinLengthValidation[] = [{ prop: "warehouseName", maxLength: this.Constants.MaxLength30 }]
           this.spinner.removeSpinner();
           this.data.ShowBrogressBar = false;
           this.ServerResponseHandler.GetErrorNotification_swal(e, x);

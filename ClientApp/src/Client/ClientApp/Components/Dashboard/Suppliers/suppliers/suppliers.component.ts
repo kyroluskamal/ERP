@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from 'src/CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
-import { CardTitle, ColDefs, FormDefs, MatBottomSheetDismissData, SweetAlertData, TableSlidingSections } from 'src/Interfaces/interfaces';
+import { CardTitle, ColDefs, DataToEdit_PassToBottomSheet, FormDefs, MatBottomSheetDismissData, SweetAlertData, TableSlidingSections } from 'src/Interfaces/interfaces';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { faMobileAlt, faPhone, faPenAlt, faEdit, faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import { MatTableDataSource } from '@angular/material/table';
@@ -11,6 +11,9 @@ import { ClientSideValidationService } from 'src/CommonServices/client-side-vali
 import { Suppliers } from '../../Models/supplier.model';
 import { SuppliersService } from '../suppliers.service';
 import { AddNewSupplierComponent } from '../add-new-supplier/add-new-supplier.component';
+import { Spinner } from 'ngx-spinner';
+import { SpinnerService } from 'src/CommonServices/spinner.service';
+import { EditSupplierComponent } from '../edit-supplier/edit-supplier.component';
 @Component({
   selector: 'app-suppliers',
   templateUrl: './suppliers.component.html',
@@ -37,7 +40,8 @@ export class SuppliersComponent implements OnInit {
   Title: CardTitle[] = [];
   Subtitle: CardTitle[] = [];
   CollapsibleDataSections: TableSlidingSections[] = [];
-  constructor(
+  RowDeleted: boolean = false;
+  constructor(private spinner: SpinnerService,
     public Constants: ConstantsService, private bottomSheet: MatBottomSheet,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
     private ServerResponseHandler: ServerResponseHandelerService,
@@ -86,53 +90,49 @@ export class SuppliersComponent implements OnInit {
   }
 
 
-  // Delete(Supplier: Suppliers) {
-  //   this.ShowProgressBar = true;
-  //   if (Supplier.id === 1) {
-  //     this.ClientValidaiton.Error_swal(this.Constants.Delete_Default_inventory_Error)
-  //       .then(r => { this.ShowProgressBar = false; });
-  //     return;
-  //   }
-  //   this.ClientValidaiton.Warning(this.translate.GetTranslation(this.Constants.DeleteInventoryWarning))
-  //     .then(r => {
-  //       if (r.isConfirmed) {
-  //         this.SuppliersService.DeleteWarehouse(invent.id).subscribe({
-  //           next: r => {
-  //             this.ServerResponseHandler.GeneralSuccessResponse_Swal(r);
-  //             this.AllInventories = this.AllInventories.filter((item) => {
-  //               return item.id !== invent.id;
-  //             })
-  //             this.dataSource.paginator?.getNumberOfPages();
-  //             this.dataSource.data = this.AllInventories;
-  //             this.ShowProgressBar = false;
-  //             this.SelectedRows = [];
-  //           },
-  //           error: e => {
-  //             this.ShowProgressBar = false;
-  //             this.ServerResponseHandler.GetErrorNotification_swal(e);
-  //             this.ShowProgressBar = false;
-  //           }
-  //         });
-  //       }
-  //       this.ShowProgressBar = false;
-  //     })
-  // }
-  // Dbclick(row: Inventories) {
-  //   let x: { dataToEdit: Inventories, Array: any[] } = { dataToEdit: row, Array: this.AllInventories }
-  //   this.bottomSheet.open(EditInventoryComponent, {
-  //     data: x
-  //   });
-  // }
+  Delete(Supplier: Suppliers[]) {
+
+    this.SelectedRows = Supplier;
+    this.ShowProgressBar = true;
+
+    this.spinner.fullScreenSpinner();
+    this.SuppliersService.DeleteSupplier(Supplier[0].id).subscribe({
+      next: r => {
+        this.spinner.removeSpinner();
+        this.ServerResponseHandler.GeneralSuccessResponse_Swal(r);
+        this.dataSource.paginator?.getNumberOfPages();
+        this.AllSuppliers = this.AllSuppliers.filter((item) => {
+          return item.id !== Supplier[0].id;
+        })
+        this.dataSource.data = this.AllSuppliers;
+        this.ShowProgressBar = false;
+        Supplier = [];
+        this.RowDeleted = true;
+      },
+      error: e => {
+        this.ShowProgressBar = false;
+        this.spinner.removeSpinner();
+        this.ServerResponseHandler.GetErrorNotification_swal(e);
+        this.ShowProgressBar = false;
+      }
+    });
+    this.RowDeleted = false;
+  }
+  Dbclick(row: Suppliers) {
+    this.EditSupplier(row);
+  }
 
   SelectRow(event: any) {
     this.SelectedRows = event;
   }
-  // EditInventory(row: Inventories) {
-  //   let x: { dataToEdit: Inventories, Array: any[] } = { dataToEdit: row, Array: this.AllInventories }
-  //   this.bottomSheet.open(EditInventoryComponent, {
-  //     data: x
-  //   });
-  // }
+  EditSupplier(row: Suppliers) {
+    this.ShowProgressBar = true;
+    let x: DataToEdit_PassToBottomSheet<Suppliers> = { dataToEdit: row, Array: this.AllSuppliers, ShowProgressBar: this.ShowProgressBar }
+    let ref = this.bottomSheet.open(EditSupplierComponent, {
+      data: x
+    });
+    ref.afterDismissed().subscribe((r: DataToEdit_PassToBottomSheet<Suppliers>) => this.ShowProgressBar = r.ShowProgressBar);
+  }
 
   AddSupplier(AddClicked: boolean) {
     if (AddClicked) {

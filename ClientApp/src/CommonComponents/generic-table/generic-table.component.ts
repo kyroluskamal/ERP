@@ -183,10 +183,14 @@ export class GenericTableComponent implements OnInit, OnChanges, OnDestroy {
     if (changes['data']) {
       this.dataSource = this.datasource;
       this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.paginator?._changePageSize(this.paginator.pageSize);
     }
     if (changes["AddedRow"]) {
       this.SelectedRows = [];
       this.SelectedRows.push(this.AddedRow);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.paginator?._changePageSize(this.paginator.pageSize);
     }
     if ("isLoadingResults" in changes) {
       this.isLoadingRes = this.isLoadingResults;
@@ -214,6 +218,7 @@ export class GenericTableComponent implements OnInit, OnChanges, OnDestroy {
     }
     if ("RowDeleted" in changes) {
       this.SelectedRows = [];
+      this.dataSource.paginator?._changePageSize(this.paginator.pageSize);
     }
   }
   dropListDropped(event: CdkDragDrop<string[]>) {

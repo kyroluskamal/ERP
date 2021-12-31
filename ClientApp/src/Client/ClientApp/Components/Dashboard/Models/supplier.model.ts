@@ -19,6 +19,7 @@ export class Suppliers {
   currencyId: number = 0;
   countryName: string = "";
   countryId: number = 0;
+  countryNameCode: string = "";
   addedBy_UserId: number = 0;
   addedBy_UserName: string = "";
   logo: any;

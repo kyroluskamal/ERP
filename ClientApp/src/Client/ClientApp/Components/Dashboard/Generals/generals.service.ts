@@ -14,6 +14,7 @@ export class GeneralsService {
   public Country: Country[] = [];
   public Currencies: Currency[] = [];
   public CurrenctCurrencyId: number = 0;
+
   GeoData: any
   constructor(private httpClient: HttpClient, public Constants: ConstantsService) {
     this.Countries().subscribe(r => this.Country = r);
@@ -36,6 +37,7 @@ export class GeneralsService {
   }
 
   GetCountryId_by_countryCode(): number {
+    console.log(this.Country.find(x => x.countryNameCode === this.GeoData.country_code)?.id!)
     return this.Country.find(x => x.countryNameCode === this.GeoData.country_code)?.id!
   }
 }

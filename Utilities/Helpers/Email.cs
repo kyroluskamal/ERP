@@ -3,15 +3,15 @@ using System.Text.RegularExpressions;
 
 namespace ERP.Utilities.Helpers
 {
-    public class PhoneNumber : ValidationAttribute
+    public class Email : ValidationAttribute
     {
-        public PhoneNumber(){}
+        public Email() { }
 
         public override bool IsValid(object value)
         {
-            var reg = @"\+?(\(?[0-9]+\)?)?[0-9]+\s?((x|ext)[0-9]+)?$";
+            var reg = @"^[^\s@]+@[^\s@]+\.[^\s@]+$";
             Regex regex = new Regex(reg);
-            return value == null ? true: regex.IsMatch(value.ToString());
+            return value == null ? true : regex.IsMatch(value.ToString());
             //if (!regex.IsMatch(value.ToString()))
             //{
             //    ErrorMessage = "NOT_VALID_PHONE_NUMBER";
@@ -19,6 +19,6 @@ namespace ERP.Utilities.Helpers
             //}
             //return true;
         }
-        
+
     }
 }

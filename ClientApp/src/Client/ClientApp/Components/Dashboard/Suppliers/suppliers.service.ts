@@ -19,4 +19,12 @@ export class SuppliersService {
   AddNewSupplier(newSupplier: Suppliers): Observable<Suppliers> {
     return this.httpClient.post<Suppliers>(RouterConstants.Suppliers_ADD_API, newSupplier);
   }
+
+  DeleteSupplier(id: number): Observable<any> {
+    return this.httpClient.delete(`${RouterConstants.Suppliers_DELETE_API}?Subdomain=${this.subdomain}&id=${id}`)
+  }
+
+  UpdateSupplier(UpdatedItem: Suppliers): Observable<any> {
+    return this.httpClient.put(`${RouterConstants.Suppliers_UPDATE_API}`, UpdatedItem);
+  }
 }

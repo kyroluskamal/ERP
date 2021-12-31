@@ -13,6 +13,10 @@
                  [NoData]="AllSuppliers.length===0 && !isLoadingResults"
                  [AddedRow]="AddedRow"
                  [HasCollabsableRow]="true"
+                 (DoubleClickRow)="Dbclick($event)"
+                 (DeleteClick)="Delete($event)"
+                 (EditClick)="EditSupplier($event)"
+                 [RowDeleted]="RowDeleted"
                  (ClickAddButton)="AddSupplier($event)"
                  [CollabsableDataSections]="CollapsibleDataSections"
                  [ToolTipText_input]="translate.GetTranslation(Constants.Add.toLowerCase()) + ' ' + translate.GetTranslation(Constants.Supplier_Singular.toLowerCase())">

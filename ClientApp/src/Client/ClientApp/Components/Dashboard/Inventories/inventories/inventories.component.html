@@ -11,7 +11,7 @@
               [ShowProgressBar]="ShowProgressBar"
               [NoData]="AllInventories.length===0 && !isLoadingResults"
               (DeleteClick)="Delete($event)"
-              (DoubleClickRow)="Dbclick($event)"
+              (DoubleClickRow)="EditInventory($event)"
               (rowsSelection)="SelectRow($event)"
               (EditClick)="EditInventory($event)"
               [AddedRow]="AddedRow"

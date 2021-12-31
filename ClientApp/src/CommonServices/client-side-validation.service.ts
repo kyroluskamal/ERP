@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { SweetAlertData } from 'src/Interfaces/interfaces';
-import { SweetAlertOptions } from 'sweetalert2';
+import { CardTitle, SweetAlertData } from 'src/Interfaces/interfaces';
 import { ConstantsService } from './constants.service';
 import { NotificationsService } from './NotificationService/notifications.service';
 import { TranslationService } from './translation-service.service';
@@ -15,7 +14,6 @@ export class ClientSideValidationService {
     private translate: TranslationService) { }
 
   refillForm(object: any, formGroup: FormGroup) {
-    console.log(object);
     let keys = Object.keys(object);
     for (let k of keys) {
       if (formGroup.get(k))
@@ -53,16 +51,16 @@ export class ClientSideValidationService {
     return true
   }
   isUpdated(object: any, formGroup: FormGroup): boolean {
-    let formControls: string[] = Object.keys(formGroup.controls);
-    for (let c of formControls) {
-      if (object[c] !== formGroup.get(c)?.value)
-        return false
+    let objectKeys: string[] = Object.keys(object);
+    for (let k of objectKeys) {
+      if (formGroup.get(k)?.value)
+        if (object[k] !== formGroup.get(k)?.value) {
+          return true
+        }
     }
-    return true
+    return false
   }
   FillObjectFromForm(object: any, formGroup: FormGroup) {
-    console.log(object);
-    console.log(formGroup);
     let formControls: string[] = Object.keys(formGroup.controls);
     let objectKeys: string[] = Object.keys(object);
 
@@ -78,21 +76,32 @@ export class ClientSideValidationService {
         else if (typeof object[c] === 'boolean')
           object[c] = Boolean(formGroup.get(c)?.value);
         else if (typeof object[c] === 'string')
-          object[c] = formGroup.get(c)?.value === "" ? null : formGroup.get(c)?.value;
+          object[c] = formGroup.get(c)?.value;
         else object[c] = formGroup.get(c)?.value;
       }
     }
   }
   notUniqueNotification(keyToCheck: string) {
     this.NotificationService.error(`( ${this.translate.GetTranslation(keyToCheck.toLowerCase())} )
-          ${this.translate.GetTranslation(this.Constants.Unique_Field_ERROR)}`, ' ',
+          ${this.translate.GetTranslation(this.Constants.Unique_Field_ERROR.toLowerCase())}`, ' ',
       this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr')
   }
   notUniqueNotification_Swal(keyToCheck: string) {
     this.NotificationService.Error_Swal(`${this.translate.GetTranslation(this.Constants.error)}:`,
       this.translate.GetTranslation(this.Constants.OK), `<strong>( ${this.translate.GetTranslation(keyToCheck.toLowerCase())} )</strong>
-    ${this.translate.GetTranslation(this.Constants.Unique_Field_ERROR)}`,
+    ${this.translate.GetTranslation(this.Constants.Unique_Field_ERROR.toLowerCase())}`,
       this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr')
+  }
+
+  GerneralClientSideError_swal(keyToCheck: string, Message: CardTitle[]) {
+    let translatedMessage = "";
+    for (let t of Message) {
+      if (t.needTranslation) translatedMessage += this.translate.GetTranslation(t.text.toLowerCase());
+      else translatedMessage += t.text;
+    }
+    this.NotificationService.Error_Swal(`${this.translate.GetTranslation(this.Constants.error)}:`,
+      this.translate.GetTranslation(this.Constants.OK), `<strong>( ${this.translate.GetTranslation(keyToCheck.toLowerCase())} )</strong>
+  ${translatedMessage}`, this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr')
   }
   Warning(message: string) {
     let swalData: SweetAlertData = {
@@ -116,7 +125,7 @@ export class ClientSideValidationService {
   }
 
   Error_swal(message: string) {
-    return this.NotificationService.Error_Swal(`${this.translate.GetTranslation(this.Constants.error)}:`,
+    return this.NotificationService.Error_Swal(`${this.translate.GetTranslation(this.Constants.error)}: `,
       this.translate.GetTranslation(this.Constants.OK), this.translate.GetTranslation(message),
       this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr')
   }
@@ -131,5 +140,12 @@ export class ClientSideValidationService {
       array[i] = raw.charCodeAt(i);
     }
     return array;
+  }
+
+  FillObjectFromAnotherObject(ObjectToFill: any, from: any) {
+    let Keys: string[] = Object.keys(ObjectToFill);
+    for (let k of Keys) {
+      ObjectToFill[k] = from[k];
+    }
   }
 }

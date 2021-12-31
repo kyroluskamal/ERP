@@ -140,6 +140,7 @@ export class ConstantsService {
   logo = "logo";
   currencyId = "currencyId";
   countryId = "countryId";
+  MinZero = 0;
   //Notifications Messages
   LoggedInSuccessfully: string = "LoggedInSuccessfully";
   EmilConfirmationResnding = "EmilConfirmationResnding";
@@ -188,6 +189,14 @@ export class ConstantsService {
   close = "close";
   FormFieldInputAppearance: MatFormFieldAppearance = 'outline';
   currencyCode = "currencyCode";
+  MaxLength30 = 30;
+  MaxLength15 = 15;
+  MaxLength50 = 50;
+  MaxLength40 = 40;
+  MaxLength10 = 10;
+  PhoneRegex: RegExp = /\+?(\(?[0-9]+\)?)?[0-9]+\s?((x|ext)[0-9]+)?/;
+  EmailRegex: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+/;
+  ChooseImage = "ChooseImage";
   //Tooltip translation
   CloseSidebar = "Close sidebar";
   FixSidebar = "Fix sidebar";

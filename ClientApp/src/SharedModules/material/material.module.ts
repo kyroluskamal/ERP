@@ -30,14 +30,12 @@ import { MatSortModule } from '@angular/material/sort';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
-
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 const MaterialComponents = [
   MatButtonModule, MatToolbarModule, MatIconModule, MatDialogModule, MatListModule, MatDatepickerModule,
   MatBottomSheetModule, MatInputModule, MatFormFieldModule, CommonModule, MatSnackBarModule,
   MatCheckboxModule, MatProgressSpinnerModule, MatGridListModule, MatSidenavModule, MatNativeDateModule,
-  MatMomentDateModule,
-  FlexLayoutModule, MatSelectModule, MatMenuModule, MatExpansionModule, MatTooltipModule,
+  FlexLayoutModule, MatSelectModule, MatMenuModule, MatExpansionModule, MatTooltipModule, MatAutocompleteModule,
   MatButtonToggleModule, MatSlideToggleModule, MatTableModule, AgGridModule.withComponents([]),
   MatCardModule, MatProgressBarModule, FontAwesomeModule, MatPaginatorModule, MatSortModule, DragDropModule
 ];
@@ -48,7 +46,7 @@ const MaterialComponents = [
   providers: [
     { provide: MatBottomSheetRef, useValue: {} },
     { provide: MAT_BOTTOM_SHEET_DATA, useValue: {} },
-    { provide: MAT_BOTTOM_SHEET_DEFAULT_OPTIONS, useValue: { hasBackdrop: true, closeOnNavigation: true, backdropClass: "bg-gray" } }
+    { provide: MAT_BOTTOM_SHEET_DEFAULT_OPTIONS, useValue: { hasBackdrop: true, closeOnNavigation: true, backdropClass: "bg-gray" } },
   ],
 })
 export class MaterialModule { }

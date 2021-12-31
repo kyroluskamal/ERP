@@ -34,14 +34,13 @@ export class GenericFormComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() showCloseButton: boolean = false;
   @Output() GetValue: EventEmitter<FormDefs> = new EventEmitter();
   @Output() BottomSheetDismissed: EventEmitter<boolean> = new EventEmitter();
-  DateFormControl: FormControl = new FormControl();
 
   constructor(private _bottomSheetRef: MatBottomSheetRef<any>,
     public Constants: ConstantsService, private componentFactoryResolver: ComponentFactoryResolver,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
     private LightOrDarkConverter: LightDarkThemeConverterService, private bottomSheet: MatBottomSheet
   ) {
-
+    console.log(this.Form)
     let tem: any = localStorage.getItem(this.Constants.BodyAppeareance);
     this.DarkOrLight = tem;
 
@@ -67,6 +66,7 @@ export class GenericFormComponent implements OnInit, OnChanges, AfterViewInit {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["Form"]) {
       this.FormSpec = this.Form;
+      console.log(this.FormSpec)
     }
   }
 

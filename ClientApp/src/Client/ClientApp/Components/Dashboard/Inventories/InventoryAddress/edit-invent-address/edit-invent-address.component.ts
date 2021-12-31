@@ -20,12 +20,6 @@ export class EditInventAddressComponent implements OnInit {
   Form: FormDefs = new FormDefs();
   Title: CardTitle[] = [];
   subdomain: string = window.location.hostname.split(".")[0];
-  BuildingNoMaxLength = 15;
-  FlatNoMaxLength = 15;
-  PostalCodeMaxLength = 15;
-  CityMaxLength = 30;
-  GovernmentMaxLength = 30;
-  StreetNameMaxLength = 30;
   AllSelectionData: SelectedDataTransfer[] = []
 
   constructor(public Constants: ConstantsService, private InventoreisService: InventoriesService,
@@ -33,14 +27,14 @@ export class EditInventAddressComponent implements OnInit {
     private _bottomSheetRef: MatBottomSheetRef<InventoryAddress>, private spinner: SpinnerService,
     private ServerHandler: ServerResponseHandelerService, private translate: TranslationService) {
     this.EditAddress = new FormGroup({
-      buildingNo: new FormControl(this.data.inventoryAddress?.buildingNo, [Validators.maxLength(this.BuildingNoMaxLength)]),
-      flatNo: new FormControl(this.data.inventoryAddress?.flatNo, [Validators.maxLength(this.FlatNoMaxLength)]),
+      buildingNo: new FormControl(this.data.inventoryAddress?.buildingNo, [Validators.maxLength(this.Constants.MaxLength15)]),
+      flatNo: new FormControl(this.data.inventoryAddress?.flatNo, [Validators.maxLength(this.Constants.MaxLength15)]),
       addressLine_1: new FormControl(this.data.inventoryAddress?.addressLine_1, [Validators.required]),
       addressLine_2: new FormControl(this.data.inventoryAddress?.addressLine_2),
-      postalCode: new FormControl(this.data.inventoryAddress?.postalCode, [Validators.maxLength(this.PostalCodeMaxLength)]),
-      city: new FormControl(this.data.inventoryAddress?.city, [Validators.maxLength(this.CityMaxLength)]),
-      government: new FormControl(this.data.inventoryAddress?.government, [Validators.maxLength(this.GovernmentMaxLength)]),
-      streetName: new FormControl(this.data.inventoryAddress?.streetName, [Validators.maxLength(this.StreetNameMaxLength)]),
+      postalCode: new FormControl(this.data.inventoryAddress?.postalCode, [Validators.maxLength(this.Constants.MaxLength15)]),
+      city: new FormControl(this.data.inventoryAddress?.city, [Validators.maxLength(this.Constants.MaxLength30)]),
+      government: new FormControl(this.data.inventoryAddress?.government, [Validators.maxLength(this.Constants.MaxLength30)]),
+      streetName: new FormControl(this.data.inventoryAddress?.streetName, [Validators.maxLength(this.Constants.MaxLength30)]),
       countryName: new FormControl(this.data.inventoryAddress?.countryId, [Validators.required])
     });
     this.AllSelectionData.push({ property: this.Constants.countryName, SelectedData: this.GeneralsService.Country })
@@ -74,14 +68,14 @@ export class EditInventAddressComponent implements OnInit {
               text: this.Constants.MaxLengthExceeded_ERROR,
               needTraslation: true
             }, {
-              text: this.BuildingNoMaxLength.toString(),
+              text: this.Constants.MaxLength15.toString(),
               needTraslation: false
             }, {
               text: this.Constants.characters,
               needTraslation: true
             }]
           }],
-          maxLength: this.BuildingNoMaxLength.toString()
+          maxLength: this.Constants.MaxLength15
         }, {
           type: "text",
           formControlName: this.Constants.flatNo,
@@ -96,14 +90,14 @@ export class EditInventAddressComponent implements OnInit {
               text: this.Constants.MaxLengthExceeded_ERROR,
               needTraslation: true
             }, {
-              text: this.FlatNoMaxLength.toString(),
+              text: this.Constants.MaxLength15.toString(),
               needTraslation: false
             }, {
               text: this.Constants.characters,
               needTraslation: true
             }]
           }],
-          maxLength: this.FlatNoMaxLength.toString()
+          maxLength: this.Constants.MaxLength15
         }, {
           type: "text",
           formControlName: this.Constants.streetName,
@@ -118,14 +112,14 @@ export class EditInventAddressComponent implements OnInit {
               text: this.Constants.MaxLengthExceeded_ERROR,
               needTraslation: true
             }, {
-              text: this.StreetNameMaxLength.toString(),
+              text: this.Constants.MaxLength30.toString(),
               needTraslation: false
             }, {
               text: this.Constants.characters,
               needTraslation: true
             }]
           }],
-          maxLength: this.StreetNameMaxLength.toString()
+          maxLength: this.Constants.MaxLength30
         }, {
           type: "select",
           formControlName: this.Constants.countryName,
@@ -151,14 +145,14 @@ export class EditInventAddressComponent implements OnInit {
               text: this.Constants.MaxLengthExceeded_ERROR,
               needTraslation: true
             }, {
-              text: this.CityMaxLength.toString(),
+              text: this.Constants.MaxLength30.toString(),
               needTraslation: false
             }, {
               text: this.Constants.characters,
               needTraslation: true
             }]
           }],
-          maxLength: this.CityMaxLength.toString()
+          maxLength: this.Constants.MaxLength30
         }, {
           type: "text",
           formControlName: this.Constants.government,
@@ -173,14 +167,14 @@ export class EditInventAddressComponent implements OnInit {
               text: this.Constants.MaxLengthExceeded_ERROR,
               needTraslation: true
             }, {
-              text: this.GovernmentMaxLength.toString(),
+              text: this.Constants.MaxLength30.toString(),
               needTraslation: false
             }, {
               text: this.Constants.characters,
               needTraslation: true
             }]
           }],
-          maxLength: this.GovernmentMaxLength.toString()
+          maxLength: this.Constants.MaxLength30
         }, {
           type: "text",
           formControlName: this.Constants.postalCode,
@@ -195,14 +189,14 @@ export class EditInventAddressComponent implements OnInit {
               text: this.Constants.MaxLengthExceeded_ERROR,
               needTraslation: true
             }, {
-              text: this.PostalCodeMaxLength.toString(),
+              text: this.Constants.MaxLength15.toString(),
               needTraslation: false
             }, {
               text: this.Constants.characters,
               needTraslation: true
             }]
           }],
-          maxLength: this.PostalCodeMaxLength.toString()
+          maxLength: this.Constants.MaxLength15
         }, {
           type: "text",
           formControlName: this.Constants.addressLine_1,

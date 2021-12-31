@@ -77,7 +77,10 @@ export class ServerResponseHandelerService {
               let maxLength = MaxMinLenth.filter((i) => { return i.prop.toLowerCase() === k.toLowerCase() });
               translatedError += `<strong>( ${this.translate.GetTranslation(k.toLowerCase())} )</strong> ${this.translate.GetTranslation(err.toLowerCase())} <strong>${maxLength[0].maxLength}</strong>
               ${this.translate.GetTranslation(this.Constants.characters)}<br>`;
-            } else
+            } else if (err === this.Constants.Unique_Field_ERROR) {
+              translatedError += `<strong>( ${this.translate.GetTranslation(k.toLowerCase())} )</strong> ${this.translate.GetTranslation(err.toLowerCase())}<br>`;
+            }
+            else
               translatedError += `<strong>( ${this.translate.GetTranslation(k.toLowerCase())} )</strong> ${this.translate.GetTranslation(err.toLowerCase())}<br>`
           }
         }

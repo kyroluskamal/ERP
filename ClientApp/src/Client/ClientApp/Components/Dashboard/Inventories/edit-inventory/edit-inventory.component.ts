@@ -26,9 +26,6 @@ export class EditInventoryComponent implements OnInit {
   faPhone = faPhone;
   faPenAlt = faPenAlt;
   faEdit = faEdit;
-
-  MaxLength: number = 30;
-
   EditInvenoty: FormGroup = new FormGroup({});
   Title: CardTitle[] = [];
   FormBuilder: FormDefs = new FormDefs();
@@ -46,13 +43,18 @@ export class EditInventoryComponent implements OnInit {
 
   }
   ngOnInit(): void {
+    this._bottomSheetRef.backdropClick().subscribe((r) => {
+      this.data.ShowProgressBar = false;
+      this.spinner.removeSpinner();
+      this._bottomSheetRef.dismiss(this.data);
+    });
     this.Title = [
       { text: this.Constants.Edit, needTranslation: true },
       { text: " : ", needTranslation: false },
       { text: this.data.dataToEdit.warehouseName, needTranslation: false }
     ]
     this.EditInvenoty = new FormGroup({
-      Name: new FormControl(this.data.dataToEdit.warehouseName, [Validators.required, Validators.maxLength(30)]),
+      Name: new FormControl(this.data.dataToEdit.warehouseName, [Validators.required, Validators.maxLength(this.Constants.MaxLength30)]),
       IsMain: new FormControl(this.data.dataToEdit.isMainInventory),
       Phone: new FormControl(this.data.dataToEdit.telephone, [CustomValidators.patternValidator(/\+?(\(?[0-9]+\)?)?[0-9]+\s?((x|ext)[0-9]+)?/, { NOT_VALID_PHONE_NUMBER: true })]),
       Mobile: new FormControl(this.data.dataToEdit.mobilePhone, [CustomValidators.patternValidator(/\+?(\(?[0-9]+\)?)?[0-9]+\s?((x|ext)[0-9]+)?/, { NOT_VALID_PHONE_NUMBER: true })]),
@@ -90,7 +92,7 @@ export class EditInventoryComponent implements OnInit {
               text: this.Constants.MaxLengthExceeded_ERROR,
               needTraslation: true
             }, {
-              text: this.MaxLength.toString(),
+              text: this.Constants.MaxLength30.toString(),
               needTraslation: false
             }, {
               text: this.Constants.characters,
@@ -98,7 +100,7 @@ export class EditInventoryComponent implements OnInit {
             }]
           }],
           required: false,
-          maxLength: "30"
+          maxLength: this.Constants.MaxLength30
         }, {
           type: "tel",
           formControlName: "Phone",
@@ -189,10 +191,11 @@ export class EditInventoryComponent implements OnInit {
       && this.data.dataToEdit.isActive === Boolean(EditedInvent.form.get("IsActive")?.value)
       && this.data.dataToEdit.isMainInventory === Boolean(EditedInvent.form.get("IsMain")?.value)
       && this.data.dataToEdit.notes === EditedInvent.form.get("Notes")?.value) {
-      this._bottomSheetRef.dismiss();
+      this.data.ShowProgressBar = false;
+      this._bottomSheetRef.dismiss(this.data);
       return;
     }
-    this.spinner.fullScreenSpinner();
+    this.spinner.fullScreenSpinnerForForm();
     if (!(this.ClientSideValidation.isUnique(this.data.Array, 'warehouseName', this.EditInvenoty.get("Name")?.value, this.data.dataToEdit.id))) {
       this.spinner.removeSpinner();
       this.ClientSideValidation.notUniqueNotification_Swal("warehouseName");
@@ -231,6 +234,7 @@ export class EditInventoryComponent implements OnInit {
             this.data.dataToEdit.isMainInventory = UpdateInvent.isMainInventory;
             this.data.dataToEdit.notes = UpdateInvent.notes;
           }
+        this.data.ShowProgressBar = false;
         this._bottomSheetRef.dismiss(this.data);
       },
       error: e => {

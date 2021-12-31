@@ -16,7 +16,17 @@ export class SpinnerService {
       size: "large",
       bdColor: "rgba(0, 0, 0, 0.25)",
       color: "white",
-      zIndex: 2000
+      zIndex: 500000
+    });
+  }
+  fullScreenSpinnerForForm() {
+    return this.spinner.show('form', {
+      fullScreen: false,
+      type: "ball-clip-rotate-pulse",
+      size: "large",
+      bdColor: "rgba(0, 0, 0, 0.25)",
+      color: "white",
+      zIndex: 500000
     });
   }
   InsideContainerSpinner() {
@@ -31,5 +41,6 @@ export class SpinnerService {
   removeSpinner() {
     this.spinner.hide('general');
     this.spinner.hide('inside');
+    this.spinner.hide('form');
   }
 }

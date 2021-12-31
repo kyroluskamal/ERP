@@ -66,8 +66,8 @@ export class FormFields {
   hint?: MatFormHint = new MatFormHint();
   cdkAutosizeMinRows?: string = "";
   required: boolean = false;
-  maxLength?: string = "";
-  minLength?: string = "";
+  maxLength?: number = 0;
+  minLength?: number = 0;
   min?: string = "";
   max?: string = "";
   SelectData?: any[] = [];
@@ -78,6 +78,7 @@ export class FormFields {
   SelectionButton_text?: string = "";
   SelectionText_IfNoData?: string = "";
   SelectionBottomSheetComponent?: ComponentType<unknown>;
+  UploadInputText?: CardTitle[] = [];
 }
 export class MatFormHint {
   text_no_translation?: string = "";
@@ -178,4 +179,4 @@ export interface MatBottomSheetDismissData<T> {
   SelectedRows: T[];
 }
 
-export interface DataToEdit_PassToBottomSheet<T> { dataToEdit: T, Array: any[] }
+export interface DataToEdit_PassToBottomSheet<T> { dataToEdit: T, Array: T[], ShowProgressBar: boolean }

@@ -58,7 +58,7 @@ export class AddInventAddressComponent implements OnInit {
       Form_fxLayout: "row wrap",
       Form_fxLayoutAlign: "space-between",
       Button_GoogleIcon: "add_circle",
-      ButtonText: [this.Constants.Add],
+      ButtonText: [this.Constants.Save],
       formSections: [{
         fxFlex: "100%",
         formFieldsSpec: [{
@@ -75,14 +75,14 @@ export class AddInventAddressComponent implements OnInit {
               text: this.Constants.MaxLengthExceeded_ERROR,
               needTraslation: true
             }, {
-              text: this.BuildingNoMaxLength.toString(),
+              text: this.Constants.MaxLength15.toString(),
               needTraslation: false
             }, {
               text: this.Constants.characters,
               needTraslation: true
             }]
           }],
-          maxLength: this.BuildingNoMaxLength.toString()
+          maxLength: this.Constants.MaxLength15
         }, {
           type: "text",
           formControlName: this.Constants.flatNo,
@@ -97,14 +97,14 @@ export class AddInventAddressComponent implements OnInit {
               text: this.Constants.MaxLengthExceeded_ERROR,
               needTraslation: true
             }, {
-              text: this.FlatNoMaxLength.toString(),
+              text: this.Constants.MaxLength15.toString(),
               needTraslation: false
             }, {
               text: this.Constants.characters,
               needTraslation: true
             }]
           }],
-          maxLength: this.FlatNoMaxLength.toString()
+          maxLength: this.Constants.MaxLength15
         }, {
           type: "text",
           formControlName: this.Constants.streetName,
@@ -119,14 +119,14 @@ export class AddInventAddressComponent implements OnInit {
               text: this.Constants.MaxLengthExceeded_ERROR,
               needTraslation: true
             }, {
-              text: this.StreetNameMaxLength.toString(),
+              text: this.Constants.MaxLength30.toString(),
               needTraslation: false
             }, {
               text: this.Constants.characters,
               needTraslation: true
             }]
           }],
-          maxLength: this.StreetNameMaxLength.toString()
+          maxLength: this.Constants.MaxLength30
         }, {
           type: "select",
           formControlName: this.Constants.countryName,
@@ -152,14 +152,14 @@ export class AddInventAddressComponent implements OnInit {
               text: this.Constants.MaxLengthExceeded_ERROR,
               needTraslation: true
             }, {
-              text: this.CityMaxLength.toString(),
+              text: this.Constants.MaxLength30.toString(),
               needTraslation: false
             }, {
               text: this.Constants.characters,
               needTraslation: true
             }]
           }],
-          maxLength: this.CityMaxLength.toString()
+          maxLength: this.Constants.MaxLength30
         }, {
           type: "text",
           formControlName: this.Constants.government,
@@ -174,14 +174,14 @@ export class AddInventAddressComponent implements OnInit {
               text: this.Constants.MaxLengthExceeded_ERROR,
               needTraslation: true
             }, {
-              text: this.GovernmentMaxLength.toString(),
+              text: this.Constants.MaxLength30.toString(),
               needTraslation: false
             }, {
               text: this.Constants.characters,
               needTraslation: true
             }]
           }],
-          maxLength: this.GovernmentMaxLength.toString()
+          maxLength: this.Constants.MaxLength30
         }, {
           type: "text",
           formControlName: this.Constants.postalCode,
@@ -196,14 +196,14 @@ export class AddInventAddressComponent implements OnInit {
               text: this.Constants.MaxLengthExceeded_ERROR,
               needTraslation: true
             }, {
-              text: this.PostalCodeMaxLength.toString(),
+              text: this.Constants.MaxLength15.toString(),
               needTraslation: false
             }, {
               text: this.Constants.characters,
               needTraslation: true
             }]
           }],
-          maxLength: this.PostalCodeMaxLength.toString()
+          maxLength: this.Constants.MaxLength15
         }, {
           type: "text",
           formControlName: this.Constants.addressLine_1,
@@ -211,7 +211,7 @@ export class AddInventAddressComponent implements OnInit {
           fxFlex: "49%",
           fxFlex_xs: "100%",
           mat_label: this.Constants.addressLine_1,
-          required: true,
+          required: false,
           errors: [{
             type: 'required',
             TranslatedMessage: [{

@@ -146,21 +146,16 @@ export class InventoriesComponent implements OnInit, AfterViewInit {
       })
     this.RowDeleted = false;
   }
-  Dbclick(row: Inventories) {
-    let x: { dataToEdit: Inventories, Array: any[] } = { dataToEdit: row, Array: this.AllInventories }
-    this.bottomSheet.open(EditInventoryComponent, {
-      data: x
-    });
-  }
 
   SelectRow(event: any) {
     this.SelectedRows = event;
   }
   EditInventory(row: Inventories) {
-    let x: DataToEdit_PassToBottomSheet<Inventories> = { dataToEdit: row, Array: this.AllInventories }
-    this.bottomSheet.open(EditInventoryComponent, {
+    let x: DataToEdit_PassToBottomSheet<Inventories> = { dataToEdit: row, Array: this.AllInventories, ShowProgressBar: this.ShowProgressBar }
+    const ref = this.bottomSheet.open(EditInventoryComponent, {
       data: x
     });
+    ref.afterDismissed().subscribe((r: DataToEdit_PassToBottomSheet<Inventories>) => { this.ShowProgressBar = r.ShowProgressBar })
   }
 
   ngAfterViewInit() {

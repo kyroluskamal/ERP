@@ -90,6 +90,19 @@ Constants.CSS_text_white"
                 <mat-datepicker-toggle matSuffix
                                        [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
+                <mat-hint *ngIf="field.hint"
+                          [dir]="field.hint.dir"
+                          [align]="field.hint.align">{{field.hint.text_no_translation?
+                  field.hint.text_no_translation: field.hint.text_to_translation.toLowerCase()|translate}}</mat-hint>
+
+                <mat-error *ngFor="let e of field.errors">
+
+                  <span *ngIf="FormSpec.form.get(field.formControlName)?.hasError(e.type)">
+                    <span *ngFor="let t of e.TranslatedMessage">
+                      {{!t.needTraslation?t.text:(t.text.toLowerCase()|translate) + ' '}}
+                    </span>
+                  </span>
+                </mat-error>
               </mat-form-field>
               <!-- ----------------------------------------------------------- TextArea -->
               <mat-form-field [appearance]="field.appearance"
@@ -118,7 +131,9 @@ Constants.CSS_text_white"
 
                 <mat-error *ngFor="let e of field.errors">
                   <span *ngIf="FormSpec.form.get(field.formControlName)?.hasError(e.type)">
-                    {{e.TranslatedMessage }}
+                    <span *ngFor="let t of e.TranslatedMessage">
+                      {{!t.needTraslation?t.text:(t.text.toLowerCase()|translate) + ' '}}
+                    </span>
                   </span>
                 </mat-error>
               </mat-form-field>
@@ -168,24 +183,65 @@ Constants.CSS_text_white"
                     </mat-icon>&nbsp; {{field.SelectionButton_text!.toLowerCase()|translate}}
                   </button>
                 </mat-select>
+                <mat-hint *ngIf="field.hint"
+                          [dir]="field.hint.dir"
+                          [align]="field.hint.align">{{field.hint.text_no_translation?
+                  field.hint.text_no_translation: field.hint.text_to_translation.toLowerCase()|translate}}</mat-hint>
+
+                <mat-error *ngFor="let e of field.errors">
+                  <span *ngIf="FormSpec.form.get(field.formControlName)?.hasError(e.type)">
+                    <span *ngFor="let t of e.TranslatedMessage">
+                      {{!t.needTraslation?t.text:(t.text.toLowerCase()|translate) + ' '}}
+                    </span>
+                  </span>
+                </mat-error>
               </mat-form-field>
               <div *ngIf="field.type === 'OneFile'"
+                   fxLayout="row"
+                   fxLayoutAlign="start center"
+                   style="font: inherit !important;"
                    [fxFlex]="field.fxFlex? field.fxFlex:''"
                    [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''">
+                <label for="oneFileImage">{{field.mat_label.toLowerCase()| translate}} : </label>
                 <input type="file"
                        accept="image/*"
+                       name="oneFileImage"
                        hidden
                        (change)="onFileSelected($event,field.formControlName)"
                        #fileUpload>
 
-                <div class="file-upload">
+                <div class="file-upload"
+                     fxLayoutAlign="start center"
+                     [dir]="translate.isRightToLeft(translate.GetCurrentLang())?'rtl':'ltr'">
                   <button mat-mini-fab
                           color="primary"
                           class="upload-btn"
                           (click)="fileUpload.click()">
                     <mat-icon>attach_file</mat-icon>
                   </button>
-                  {{oneFileName || "No file uploaded yet."}}
+                  <div *ngIf="!FormSpec.form.get(field.formControlName)?.value"
+                       (click)="fileUpload.click()"
+                       style="margin-left: 10px; margin-right: 10px; display: inline-block;">
+
+                    <span *ngIf="field.UploadInputText">
+                      <span *ngFor="let t of  field.UploadInputText">
+                        {{!t.needTranslation?t.text:t.text.toLowerCase()|translate}}
+                      </span>
+                    </span>
+                  </div>
+                  <div fxLayoutAlign="center center"
+                       *ngIf="FormSpec.form.get(field.formControlName)?.value"
+                       style="margin-left: 10px; margin-right: 10px; display: inline-block;">
+                    <img [src]="FormSpec.form.get(field.formControlName)?.value"
+                         [alt]="field.formControlName"
+                         width="100px">
+                    <span><button mat-icon-button
+                              [matTooltip]="Constants.Delete|translate"
+                              (click)="FormSpec.form.get(field.formControlName)?.setValue(null); fileUpload.value=''"
+                              [class]="Constants.CSS_text_warning">
+                        <mat-icon class="mat-18">close</mat-icon>
+                      </button></span>
+                  </div>
                 </div>
               </div>
             </ng-container>
@@ -237,3 +293,4 @@ Constants.CSS_text_white"
     </div>
   </form>
 </mat-card>
+<ngx-spinner name="form"></ngx-spinner>

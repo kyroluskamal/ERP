@@ -117,7 +117,7 @@
   "Main_Categories":"Main Categories",
   "Add_Edit_Delete" : "Add, edit and delete",
   "Uncategorized" : "Uncategorized",
-  "Unique_Field_ERROR": "You can't repeat values in this field. Add UNIQUE value.",
+  "unique_field_error": "You can't repeat values in this field. Add UNIQUE value.",
   "Please, write the name of the category":"Please, write the name of the category",
   "Search table":"Search table",
   "loading" : "loading...",
@@ -141,7 +141,7 @@
   "Categories" : "Categories",
   "maxlengthexceeded_error" : "You can write up to ",
   "characters": " character(s)",
-  "negative_nalue_error" : "Enter positive numbers greater than 0 only.",
+  "negative_value_error" : "Enter positive numbers only.",
   "in": " in",
   "field": " field",
   "Brand_Name_Singular": "Brand Name",
@@ -246,5 +246,6 @@
   "currency": "Currency",
   "logo":"Logo",
   "close":"Close",
-  "nan":"Please, Enter a valid number"
+  "nan":"Please, Enter a valid number",
+  "chooseimage":"Choose Image"
 }

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -109,7 +110,7 @@ namespace ERP.Controllers.Supply
                         CurrencyId = Supplier.CurrencyId,
                         CountryName = Supplier.CountryName,
                         CountryNameCode = Supplier.CountryNameCode,
-                        CountryId = Supplier.CurrencyId,
+                        CountryId = Supplier.CountryId,
                         AddedBy_UserId = Supplier.AddedBy_UserId,
                         AddedBy_UserName = Supplier.AddedBy_UserName
                     });
@@ -162,6 +163,7 @@ namespace ERP.Controllers.Supply
                         && SupplierFromDb.TaxID == Supplier.TaxID
                         && SupplierFromDb.CR == Supplier.CR
                         && SupplierFromDb.Email == Supplier.Email
+                        && SupplierFromDb.OpeningBalance == Supplier.OpeningBalance
                         && SupplierFromDb.OpeningBalanceDate == Supplier.OpeningBalanceDate
                         && SupplierFromDb.Logo == Supplier.Logo
                         && SupplierFromDb.Notes == Supplier.Notes
@@ -169,9 +171,7 @@ namespace ERP.Controllers.Supply
                         && SupplierFromDb.CurrencyId == Supplier.CurrencyId
                         && SupplierFromDb.CountryName == Supplier.CountryName
                         && SupplierFromDb.CountryNameCode == Supplier.CountryNameCode
-                        && SupplierFromDb.CountryId == Supplier.CurrencyId
-                        && SupplierFromDb.AddedBy_UserId == Supplier.AddedBy_UserId
-                        && SupplierFromDb.AddedBy_UserName == Supplier.AddedBy_UserName
+                        && SupplierFromDb.CountryId == Supplier.CountryId
                        ) return StatusCode(200, new { status = "SameObject" });
 
                         SupplierFromDb.BusinessName = Supplier.BusinessName;
@@ -189,10 +189,12 @@ namespace ERP.Controllers.Supply
                         SupplierFromDb.CurrencyId = Supplier.CurrencyId;
                         SupplierFromDb.CountryName = Supplier.CountryName;
                         SupplierFromDb.CountryNameCode = Supplier.CountryNameCode;
-                        SupplierFromDb.CountryId = Supplier.CurrencyId;
-                        SupplierFromDb.AddedBy_UserId = Supplier.AddedBy_UserId;
-                        SupplierFromDb.AddedBy_UserName = Supplier.AddedBy_UserName;
+                        SupplierFromDb.CountryId = Supplier.CountryId;
 
+                        SupplierFromDb.Balance = (SupplierFromDb.Balance - SupplierFromDb.OpeningBalance) + Supplier.OpeningBalance;
+                        SupplierFromDb.OpeningBalance = Supplier.OpeningBalance;
+
+                        Debug.WriteLine(SupplierFromDb.Balance - SupplierFromDb.OpeningBalance);
                         var result = await UserUnitOfWork.SaveAsync();
                         if (result > 0)
                             return Ok(Constants.Data_SAVED_SUCCESS_Response());

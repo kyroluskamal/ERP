@@ -1,12 +1,11 @@
-import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
-import { FormControl, FormGroup, MaxLengthValidator, Validators, } from '@angular/forms';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators, } from '@angular/forms';
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from 'src/CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
-import { CardTitle, FormDefs, MatBottomSheetDismissData, MaxMinLengthValidation, SelectedDataTransfer } from 'src/Interfaces/interfaces';
+import { CardTitle, DataToEdit_PassToBottomSheet, FormDefs, MatBottomSheetDismissData, MaxMinLengthValidation, SelectedDataTransfer } from 'src/Interfaces/interfaces';
 import { MatBottomSheet, MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA, } from '@angular/material/bottom-sheet';
 import { faEnvelope, faMobileAlt, faPhone, faPenAlt, faEdit, faCheckCircle, faTimesCircle, faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
-import { MatTableDataSource } from '@angular/material/table';
 import { ServerResponseHandelerService } from 'src/CommonServices/server-response-handeler.service';
 import { ClientSideValidationService } from 'src/CommonServices/client-side-validation.service';
 import { GeneralsService } from '../../Generals/generals.service';
@@ -14,13 +13,12 @@ import { Suppliers } from '../../Models/supplier.model';
 import { SuppliersService } from '../suppliers.service';
 import { SpinnerService } from 'src/CommonServices/spinner.service';
 import { CustomValidators } from 'src/Helpers/CustomValidation/custom-validators';
-
 @Component({
-  selector: 'app-add-new-supplier',
-  templateUrl: './add-new-supplier.component.html',
-  styleUrls: ['./add-new-supplier.component.css'],
+  selector: 'app-edit-supplier',
+  templateUrl: './edit-supplier.component.html',
+  styleUrls: ['./edit-supplier.component.css']
 })
-export class AddNewSupplierComponent implements OnInit {
+export class EditSupplierComponent implements OnInit {
   faMobileAlt = faMobileAlt;
   faPhone = faPhone;
   faPenAlt = faPenAlt;
@@ -29,7 +27,7 @@ export class AddNewSupplierComponent implements OnInit {
   faCheckCircle = faCheckCircle;
   faTimesCircle = faTimesCircle;
   Subdomain: string = window.location.hostname.split('.')[0];
-  AddNew: FormGroup = new FormGroup({});
+  Edit: FormGroup = new FormGroup({});
   FormBuilder: FormDefs = new FormDefs();
   AllSelectionData: SelectedDataTransfer[] = [];
 
@@ -37,9 +35,9 @@ export class AddNewSupplierComponent implements OnInit {
     private spinner: SpinnerService, private GeneralsService: GeneralsService,
     public Constants: ConstantsService, private bottomSheet: MatBottomSheet,
     public ValidationErrorMessage: ValidationErrorMessagesService,
-    public translate: TranslationService, @Inject(MAT_BOTTOM_SHEET_DATA) public data: MatBottomSheetDismissData<Suppliers>,
+    public translate: TranslationService, @Inject(MAT_BOTTOM_SHEET_DATA) public data: DataToEdit_PassToBottomSheet<Suppliers>,
     private ServerResponseHandler: ServerResponseHandelerService,
-    private _bottomSheetRef: MatBottomSheetRef<AddNewSupplierComponent>, private SuppliersService: SuppliersService,
+    private _bottomSheetRef: MatBottomSheetRef<EditSupplierComponent>, private SuppliersService: SuppliersService,
     private ClientValidaiton: ClientSideValidationService
   ) { }
 
@@ -47,32 +45,34 @@ export class AddNewSupplierComponent implements OnInit {
     this.AllSelectionData.push({ property: this.Constants.countryName, SelectedData: this.GeneralsService.Country, });
     this.AllSelectionData.push({ property: this.Constants.currencyCode, SelectedData: this.GeneralsService.Currencies });
     this._bottomSheetRef.backdropClick().subscribe((r) => {
-      this.data.ShowBrogressBar = false;
+      this.data.ShowProgressBar = false;
+      this.spinner.removeSpinner();
       this._bottomSheetRef.dismiss(this.data);
     });
 
-    this.AddNew = new FormGroup({
-      businessName: new FormControl(null, [Validators.required, Validators.maxLength(this.Constants.MaxLength50)]),
-      firstName: new FormControl(null, [Validators.maxLength(this.Constants.MaxLength30)]),
-      lastName: new FormControl(null, [Validators.maxLength(this.Constants.MaxLength30)]),
-      telephone: new FormControl(null, [Validators.pattern(this.Constants.PhoneRegex)]),
-      mobilePhone: new FormControl(null, [Validators.pattern(this.Constants.PhoneRegex)]),
-      taxID: new FormControl(null, [Validators.maxLength(this.Constants.MaxLength30)]),
-      cr: new FormControl(null, [Validators.maxLength(this.Constants.MaxLength30)]),
-      email: new FormControl(null, [Validators.pattern(this.Constants.EmailRegex)]),
-      openingBalanceDate: new FormControl(new Date(), [Validators.required, Validators.min(this.Constants.MinZero)]),
-      openingBalance: new FormControl(0.0, [Validators.required, Validators.pattern("[0-9]+(\.[0-9]+)?")]),
-      notes: new FormControl(null),
-      currencyId: new FormControl(this.GeneralsService.CurrenctCurrencyId, [Validators.required]),
-      countryId: new FormControl(this.GeneralsService.GetCountryId_by_countryCode(), [Validators.required]),
-      logo: new FormControl(null),
+    this.Edit = new FormGroup({
+      businessName: new FormControl(this.data.dataToEdit.businessName, [Validators.required, Validators.maxLength(this.Constants.MaxLength50)]),
+      firstName: new FormControl(this.data.dataToEdit.firstName, [Validators.maxLength(this.Constants.MaxLength30)]),
+      lastName: new FormControl(this.data.dataToEdit.lastName, [Validators.maxLength(this.Constants.MaxLength30)]),
+      telephone: new FormControl(this.data.dataToEdit.telephone, [Validators.pattern(this.Constants.PhoneRegex)]),
+      mobilePhone: new FormControl(this.data.dataToEdit.mobilePhone, [Validators.pattern(this.Constants.PhoneRegex)]),
+      taxID: new FormControl(this.data.dataToEdit.taxID, [Validators.maxLength(this.Constants.MaxLength30)]),
+      cr: new FormControl(this.data.dataToEdit.cr, [Validators.maxLength(this.Constants.MaxLength30)]),
+      email: new FormControl(this.data.dataToEdit.email, [Validators.pattern(this.Constants.EmailRegex)]),
+      openingBalanceDate: new FormControl(this.data.dataToEdit.openingBalanceDate, [Validators.required, Validators.min(this.Constants.MinZero)]),
+      openingBalance: new FormControl(this.data.dataToEdit.openingBalance, [Validators.required, Validators.pattern("[0-9]+(\.[0-9]+)?")]),
+      notes: new FormControl(this.data.dataToEdit.notes),
+      currencyId: new FormControl(this.data.dataToEdit.currencyId, [Validators.required]),
+      countryId: new FormControl(this.data.dataToEdit.countryId, [Validators.required]),
+      logo: new FormControl(this.data.dataToEdit.logo),
     });
+
     this.Title = [
       { text: this.Constants.Add, needTranslation: true },
       { text: this.Constants.Supplier_Singular, needTranslation: true },
     ];
     this.FormBuilder = {
-      form: this.AddNew,
+      form: this.Edit,
       Card_fxFlex: '100%',
       Form_fxLayout: 'row wrap',
       Form_fxLayoutAlign: 'space-between',
@@ -381,59 +381,49 @@ export class AddNewSupplierComponent implements OnInit {
       ],
     };
   }
-
-  AddNewSupplier(formDefs: FormDefs) {
-    this.data.ShowBrogressBar = true;
-    let CurrentUser: any = localStorage.getItem(this.Constants.Client);
-    CurrentUser = JSON.parse(CurrentUser);
-    let newSupplier = new Suppliers();
-    // Filling supplier Object
-    this.ClientValidaiton.FillObjectFromForm(newSupplier, formDefs.form);
-    newSupplier.addedBy_UserId = CurrentUser.userId;
-    newSupplier.addedBy_UserName = CurrentUser.username;
-    newSupplier.balance = newSupplier.openingBalance;
-    newSupplier.currencyId = formDefs.form.get(this.Constants.currencyId)?.value;
-    newSupplier.currency = this.GeneralsService.Currencies.find((x) => x.id === newSupplier.currencyId)?.currencyCode!;
-    newSupplier.countryId = formDefs.form.get(this.Constants.countryId)?.value;
-    newSupplier.countryName = this.GeneralsService.Country.find((x) => x.id === formDefs.form.get(this.Constants.countryId)?.value)?.countryName!;
-    newSupplier.countryNameCode = this.GeneralsService.Country.find((x) => x.id === formDefs.form.get(this.Constants.countryId)?.value)?.countryNameCode!;
-    newSupplier.subdomain = this.Subdomain;
-    newSupplier.logo = formDefs.form.get(this.Constants.logo)?.value;
+  CloseBottomSheet(event: boolean) {
+    if (event) {
+      this.data.ShowProgressBar = false;
+      this._bottomSheetRef.dismiss(this.data);
+    }
+  }
+  EditSupplier(EditedObj: FormDefs) {
+    //If not updated close the bottomsheet
+    // if (!this.ClientValidaiton.isUpdated(this.data.dataToEdit, EditedObj.form)) {
+    //   this._bottomSheetRef.dismiss(this.data);
+    //   return;
+    // }
     this.spinner.fullScreenSpinnerForForm();
-
-    if (this.data)
-      if (!this.ClientValidaiton.isUnique(
-        this.data.data, this.Constants.businessName, formDefs.form.get(this.Constants.businessName)?.value)) {
-        this.spinner.removeSpinner();
-        this.ClientValidaiton.notUniqueNotification_Swal(this.Constants.businessName);
-        this.data.ShowBrogressBar = false;
-        return;
-      }
-
-    this.SuppliersService.AddNewSupplier(newSupplier).subscribe({
-      next: (r) => {
-        if (this.data) {
-          this.data.data.push(r);
-          this.data.SelectedRows = [];
-          this.data.SelectedRows.push(r);
-          this.data.addedRow = r;
-          this.data.dataSource.data = this.data.data;
-        }
-        this.spinner.removeSpinner();
-        this.ServerResponseHandler.DatatAddition_Success_Swal();
-        setTimeout(() => {
-          this.data.dataSource.paginator?.lastPage();
-        }, 500);
-        this.AddNew.reset();
-        this.AddNew.get(this.Constants.openingBalance)?.setValue(0);
-        this.AddNew.get(this.Constants.openingBalanceDate)?.setValue(new Date());
-        this.AddNew.get(this.Constants.currencyId)?.setValue(this.GeneralsService.CurrenctCurrencyId);
-        this.AddNew.get(this.Constants.countryId)?.setValue(this.GeneralsService.GetCountryId_by_countryCode());
-        this.AddNew.clearValidators();
+    if (!(this.ClientValidaiton.isUnique(this.data.Array, this.Constants.businessName, this.Edit.get(this.Constants.businessName)?.value, this.data.dataToEdit.id))) {
+      this.spinner.removeSpinner();
+      this.ClientValidaiton.notUniqueNotification_Swal(this.Constants.businessName);
+      this.ClientValidaiton.refillForm(this.data.dataToEdit, EditedObj.form)
+      return;
+    }
+    let UpdatedItem: Suppliers = { ...this.data.dataToEdit };
+    this.ClientValidaiton.FillObjectFromForm(UpdatedItem, EditedObj.form);
+    UpdatedItem.currency = this.GeneralsService.Currencies.find((x) => x.id === UpdatedItem.currencyId)?.currencyCode!;
+    UpdatedItem.countryName = this.GeneralsService.Country.find((x) => x.id === UpdatedItem.countryId)?.countryName!;
+    UpdatedItem.countryNameCode = this.GeneralsService.Country.find((x) => x.id === UpdatedItem.countryId)?.countryNameCode!;
+    UpdatedItem.subdomain = this.Subdomain;
+    this.SuppliersService.UpdateSupplier(UpdatedItem).subscribe({
+      next: r => {
+        if (r.status)
+          if (r.status !== this.Constants.SameObject) {
+            this.spinner.removeSpinner();
+            this.ServerResponseHandler.GeneralSuccessResponse_Swal(r);
+            // this.data.dataToEdit = { ...UpdatedItem };
+            let oldBalance = this.data.dataToEdit.balance;
+            let oldOpeningBalance = this.data.dataToEdit.openingBalance;
+            this.ClientValidaiton.FillObjectFromAnotherObject(this.data.dataToEdit, UpdatedItem);
+            this.data.dataToEdit.balance = (oldBalance - oldOpeningBalance) + UpdatedItem.openingBalance;
+          }
+        this.data.ShowProgressBar = false;
+        this._bottomSheetRef.dismiss(this.data);
       },
-      error: (e) => {
+      error: e => {
         this.spinner.removeSpinner();
-        this.ClientValidaiton.refillForm(newSupplier, this.FormBuilder.form);
+        this.ClientValidaiton.refillForm(this.data.dataToEdit, EditedObj.form);
         let x: MaxMinLengthValidation[] = [
           { prop: this.Constants.businessName, maxLength: this.Constants.MaxLength50 },
           { prop: this.Constants.firstName, maxLength: this.Constants.MaxLength30 },
@@ -442,14 +432,7 @@ export class AddNewSupplierComponent implements OnInit {
           { prop: this.Constants.cr, maxLength: this.Constants.MaxLength30 },
         ];
         this.ServerResponseHandler.GetErrorNotification_swal(e, x);
-      },
+      }
     });
-    this.data.ShowBrogressBar = false;
-  }
-  CloseBottomSheet(event: boolean) {
-    if (event) {
-      this.data.ShowBrogressBar = false;
-      this._bottomSheetRef.dismiss(this.data);
-    }
   }
 }
