@@ -419,8 +419,55 @@ namespace ERP.Data
                 .HasOne(x => x.InventoryAddress)
                 .WithOne(x => x.Inventories)
                 .HasForeignKey<InventoryAddress>(x => x.InventoriesId);
-           
-          
+
+            builder.Entity<Item>()
+                  .HasMany(x => x.ItemVariants)
+                  .WithOne(x => x.Item); 
+            builder.Entity<ItemMainCategory>()
+                  .HasMany(x => x.ItemSubCategory)
+                  .WithOne(x => x.ItemMainCategory);
+                  
+            builder.Entity<Item>()
+                  .HasOne(x => x.ItemNotes)
+                  .WithOne(x => x.Item)
+                  .HasForeignKey<ItemNotes>(x => x.ItemId);
+            builder.Entity<Item>()
+                .HasOne(x => x.ItemDescription)
+                .WithOne(x => x.Item)
+                .HasForeignKey<ItemDescription>(x => x.ItemId);
+
+            builder.Entity<Item_Units>()
+                .HasKey(bc => new { bc.ItemId, bc.UnitsId });
+            builder.Entity<Item_Units>()
+                .HasOne(bc => bc.Item)
+                .WithMany(b => b.Item_Units)
+                .HasForeignKey(bc => bc.ItemId);
+            builder.Entity<Item_Units>()
+                .HasOne(bc => bc.Units)
+                .WithMany(c => c.Item_Units)
+                .HasForeignKey(bc => bc.UnitsId);
+
+            builder.Entity<Item_Per_Subcategory>()
+                .HasKey(bc => new { bc.ItemId, bc.ItemSubCategoryId });
+            builder.Entity<Item_Per_Subcategory>()
+                .HasOne(bc => bc.Item)
+                .WithMany(b => b.Item_Per_Subcategory)
+                .HasForeignKey(bc => bc.ItemId);
+            builder.Entity<Item_Per_Subcategory>()
+                .HasOne(bc => bc.ItemSubCategory)
+                .WithMany(c => c.Item_Per_Subcategory)
+                .HasForeignKey(bc => bc.ItemSubCategoryId);
+
+            builder.Entity<ItemBrands>()
+                .HasKey(bc => new { bc.ItemId, bc.BrandsId });
+            builder.Entity<ItemBrands>()
+                .HasOne(bc => bc.Item)
+                .WithMany(b => b.ItemBrands)
+                .HasForeignKey(bc => bc.ItemId);
+            builder.Entity<ItemBrands>()
+                .HasOne(bc => bc.Brands)
+                .WithMany(c => c.ItemBrands)
+                .HasForeignKey(bc => bc.BrandsId);
 
             builder.Entity<ApplicationUser>()
                    .HasIndex(u => u.Email)

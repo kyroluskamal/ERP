@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ERP.Models.Items
@@ -21,9 +24,18 @@ namespace ERP.Models.Items
         public bool HasSpecialOffer { get; set; }
         [Column(TypeName = "bit")]
         public bool HasNote { get; set; }
-        
-        [Required(ErrorMessage = "Required_field")]
-        public int AddByUserId { get; set; }
-
+        [DataType(DataType.Date)]
+        [Column(TypeName = "Date")]
+        public DateTime DateCreated { get; set; }
+        [ForeignKey(nameof(AddedBy_UserId))]
+        public virtual ApplicationUser ApplicationUser { get; set; }
+        public int? AddedBy_UserId { get; set; } //Not Required temporary
+        public string AddedBy_UserName { get; set; }
+        public ICollection<ItemVariants> ItemVariants { get; set; }
+        public virtual ItemNotes ItemNotes { get; set; }
+        public virtual ItemDescription ItemDescription { get; set; }
+        public ICollection<Item_Units> Item_Units { get; set; }
+        public ICollection<ItemBrands> ItemBrands { get; set; }
+        public ICollection<Item_Per_Subcategory> Item_Per_Subcategory { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ERP.Models.Items
@@ -11,5 +12,6 @@ namespace ERP.Models.Items
         public string Name { get; set; }
         [NotMapped]
         public string Subdomain { get; set; }
+        public ICollection<ItemSubCategory> ItemSubCategory { get; set; }
     }
 }

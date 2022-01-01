@@ -38,16 +38,18 @@ import { AddNewSupplierComponent } from './Components/Dashboard/Suppliers/add-ne
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { EditSupplierComponent } from './Components/Dashboard/Suppliers/edit-supplier/edit-supplier.component';
 
+
 const Commponents = [MatCardTitleOnlyComponent,
   ClientAppDashboardComponent, ClientAppHomeNavbarComponent, CLientAppHomeComponent,
   ClientDashboardHomeComponent, BadgeComponent, GenericTableComponent, GenericFormComponent,
   ItemMainCategoriesComponent, ItemsComponentComponent, IconButtonRendererComponent,
   SelectableEditroAgFramweworkComponent, ItemUnitsComponent, NumberCellEditorComponent,
   ItemBrandsComponent, RegisterOnAppComponent, AddNewItemComponent, InventoriesComponent,
-  EditInventoryComponent, StylePaginatorDirective, AddInventAddressComponent,
-  EditInventAddressComponent, AddNewInventoryComponent, SuppliersComponent]
+  EditInventoryComponent, StylePaginatorDirective, AddInventAddressComponent, EditInventAddressComponent,
+  AddNewInventoryComponent, SuppliersComponent,
+  AddNewSupplierComponent, EditSupplierComponent]
 @NgModule({
-  declarations: [Commponents, AddNewSupplierComponent, EditSupplierComponent],
+  declarations: [Commponents],
   imports: [BreadcrumbModule, SweetAlert2Module, NgxSpinnerModule,
     SharedModule, MaterialModule, ClientAppRoutingModule, CommonModule, AppRoutingModule,
     BrowserAnimationsModule,

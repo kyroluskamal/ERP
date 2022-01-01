@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators, } from '@angular/forms';
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from 'src/CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
-import { CardTitle, DataToEdit_PassToBottomSheet, FormDefs, MatBottomSheetDismissData, MaxMinLengthValidation, SelectedDataTransfer } from 'src/Interfaces/interfaces';
+import { CardTitle, DataToEdit_PassToBottomSheet, FormDefs, MaxMinLengthValidation, SelectedDataTransfer } from 'src/Interfaces/interfaces';
 import { MatBottomSheet, MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA, } from '@angular/material/bottom-sheet';
 import { faEnvelope, faMobileAlt, faPhone, faPenAlt, faEdit, faCheckCircle, faTimesCircle, faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
 import { ServerResponseHandelerService } from 'src/CommonServices/server-response-handeler.service';
@@ -12,7 +12,6 @@ import { GeneralsService } from '../../Generals/generals.service';
 import { Suppliers } from '../../Models/supplier.model';
 import { SuppliersService } from '../suppliers.service';
 import { SpinnerService } from 'src/CommonServices/spinner.service';
-import { CustomValidators } from 'src/Helpers/CustomValidation/custom-validators';
 @Component({
   selector: 'app-edit-supplier',
   templateUrl: './edit-supplier.component.html',
@@ -77,7 +76,7 @@ export class EditSupplierComponent implements OnInit {
       Form_fxLayout: 'row wrap',
       Form_fxLayoutAlign: 'space-between',
       Button_GoogleIcon: 'add_circle',
-      ButtonText: [this.Constants.Add, this.Constants.Supplier_Singular],
+      ButtonText: [this.Constants.Save],
       formSections: [
         {
           fxFlex: '49%',
@@ -389,10 +388,11 @@ export class EditSupplierComponent implements OnInit {
   }
   EditSupplier(EditedObj: FormDefs) {
     //If not updated close the bottomsheet
-    // if (!this.ClientValidaiton.isUpdated(this.data.dataToEdit, EditedObj.form)) {
-    //   this._bottomSheetRef.dismiss(this.data);
-    //   return;
-    // }
+    if (!this.ClientValidaiton.isUpdated(this.data.dataToEdit, EditedObj.form)) {
+      this.data.ShowProgressBar = false;
+      this._bottomSheetRef.dismiss(this.data);
+      return;
+    }
     this.spinner.fullScreenSpinnerForForm();
     if (!(this.ClientValidaiton.isUnique(this.data.Array, this.Constants.businessName, this.Edit.get(this.Constants.businessName)?.value, this.data.dataToEdit.id))) {
       this.spinner.removeSpinner();

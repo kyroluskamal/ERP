@@ -1,4 +1,5 @@
 ﻿using ERP.Utilities;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -28,5 +29,6 @@ namespace ERP.Models.Items
         public int ConversionRate { get; set; }
         [NotMapped]
         public string Subdomain { get; set; }
+        public ICollection<Item_Units> Item_Units { get; set; }
     }
 }

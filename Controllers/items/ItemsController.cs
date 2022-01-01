@@ -333,7 +333,7 @@ namespace ERP.Controllers.items
             return BadRequest(Constants.HackTrying_Error_Response());
         }
         #endregion
-        //[ValidateAntiForgeryToken]
+
         #region Units Functions
         //Get all Units
         [HttpGet("AllItemUnits")]
@@ -607,7 +607,34 @@ namespace ERP.Controllers.items
 
 
         #endregion
-        //HelperMedthod
+
+        #region Items functions
+
+        [HttpGet(nameof(GetAllItems))]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<List<Inventories>>> GetAllItems(string subomain)
+        {
+            if (CheckManuallyChanged_Subdomain(subomain))
+            {
+                var tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(subomain);
+                if (tenant != null)
+                {
+                    await UserUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
+                    var inventories = await UserUnitOfWork.Inventories.GetAllAsync();
+                    foreach (var invent in inventories)
+                    {
+                        invent.InventoryAddress = await UserUnitOfWork.InventoryAddress.GetFirstOrDefaultAsync(x => x.InventoriesId == invent.Id);
+                    }
+                    return inventories;
+                }
+                return BadRequest(Constants.NullTentant_Error_Response());
+            }
+            return BadRequest(Constants.HackTrying_Error_Response());
+        }
+
+        #endregion
+
+        //HelperMedthod       
         private bool CheckManuallyChanged_Subdomain(string subdomain)
         {
             return subdomain == HttpContext.Request.Host.Host.Split('.')[0];

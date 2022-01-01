@@ -8,7 +8,7 @@ import { CardTitle, FormDefs, MatBottomSheetDismissData, SelectedDataTransfer, T
 import { LightDarkThemeConverterService } from 'src/Client/ClientApp/Components/Dashboard/light-dark-theme-converter.service';
 import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { ComponentType } from '@angular/cdk/portal';
-import { FormControl } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'kiko-form',
@@ -36,7 +36,7 @@ export class GenericFormComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() BottomSheetDismissed: EventEmitter<boolean> = new EventEmitter();
 
   constructor(private _bottomSheetRef: MatBottomSheetRef<any>,
-    public Constants: ConstantsService, private componentFactoryResolver: ComponentFactoryResolver,
+    public Constants: ConstantsService,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
     private LightOrDarkConverter: LightDarkThemeConverterService, private bottomSheet: MatBottomSheet
   ) {
@@ -132,5 +132,8 @@ export class GenericFormComponent implements OnInit, OnChanges, AfterViewInit {
     //     this.FormSpec.form.get(formContolName)?.setValue(fileByteArray);
     //   }
     // }
+  }
+  formArray(formArrayName: string): FormArray {
+    return this.FormSpec.form.get(formArrayName) as FormArray
   }
 }

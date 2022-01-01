@@ -79,6 +79,11 @@ export class FormFields {
   SelectionText_IfNoData?: string = "";
   SelectionBottomSheetComponent?: ComponentType<unknown>;
   UploadInputText?: CardTitle[] = [];
+  displayedColumns?: string[] = [];
+  columns?: ColDefs[] = [];
+  formArrayName?: string = "";
+  dataSource?: MatTableDataSource<any>;
+  formFields?: FormFields[] = [];
 }
 export class MatFormHint {
   text_no_translation?: string = "";

@@ -19,6 +19,7 @@ import { ClientAppModule } from 'src/Client/ClientApp/client-app.module';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgxSpinnerModule } from 'ngx-spinner';
+
 @NgModule({
   declarations: [
     AppComponent, NotFoundComponent, CommoneResetPasswordComponent,

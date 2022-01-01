@@ -30,5 +30,7 @@ namespace ERP.Models.Items
         public bool HasWholeSalePrice { get; set; }
         [Column(TypeName = "bit")]
         public bool HasRetailPrice { get; set; }
+        public virtual ItemVariant_WholeSalePrice ItemVariant_WholeSalePrice { get; set; }
+        public virtual ItemsVariant_RetailPrice ItemsVariant_RetailPrice { get; set; }
     }
 }
