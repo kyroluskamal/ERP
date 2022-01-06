@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace ERP.UnitOfWork.Repository.ApplicationUser
 {
-    public class OwnerRepositoryAsync<T> : IRepositoryAsync<T> where T : class
+    public class ApplicationUserRepositoryAsync<T> : IRepositoryAsync<T> where T : class
     {
 
         private readonly ApplicationDbContext ApplicationDbContext;
         internal DbSet<T> dbSet;
 
-        public OwnerRepositoryAsync(ApplicationDbContext applicationDbContext)
+        public ApplicationUserRepositoryAsync(ApplicationDbContext applicationDbContext)
         {
             ApplicationDbContext = applicationDbContext;
             this.dbSet = ApplicationDbContext.Set<T>();

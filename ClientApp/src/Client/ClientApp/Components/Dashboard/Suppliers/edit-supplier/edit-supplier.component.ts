@@ -59,7 +59,7 @@ export class EditSupplierComponent implements OnInit {
       cr: new FormControl(this.data.dataToEdit.cr, [Validators.maxLength(this.Constants.MaxLength30)]),
       email: new FormControl(this.data.dataToEdit.email, [Validators.pattern(this.Constants.EmailRegex)]),
       openingBalanceDate: new FormControl(this.data.dataToEdit.openingBalanceDate, [Validators.required, Validators.min(this.Constants.MinZero)]),
-      openingBalance: new FormControl(this.data.dataToEdit.openingBalance, [Validators.required, Validators.pattern("[0-9]+(\.[0-9]+)?")]),
+      openingBalance: new FormControl(this.data.dataToEdit.openingBalance, [Validators.required, Validators.pattern(this.Constants.DecimalNumber_Regex_Start0)]),
       notes: new FormControl(this.data.dataToEdit.notes),
       currencyId: new FormControl(this.data.dataToEdit.currencyId, [Validators.required]),
       countryId: new FormControl(this.data.dataToEdit.countryId, [Validators.required]),

@@ -1,0 +1,22 @@
+<div fxLayout="column"
+     fxLayoutGap="16px">
+    <mat-card-title-only [Title]="Title"
+                         [Subtitle]="Subtitle"></mat-card-title-only>
+    <kiko-table [columns]="columns"
+                [data]="AllItems"
+                [datasource]="dataSource"
+                [isLoadingResults]="isLoadingResults"
+                [ShowProgressBar]="ShowProgressBar"
+                [NoData]="AllItems.length===0 && !isLoadingResults"
+                (DeleteClick)="Delete($event)"
+                (DoubleClickRow)="Edit($event)"
+                (rowsSelection)="SelectRow($event)"
+                (EditClick)="Edit($event)"
+                [AddedRow]="AddedRow"
+                PreventDeleteForValue="0"
+                PreventDeleteForKey="id"
+                [RowDeleted]="RowDeleted"
+                (ClickAddButton)="AddNew($event)"
+                [ToolTipText_input]="translate.GetTranslation(this.Constants.Add.toLowerCase()) + ' ' + translate.GetTranslation(this.Constants.Unit.toLowerCase())">
+    </kiko-table>
+</div>

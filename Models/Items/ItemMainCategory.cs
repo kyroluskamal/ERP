@@ -13,5 +13,6 @@ namespace ERP.Models.Items
         [NotMapped]
         public string Subdomain { get; set; }
         public ICollection<ItemSubCategory> ItemSubCategory { get; set; }
+        public ICollection<Item_Per_MainCategory> Item_Per_Subcategory { get; set; }
     }
 }

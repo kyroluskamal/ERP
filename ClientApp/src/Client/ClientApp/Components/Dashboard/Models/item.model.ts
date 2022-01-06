@@ -2,21 +2,42 @@ import { TaxSettings } from "./generals.model";
 
 let subdomain = window.location.hostname.split(".")[0];
 
-export class ItemSubCategory {
-  id?: number = 0;
+export class ItemSubCategory
+{
+  id: number = 0;
   name: string = "";
   itemMainCategoryId: number = 0;
   ItemMainCategory: ItemMainCategory = new ItemMainCategory();
   subdomain: string = subdomain;
 }
 
-export class ItemMainCategory {
+export class Item_Per_MainCategory
+{
+  itemMainCategory: ItemMainCategory = new ItemMainCategory();
+  itemMainCategoryId: number = 0;
+  item: Item = new Item();
+  itemId: number = 0;
+}
+export class ItemMainCategory
+{
   id: number = 0;
   name: string = "";
+  itemSubCategory: ItemSubCategory[] = [];
   subdomain: string = subdomain;
 }
 
-export class ItemUnit {
+
+export class Item_per_MainCategory_Per_SubCategory
+{
+  item_Per_MainCategory: Item_Per_MainCategory = new Item_Per_MainCategory();
+  itemMainCategoryId: number = 0;
+  itemId: number = 0;
+  itemSubCategory: ItemSubCategory = new ItemSubCategory();
+  itemSubCategoryId: number = 0;
+}
+
+export class ItemUnit
+{
   id: number = 0;
   wholeSaleUnit: string = "";
   retailUnit: string = "";
@@ -24,15 +45,16 @@ export class ItemUnit {
   numberInRetailSale: number = 0;
   conversionRate: number = this.numberInRetailSale * this.numberInWholeSale;
   subdomain: string = subdomain;
-
 }
 
-export class Brands {
+export class Brands
+{
   id: number = 0;
   name: string = "";
   subdomain: string = subdomain;
 }
-export class Item {
+export class Item
+{
   id: number = 0;
   defaultInventoryId: number = 0;
   name: string = "";
@@ -45,7 +67,8 @@ export class Item {
 }
 
 
-export class ItemVariants {
+export class ItemVariants
+{
   id: number = 0;
   name: string = "";
   notifyLessThan: number = 0;
@@ -60,7 +83,8 @@ export class ItemVariants {
   hasWholeSalePrice: boolean = false;
   hasRetailPrice: boolean = false;
 }
-export class ItemsVariant_RetailPrice {
+export class ItemsVariant_RetailPrice
+{
   id: number = 0;
   retailPrice: number = 0;
   minRetailPrice: number = 0;
@@ -70,7 +94,8 @@ export class ItemsVariant_RetailPrice {
   itemVariantsId: number = 0;
 }
 
-export class ItemVariant_WholeSalePrice {
+export class ItemVariant_WholeSalePrice
+{
   id: number = 0;
   wholeSalePrice: number = 0;
   minWholeSalePrice: number = 0;
@@ -80,7 +105,8 @@ export class ItemVariant_WholeSalePrice {
   itemVariantsId: number = 0;
 }
 
-export class ItemTaxSettings {
+export class ItemTaxSettings
+{
   id: number = 0;
   item: Item = new Item();
   itemId: number = 0;

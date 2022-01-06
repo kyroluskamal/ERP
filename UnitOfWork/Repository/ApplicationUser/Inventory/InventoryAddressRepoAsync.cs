@@ -4,7 +4,7 @@ using ERP.UnitOfWork.IRepository.ApplicationUser.Inventory;
 
 namespace ERP.UnitOfWork.Repository.ApplicationUser.Inventory
 {
-    public class InventoryAddressRepoAsync : OwnerRepositoryAsync<InventoryAddress>, IInventoryAddressRepoAsync
+    public class InventoryAddressRepoAsync : ApplicationUserRepositoryAsync<InventoryAddress>, IInventoryAddressRepoAsync
     {
         private readonly ApplicationDbContext applicationDbContext;
 

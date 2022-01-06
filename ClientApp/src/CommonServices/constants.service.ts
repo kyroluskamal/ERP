@@ -7,7 +7,8 @@ import { TranslationService } from './translation-service.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ConstantsService {
+export class ConstantsService
+{
 
   constructor() { }
 
@@ -35,18 +36,18 @@ export class ConstantsService {
   MainCatName = "MainCatName";
   SubCatName = "SubCatName";
   Add = "Add";
-  New = "New"
+  New = "New";
   Sub_Categories_Singular = "Sub_Categories_Singular";
   MainCat_Singular = "MainCat_Singular";
-  WholeSaleUnit = "Wholesale Unit";
+  wholeSaleUnit = "wholeSaleUnit";
   Delete = "Delete";
   Name = "Name";
-  RetailUnit = "Retail Unit";
-  NumberInWholeSale = "Number in wholesale";
-  NumberInRetailSale = "Number in Retail Sale";
-  ConversionRate = "Conversion Rate";
+  retailUnit = "retailUnit";
+  numberInWholeSale = "numberInWholeSale";
+  numberInRetailSale = "numberInRetailSale";
+  conversionRate = "conversionRate";
   Unit = "Unit";
-  Units = "Units"
+  Units = "Units";
   Brand_Name_Singular = "Brand_Name_Singular";
   Brand_Names = "Brand_Names";
   Products = "Products";
@@ -84,7 +85,7 @@ export class ConstantsService {
   Warehouses = "Warehouses";
   Warehouse_Singular = "Warehouse_Singular";
   Notes = "notes";
-  WarehouseName = "warehousename";
+  WarehouseName = "warehouseName";
   TelephoneNumber = "telephone";
   CellPhoneNumber = "mobilePhone";
   Active = "Active";
@@ -111,7 +112,7 @@ export class ConstantsService {
   Save = "Save";
   city = "city";
   government = "government";
-  Flat_No = "Flat_No"
+  Flat_No = "Flat_No";
   InventoryAddress = "InventoryAddress";
   St = "St";
   confirm = "confirm";
@@ -125,7 +126,7 @@ export class ConstantsService {
   CountryNameCode = "countryNameCode";
   NoMatchedData_inSelection = "NoMatchedData_inSelection";
   Suppliers = "Suppliers";
-  SupplierDetails = "SupplierDetails"
+  SupplierDetails = "SupplierDetails";
   firstName = "firstName";
   lastName = "lastName";
   taxID = "taxID";
@@ -141,13 +142,16 @@ export class ConstantsService {
   currencyId = "currencyId";
   countryId = "countryId";
   MinZero = 0;
+  Min1 = 1;
+  DeleteMainCatWarning = "DeleteMainCatWarning";
+  DeleteSubCatWarning = "DeleteSubCatWarning";
   //Notifications Messages
   LoggedInSuccessfully: string = "LoggedInSuccessfully";
   EmilConfirmationResnding = "EmilConfirmationResnding";
   EmilConfirmationResnding_success = "EmilConfirmationResnding_success";
   PasswordResetEmail_success = "PasswordResetEmail_success";
-  EmilConfirmationResnding_Error = "EmilConfirmationResnding_Error"
-  PasswordResetEmail_Error = "PasswordResetEmail_Error;"
+  EmilConfirmationResnding_Error = "EmilConfirmationResnding_Error";
+  PasswordResetEmail_Error = "PasswordResetEmail_Error;";
   ResetPassword_Error = "ResetPassword_Error";
   ResetPassword_Success = "ResetPassword_Success";
   BrowserDontSupportFullscreen = "BrowserDon'tSupportFullscreen";
@@ -163,8 +167,10 @@ export class ConstantsService {
   Data_SAVED_ERROR_status = "Data_SAVE_ERROR";
   MainCatNameIsRequired = "MainCatNameIsRequired";
   Sub_CatNameIsRequired = "Sub_CatNameIsRequired";
-  UnCategorized_Can_tDeleted_Or_Updated = "UnCategorized_Can'tDeleted_Or_Updated";
+  delete_default_Main_cat = "delete_default_Main_cat";
+  delete_default_Sub_cat = "delete_default_Sub_cat";
   Uncategorized = "Uncategorized";
+  default_subcategory = "Default Subcategory";
   HackTrying_Error = "HackTrying_Error";
   Unique_Field_ERROR = "Unique_Field_ERROR";
   Model_state_errors = "One or more validation errors occurred.";
@@ -194,9 +200,18 @@ export class ConstantsService {
   MaxLength50 = 50;
   MaxLength40 = 40;
   MaxLength10 = 10;
+  MinLength0 = 0;
+  MinLength1 = 1;
   PhoneRegex: RegExp = /\+?(\(?[0-9]+\)?)?[0-9]+\s?((x|ext)[0-9]+)?/;
   EmailRegex: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+/;
+  DecimalNumber_Regex_Start0: RegExp = /[0-9]+(\.[0-9]+)?/;
+  IntNumberRegex_start1: RegExp = /[1-9][0-9]*/;
+  NaN_regex: RegExp = /[a-zA-Z]+/;
   ChooseImage = "ChooseImage";
+  NaN = "NaN";
+  itemMainCategoryId = "itemMainCategoryId";
+  add_new_maincat = "add_new_maincat";
+  add_new_subcat = "add_new_subcat";
   //Tooltip translation
   CloseSidebar = "Close sidebar";
   FixSidebar = "Fix sidebar";
@@ -215,7 +230,7 @@ export class ConstantsService {
 
   //Interceptor Notigication translations
   PleaseCorrectErrors = "PleaseCorrectErrors";
-  Something_nexpected_went_wrong = "Something unexpected went wrong"
+  Something_nexpected_went_wrong = "Something unexpected went wrong";
 
   PleaseCorrectErrors_En = "Please correct the errors and try again";
   Something_nexpected_went_wrong_EN = "Something unexpected went wrong";
@@ -250,13 +265,14 @@ export class ConstantsService {
   Unique_SubCat_Per_MainCat_ERROR_Message_AR = "لايمكن تكرار نفس التصنيف الفرعي داخل نفس التصنيف الرئيسي. اضف قيماً فريدة.";
 
   NotSelected_MainCat_Message_EN = "Please, select a Main category from the Main categories table";
-  NotSelected_MainCat_Message_Ar = "اختار التصنيف الرئيسي اولا من جدول التصنيفات الرئيسية"
+  NotSelected_MainCat_Message_Ar = "اختار التصنيف الرئيسي اولا من جدول التصنيفات الرئيسية";
 
   //ValidatioErrorMessages
 
 
   //Static Functions
-  ClientUrl(url: string): string {
+  ClientUrl(url: string): string
+  {
     return "https://" + window.location.host + "/" + url;
   }
 
@@ -377,7 +393,7 @@ export class ConstantsService {
   CSS_teal = "teal";
 
   CSS_dark_color = "dark-color";
-  CSS_light_color = "light-color"
+  CSS_light_color = "light-color";
 
   CSS_dark_for_Child_Component = "dark-for-Child-Component";
   CSS_Light_for_Child_Component = "Light-for-Child-Component";
@@ -387,7 +403,7 @@ export class ConstantsService {
   CSS_LightTableBg = "LightTableBg";
 
   CSS_table_container = "table-container";
-  CSS_table_outer_Container = "table-outer-container"
+  CSS_table_outer_Container = "table-outer-container";
   CSS_loading_shade = "loading-shade";
   CSS_badge_dark = "badge-dark";
   CSS_badge_light = "badge-light";

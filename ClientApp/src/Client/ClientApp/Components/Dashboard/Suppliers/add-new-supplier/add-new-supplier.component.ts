@@ -61,7 +61,7 @@ export class AddNewSupplierComponent implements OnInit {
       cr: new FormControl(null, [Validators.maxLength(this.Constants.MaxLength30)]),
       email: new FormControl(null, [Validators.pattern(this.Constants.EmailRegex)]),
       openingBalanceDate: new FormControl(new Date(), [Validators.required, Validators.min(this.Constants.MinZero)]),
-      openingBalance: new FormControl(0.0, [Validators.required, Validators.pattern("[0-9]+(\.[0-9]+)?")]),
+      openingBalance: new FormControl(0.0, [Validators.required, Validators.pattern(this.Constants.DecimalNumber_Regex_Start0)]),
       notes: new FormControl(null),
       currencyId: new FormControl(this.GeneralsService.CurrenctCurrencyId, [Validators.required]),
       countryId: new FormControl(this.GeneralsService.GetCountryId_by_countryCode(), [Validators.required]),

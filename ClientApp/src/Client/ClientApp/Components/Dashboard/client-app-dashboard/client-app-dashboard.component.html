@@ -47,7 +47,7 @@
                       *ngIf="item.faIcon">
               <fa-icon [icon]="item.faIcon"></fa-icon>
             </mat-icon>
-            <span [class]="Display">{{item.title |translate}}</span>
+            <span [class]="Display">{{item.title.toLowerCase()|translate}}</span>
           </mat-panel-title>
 
 
@@ -57,7 +57,7 @@
         <a *ngFor="let link of item.links let x = index"
            [style.fontFamily]="(translate.isRightToLeft(translate.GetCurrentLang())) ? 'Calibri !important': 'inherit'"
            [routerLink]="link.link"
-           [ngClass]="{expansionIsExpanded:link.state}">{{link.LinkText | translate}}</a>
+           [ngClass]="{expansionIsExpanded:link.state}">{{link.LinkText.toLowerCase() | translate}}</a>
 
       </mat-expansion-panel>
     </mat-accordion>
@@ -161,7 +161,7 @@
                                  [formControl]="DocumentDirection">
           <mat-button-toggle value="ltr"
                              disableRipple
-                             [matTooltip]="translate.GetTranslation(Constants.Layout_LTR)"
+                             [matTooltip]="Constants.Layout_LTR|translate"
                              [matTooltipPosition]="dir==='ltr'?'right':'left'"
                              [matTooltipClass]="Constants.CSS_Dashboard_ToolTip">
             <mat-icon class="mat-18"><span class="material-icons-outlined">
@@ -170,7 +170,7 @@
           </mat-button-toggle>
           <mat-button-toggle value="rtl"
                              disableRipple
-                             [matTooltip]="translate.GetTranslation(Constants.Layout_RTL)"
+                             [matTooltip]="Constants.Layout_RTL|translate"
                              [matTooltipPosition]="dir==='ltr'?'right':'left'"
                              [matTooltipClass]="Constants.CSS_Dashboard_ToolTip">
             <mat-icon class="mat-18"><span class="material-icons-outlined">
@@ -189,7 +189,7 @@
                                  [formControl]="agGridTableDirection">
           <mat-button-toggle value="ltr"
                              disableRipple
-                             [matTooltip]="translate.GetTranslation(Constants.Table_LTR)"
+                             [matTooltip]="Constants.Table_LTR|translate"
                              [matTooltipPosition]="dir==='ltr'?'right':'left'"
                              [matTooltipClass]="Constants.CSS_Dashboard_ToolTip">
             <mat-icon class="mat-18"><span class="material-icons-outlined">
@@ -198,7 +198,7 @@
           </mat-button-toggle>
           <mat-button-toggle value="rtl"
                              disableRipple
-                             [matTooltip]="translate.GetTranslation(Constants.Table_RTL)"
+                             [matTooltip]="Constants.Table_RTL|translate"
                              [matTooltipPosition]="dir==='ltr'?'right':'left'"
                              [matTooltipClass]="Constants.CSS_Dashboard_ToolTip">
             <mat-icon class="mat-18"><span class="material-icons-outlined">

@@ -556,12 +556,12 @@ Constants.CSS_text_white"
         <mat-icon>
           <mat-spinner diameter="20"
                        color="warn"
-                       *ngIf="loading"></mat-spinner><span *ngIf="loading"
+                       *ngIf="loading"></mat-spinner><span *ngIf="!loading"
                 class="material-icons-outlined">
             <fa-icon *ngIf="FormSpec.Button_faIcon&&!FormSpec.Button_GoogleIcon"
                      [icon]="FormSpec.Button_faIcon"></fa-icon>
             <span class="material-icons"
-                  *ngIf="FormSpec.Button_GoogleIcon&&!FormSpec.Button_faIcon">
+                  *ngIf="!FormSpec.Button_faIcon&&FormSpec.Button_GoogleIcon">
               {{FormSpec.Button_GoogleIcon}}
             </span>
           </span>

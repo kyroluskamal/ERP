@@ -112,7 +112,6 @@ namespace ERP.Data
         public DbSet<ItemVariants> ItemVariants { get; set; }
         public DbSet<ItemTaxSettings> ItemTaxSettings { get; set; }
         public DbSet<Units> Units { get; set; }
-        public DbSet<Item_Per_Subcategory> Item_Per_Subcategories { get; set; }
         public DbSet<Items_CustomFields> Items_CustomFields { get; set; }
         #endregion
 
@@ -423,10 +422,31 @@ namespace ERP.Data
             builder.Entity<Item>()
                   .HasMany(x => x.ItemVariants)
                   .WithOne(x => x.Item); 
+            builder.Entity<ItemVariants>()
+                  .HasOne(x => x.ItemVariant_WholeSalePrice)
+                  .WithOne(x => x.ItemVariants)
+                  .HasForeignKey<ItemVariant_WholeSalePrice>(x=>x.ItemVariantsId); 
+            builder.Entity<ItemVariants>()
+                  .HasOne(x => x.ItemsVariant_RetailPrice)
+                  .WithOne(x => x.ItemVariants)
+                  .HasForeignKey<ItemsVariant_RetailPrice>(x=>x.ItemVariantsId); 
+            
             builder.Entity<ItemMainCategory>()
                   .HasMany(x => x.ItemSubCategory)
                   .WithOne(x => x.ItemMainCategory);
-                  
+            
+            builder.Entity<ItemSubCategory>()
+                  .HasMany(x => x.Item_per_MainCategory_Per_SubCategory)
+                  .WithOne(x => x.ItemSubCategory)
+                  .HasForeignKey(x=>x.ItemSubCategoryId);
+
+            builder.Entity<Item_per_MainCategory_Per_SubCategory>()
+                .HasKey(x => new
+                {
+                    x.ItemId,
+                    x.ItemMainCategoryId
+                });
+
             builder.Entity<Item>()
                   .HasOne(x => x.ItemNotes)
                   .WithOne(x => x.Item)
@@ -447,16 +467,16 @@ namespace ERP.Data
                 .WithMany(c => c.Item_Units)
                 .HasForeignKey(bc => bc.UnitsId);
 
-            builder.Entity<Item_Per_Subcategory>()
-                .HasKey(bc => new { bc.ItemId, bc.ItemSubCategoryId });
-            builder.Entity<Item_Per_Subcategory>()
+            builder.Entity<Item_Per_MainCategory>()
+                .HasKey(bc => new { bc.ItemId, bc.ItemMainCategoryId });
+            builder.Entity<Item_Per_MainCategory>()
                 .HasOne(bc => bc.Item)
                 .WithMany(b => b.Item_Per_Subcategory)
                 .HasForeignKey(bc => bc.ItemId);
-            builder.Entity<Item_Per_Subcategory>()
-                .HasOne(bc => bc.ItemSubCategory)
+            builder.Entity<Item_Per_MainCategory>()
+                .HasOne(bc => bc.ItemMainCategory)
                 .WithMany(c => c.Item_Per_Subcategory)
-                .HasForeignKey(bc => bc.ItemSubCategoryId);
+                .HasForeignKey(bc => bc.ItemMainCategoryId);
 
             builder.Entity<ItemBrands>()
                 .HasKey(bc => new { bc.ItemId, bc.BrandsId });

@@ -1,0 +1,60 @@
+<div fxLayout="row"
+     fxLayout.xs="column"
+     fxLayoutGap="16px">
+    <div fxLayout="column"
+         fxLayoutGap="16px"
+         fxFlex="49%"
+         fxFlex.xs="100%">
+        <mat-card-title-only [Title]="Title_MainCat"
+                             [Subtitle]="Subtitle_MainCat"></mat-card-title-only>
+        <kiko-table [columns]="columns_MainCat"
+                    [data]="All_MainCat"
+                    [datasource]="dataSource_MainCat"
+                    [isLoadingResults]="isLoadingResults_MainCat"
+                    [ShowProgressBar]="ShowProgressBar_MainCat"
+                    [NoData]="All_MainCat.length===0 && !isLoadingResults_MainCat"
+                    (DeleteClick)="DeleteMainCat($event)"
+                    (DoubleClickRow)="EditMainCat($event)"
+                    (rowsSelection)="SelectRow_MainCat($event)"
+                    (EditClick)="EditMainCat($event)"
+                    [AddedRow]="AddedRow_MainCat"
+                    [ChangeSelectedRow]="SelectedRows_MainCat"
+                    [PreventDeleteForValue]="Constants.Uncategorized.toLowerCase()|translate"
+                    [PreventDeleteForKey]="Constants.Name.toLowerCase()"
+                    [PreventEditForValue]="Constants.Uncategorized.toLowerCase()|translate"
+                    [PreventEditForKey]="Constants.Name.toLowerCase()"
+                    [RowDeleted]="RowDeleted_MainCat"
+                    (ClickAddButton)="AddNew_MainCat($event)"
+                    [ToolTipText_input]="translate.GetTranslation(this.Constants.Add.toLowerCase()) + ' ' + translate.GetTranslation(this.Constants.MainCat_Singular.toLowerCase())">
+        </kiko-table>
+    </div>
+    <div fxLayout="column"
+         fxLayoutGap="16px"
+         fxFlex="49%"
+         fxFlex.xs="100%">
+        <mat-card-title-only [Title]="Title_SubCat"
+                             [Subtitle]="Subtitle_SubCat"></mat-card-title-only>
+        <kiko-table [columns]="columns_SubCat"
+                    [data]="All_SubCat"
+                    [datasource]="dataSource_SubCat"
+                    [isLoadingResults]="isLoadingResults_SubCat"
+                    [ShowProgressBar]="ShowProgressBar_SubCat"
+                    [NoData]="All_SubCat.length===0 && !isLoadingResults_SubCat"
+                    (DeleteClick)="Delete_SubCat($event)"
+                    (DoubleClickRow)="Edit_SubCat($event)"
+                    (rowsSelection)="SelectRow_SubCat($event)"
+                    (EditClick)="Edit_SubCat($event)"
+                    [AddedRow]="AddedRow_SubCat"
+                    [UseAlternateShortkeys]="true"
+                    [PreventDeleteForValue]="Constants.default_subcategory.toLowerCase()|translate"
+                    [PreventDeleteForKey]="Constants.Name.toLowerCase()"
+                    [PreventEditForValue]="Constants.default_subcategory.toLowerCase()|translate"
+                    [PreventEditForKey]="Constants.Name.toLowerCase()"
+                    [RowDeleted]="RowDeleted_SubCat"
+                    [DisableAddButton]="SelectedRows_MainCat.length===0"
+                    (ClickAddButton)="AddNew_SubCat($event)"
+                    [ChangeSelectedRow]="SelectedRows_SubCat"
+                    [ToolTipText_input]="translate.GetTranslation(this.Constants.Add.toLowerCase()) + ' ' + translate.GetTranslation(this.Constants.Sub_Categories_Singular.toLowerCase())">
+        </kiko-table>
+    </div>
+</div>

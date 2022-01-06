@@ -15,6 +15,7 @@ namespace ERP.UnitOfWork
         IItemsSubCatRepoAsync Item_SubCats { get; }
         IItemUnitsAsync ItemUnits { get; }
         IBrandsAsync ItemBrands { get; }
+        IItemsRepoAsync Items { get; }
 
         Task SetConnectionStringAsync(string ConnectionString);
         Task<int> SaveAsync();

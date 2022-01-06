@@ -3,12 +3,12 @@ import { FormControl } from '@angular/forms';
 import { NotificationsService } from 'src/CommonServices/NotificationService/notifications.service';
 import { ConstantsService } from '../../../../../CommonServices/constants.service';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
-import { routerAnimation } from '../DashboardAnimations/Animations'
+import { routerAnimation } from '../DashboardAnimations/Animations';
 import { MatDrawerMode } from '@angular/material/sidenav';
 import { filter, Subscription } from 'rxjs';
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { SideNav_items } from '.././SideNavItems'
+import { SideNav_items } from '.././SideNavItems';
 import { LightDarkThemeConverterService } from '../light-dark-theme-converter.service';
 import { ClientAccountService } from 'src/Client/MainDomain/Authentication/client-account-service.service';
 import { ExpansionPanel, ThemeColor } from 'src/Interfaces/interfaces';
@@ -23,7 +23,8 @@ import { GeneralsService } from '../Generals/generals.service';
   encapsulation: ViewEncapsulation.None,
   animations: [routerAnimation]
 })
-export class ClientAppDashboardComponent implements OnInit, AfterContentInit, OnDestroy {
+export class ClientAppDashboardComponent implements OnInit, AfterContentInit, OnDestroy
+{
   //#region Properties
   //Properties ............................................................................
   pinned: boolean;
@@ -83,29 +84,36 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
     private Notifications: NotificationsService, private mediaObserver: MediaObserver,
     private ClientAccountService: ClientAccountService, private renderer: Renderer2,
     private vr: ViewContainerRef, private GeneralsService: GeneralsService,
-    private LightDarkThemeConverter: LightDarkThemeConverterService, private router: Router) {
+    private LightDarkThemeConverter: LightDarkThemeConverterService, private router: Router)
+  {
     this.ClientAccountService.currentUserOvservable.subscribe();
 
-    if (localStorage.getItem(this.Constants.ChoosenThemeColors)) {
-      let temp: any = localStorage.getItem(this.Constants.ChoosenThemeColors)
+    if (localStorage.getItem(this.Constants.ChoosenThemeColors))
+    {
+      let temp: any = localStorage.getItem(this.Constants.ChoosenThemeColors);
       this.ChoosenThemeColor = JSON.parse(temp);
-    } else {
+    } else
+    {
       this.ChoosenThemeColor = this.ThemeColors[0];
       localStorage.setItem(this.Constants.ChoosenThemeColors, JSON.stringify(this.ChoosenThemeColor));
     }
     //set the direction of the document
-    if (localStorage.getItem(this.Constants.dir)) {
+    if (localStorage.getItem(this.Constants.dir))
+    {
       this.dir = localStorage.getItem(this.Constants.dir) === "rtl" ? 'rtl' : 'ltr';
-    } else {
+    } else
+    {
       this.dir = 'ltr';
       localStorage.setItem(this.Constants.dir, this.dir);
     }
     this.LightDarkThemeConverter.PassThemeDir(this.dir);
     this.DocumentDirection.setValue(this.dir);
     //Set Ag-grid table direction
-    if (localStorage.getItem(this.Constants.Table_direction)) {
+    if (localStorage.getItem(this.Constants.Table_direction))
+    {
       this.agGridTable_dir = localStorage.getItem(this.Constants.Table_direction) === 'rtl' ? 'rtl' : 'ltr';
-    } else {
+    } else
+    {
       this.agGridTable_dir = 'ltr';
       localStorage.setItem(this.Constants.Table_direction, this.agGridTable_dir);
     }
@@ -115,16 +123,19 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
       .pipe(
         filter(e => e instanceof NavigationEnd)
       )
-      .subscribe((navEnd: any) => {
+      .subscribe((navEnd: any) =>
+      {
         this.CurrentUrl = navEnd.urlAfterRedirects;
       });
     //Set Ag-grid dark or light mode
-    if (localStorage.getItem(this.Constants.Table_Color_mode)) {
+    if (localStorage.getItem(this.Constants.Table_Color_mode))
+    {
       this.Table_color_mode = localStorage.getItem(this.Constants.Table_Color_mode) === this.Constants.light ?
         this.Constants.light : this.Constants.dark;
       this.TableAppearence.setValue(this.Table_color_mode);
 
-    } else {
+    } else
+    {
       this.Table_color_mode = this.Constants.light;
       localStorage.setItem(this.Constants.Table_Color_mode, this.Table_color_mode);
     }
@@ -132,63 +143,81 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
     this.LightDarkThemeConverter.ChangeTableTheme(this.Table_color_mode);
     //get selected language
     this.SelectedLanguage = localStorage.getItem(this.Constants.lang);
-    if (!this.SelectedLanguage) {
+    if (!this.SelectedLanguage)
+    {
       this.SelectedLanguage = 'en';
-    } else {
-      this.SelectedLanguage = localStorage.getItem(this.Constants.lang)
+    } else
+    {
+      this.SelectedLanguage = localStorage.getItem(this.Constants.lang);
     }
     //All theme color
-    if (localStorage.getItem(this.Constants.ThemeAppearence)) {
+    if (localStorage.getItem(this.Constants.ThemeAppearence))
+    {
       this.ThemeAppearence.setValue(localStorage.getItem(this.Constants.ThemeAppearence));
-    } else {
+    } else
+    {
       this.ThemeAppearence.setValue(this.Constants.light);
       localStorage.setItem(this.Constants.ThemeAppearence, this.ThemeAppearence.value);
     }
     //set the .............. sidenav .......... dark or light themes
-    if (localStorage.getItem(this.Constants.SidebarAppeareance)) {
+    if (localStorage.getItem(this.Constants.SidebarAppeareance))
+    {
       this.SidebarAppeareance.setValue(localStorage.getItem(this.Constants.SidebarAppeareance));
-    } else {
+    } else
+    {
       this.SidebarAppeareance.setValue(this.Constants.dark);
       localStorage.setItem(this.Constants.SidebarAppeareance, this.SidebarAppeareance.value);
     }
     //set the ........ toolabar .......... dark or ligt theme
-    if (localStorage.getItem(this.Constants.ToolbarAppeareance)) {
+    if (localStorage.getItem(this.Constants.ToolbarAppeareance))
+    {
       this.ToolbarAppeareance.setValue(localStorage.getItem(this.Constants.ToolbarAppeareance));
-    } else {
+    } else
+    {
       this.ToolbarAppeareance.setValue(this.Constants.dark);
       localStorage.setItem(this.Constants.ToolbarAppeareance, this.ToolbarAppeareance.value);
     }
 
     //set the ..... body ......dark or light theme
-    if (localStorage.getItem(this.Constants.BodyAppeareance)) {
+    if (localStorage.getItem(this.Constants.BodyAppeareance))
+    {
       this.BodyAppeareance.setValue(localStorage.getItem(this.Constants.BodyAppeareance));
-    } else {
+    } else
+    {
       this.BodyAppeareance.setValue(this.Constants.dark);
       localStorage.setItem(this.Constants.BodyAppeareance, this.BodyAppeareance.value);
     }
     //set the fixed ot non fixed sidenav
-    if (localStorage.getItem(this.Constants.FixedSidnav)) {
+    if (localStorage.getItem(this.Constants.FixedSidnav))
+    {
       this.pinned = localStorage.getItem(this.Constants.FixedSidnav) === "false" ? false : true;
-    } else {
+    } else
+    {
       this.pinned = false;
       localStorage.setItem(this.Constants.FixedSidnav, String(this.pinned));
     }
-    if (this.pinned) {
+    if (this.pinned)
+    {
       this.Display = this.Constants.CSS_display_inline_block;
       this.preventMouseLeave = true;
       this.ToggleClass = this.Constants.CSS_SideNav_FullOpened;
       this.SideNav_Content_class = this.dir === 'rtl' ? this.Constants.CSS_sidenav_content_pin_RTL : this.Constants.CSS_sidenav_content_pin_LTR;
-    } else {
+    } else
+    {
       this.Display = this.Constants.CSS_displayNone;
       this.preventMouseLeave = false;
       this.ToggleClass = this.Constants.CSS_SideNav_HalfClosed;
       this.SideNav_Content_class = this.dir === 'rtl' ? this.Constants.CSS_sidenav_content_nonPinned_RTL : this.Constants.CSS_sidenav_content_nonPinned_LTR;
     }
     if (!this.pinned) this.SideNavItems.forEach(i => i.expanded = false);
-    else {
-      for (let item of this.SideNavItems) {
-        for (let link of item.links) {
-          if (this.CurrentUrl.includes(link.link)) {
+    else
+    {
+      for (let item of this.SideNavItems)
+      {
+        for (let link of item.links)
+        {
+          if (this.CurrentUrl.includes(link.link))
+          {
             item.expanded = true;
           }
         }
@@ -197,10 +226,14 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     )
-      .subscribe((event: any) => {
-        for (let item of this.SideNavItems) {
-          for (let link of item.links) {
-            if (event.url.split("/").pop() === link.link.split('/').pop()) {
+      .subscribe((event: any) =>
+      {
+        for (let item of this.SideNavItems)
+        {
+          for (let link of item.links)
+          {
+            if (event.url.split("/").pop() === link.link.split('/').pop())
+            {
               if (!this.pinned) item.expanded = false;
               else item.expanded = true;
               link.state = true;
@@ -215,38 +248,50 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
   //#endregion
 
   //NgOn it .....................................................................
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
 
   }
 
   //Events to toggle the left sidenav
-  OnMouseOver() {
+  OnMouseOver()
+  {
     this.ToggleClass = this.Constants.CSS_SideNav_FullOpened;
     this.Display = this.Constants.CSS_display_inline_block;
   }
-  OnMouseLeave() {
-    if (!this.preventMouseLeave) {
+  OnMouseLeave()
+  {
+    if (!this.preventMouseLeave)
+    {
       this.ToggleClass = this.Constants.CSS_SideNav_HalfClosed;
       this.Display = this.Constants.CSS_displayNone;
-      for (let item of this.SideNavItems) {
+      for (let item of this.SideNavItems)
+      {
         item.expanded = false;
       }
     }
   }
 
-  PinSideNav() {
+  PinSideNav()
+  {
     this.pinned = !this.pinned;
-    localStorage.setItem(this.Constants.FixedSidnav, String(this.pinned))
+    localStorage.setItem(this.Constants.FixedSidnav, String(this.pinned));
     this.pinnedRTLClassSettings();
 
-    if (this.pinned === false) {
-      for (let item of this.SideNavItems) {
+    if (this.pinned === false)
+    {
+      for (let item of this.SideNavItems)
+      {
         item.expanded = false;
       }
-    } else {
-      for (let item of this.SideNavItems) {
-        for (let link of item.links) {
-          if (this.CurrentUrl.includes(link.link)) {
+    } else
+    {
+      for (let item of this.SideNavItems)
+      {
+        for (let link of item.links)
+        {
+          if (this.CurrentUrl.includes(link.link))
+          {
             item.expanded = true;
           }
         }
@@ -254,26 +299,30 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
     }
   }
 
-  ToggleFullscreen() {
+  ToggleFullscreen()
+  {
     if (!document.fullscreenEnabled)
       this.Notifications.error(this.translate.GetTranslation(this.Constants.BrowserDontSupportFullscreen), "",
         this.translate.isRightToLeft(this.SelectedLanguage) ? "rtl" : "ltr");
-    else if (!document.fullscreenElement) document.documentElement.requestFullscreen()
-    else { document.exitFullscreen() }
+    else if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else { document.exitFullscreen(); }
   }
 
   //Only to toggle fullscreen ICON ...........................................................................
-  @HostListener("window:resize") ToggleFullScreenIcon() {
+  @HostListener("window:resize") ToggleFullScreenIcon()
+  {
     if (document.fullscreenElement)
       this.FullscreenEnabled = true;
     else
       this.FullscreenEnabled = false;
   }
 
-  ColorChoose(colorName: string, index: number) {
-    for (let x of this.ThemeColors) {
+  ColorChoose(colorName: string, index: number)
+  {
+    for (let x of this.ThemeColors)
+    {
       if (x.colorName === colorName) x.choosen = true;
-      else x.choosen = false
+      else x.choosen = false;
     }
     this.ChoosenThemeColor = this.ThemeColors[index];
     this.LightDarkThemeConverter.ChangeCurrentColor(this.ChoosenThemeColor);
@@ -281,26 +330,32 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
   }
 
 
-  switchLang(lang: string) {
+  switchLang(lang: string)
+  {
     this.SelectedLanguage = this.translate.setTranslationLang(lang);
-    if (this.translate.isRightToLeft(lang)) {
+    if (this.translate.isRightToLeft(lang))
+    {
       this.dir = 'rtl';
       localStorage.setItem(this.Constants.dir, this.dir);
-    } else {
+    } else
+    {
       this.dir = 'ltr';
       localStorage.setItem(this.Constants.dir, this.dir);
     }
     this.DocumentDirection.setValue(this.dir);
-    this.pinnedRTLClassSettings()
+    this.pinnedRTLClassSettings();
   }
 
-  pinnedRTLClassSettings() {
-    if (this.pinned) {
+  pinnedRTLClassSettings()
+  {
+    if (this.pinned)
+    {
       this.Display = this.Constants.CSS_display_inline_block;
       this.preventMouseLeave = true;
       this.ToggleClass = this.Constants.CSS_SideNav_FullOpened;
       this.SideNav_Content_class = this.dir === 'rtl' ? this.Constants.CSS_sidenav_content_pin_RTL : this.Constants.CSS_sidenav_content_pin_LTR;
-    } else {
+    } else
+    {
       this.Display = this.Constants.CSS_displayNone;
       this.preventMouseLeave = false;
       this.ToggleClass = this.Constants.CSS_SideNav_HalfClosed;
@@ -308,7 +363,8 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
     }
   }
 
-  DocumentDirectionToggle() {
+  DocumentDirectionToggle()
+  {
     this.dir = this.DocumentDirection.value;
     localStorage.setItem(this.Constants.dir, this.dir);
     this.LightDarkThemeConverter.PassThemeDir(this.dir);
@@ -317,26 +373,31 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
   /****************************************************************************************
    * ..................................... Theme dark or light toggle......................
    ****************************************************************************************/
-  ToolbarAppeareanceToggle(ToolbarAppeareance: string) {
+  ToolbarAppeareanceToggle(ToolbarAppeareance: string)
+  {
     localStorage.setItem(this.Constants.ToolbarAppeareance, ToolbarAppeareance);
     this.setThemeAppearence(this.BodyAppeareance.value, ToolbarAppeareance, this.SidebarAppeareance.value);
   }
 
-  SidebarAppeareanceToggle(SidebarAppeareance: string) {
+  SidebarAppeareanceToggle(SidebarAppeareance: string)
+  {
     localStorage.setItem(this.Constants.SidebarAppeareance, SidebarAppeareance);
     this.setThemeAppearence(this.BodyAppeareance.value, this.ToolbarAppeareance.value, SidebarAppeareance);
   }
-  BodyAppeareanceToggle(BodyAppeareance: string) {
+  BodyAppeareanceToggle(BodyAppeareance: string)
+  {
     this.LightDarkThemeConverter.ChangeTheme(BodyAppeareance);
     localStorage.setItem(this.Constants.BodyAppeareance, BodyAppeareance);
     this.setThemeAppearence(BodyAppeareance, this.ToolbarAppeareance.value, this.SidebarAppeareance.value);
   }
-  AllThemeDarkOrLight(ThemeAppearence: string) {
+  AllThemeDarkOrLight(ThemeAppearence: string)
+  {
     this.LightDarkThemeConverter.ChangeTheme(ThemeAppearence);
-    localStorage.setItem(this.Constants.ThemeAppearence, ThemeAppearence)
+    localStorage.setItem(this.Constants.ThemeAppearence, ThemeAppearence);
     this.setThemeAppearence(ThemeAppearence, ThemeAppearence, ThemeAppearence);
   }
-  setThemeAppearence(BodyAppeareance: string, ToolbarAppeareance: string, SidebarAppeareance: string) {
+  setThemeAppearence(BodyAppeareance: string, ToolbarAppeareance: string, SidebarAppeareance: string)
+  {
     this.LightDarkThemeConverter.ChangeTheme(BodyAppeareance);
     this.BodyThemeClass = BodyAppeareance === this.Constants.light ? this.Constants.CSS_light_for_body :
       BodyAppeareance === this.Constants.dark ? this.Constants.CSS_Dark_for_body : this.Constants.CSS_light_for_body; localStorage.setItem(this.Constants.BodyThemeClass, this.BodyThemeClass);
@@ -355,23 +416,30 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
     this.ToolbarAppeareance.setValue(ToolbarAppeareance);
 
     if (ToolbarAppeareance === this.Constants.light && BodyAppeareance === this.Constants.light
-      && (SidebarAppeareance === this.Constants.dark || SidebarAppeareance === this.Constants.light)) {
+      && (SidebarAppeareance === this.Constants.dark || SidebarAppeareance === this.Constants.light))
+    {
       this.ThemeAppearence.setValue(this.Constants.light);
-      localStorage.setItem(this.Constants.ThemeAppearence, this.ThemeAppearence.value)
+      localStorage.setItem(this.Constants.ThemeAppearence, this.ThemeAppearence.value);
     } else if (BodyAppeareance === this.Constants.dark || (ToolbarAppeareance === this.Constants.dark
-      && BodyAppeareance === this.Constants.dark && SidebarAppeareance === this.Constants.dark)) {
+      && BodyAppeareance === this.Constants.dark && SidebarAppeareance === this.Constants.dark))
+    {
       this.ThemeAppearence.setValue(this.Constants.dark);
-      localStorage.setItem(this.Constants.ThemeAppearence, this.ThemeAppearence.value)
+      localStorage.setItem(this.Constants.ThemeAppearence, this.ThemeAppearence.value);
     }
   }
   /****************************************************************************************
   * ..................................... SidNav at small screens......................
   ****************************************************************************************/
-  ngAfterContentInit(): void {
+  ngAfterContentInit(): void
+  {
     const flags = RendererStyleFlags2.DashCase | RendererStyleFlags2.Important;
     this.MediaSubscription = this.mediaObserver.asObservable().subscribe(
-      (response: MediaChange[]) => {
-        if (response.some(x => x.mqAlias === 'lt-sm')) {
+      (response: MediaChange[]) =>
+      {
+
+        var matRangLanble = document.getElementsByClassName("mat-paginator-range-label");
+        if (response.some(x => x.mqAlias === 'lt-sm' || x.mqAlias === 'sm'))
+        {
           this.SideNavToggleButtonOnSmallScreen.nativeElement.style.display = "flex";
           this.pinButton.nativeElement.style.display = "none";
           this.FullscreenButton.nativeElement.style.display = "none";
@@ -379,11 +447,12 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
           this.SideNav_mode = "over";
           this.hasBackDrop = true;
           this.SideNav_openingStatus = false;
-          const ActionLabel = this.vr.element.nativeElement.querySelector(
-            "div.mat-paginator-range-label"
-          );
-          this.renderer.setStyle(ActionLabel, 'display', 'none')
-        } else {
+          for (let i = 0; i < matRangLanble.length; i++)
+          {
+            (<HTMLDivElement>matRangLanble[i]).style.setProperty("display", "none");
+          }
+        } else
+        {
           this.FullscreenButton.nativeElement.style.display = "flex";
 
           this.pinButton.nativeElement.style.display = "flex";
@@ -391,39 +460,51 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
           this.SideNav_mode = "side";
           this.hasBackDrop = false;
           this.SideNav_openingStatus = true;
-
+          for (let i = 0; i < matRangLanble.length; i++)
+            for (let i = 0; i < matRangLanble.length; i++)
+            {
+              (<HTMLDivElement>matRangLanble[i]).style.setProperty("display", "flex");
+            }
         };
       });
   }
-  ngOnDestroy(): void {
+  ngOnDestroy(): void
+  {
     this.MediaSubscription.unsubscribe();
   }
 
-  getRouterState(DashBoardOutlet: RouterOutlet) {
+  getRouterState(DashBoardOutlet: RouterOutlet)
+  {
     return DashBoardOutlet.isActivated ? DashBoardOutlet.activatedRoute.snapshot.url[0].path : "none";
   }
 
-  OpenExpAndCloseAll(index: number) {
-    for (let i = 0; i < this.SideNavItems.length; i++) {
-      if (i === index) {
+  OpenExpAndCloseAll(index: number)
+  {
+    for (let i = 0; i < this.SideNavItems.length; i++)
+    {
+      if (i === index)
+      {
         if (this.SideNavItems[i].expanded == true)
           this.SideNavItems[i].expanded = false;
         else this.SideNavItems[i].expanded = true;
       }
-      else {
-        this.SideNavItems[i].expanded = false
+      else
+      {
+        this.SideNavItems[i].expanded = false;
 
       };
     }
   }
 
-  agGridTableDirectionToggle() {
+  agGridTableDirectionToggle()
+  {
     this.agGridTable_dir = this.agGridTableDirection.value;
     localStorage.setItem(this.Constants.Table_direction, this.agGridTable_dir);
     this.LightDarkThemeConverter.ChangeAgGridTable_dir(this.agGridTable_dir);
   }
 
-  TableTheme(colorMode: string) {
+  TableTheme(colorMode: string)
+  {
     this.LightDarkThemeConverter.ChangeTableTheme(colorMode);
     localStorage.setItem(this.Constants.Table_Color_mode, colorMode);
   }

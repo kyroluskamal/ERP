@@ -7,23 +7,26 @@ import { MatTableDataSource } from "@angular/material/table";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { SweetAlertIcon, SweetAlertOptions } from "sweetalert2";
 
-export interface ExpansionPanel {
+export interface ExpansionPanel
+{
   title: string;
   expanded: boolean;
-  links: { link: string, LinkText: string, state: boolean }[];
+  links: { link: string, LinkText: string, state: boolean; }[];
   GoogleIconName?: string;
   faIcon?: any;
 }
 
-export interface ThemeColor {
-  colorName: string
+export interface ThemeColor
+{
+  colorName: string;
   value: string;
   choosen: boolean;
   bg: string;
   color: string;
 }
 
-export interface ColDefs {
+export interface ColDefs
+{
   field: string;
   display: string;
   HeaderfaIcon?: any;
@@ -36,7 +39,8 @@ export interface ColDefs {
   preventDeleteFor?: string;
 }
 
-export class FormDefs {
+export class FormDefs
+{
   form: FormGroup = new FormGroup({});
   Card_fxFlex?: string;
   Form_fxLayout: string = "";
@@ -47,12 +51,14 @@ export class FormDefs {
   formSections: formSections[] = [];
 }
 
-export class formSections {
+export class formSections
+{
   sectionTitle?: CardTitle[] = [];
   fxFlex: string = "";
   formFieldsSpec: FormFields[] = [];
 }
-export class FormFields {
+export class FormFields
+{
   type: string = "";
   formControlName: string = "";
   appearance: MatFormFieldAppearance = "outline";
@@ -85,26 +91,31 @@ export class FormFields {
   dataSource?: MatTableDataSource<any>;
   formFields?: FormFields[] = [];
 }
-export class MatFormHint {
+export class MatFormHint
+{
   text_no_translation?: string = "";
   text_to_translation: string = "";
   dir: Direction = "ltr";
   align: 'start' | 'end' = "end";
 }
-export class MatError {
+export class MatError
+{
   type: string = "";
-  TranslatedMessage: { text: string, needTraslation: boolean }[] = [];
+  TranslatedMessage: { text: string, needTraslation: boolean; }[] = [];
 }
 
-export interface CardTitle {
+export interface CardTitle
+{
   text: string;
   needTranslation: boolean;
 }
-export interface MaxMinLengthValidation {
+export interface MaxMinLengthValidation
+{
   prop: string; maxLength?: number; minLength?: number;
 }
 
-export interface SweetAlertData {
+export interface SweetAlertData
+{
   title?: CardTitle[];
   text?: CardTitle[];
   ConfirmButton_FaIcon?: any;
@@ -114,15 +125,17 @@ export interface SweetAlertData {
   DenyButton_FaIcon?: any;
   DenyButton_GoogleIcon?: string;
   OtherOptions: SweetAlertOptions,
-  direction: string
+  direction: string;
 }
 
-export interface SelectedDataTransfer {
+export interface SelectedDataTransfer
+{
   property: string;
   SelectedData: any[];
 }
 
-export interface AbstractApi {
+export interface AbstractApi
+{
   ip_address: string;
   city: string;
   city_geoname_id: number;
@@ -165,10 +178,11 @@ export interface AbstractApi {
     connection_type: string;
     isp_name: string;
     organization_name: string;
-  }
+  };
 }
 
-export interface TableSlidingSections {
+export interface TableSlidingSections
+{
   sectionName: CardTitle[];
   fxFlex?: string;
   fxFlex_sm?: string;
@@ -176,12 +190,21 @@ export interface TableSlidingSections {
   keys: string[];
 }
 
-export interface MatBottomSheetDismissData<T> {
+export interface MatBottomSheetDismissData<T>
+{
   dataSource: MatTableDataSource<T>;
   ShowBrogressBar: boolean;
-  addedRow: any;
+  addedRow: T;
   data: T[];
   SelectedRows: T[];
 }
 
-export interface DataToEdit_PassToBottomSheet<T> { dataToEdit: T, Array: T[], ShowProgressBar: boolean }
+export interface DataToEdit_PassToBottomSheet<T>
+{
+  dataToEdit: T, Array: T[], ShowProgressBar: boolean;
+}
+export interface KeyValueForUniqueCheck
+{
+  key: string;
+  value: string;
+}

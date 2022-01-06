@@ -38,3 +38,6 @@ section p:first-child{
 .DetailsTable td{
   padding: 6px !important;
 }
+.mat-column-id{
+  width:100px !important;
+  }

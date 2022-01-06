@@ -4,7 +4,7 @@ using ERP.UnitOfWork.IRepository.ApplicationUser.SuppliersRepo;
 
 namespace ERP.UnitOfWork.Repository.ApplicationUser.SupliersRepoAsync
 {
-    public class SuppliersRepoAsync : OwnerRepositoryAsync<Suppliers>, ISuppliersRepoAsync
+    public class SuppliersRepoAsync : ApplicationUserRepositoryAsync<Suppliers>, ISuppliersRepoAsync
     {
         public SuppliersRepoAsync(ApplicationDbContext applicationDbContext) : base(applicationDbContext)
         {

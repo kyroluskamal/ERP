@@ -9,13 +9,10 @@ import { AppRoutingModule } from 'src/app/app-routing.module';
 import { CLientAppHomeComponent } from './Components/ClientAppHome/client-app-home/client-app-home.component';
 import { ClientDashboardHomeComponent } from './Components/Dashboard/client-dashboard-home/client-dashboard-home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ItemMainCategoriesComponent } from './Components/Dashboard/Items/item-main-categories/item-main-categories.component';
 import { ItemsComponentComponent } from './Components/Dashboard/Items/items-component/items-component.component';
 import { IconButtonRendererComponent } from './Components/Dashboard/AgFrameworkComponents/button-renderer-component/Icon-button-renderer.component';
 import { SelectableEditroAgFramweworkComponent } from './Components/Dashboard/AgFrameworkComponents/selectable-editro-ag-framwework/selectable-editro-ag-framwework.component';
-import { ItemUnitsComponent } from './Components/Dashboard/Items/item-units/item-units.component';
 import { NumberCellEditorComponent } from './Components/Dashboard/AgFrameworkComponents/number-cell-editor/number-cell-editor.component';
-import { ItemBrandsComponent } from './Components/Dashboard/Items/item-brands/item-brands.component';
 import { HttpClientXsrfModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorHandlingInterceptor } from 'src/Interceptors/ErrorHandling/error-handling.interceptor';
 import { TokenInterceptorInterceptor } from 'src/Interceptors/TokenInterceptor/token-interceptor.interceptor';
@@ -37,19 +34,30 @@ import { SuppliersComponent } from './Components/Dashboard/Suppliers/suppliers/s
 import { AddNewSupplierComponent } from './Components/Dashboard/Suppliers/add-new-supplier/add-new-supplier.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { EditSupplierComponent } from './Components/Dashboard/Suppliers/edit-supplier/edit-supplier.component';
+import { AddNewItemBrandComponent } from './Components/Dashboard/Items/item-brands/add-new-item-brand/add-new-item-brand.component';
+import { EditItemBrandComponent } from './Components/Dashboard/Items/item-brands/edit-item-brand/edit-item-brand.component';
+import { ItemBrandsComponent } from './Components/Dashboard/Items/item-brands/item-brands/item-brands.component';
+import { ItemUnitsComponent } from './Components/Dashboard/Items/item-units/item-units/item-units.component';
+import { AddNewItemUnitsComponent } from './Components/Dashboard/Items/item-units/add-new-item-units/add-new-item-units.component';
+import { EditItemUnitsComponent } from './Components/Dashboard/Items/item-units/edit-item-units/edit-item-units.component';
+import { ItemCategoriesComponent } from './Components/Dashboard/Items/item-main-categories/item-categories/item-categories.component';
+import { AddNewMainCatComponent } from './Components/Dashboard/Items/item-main-categories/add-new-main-cat/add-new-main-cat.component';
+import { AddNewSubCatComponent } from './Components/Dashboard/Items/item-main-categories/add-new-sub-cat/add-new-sub-cat.component';
+import { EditSubCatComponent } from './Components/Dashboard/Items/item-main-categories/edit-sub-cat/edit-sub-cat.component';
+import { EditMainCatComponent } from './Components/Dashboard/Items/item-main-categories/edit-main-cat/edit-main-cat.component';
 
 
 const Commponents = [MatCardTitleOnlyComponent,
   ClientAppDashboardComponent, ClientAppHomeNavbarComponent, CLientAppHomeComponent,
   ClientDashboardHomeComponent, BadgeComponent, GenericTableComponent, GenericFormComponent,
-  ItemMainCategoriesComponent, ItemsComponentComponent, IconButtonRendererComponent,
-  SelectableEditroAgFramweworkComponent, ItemUnitsComponent, NumberCellEditorComponent,
-  ItemBrandsComponent, RegisterOnAppComponent, AddNewItemComponent, InventoriesComponent,
+  ItemsComponentComponent, IconButtonRendererComponent,
+  SelectableEditroAgFramweworkComponent, NumberCellEditorComponent,
+  RegisterOnAppComponent, AddNewItemComponent, InventoriesComponent, ItemBrandsComponent,
   EditInventoryComponent, StylePaginatorDirective, AddInventAddressComponent, EditInventAddressComponent,
-  AddNewInventoryComponent, SuppliersComponent,
-  AddNewSupplierComponent, EditSupplierComponent]
+  AddNewInventoryComponent, SuppliersComponent, AddNewItemBrandComponent, EditItemBrandComponent,
+  AddNewSupplierComponent, EditSupplierComponent, ItemUnitsComponent, AddNewItemUnitsComponent, EditItemUnitsComponent];
 @NgModule({
-  declarations: [Commponents],
+  declarations: [Commponents, ItemCategoriesComponent, AddNewMainCatComponent, AddNewSubCatComponent, EditSubCatComponent, EditMainCatComponent],
   imports: [BreadcrumbModule, SweetAlert2Module, NgxSpinnerModule,
     SharedModule, MaterialModule, ClientAppRoutingModule, CommonModule, AppRoutingModule,
     BrowserAnimationsModule,

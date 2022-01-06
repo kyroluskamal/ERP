@@ -13,7 +13,7 @@ namespace ERP.Models.Items
         public string DefaultInventoryName { get; set; }
         [Required(ErrorMessage = "Required_field")]
         [MaxLength(30, ErrorMessage = "MaxLengthExceeded_ERROR")]
-        public string Name { get; set; }
+        public string ItemName { get; set; }
         [Column(TypeName = "bit")]
         public bool HasExpire { get; set; }
         [Column(TypeName = "bit")]
@@ -36,6 +36,10 @@ namespace ERP.Models.Items
         public virtual ItemDescription ItemDescription { get; set; }
         public ICollection<Item_Units> Item_Units { get; set; }
         public ICollection<ItemBrands> ItemBrands { get; set; }
-        public ICollection<Item_Per_Subcategory> Item_Per_Subcategory { get; set; }
+        public ICollection<Item_Per_MainCategory> Item_Per_Subcategory { get; set; }
+        [NotMapped]
+        public string InternalNotes { get; set; }
+        [NotMapped]
+        public string Description { get; set; }
     }
 }

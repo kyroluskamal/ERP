@@ -124,7 +124,6 @@ namespace ERP.Controllers.Inventory
         [ValidateAntiForgeryTokenCustom]
         public async Task<IActionResult> Update_Warehouse(Inventories Inventory)
         {
-            Debug.WriteLine(Inventory);
             if (!ModelState.IsValid)
                 return BadRequest(Constants.ModelState_ERROR_Response(ModelState));
 
@@ -136,21 +135,26 @@ namespace ERP.Controllers.Inventory
                 {
                     //if Tentnat is found, set the connection stirng
                     await UserUnitOfWork.SetConnectionStringAsync(Tenant.ConnectionString);
+                    var InventoryFromDb = await UserUnitOfWork.Inventories.GetAsync(Inventory.Id);
+                    if (InventoryFromDb.WarehouseName == Constants.MainWarehouse)
+                        return BadRequest(Constants.Delete_Default_inventory_Error_Response());
                     // Check if it is unique
                     if (!await UserUnitOfWork.Inventories.IsUnique(x => x.WarehouseName == Inventory.WarehouseName
                             && x.Id != Inventory.Id))
                         return BadRequest(Constants.Unique_Field_ERROR_Response());
                     //Check if the unit is found in DB
-                    var InventoryFromDb = await UserUnitOfWork.Inventories.GetAsync(Inventory.Id);
                     
                     if (InventoryFromDb != null)
                     {
+                        if (Inventory.WarehouseName == Constants.MainWarehouse)
+                            return BadRequest(Constants.Delete_Default_inventory_Error_Response());
                         if (InventoryFromDb.WarehouseName == Inventory.WarehouseName
                         &&InventoryFromDb.MobilePhone == Inventory.MobilePhone
                         && InventoryFromDb.IsMainInventory == Inventory.IsMainInventory
                         && InventoryFromDb.Telephone == Inventory.Telephone
                         && InventoryFromDb.IsActive == Inventory.IsActive
-                        && InventoryFromDb.Notes == Inventory.Notes) return StatusCode(200, new {status="SameObject"});
+                        && InventoryFromDb.Notes == Inventory.Notes) 
+                            return StatusCode(200, new {status=Constants.SameObject});
 
                         InventoryFromDb.WarehouseName = Inventory.WarehouseName;
                         InventoryFromDb.MobilePhone = Inventory.MobilePhone;
@@ -193,7 +197,7 @@ namespace ERP.Controllers.Inventory
 
                     if (Inventory != null)
                     {
-                        if (Inventory.Id == 1)
+                        if (Inventory.WarehouseName == Constants.MainWarehouse)
                             return BadRequest(Constants.Delete_Default_inventory_Error_Response());
                         UserUnitOfWork.Inventories.Remove(Inventory);
                         int result = await UserUnitOfWork.SaveAsync();

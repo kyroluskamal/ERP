@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ERP.UnitOfWork.Repository.ApplicationUser.Items
 {
-    public class ItemsSubCatRepoAsync : OwnerRepositoryAsync<ItemSubCategory>, IItemsSubCatRepoAsync
+    public class ItemsSubCatRepoAsync : ApplicationUserRepositoryAsync<ItemSubCategory>, IItemsSubCatRepoAsync
     {
         public ItemsSubCatRepoAsync(ApplicationDbContext applicationDbContext) : base(applicationDbContext)
         {

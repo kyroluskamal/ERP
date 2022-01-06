@@ -1091,16 +1091,13 @@ width:6%;
 }
 
 .mat-column-id{
-max-width:8%;
+max-width:100px !important;
 }
 .mat-column-notes{
   width: 25% !important;
   overflow-wrap:break-word;
 }
-.mat-column-name{
-  width: 10% !important;
-  overflow-wrap:break-word;
-}
+
 
 .TablefilterDiv{
   height: 50px;

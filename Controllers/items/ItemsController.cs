@@ -63,7 +63,23 @@ namespace ERP.Controllers.items
                 if (tenant != null)
                 {
                     await UserUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
-                    return await UserUnitOfWork.ItemMainCategory.GetAllAsync();
+
+                    var allMainCats = await UserUnitOfWork.ItemMainCategory.GetAllAsync(includeProperties: "ItemSubCategory");
+                    foreach(var main in allMainCats)
+                    {
+                        var letSubCats = await UserUnitOfWork.Item_SubCats.GetAllAsync(
+                            x => x.ItemMainCategoryId == main.Id);
+                        if(letSubCats.ToList().Count == 0)
+                        {
+                            await UserUnitOfWork.Item_SubCats.AddAsync(new ItemSubCategory
+                            {
+                                ItemMainCategoryId = main.Id,
+                                Name = "Default Subcategory"
+                            });
+                            await UserUnitOfWork.SaveAsync();
+                        }
+                    }
+                    return allMainCats.ToList();
                 }
                 return BadRequest(Constants.NullTentant_Error_Response());
             }
@@ -92,6 +108,14 @@ namespace ERP.Controllers.items
                     if (result > 0)
                     {
                         var Cats = await UserUnitOfWork.ItemMainCategory.GetAllAsync();
+                        var addedCat = Cats.Last(x => x.Name == NewCat.Name);
+                        await UserUnitOfWork.Item_SubCats.AddAsync(new ItemSubCategory
+                        {
+                            ItemMainCategoryId = addedCat.Id,
+                            Name = "Default Subcategory",
+
+                        });
+                        await UserUnitOfWork.SaveAsync();
                         return Ok(Cats.Last(x => x.Name == NewCat.Name));
                     }
                     return BadRequest(Constants.DataAddtion_ERROR_Response());
@@ -125,7 +149,7 @@ namespace ERP.Controllers.items
                     {
                         if (MainCat.Name == Constants.Uncategorized)
                         {
-                            return BadRequest(Constants.Uncategorized_Delete_ERROR_Response());
+                            return BadRequest(Constants.Delete_Default_Error_Response());
                         }
                         /*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                          * Get Items and update their CategoryId forign key
@@ -158,14 +182,11 @@ namespace ERP.Controllers.items
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(new { status = Constants.ModelState_statuCode, error = ModelState });
+                return BadRequest(Constants.ModelState_ERROR_Response(ModelState));
             }
             if (CheckManuallyChanged_Subdomain(MainCategory.Subdomain))
             {
-                if (MainCategory.Name == Constants.Uncategorized)
-                {
-                    return BadRequest(Constants.Uncategorized_Delete_ERROR_Response());
-                }
+                
                 //get tenant from TenantDP
                 var Tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(MainCategory.Subdomain);
                 if (Tenant != null)
@@ -174,12 +195,19 @@ namespace ERP.Controllers.items
                     await UserUnitOfWork.SetConnectionStringAsync(Tenant.ConnectionString);
                     //Check if teh Main cat is found in DB
                     var MainCat = await UserUnitOfWork.ItemMainCategory.GetAsync(MainCategory.Id);
-                    if (!await IsUniqeMainCat(MainCategory.Name))
-                    {
-                        return BadRequest(Constants.Unique_Field_ERROR_Response());
-                    }
+                    
                     if (MainCat != null)
                     {
+                        if (MainCat.Name == Constants.Uncategorized)
+                        {
+                            return BadRequest(Constants.Delete_Default_Error_Response());
+                        }
+                        if (MainCat.Name == MainCategory.Name)
+                            return StatusCode(200, new { status = Constants.SameObject });
+                        if (!await IsUniqeMainCat(MainCategory.Name))
+                        {
+                            return BadRequest(Constants.Unique_Field_ERROR_Response());
+                        }
                         MainCat.Name = MainCategory.Name;
                         UserUnitOfWork.ItemMainCategory.Update(MainCat);
                         var result = await UserUnitOfWork.SaveAsync();
@@ -223,10 +251,9 @@ namespace ERP.Controllers.items
         public async Task<IActionResult> AddSubCategory([FromBody] ItemSubCategory NewSubCat)
         {
             if (!ModelState.IsValid)
-                return BadRequest(new { status = Constants.NotSelected_MainCat_ERROR_status, error = Constants.NotSelected_MainCat_ERROR_Message });
+                return BadRequest(Constants.ModelState_ERROR_Response(ModelState));
             if (CheckManuallyChanged_Subdomain(NewSubCat.Subdomain))
             {
-
                 var tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(NewSubCat.Subdomain);
                 if (tenant != null)
                 {
@@ -234,7 +261,7 @@ namespace ERP.Controllers.items
                     if (NewSubCat.Name == null)
                         return BadRequest(Constants.Required_Field_ERROR_Response());
 
-                    if (!await IsUniqueSubCat_Per_MainCat(NewSubCat))
+                    if (!await IsUniqueSubCat_Per_MainCat(NewSubCat, NewSubCat.ItemMainCategoryId))
                         return BadRequest(Constants.NOT_Unique_SubCat_Per_MainCat_ERROR_Response());
 
                     await UserUnitOfWork.Item_SubCats.AddAsync(new ItemSubCategory
@@ -273,9 +300,13 @@ namespace ERP.Controllers.items
                 {
                     //if Tentnat is found, set the connection stirng
                     await UserUnitOfWork.SetConnectionStringAsync(Tenant.ConnectionString);
-                    //Check if teh Main cat is found in DB
+                    //Check if the Main cat is found in DB
                     var SubCat = await UserUnitOfWork.Item_SubCats.GetAsync(SubCategory.Id);
-                    if (!await IsUniqueSubCat_Per_MainCat(SubCategory))
+                    if(SubCat.Name == Constants.DefaultSubCategory)
+                    {
+                        return BadRequest(Constants.Delete_Default_Error_Response());
+                    }
+                    if (!await IsUniqueSubCat_Per_MainCat(SubCategory, SubCategory.ItemMainCategoryId))
                         return BadRequest(Constants.Unique_SubCat_Per_MainCat_ERROR_Response());
                     if (SubCat != null)
                     {
@@ -315,6 +346,9 @@ namespace ERP.Controllers.items
 
                     if (SubCat != null)
                     {
+                        if (SubCat.Name == Constants.DefaultSubCategory)
+                            return BadRequest(Constants.Delete_Default_Error_Response());
+      
                         UserUnitOfWork.Item_SubCats.Remove(SubCat);
                         var result = await UserUnitOfWork.SaveAsync();
                         if (result > 0)
@@ -610,27 +644,27 @@ namespace ERP.Controllers.items
 
         #region Items functions
 
-        [HttpGet(nameof(GetAllItems))]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<List<Inventories>>> GetAllItems(string subomain)
-        {
-            if (CheckManuallyChanged_Subdomain(subomain))
-            {
-                var tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(subomain);
-                if (tenant != null)
-                {
-                    await UserUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
-                    var inventories = await UserUnitOfWork.Inventories.GetAllAsync();
-                    foreach (var invent in inventories)
-                    {
-                        invent.InventoryAddress = await UserUnitOfWork.InventoryAddress.GetFirstOrDefaultAsync(x => x.InventoriesId == invent.Id);
-                    }
-                    return inventories;
-                }
-                return BadRequest(Constants.NullTentant_Error_Response());
-            }
-            return BadRequest(Constants.HackTrying_Error_Response());
-        }
+        //[HttpGet(nameof(GetAllItems))]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //public async Task<ActionResult<List<Item>>> GetAllItems(string subomain)
+        //{
+        //    if (CheckManuallyChanged_Subdomain(subomain))
+        //    {
+        //        var tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(subomain);
+        //        if (tenant != null)
+        //        {
+        //            await UserUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
+        //            var items = await UserUnitOfWork.Inventories.GetAllAsync();
+        //            foreach (var invent in inventories)
+        //            {
+        //                invent.InventoryAddress = await UserUnitOfWork.InventoryAddress.GetFirstOrDefaultAsync(x => x.InventoriesId == invent.Id);
+        //            }
+        //            return inventories;
+        //        }
+        //        return BadRequest(Constants.NullTentant_Error_Response());
+        //    }
+        //    return BadRequest(Constants.HackTrying_Error_Response());
+        //}
 
         #endregion
 
@@ -659,11 +693,10 @@ namespace ERP.Controllers.items
             return OtherUnits.Find(x => x.WholeSaleUnit == Wholesale) == null;
         }
 
-        public async Task<bool> IsUniqueSubCat_Per_MainCat(ItemSubCategory newSubCat)
+        public async Task<bool> IsUniqueSubCat_Per_MainCat(ItemSubCategory newSubCat, int MainCatId)
         {
-            var AllSubCat = await UserUnitOfWork.Item_SubCats.GetAllAsync();
-            var SubCats_per_MainCat = AllSubCat.Where(x => x.ItemMainCategoryId == newSubCat.ItemMainCategory.Id).ToArray();
-            foreach (var subcat in SubCats_per_MainCat)
+            var AllSubCat = await UserUnitOfWork.Item_SubCats.GetAllAsync(x => x.ItemMainCategoryId==MainCatId);
+            foreach (var subcat in AllSubCat)
             {
                 if (subcat.Name == newSubCat.Name) return false;
             }

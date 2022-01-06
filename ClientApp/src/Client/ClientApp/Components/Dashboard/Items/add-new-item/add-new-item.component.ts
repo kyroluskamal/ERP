@@ -10,22 +10,22 @@ import { CustomErrorStateMatcher } from 'src/Helpers/CustomErrorStateMatcher/cus
 import { Inventories } from '../../Models/inventories.model';
 import { LightDarkThemeConverterService } from '../../light-dark-theme-converter.service';
 import { ItemsService } from '../items.service';
-import { InventoriesService } from '../../Inventories/inventories.service'
+import { InventoriesService } from '../../Inventories/inventories.service';
 import { ItemMainCategory, ItemSubCategory, ItemUnit } from '../../Models/item.model';
 import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
-import { ItemUnitsComponent } from '../item-units/item-units.component';
 import { MatSelect } from '@angular/material/select';
-import { ItemMainCategoriesComponent } from '../item-main-categories/item-main-categories.component';
 import { Direction } from '@angular/cdk/bidi';
 import { SuppliersService } from '../../Suppliers/suppliers.service';
 import { Suppliers } from '../../Models/supplier.model';
 import { ThemeColor } from 'src/Interfaces/interfaces';
+import { ItemUnitsComponent } from '../item-units/item-units/item-units.component';
 @Component({
   selector: 'app-add-new-item',
   templateUrl: './add-new-item.component.html',
   styleUrls: ['./add-new-item.component.css']
 })
-export class AddNewItemComponent implements OnInit, AfterViewInit {
+export class AddNewItemComponent implements OnInit, AfterViewInit
+{
 
   ThemeColors: ThemeColor = JSON.parse(JSON.stringify(localStorage.getItem(this.Constants.ChoosenThemeColors)));
 
@@ -36,7 +36,7 @@ export class AddNewItemComponent implements OnInit, AfterViewInit {
   GlobalSearchValue: string = "";
   AddItemMainDetails: FormGroup = new FormGroup({});
   LangSubscibtion: Subscription = new Subscription();
-  customErrorStateMatcher: CustomErrorStateMatcher = new CustomErrorStateMatcher()
+  customErrorStateMatcher: CustomErrorStateMatcher = new CustomErrorStateMatcher();
   loading: boolean = false;
   TableAppearance: Subscription = new Subscription();
   ErrorGettingAllBands: any[] = [];
@@ -66,22 +66,25 @@ export class AddNewItemComponent implements OnInit, AfterViewInit {
     public Constants: ConstantsService, private bottomSheet: MatBottomSheet,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
     private LightOrDarkConverter: LightDarkThemeConverterService,
-    private InventoriesService: InventoriesService, private SuppliersSerive: SuppliersService) {
+    private InventoriesService: InventoriesService, private SuppliersSerive: SuppliersService)
+  {
     let tem: any = localStorage.getItem(this.Constants.BodyAppeareance);
     this.DarkOrLight = tem;
 
-    let x: any = localStorage.getItem(this.Constants.ChoosenThemeColors)
+    let x: any = localStorage.getItem(this.Constants.ChoosenThemeColors);
     x = JSON.parse(x);
     this.ThemeColors = x;
-    this.ThemeSubscription = this.LightOrDarkConverter.CurrentThemeClass$.subscribe(x => { this.DarkOrLight = x; console.log(this.DarkOrLight) });
+    this.ThemeSubscription = this.LightOrDarkConverter.CurrentThemeClass$.subscribe(x => { this.DarkOrLight = x; console.log(this.DarkOrLight); });
     this.ThemeColorSubscription = this.LightOrDarkConverter.ThemeColors$.subscribe(
-      x => {
+      x =>
+      {
         this.ThemeColors = x;
       }
     );
     let agGrid_dir: any = localStorage.getItem(this.Constants.Table_direction);
     this.AgGridDir = agGrid_dir;
-    this.AgGridTable_dir = this.LightOrDarkConverter.agGridTable_dir$.subscribe(x => {
+    this.AgGridTable_dir = this.LightOrDarkConverter.agGridTable_dir$.subscribe(x =>
+    {
       this.AgGridDir = x;
       // window.location.reload();
     });
@@ -96,11 +99,13 @@ export class AddNewItemComponent implements OnInit, AfterViewInit {
     this.ThemeDirection = this.LightOrDarkConverter.ThemeDir$.subscribe(
       r => this.Theme_dir = r
     );
-    this.InventoriesService.GetAllInventories().subscribe(r => {
+    this.InventoriesService.GetAllInventories().subscribe(r =>
+    {
       this.AllInventories = r;
-      console.log(this.AllInventories)
+      console.log(this.AllInventories);
     });
-    this.ItemService.Get_All_ItemUnits().subscribe(r => {
+    this.ItemService.Get_All_ItemUnits().subscribe(r =>
+    {
       this.AllUnits = r;
     });
     this.ItemService.GetAllGategories().subscribe(r => this.AllMainCategories = r);
@@ -108,10 +113,12 @@ export class AddNewItemComponent implements OnInit, AfterViewInit {
 
     this.SuppliersSerive.GetAllSuppliers().subscribe(r => this.AllSuppliers = r);
   }
-  ngAfterViewInit(): void {
+  ngAfterViewInit(): void
+  {
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy(): void
+  {
     this.LangSubscibtion.unsubscribe();
     this.ThemeSubscription.unsubscribe();
     this.ThemeColorSubscription.unsubscribe();
@@ -119,7 +126,8 @@ export class AddNewItemComponent implements OnInit, AfterViewInit {
     this.TableAppearance.unsubscribe();
     this.ThemeDirection.unsubscribe();
   }
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     this.showOverlayFirstTime = false;
     this.AddItemMainDetails = new FormGroup({
       Name: new FormControl('', [Validators.required, Validators.maxLength(this.MaxLength)]),
@@ -128,38 +136,43 @@ export class AddNewItemComponent implements OnInit, AfterViewInit {
     });
   }
 
-  OpenItemUnitForm() {
+  OpenItemUnitForm()
+  {
     this.bottomSheet.open(ItemUnitsComponent, {
       direction: this.Direction,
 
     });
 
     this.bottomSheet._openedBottomSheetRef?.afterDismissed().subscribe(
-      () => {
+      () =>
+      {
         this.itemUnitSelections.close();
         this.ItemService.Get_All_ItemUnits().subscribe(r => this.AllUnits = r);
         this.itemUnitSelections.open();
       }
-    )
+    );
   }
 
-  OpenItemMainCats() {
-    this.bottomSheet.open(ItemMainCategoriesComponent, {
-      direction: this.Direction
-    });
+  OpenItemMainCats()
+  {
+    // this.bottomSheet.open(ItemMainCategoriesComponent, {
+    //   direction: this.Direction
+    // });
 
     this.bottomSheet._openedBottomSheetRef?.afterDismissed().subscribe(
-      () => {
+      () =>
+      {
         this.mainCatSelection.close();
         this.ItemService.GetAllGategories().subscribe(r => this.AllMainCategories = r);
         this.ItemService.GetItems_All_SubCats().subscribe(r => this.AllSubCategories = r);
         this.mainCatSelection.open();
       }
-    )
+    );
   }
 
-  GetAllSubCats(MainCat: number) {
+  GetAllSubCats(MainCat: number)
+  {
     console.log(MainCat);
-    this.SelectedSubCats = this.AllSubCategories.filter(x => { return x.itemMainCategoryId === MainCat })
+    this.SelectedSubCats = this.AllSubCategories.filter(x => { return x.itemMainCategoryId === MainCat; });
   }
 }

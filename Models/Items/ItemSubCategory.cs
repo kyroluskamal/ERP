@@ -11,10 +11,10 @@ namespace ERP.Models.Items
         [MaxLength(30, ErrorMessage = "MaxLengthExceeded_ERROR")]
         public string Name { get; set; }
         public ItemMainCategory ItemMainCategory { get; set; }
-
+        [Required(ErrorMessage = "notSelected_maincat")]
         public int ItemMainCategoryId { get; set; }
         [NotMapped]
         public string Subdomain { get; set; }
-        public ICollection<Item_Per_Subcategory> Item_Per_Subcategory { get; set; }
+        public ICollection<Item_per_MainCategory_Per_SubCategory> Item_per_MainCategory_Per_SubCategory { get; set; }
     }
 }

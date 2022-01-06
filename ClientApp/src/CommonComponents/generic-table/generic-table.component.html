@@ -5,9 +5,11 @@
   <div [class]="Table_Color_mode===Constants.dark?Constants.CSS_DarkTableBg + ' ' + Constants.CSS_TablefilterDiv
        :Constants.CSS_LightTableBg + ' ' + Constants.CSS_TablefilterDiv"
        fxLayout="row"
-       fxLayout.xs="column"
+       fxLayout.sm="column"
+       fxLayout.lt-sm="column"
        fxLayoutAlign.gt-xs="space-between center"
-       fxLayoutAlign.xs="space-evenly center"
+       fxLayoutAlign.sm="space-evenly center"
+       fxLayoutAlign.lt-sm="space-evenly center"
        [style.height]="FilterSectionHeight"
        *ngIf="ShowFilterSection">
     <div fxLayout="row">
@@ -41,7 +43,7 @@
       <button mat-icon-button
               [matTooltip]="Constants.Delete.toLowerCase()|translate"
               [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
-              *ngIf="this.SelectedRows[0] && !isLoadingRes && !noData &&this.SelectedRows[0][PreventDeleteForKey]!==PreventDeleteForValue"
+              *ngIf="this.SelectedRows[0] && !isLoadingRes && !noData &&this.SelectedRows[0][PreventDeleteForKey]!==PreventDelFor"
               color="warn"
               (click)="Delete()">
         <mat-icon class="mat-18"><span class="material-icons">delete</span></mat-icon>
@@ -49,7 +51,7 @@
       <button mat-icon-button
               [matTooltip]="Constants.Edit.toLowerCase()|translate"
               [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
-              *ngIf="this.SelectedRows[0] && !isLoadingRes && !noData "
+              *ngIf="this.SelectedRows[0] && !isLoadingRes && !noData &&this.SelectedRows[0][PreventEditForKey]!==PreventEditForValue"
               color="primary"
               fxLayoutAlign="center"
               (click)="Edit()">
@@ -60,7 +62,7 @@
         </mat-icon>
       </button>
       <button mat-icon-button
-              *ngIf="!isLoadingRes"
+              *ngIf="!isLoadingRes && !DisableAddButton"
               [matTooltip]="ToolTipText"
               [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
               fxLayoutAlign="center"
@@ -310,10 +312,8 @@
                  [hidden]="!isLoadingResults"
                  [class]="Table_Color_mode===Constants.dark?Constants.CSS_DarkTableBg
 :Constants.CSS_LightTableBg"
-                 [pageSize]="2"
-                 [pageSizeOptions]="[2, 4, 6, 10, 20]"
-                 [class]="Table_Color_mode===Constants.dark?Constants.CSS_DarkTableBg
-              :Constants.CSS_LightTableBg"
+                 [pageSize]="5"
+                 [pageSizeOptions]="[5, 10, 15, 20]"
                  showFirstLastButtons
                  [showTotalPages]="3"></mat-paginator>
 </div>

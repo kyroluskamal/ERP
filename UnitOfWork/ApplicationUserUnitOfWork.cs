@@ -27,7 +27,7 @@ namespace ERP.UnitOfWork
         public IInventoriesRepoAsync Inventories { get; private set; }
         public ISuppliersRepoAsync Suppliers { get; private set; }
         public IInventoryAddressRepoAsync InventoryAddress { get; private set; }
-
+        public IItemsRepoAsync Items { get; private set; }
 
         public Constants Constants;
         public ApplicationUserUnitOfWork(ApplicationDbContext applicationDbContext,
@@ -43,6 +43,7 @@ namespace ERP.UnitOfWork
             Inventories = new InventoriesRepoAsync(applicationDbContext);
             Suppliers = new SuppliersRepoAsync(applicationDbContext);
             InventoryAddress = new InventoryAddressRepoAsync(applicationDbContext);
+            Items = new ItemRepoASync(applicationDbContext);
         }
 
 

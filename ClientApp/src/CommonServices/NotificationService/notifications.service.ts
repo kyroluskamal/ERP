@@ -11,23 +11,27 @@ import { TranslationService } from '../translation-service.service';
 @Injectable({
   providedIn: 'root'
 })
-export class NotificationsService {
+export class NotificationsService
+{
   ThemeColors: ThemeColor = JSON.parse(JSON.stringify(localStorage.getItem(this.Constants.ChoosenThemeColors)));
   ThemeColorSubscription: Subscription;
 
   constructor(public SnackBar: MatSnackBar, private Constants: ConstantsService,
-    private LightOrDarkConverter: LightDarkThemeConverterService) {
-    let x: any = localStorage.getItem(this.Constants.ChoosenThemeColors)
+    private LightOrDarkConverter: LightDarkThemeConverterService)
+  {
+    let x: any = localStorage.getItem(this.Constants.ChoosenThemeColors);
     x = JSON.parse(x);
     this.ThemeColors = x;
     this.ThemeColorSubscription = this.LightOrDarkConverter.ThemeColors$.subscribe(
-      x => {
+      x =>
+      {
         this.ThemeColors = x;
       }
     );
   }
 
-  error(message: string, errorStatus: string, direction: any) {
+  error(message: string, errorStatus: string, direction: any)
+  {
     this.SnackBar.open(message, "✖", {
       duration: 5000,
       direction: direction,
@@ -38,7 +42,8 @@ export class NotificationsService {
     });
   }
 
-  success(message: string, direction: any) {
+  success(message: string, direction: any)
+  {
     this.SnackBar.open(message, "✖", {
       duration: 5000,
       direction: direction,
@@ -49,7 +54,8 @@ export class NotificationsService {
     });
   }
 
-  Error_Swal(title: string, confirmText: string, message: string, direction: string) {
+  Error_Swal(title: string, confirmText: string, message: string, direction: string)
+  {
     return Swal.fire({
       title: title,
       icon: "error",
@@ -63,9 +69,10 @@ export class NotificationsService {
       allowOutsideClick: true,
       customClass: { container: direction, title: this.Constants.CSS_SwalErrorTitle },
       confirmButtonColor: this.ThemeColors.value
-    })
+    });
   }
-  Success_Swal(message: string, direction: string) {
+  Success_Swal(message: string, direction: string)
+  {
     return Swal.fire({
       icon: "success",
       html: message,
@@ -79,10 +86,11 @@ export class NotificationsService {
       timer: 2000,
       customClass: { container: direction, htmlContainer: "SwalHtmlContent" },
       confirmButtonColor: this.ThemeColors.value
-    })
+    });
   }
 
-  Custom_Swal(title: string, SwalConfig: SweetAlertData) {
+  Custom_Swal(title: string, SwalConfig: SweetAlertData)
+  {
     return Swal.fire({
       title: title,
       icon: SwalConfig.OtherOptions.icon,
@@ -104,6 +112,6 @@ export class NotificationsService {
       showLoaderOnDeny: SwalConfig.OtherOptions.showLoaderOnDeny,
       timer: SwalConfig.OtherOptions.timer,
       customClass: { container: SwalConfig.direction, title: SwalConfig.OtherOptions.customClass?.title }
-    })
+    });
   }
 }

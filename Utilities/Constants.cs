@@ -251,7 +251,9 @@ namespace ERP.Utilities
         }
 
         public string Uncategorized = "Uncategorized";
-
+        public string MainWarehouse = "Main warehouse";
+        public string DefaultSubCategory = "Default Subcategory";
+        public string SameObject = "SameObject";
         public object NullTentant_Error_Response()
         {
             return new { status = NullTenant_statuCode, error = NullTenant_ErrorMessage };

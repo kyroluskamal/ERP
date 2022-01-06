@@ -1,0 +1,5 @@
+<kiko-form [Form]="FormBuilder"
+           [Title]="Title"
+           [showCloseButton]="true"
+           (BottomSheetDismissed)="CloseBottomSheet($event)"
+           (GetValue)="AddNewMainCat($event)"></kiko-form>

@@ -6,7 +6,8 @@ import { ConstantsService } from './constants.service';
 @Injectable({
   providedIn: 'root'
 })
-export class TranslationService {
+export class TranslationService
+{
   //properties
   SelectedLang: any = 'en';
   languages: string[] = ['en', 'ar'];
@@ -14,20 +15,24 @@ export class TranslationService {
   SelectedLangSubject: Subject<any>;
   _onLangChange: any;
   //constructor
-  constructor(public translate: TranslateService, private Constants: ConstantsService) {
+  constructor(public translate: TranslateService, private Constants: ConstantsService)
+  {
     this.SelectedLangSubject = new Subject<string>();
     this.SelectedLangSubject.next(this.selected);
     translate.addLangs(this.languages);
     translate.setDefaultLang(this.SelectedLang);
     this.SelectedLang = localStorage.getItem('lang');
-    if (!localStorage.getItem('lang') && (JSON.parse(this.SelectedLang) === undefined || JSON.parse(this.SelectedLang) === null)) {
+    if (!localStorage.getItem('lang') && (JSON.parse(this.SelectedLang) === undefined || JSON.parse(this.SelectedLang) === null))
+    {
       this.setTranslationLang('en');
-    } else {
+    } else
+    {
       this.setTranslationLang(this.SelectedLang);
     }
   }
 
-  setTranslationLang(lang: any) {
+  setTranslationLang(lang: any)
+  {
     this.Constants.CurrentLang = lang;
     this.translate.use(lang);
     localStorage.setItem("lang", lang);
@@ -36,19 +41,29 @@ export class TranslationService {
     return this.selected;
   }
 
-  getLangs() {
+  getLangs()
+  {
     return this.translate.getLangs();
   }
 
-  GetTranslation(key: string) {
+  GetTranslation(key: string)
+  {
     return this.translate.instant(key);
   }
-  GetCurrentLang() {
+  GetCurrentLang()
+  {
+
     return this.translate.currentLang;
   }
 
-  NameByCode(lang: any): string {
-    switch (lang) {
+  TranslationObservable()
+  {
+    return this.translate.getTranslation(this.GetCurrentLang());
+  }
+  NameByCode(lang: any): string
+  {
+    switch (lang)
+    {
       case 'aa': return 'Afar';
       case 'ab': return 'Abkhazian';
       case 'ae': return 'Avestan';
@@ -63,7 +78,7 @@ export class TranslationService {
       case 'az': return 'Azerbaijani';
       case 'ba': return 'Bashkir';
       case 'be': return 'Belarusian';
-      case 'bg': return 'Bulgarian'
+      case 'bg': return 'Bulgarian';
       case 'bh': return 'Bihari';
       case 'bi': return 'Bislama';
       case 'bm': return 'Bambara';
@@ -83,11 +98,11 @@ export class TranslationService {
       case 'da': return 'Danish';
       case 'de': return 'German';
       case 'dv': return 'Maldivian';
-      case 'dz': return 'Dzongkha'
+      case 'dz': return 'Dzongkha';
       case 'ee': return 'Ewe';
       case 'el': return 'Greek';
       case 'en': return 'English';
-      case 'eo': return 'Esperanto'
+      case 'eo': return 'Esperanto';
       case 'es': return 'Spanish';
       case 'et': return 'Estonian';
       case 'eu': return 'Basque';
@@ -102,7 +117,7 @@ export class TranslationService {
       case 'gd': return 'Gaelic';
       case 'gl': return 'Galician';
       case 'gn': return 'Guarani';
-      case 'gu': return 'Gujarati'
+      case 'gu': return 'Gujarati';
       case 'gv': return 'Manx';
       case 'ha': return 'Hausa';
       case 'he': return 'Hebrew';
@@ -237,8 +252,10 @@ export class TranslationService {
     }
   }
 
-  isRightToLeft(lang: any) {
-    switch (lang) {
+  isRightToLeft(lang: any)
+  {
+    switch (lang)
+    {
       case 'ar': return true;
       case 'arc': return true;
       case 'dv': return true;

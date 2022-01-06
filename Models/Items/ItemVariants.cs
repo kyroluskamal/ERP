@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ERP.Models.Items
@@ -30,7 +31,11 @@ namespace ERP.Models.Items
         public bool HasWholeSalePrice { get; set; }
         [Column(TypeName = "bit")]
         public bool HasRetailPrice { get; set; }
-        public virtual ItemVariant_WholeSalePrice ItemVariant_WholeSalePrice { get; set; }
-        public virtual ItemsVariant_RetailPrice ItemsVariant_RetailPrice { get; set; }
+        public ItemVariant_WholeSalePrice ItemVariant_WholeSalePrice { get; set; }
+        public ItemsVariant_RetailPrice ItemsVariant_RetailPrice { get; set; }
+        [NotMapped]
+        public decimal RetailPrice { get; set; }
+        [NotMapped]
+        public decimal WholeSalePrice { get; set; }
     }
 }
