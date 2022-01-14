@@ -1302,3 +1302,5 @@ h2#swal2-title{
     50% { color: #AA0; text-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #808002 0 -1px 9px, #FF0 0 2px 0; }
     to { color: #FF0; }
 }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
