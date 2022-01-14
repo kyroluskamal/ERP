@@ -3085,17 +3085,40 @@ namespace ERP.Migrations.ApplicationDb
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Name")
+                    b.Property<string>("BrandName")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
+                    b.HasIndex("BrandName")
                         .IsUnique();
 
                     b.ToTable("Brands");
+                });
+
+            modelBuilder.Entity("ERP.Models.Items.InternalNotes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId")
+                        .IsUnique();
+
+                    b.ToTable("InternalNotes");
                 });
 
             modelBuilder.Entity("ERP.Models.Items.Item", b =>
@@ -3127,7 +3150,13 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<bool>("HasExpire")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("HasInternalNote")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("HasNote")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("HasSKU_number")
                         .HasColumnType("bit");
 
                     b.Property<bool>("HasSpecialOffer")
@@ -3206,13 +3235,12 @@ namespace ERP.Migrations.ApplicationDb
             modelBuilder.Entity("ERP.Models.Items.ItemBrands", b =>
                 {
                     b.Property<int>("ItemId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
 
                     b.Property<int?>("BrandsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
 
                     b.HasKey("ItemId", "BrandsId");
 
@@ -3252,14 +3280,14 @@ namespace ERP.Migrations.ApplicationDb
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Name")
+                    b.Property<string>("MainCatName")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
+                    b.HasIndex("MainCatName")
                         .IsUnique();
 
                     b.ToTable("ItemMainCategories");
@@ -3315,6 +3343,37 @@ namespace ERP.Migrations.ApplicationDb
                     b.ToTable("Items_CustomFields");
                 });
 
+            modelBuilder.Entity("ERP.Models.Items.ItemSKUKeys", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Key")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ItemSKUKeys");
+                });
+
+            modelBuilder.Entity("ERP.Models.Items.ItemSKUkeys_Per_ItemVariants", b =>
+                {
+                    b.Property<int>("ItemSKUKeysId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ItemVariantsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ItemSKUKeysId", "ItemVariantsId");
+
+                    b.HasIndex("ItemVariantsId");
+
+                    b.ToTable("ItemSKUkeys_Per_ItemVariants");
+                });
+
             modelBuilder.Entity("ERP.Models.Items.ItemSubCategory", b =>
                 {
                     b.Property<int>("Id")
@@ -3326,7 +3385,7 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<int>("ItemMainCategoryId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("SubCatName")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
@@ -3336,6 +3395,21 @@ namespace ERP.Migrations.ApplicationDb
                     b.HasIndex("ItemMainCategoryId");
 
                     b.ToTable("ItemSubCategories");
+                });
+
+            modelBuilder.Entity("ERP.Models.Items.ItemSuppliers", b =>
+                {
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SuppliersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ItemId", "SuppliersId");
+
+                    b.HasIndex("SuppliersId");
+
+                    b.ToTable("ItemSuppliers");
                 });
 
             modelBuilder.Entity("ERP.Models.Items.ItemsVariant_RetailPrice", b =>
@@ -3449,8 +3523,17 @@ namespace ERP.Migrations.ApplicationDb
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("Barcode")
+                    b.Property<string>("Barcode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BrandsId")
                         .HasColumnType("int");
+
+                    b.Property<int>("CurrentNoInWarehouse")
+                        .HasColumnType("int");
+
+                    b.Property<string>("GlobalBarcode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("HasRetailPrice")
                         .HasColumnType("bit");
@@ -3462,15 +3545,13 @@ namespace ERP.Migrations.ApplicationDb
                         .HasColumnType("int");
 
                     b.Property<string>("ItemSKU")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ItemSKUStructure")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("LastPurchasePrice")
                         .HasColumnType("Money");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
 
                     b.Property<short>("NotifyLessThan")
                         .HasColumnType("smallint");
@@ -3484,9 +3565,18 @@ namespace ERP.Migrations.ApplicationDb
                     b.Property<short?>("TotalAmountInAllInvetroies")
                         .HasColumnType("smallint");
 
+                    b.Property<string>("VariantName")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ItemId");
+                    b.HasIndex("ItemSKU")
+                        .IsUnique()
+                        .HasFilter("[ItemSKU] IS NOT NULL");
+
+                    b.HasIndex("ItemId", "BrandsId");
 
                     b.ToTable("ItemVariants");
                 });
@@ -8161,6 +8251,17 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Items_withEpire");
                 });
 
+            modelBuilder.Entity("ERP.Models.Items.InternalNotes", b =>
+                {
+                    b.HasOne("ERP.Models.Items.Item", "Item")
+                        .WithOne("InternalNotes")
+                        .HasForeignKey("ERP.Models.Items.InternalNotes", "ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Item");
+                });
+
             modelBuilder.Entity("ERP.Models.Items.Item", b =>
                 {
                     b.HasOne("ERP.Models.ApplicationUser", "ApplicationUser")
@@ -8173,7 +8274,7 @@ namespace ERP.Migrations.ApplicationDb
             modelBuilder.Entity("ERP.Models.Items.Item_Per_MainCategory", b =>
                 {
                     b.HasOne("ERP.Models.Items.Item", "Item")
-                        .WithMany("Item_Per_Subcategory")
+                        .WithMany("Item_Per_MainCategory")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -8285,6 +8386,25 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Item");
                 });
 
+            modelBuilder.Entity("ERP.Models.Items.ItemSKUkeys_Per_ItemVariants", b =>
+                {
+                    b.HasOne("ERP.Models.Items.ItemSKUKeys", "ItemSKUKeys")
+                        .WithMany("ItemSKUkeys_Per_ItemVariants")
+                        .HasForeignKey("ItemSKUKeysId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Models.Items.ItemVariants", "ItemVariants")
+                        .WithMany("ItemSKUkeys_Per_ItemVariants")
+                        .HasForeignKey("ItemVariantsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ItemSKUKeys");
+
+                    b.Navigation("ItemVariants");
+                });
+
             modelBuilder.Entity("ERP.Models.Items.ItemSubCategory", b =>
                 {
                     b.HasOne("ERP.Models.Items.ItemMainCategory", "ItemMainCategory")
@@ -8294,6 +8414,25 @@ namespace ERP.Migrations.ApplicationDb
                         .IsRequired();
 
                     b.Navigation("ItemMainCategory");
+                });
+
+            modelBuilder.Entity("ERP.Models.Items.ItemSuppliers", b =>
+                {
+                    b.HasOne("ERP.Models.Items.Item", "Item")
+                        .WithMany("ItemSuppliers")
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP.Models.Supplier.Suppliers", "Suppliers")
+                        .WithMany("ItemSuppliers")
+                        .HasForeignKey("SuppliersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Item");
+
+                    b.Navigation("Suppliers");
                 });
 
             modelBuilder.Entity("ERP.Models.Items.ItemsVariant_RetailPrice", b =>
@@ -8337,13 +8476,13 @@ namespace ERP.Migrations.ApplicationDb
 
             modelBuilder.Entity("ERP.Models.Items.ItemVariants", b =>
                 {
-                    b.HasOne("ERP.Models.Items.Item", "Item")
+                    b.HasOne("ERP.Models.Items.ItemBrands", "ItemBrands")
                         .WithMany("ItemVariants")
-                        .HasForeignKey("ItemId")
+                        .HasForeignKey("ItemId", "BrandsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Item");
+                    b.Navigation("ItemBrands");
                 });
 
             modelBuilder.Entity("ERP.Models.Membership.MembershipDescription", b =>
@@ -9913,17 +10052,24 @@ namespace ERP.Migrations.ApplicationDb
 
             modelBuilder.Entity("ERP.Models.Items.Item", b =>
                 {
+                    b.Navigation("InternalNotes");
+
                     b.Navigation("ItemBrands");
 
                     b.Navigation("ItemDescription");
 
                     b.Navigation("ItemNotes");
 
-                    b.Navigation("ItemVariants");
+                    b.Navigation("ItemSuppliers");
 
-                    b.Navigation("Item_Per_Subcategory");
+                    b.Navigation("Item_Per_MainCategory");
 
                     b.Navigation("Item_Units");
+                });
+
+            modelBuilder.Entity("ERP.Models.Items.ItemBrands", b =>
+                {
+                    b.Navigation("ItemVariants");
                 });
 
             modelBuilder.Entity("ERP.Models.Items.ItemMainCategory", b =>
@@ -9933,6 +10079,11 @@ namespace ERP.Migrations.ApplicationDb
                     b.Navigation("Item_Per_Subcategory");
                 });
 
+            modelBuilder.Entity("ERP.Models.Items.ItemSKUKeys", b =>
+                {
+                    b.Navigation("ItemSKUkeys_Per_ItemVariants");
+                });
+
             modelBuilder.Entity("ERP.Models.Items.ItemSubCategory", b =>
                 {
                     b.Navigation("Item_per_MainCategory_Per_SubCategory");
@@ -9940,6 +10091,8 @@ namespace ERP.Migrations.ApplicationDb
 
             modelBuilder.Entity("ERP.Models.Items.ItemVariants", b =>
                 {
+                    b.Navigation("ItemSKUkeys_Per_ItemVariants");
+
                     b.Navigation("ItemVariant_WholeSalePrice");
 
                     b.Navigation("ItemsVariant_RetailPrice");
@@ -9948,6 +10101,11 @@ namespace ERP.Migrations.ApplicationDb
             modelBuilder.Entity("ERP.Models.Items.Units", b =>
                 {
                     b.Navigation("Item_Units");
+                });
+
+            modelBuilder.Entity("ERP.Models.Supplier.Suppliers", b =>
+                {
+                    b.Navigation("ItemSuppliers");
                 });
 #pragma warning restore 612, 618
         }

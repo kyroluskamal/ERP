@@ -33,7 +33,7 @@ export class AddNewSubCatComponent implements OnInit
     private ItemsService: ItemsService, private ClientValidaiton: ClientSideValidationService) { }
   ngOnInit(): void
   {
-    this.AllSelectionData = [{ property: this.Constants.Name.toLowerCase(), SelectedData: this.ItemsService.AllMainCats }];
+    this.AllSelectionData = [{ property: this.Constants.Name.toLowerCase(), SelectedData: this.ItemsService.AllItemNeededData.itemMainCategories }];
     this._bottomSheetRef.backdropClick().subscribe((r) =>
     {
       this.data.data.ShowBrogressBar = false;
@@ -41,7 +41,7 @@ export class AddNewSubCatComponent implements OnInit
       this._bottomSheetRef.dismiss(this.data);
     });
     this.AddNew = new FormGroup({
-      name: new FormControl(null
+      subCatName: new FormControl(null
         , [Validators.required, Validators.maxLength(this.Constants.MaxLength30)]
       )
     });
@@ -59,7 +59,8 @@ export class AddNewSubCatComponent implements OnInit
           formFieldsSpec: [
             {
               type: "text",
-              formControlName: this.Constants.Name.toLowerCase(),
+              fieldToolTip: '',
+              formControlName: this.Constants.SubCatName,
               appearance: this.Constants.FormFieldInputAppearance,
               faIcon: faPenAlt,
               fxFlex: "100%",
@@ -111,6 +112,13 @@ export class AddNewSubCatComponent implements OnInit
           this.data.data.SelectedRows.push(r);
           this.data.data.addedRow = r;
           this.data.data.dataSource.data = this.data.data.data;
+          for (let x of this.ItemsService.AllItemNeededData.itemMainCategories)
+          {
+            if (x.id === r.itemMainCategoryId)
+            {
+              x.itemSubCategory.push(r);
+            }
+          }
         } this.spinner.removeSpinner();
         this.ServerResponseHandler.DatatAddition_Success_Swal();
         setTimeout(() =>
@@ -123,7 +131,7 @@ export class AddNewSubCatComponent implements OnInit
         this.spinner.removeSpinner();
         this.ClientValidaiton.refillForm(newItem, this.FormBuilder.form);
         let x: MaxMinLengthValidation[] = [
-          { prop: this.Constants.Name.toLowerCase(), maxLength: this.Constants.MaxLength30 },
+          { prop: this.Constants.SubCatName, maxLength: this.Constants.MaxLength30 },
         ];
         this.ServerResponseHandler.GetErrorNotification_swal(e, x);
       }

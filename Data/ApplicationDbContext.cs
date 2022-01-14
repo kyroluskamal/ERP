@@ -111,8 +111,10 @@ namespace ERP.Data
         public DbSet<ItemVariant_WholeSalePrice> ItemVariant_WholeSalePrices { get; set; }
         public DbSet<ItemVariants> ItemVariants { get; set; }
         public DbSet<ItemTaxSettings> ItemTaxSettings { get; set; }
+        public DbSet<InternalNotes> InternalNotes { get; set; }
         public DbSet<Units> Units { get; set; }
         public DbSet<Items_CustomFields> Items_CustomFields { get; set; }
+        public DbSet<ItemSKUKeys> ItemSKUKeys { get; set; }
         #endregion
 
         //Services Dbsets
@@ -404,14 +406,11 @@ namespace ERP.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<Units>().Property(x => x.ConversionRate)
-                .HasComputedColumnSql("[NumberInWholeSale] * [NumberInRetailSale]");
+            
             builder.Entity<Units>().HasIndex(x => x.WholeSaleUnit).IsUnique();
-            builder.Entity<ItemMainCategory>().HasIndex(x => x.Name).IsUnique();
+            builder.Entity<ItemMainCategory>().HasIndex(x => x.MainCatName).IsUnique();
             builder.Entity<Inventories>().HasIndex(x => x.WarehouseName).IsUnique();
-            builder.Entity<Brands>().HasIndex(x => x.Name).IsUnique();
-            builder.Entity<Brands>().HasIndex(x => x.Name).IsUnique();
-            builder.Entity<ItemVariants>().Property(x => x.ItemSKU).IsRequired(false);
+            builder.Entity<Brands>().HasIndex(x => x.BrandName).IsUnique();
             builder.Entity<Suppliers>().HasIndex(x => x.BusinessName).IsUnique();
  
             builder.Entity<Inventories>()
@@ -419,9 +418,12 @@ namespace ERP.Data
                 .WithOne(x => x.Inventories)
                 .HasForeignKey<InventoryAddress>(x => x.InventoriesId);
 
-            builder.Entity<Item>()
-                  .HasMany(x => x.ItemVariants)
-                  .WithOne(x => x.Item); 
+            //item relations
+            #region Item Relations
+            builder.Entity<Units>().Property(x => x.ConversionRate)
+                .HasComputedColumnSql("[NumberInWholeSale] * [NumberInRetailSale]");
+
+           
             builder.Entity<ItemVariants>()
                   .HasOne(x => x.ItemVariant_WholeSalePrice)
                   .WithOne(x => x.ItemVariants)
@@ -446,16 +448,27 @@ namespace ERP.Data
                     x.ItemId,
                     x.ItemMainCategoryId
                 });
-
+            //one to many
+            builder.Entity<Item>()
+                .HasMany(x => x.Item_Per_MainCategory)
+                .WithOne(x => x.Item)
+                .HasForeignKey(x => x.ItemId);
+            //one to many
+            builder.Entity<ItemBrands>()
+                .HasMany(x => x.ItemVariants)
+                .WithOne(x => x.ItemBrands)
+                .HasForeignKey(x => new { x.ItemId, x.BrandsId});
+            //one to one
             builder.Entity<Item>()
                   .HasOne(x => x.ItemNotes)
                   .WithOne(x => x.Item)
                   .HasForeignKey<ItemNotes>(x => x.ItemId);
+
             builder.Entity<Item>()
                 .HasOne(x => x.ItemDescription)
                 .WithOne(x => x.Item)
                 .HasForeignKey<ItemDescription>(x => x.ItemId);
-
+            //many to many
             builder.Entity<Item_Units>()
                 .HasKey(bc => new { bc.ItemId, bc.UnitsId });
             builder.Entity<Item_Units>()
@@ -465,19 +478,44 @@ namespace ERP.Data
             builder.Entity<Item_Units>()
                 .HasOne(bc => bc.Units)
                 .WithMany(c => c.Item_Units)
-                .HasForeignKey(bc => bc.UnitsId);
+                .HasForeignKey(bc => bc.UnitsId);  
+            
+            builder.Entity<ItemSuppliers>()
+                .HasKey(bc => new { bc.ItemId, bc.SuppliersId });
+            builder.Entity<ItemSuppliers>()
+                .HasOne(bc => bc.Item)
+                .WithMany(b => b.ItemSuppliers)
+                .HasForeignKey(bc => bc.ItemId);
+            builder.Entity<ItemSuppliers>()
+                .HasOne(bc => bc.Suppliers)
+                .WithMany(c => c.ItemSuppliers)
+                .HasForeignKey(bc => bc.SuppliersId);
+
+
 
             builder.Entity<Item_Per_MainCategory>()
                 .HasKey(bc => new { bc.ItemId, bc.ItemMainCategoryId });
             builder.Entity<Item_Per_MainCategory>()
                 .HasOne(bc => bc.Item)
-                .WithMany(b => b.Item_Per_Subcategory)
+                .WithMany(b => b.Item_Per_MainCategory)
                 .HasForeignKey(bc => bc.ItemId);
             builder.Entity<Item_Per_MainCategory>()
                 .HasOne(bc => bc.ItemMainCategory)
                 .WithMany(c => c.Item_Per_Subcategory)
                 .HasForeignKey(bc => bc.ItemMainCategoryId);
 
+            builder.Entity<ItemSKUkeys_Per_ItemVariants>()
+                .HasKey(bc => new { bc.ItemSKUKeysId, bc.ItemVariantsId });
+            builder.Entity<ItemSKUkeys_Per_ItemVariants>()
+                .HasOne(bc => bc.ItemSKUKeys)
+                .WithMany(b => b.ItemSKUkeys_Per_ItemVariants)
+                .HasForeignKey(bc => bc.ItemSKUKeysId);
+            builder.Entity<ItemSKUkeys_Per_ItemVariants>()
+                .HasOne(bc => bc.ItemVariants)
+                .WithMany(c => c.ItemSKUkeys_Per_ItemVariants)
+                .HasForeignKey(bc => bc.ItemVariantsId);
+
+            builder.Entity<ItemVariants>().HasIndex(x => x.ItemSKU).IsUnique();
             builder.Entity<ItemBrands>()
                 .HasKey(bc => new { bc.ItemId, bc.BrandsId });
             builder.Entity<ItemBrands>()
@@ -489,6 +527,7 @@ namespace ERP.Data
                 .WithMany(c => c.ItemBrands)
                 .HasForeignKey(bc => bc.BrandsId);
 
+            #endregion
             builder.Entity<ApplicationUser>()
                    .HasIndex(u => u.Email)
                    .IsUnique();

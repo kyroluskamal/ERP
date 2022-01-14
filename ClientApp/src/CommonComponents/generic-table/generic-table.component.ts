@@ -93,6 +93,7 @@ export class GenericTableComponent implements OnInit, OnChanges, OnDestroy, Afte
   @Input() ChangeSelectedRow: any[] = [];
   @Input() datasource: MatTableDataSource<any> = new MatTableDataSource<any>();
   @Input() AddButtonText: CardTitle[] = [];
+  @Input() NoDataMessage: CardTitle[] = [];
   @Input() HasCollabsableRow: boolean = false;
   @Input() DisableAddButton: boolean = false;
   @Input() RowDeleted: boolean = false;

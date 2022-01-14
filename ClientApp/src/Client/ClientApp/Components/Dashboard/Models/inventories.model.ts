@@ -1,6 +1,7 @@
 import { Country } from "./generals.model";
 
-export class Inventories {
+export class Inventories
+{
   id: number = 0;
   warehouseName: string = "";
   mobilePhone: string = "";
@@ -15,20 +16,21 @@ export class Inventories {
   inventoryAddressId?: number = 0;
   inventAdd?: string = "";
 }
-export class InventoryAddress {
+export class InventoryAddress
+{
   id: number = 0;
   buildingNo: string = "";
   flatNo: string = "";
   addressLine_1: string = "";
-  addressLine_2: string = ""
+  addressLine_2: string = "";
   postalCode: string = "";
   countryName?: string = "";
-  countryNameCode: string = ""
+  countryNameCode: string = "";
   countryId?: number = 0;
   city: string = "";
   government: string = "";
   streetName: string = "";
-  inventories: Inventories = new Inventories();
+  inventories: any;
   inventoriesId: number = 0;
   subdomain: string = "";
 }

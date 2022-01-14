@@ -1,0 +1,101 @@
+<mat-stepper [orientation]="(stepperOrientation | async)!"
+             [class]="DarkOrLight===Constants.dark?Constants.CSS_dark_for_Child_Component:Constants.CSS_Light_for_Child_Component"
+             [linear]="Stepper.isLinear"
+             #stepper>
+        <mat-step *ngFor="let form of Stepper.formDef; let i =index"
+                  [stepControl]="form.form">
+                <ng-template matStepLabel>{{form.stepperStepLabel!.toLowerCase()|translate}}</ng-template>
+                <kiko-form [Form]="form"
+                           *ngIf="form"
+                           (DatOnChange)="SendData($event)"
+                           [showAddOrSaveButton]="false"
+                           (ChipsHandler)="ChipsHandle($event)"
+                           [AllSelectedData]="form.AllSelectionData!"
+                           (GetValue)="SendData($event)"></kiko-form>
+                <div fxLayout="row"
+                     style="margin-top: 5px;">
+                        <button mat-raised-button
+                                [ngClass]="ThemeColors.bg"
+                                [class]="ThemeColors.colorName==='organge'||ThemeColors.colorName==='amber'?Constants.CSS_dark_color:
+    Constants.CSS_text_white"
+                                *ngIf="form.Show_Back_Button_Stepper"
+                                [ngStyle]="{'margin': Theme_dir==='rtl' ? '0 3px 0 0' : '0 0 0 3px' }"
+                                matStepperPrevious>
+                                <span
+                                      *ngIf="form.Back_Button_Stepper_text&&!form.Back_Button_Stepper_GoogleIcon&&!form.Back_Button_Stepper_faIcon">
+                                        <span *ngFor="let t of form.Back_Button_Stepper_text">
+                                                {{!t.needTranslation?t.text:t.text.toLowerCase()|translate}}
+                                        </span>
+                                </span>
+                                <mat-icon class="mat-18"
+                                          *ngIf="form.Back_Button_Stepper_GoogleIcon&&!form.Back_Button_Stepper_faIcon">
+                                        {{form.Back_Button_Stepper_GoogleIcon}}
+                                </mat-icon>
+                                <fa-icon *ngIf="form.Back_Button_Stepper_faIcon&&!form.Back_Button_Stepper_GoogleIcon"
+                                         [icon]="form.Back_Button_Stepper_faIcon"></fa-icon>
+                        </button>
+                        <button mat-raised-button
+                                *ngIf="form.Show_Next_Button_Stepper"
+                                [ngStyle]="{'margin': Theme_dir==='rtl' ? '0 3px 0 0' : '0 0 0 3px' }"
+                                [ngClass]="ThemeColors.bg"
+                                [class]="ThemeColors.colorName==='organge'||ThemeColors.colorName==='amber'?Constants.CSS_dark_color:
+    Constants.CSS_text_white"
+                                matStepperNext
+                                [disabled]="!form.form.valid"
+                                (click)="SendNext(Stepper, i)">
+                                <span
+                                      *ngIf="form.Next_Button_Stepper_text&&!form.Next_Button_Stepper_GoogleIcon&&!form.Next_Button_Stepper_faIcon">
+                                        <span *ngFor="let t of form.Next_Button_Stepper_text">
+                                                {{!t.needTranslation?t.text:t.text.toLowerCase()|translate}}
+                                        </span>
+                                </span>
+                                <mat-icon class="mat-18"
+                                          *ngIf="form.Next_Button_Stepper_GoogleIcon&&!form.Next_Button_Stepper_faIcon">
+                                        {{form.Next_Button_Stepper_GoogleIcon}}
+                                </mat-icon>
+                                <fa-icon *ngIf="form.Next_Button_Stepper_faIcon&&!form.Next_Button_Stepper_GoogleIcon"
+                                         [icon]="form.Next_Button_Stepper_faIcon"></fa-icon>
+                        </button>
+                        <button mat-raised-button
+                                *ngIf="form.Show_Reset_Button_Stepper"
+                                [ngStyle]="{'margin': Theme_dir==='rtl' ? '0 3px 0 0' : '0 0 0 3px' }"
+                                [ngClass]="ThemeColors.bg"
+                                [class]="ThemeColors.colorName==='organge'||ThemeColors.colorName==='amber'?Constants.CSS_dark_color:
+    Constants.CSS_text_white"
+                                (click)="stepper.reset(); resetChips()">
+                                <span
+                                      *ngIf="form.Reset_Button_Stepper_text && !form.Reset_Button_Stepper_GoogleIcon &&!form.Reset_Button_Stepper_faIcon">
+                                        <span *ngFor="let t of form.Reset_Button_Stepper_text">
+                                                {{!t.needTranslation?t.text:t.text.toLowerCase()|translate}}
+                                        </span>
+                                </span>
+                                <mat-icon class="mat-18"
+                                          *ngIf="form.Reset_Button_Stepper_GoogleIcon&&!form.Reset_Button_Stepper_faIcon">
+                                        {{form.Reset_Button_Stepper_GoogleIcon}}
+                                </mat-icon>
+                                <fa-icon *ngIf="form.Reset_Button_Stepper_faIcon&&!form.Reset_Button_Stepper_GoogleIcon"
+                                         [icon]="form.Reset_Button_Stepper_faIcon"></fa-icon>
+                        </button>
+                        <button mat-raised-button
+                                *ngIf="form.Show_Add_Button_Stepper"
+                                [ngStyle]="{'margin': Theme_dir==='rtl' ? '0 3px 0 0' : '0 0 0 3px' }"
+                                [ngClass]="ThemeColors.bg"
+                                [class]="ThemeColors.colorName==='organge'||ThemeColors.colorName==='amber'?Constants.CSS_dark_color:
+    Constants.CSS_text_white"
+                                (click)="SendFinal(form, i)">
+                                <span
+                                      *ngIf="form.Add_Button_Stepper_text&&!form.Add_Button_Stepper_GoogleIcon&&!form.Add_Button_Stepper_faIcon">
+                                        <span *ngFor="let t of form.Add_Button_Stepper_text">
+                                                {{!t.needTranslation?t.text:t.text.toLowerCase()|translate}}
+                                        </span>
+                                </span>
+                                <mat-icon class="mat-18"
+                                          *ngIf="form.Add_Button_Stepper_GoogleIcon&&!form.Add_Button_Stepper_faIcon">
+                                        {{form.Add_Button_Stepper_GoogleIcon}}
+                                </mat-icon>
+                                <fa-icon *ngIf="form.Add_Button_Stepper_faIcon&&!form.Add_Button_Stepper_GoogleIcon"
+                                         [icon]="form.Add_Button_Stepper_faIcon"></fa-icon>
+                        </button>
+                </div>
+        </mat-step>
+</mat-stepper>

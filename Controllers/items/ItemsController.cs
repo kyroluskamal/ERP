@@ -74,7 +74,7 @@ namespace ERP.Controllers.items
                             await UserUnitOfWork.Item_SubCats.AddAsync(new ItemSubCategory
                             {
                                 ItemMainCategoryId = main.Id,
-                                Name = "Default Subcategory"
+                                SubCatName = "Default Subcategory"
                             });
                             await UserUnitOfWork.SaveAsync();
                         }
@@ -97,26 +97,26 @@ namespace ERP.Controllers.items
                 if (tenant != null)
                 {
                     await UserUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
-                    if (NewCat.Name == null)
+                    if (NewCat.MainCatName == null)
                         return BadRequest(Constants.Required_Field_ERROR_Response());
 
-                    if (!await IsUniqeMainCat(NewCat.Name))
+                    if (!await IsUniqeMainCat(NewCat.MainCatName))
                         return BadRequest(Constants.Unique_Field_ERROR_Response());
 
-                    await UserUnitOfWork.ItemMainCategory.AddAsync(new ItemMainCategory { Name = NewCat.Name });
+                    await UserUnitOfWork.ItemMainCategory.AddAsync(new ItemMainCategory { MainCatName = NewCat.MainCatName });
                     var result = await UserUnitOfWork.SaveAsync();
                     if (result > 0)
                     {
                         var Cats = await UserUnitOfWork.ItemMainCategory.GetAllAsync();
-                        var addedCat = Cats.Last(x => x.Name == NewCat.Name);
+                        var addedCat = Cats.Last(x => x.MainCatName == NewCat.MainCatName);
                         await UserUnitOfWork.Item_SubCats.AddAsync(new ItemSubCategory
                         {
                             ItemMainCategoryId = addedCat.Id,
-                            Name = "Default Subcategory",
+                            SubCatName = "Default Subcategory",
 
                         });
                         await UserUnitOfWork.SaveAsync();
-                        return Ok(Cats.Last(x => x.Name == NewCat.Name));
+                        return Ok(Cats.Last(x => x.MainCatName == NewCat.MainCatName));
                     }
                     return BadRequest(Constants.DataAddtion_ERROR_Response());
                 }
@@ -147,7 +147,7 @@ namespace ERP.Controllers.items
 
                     if (MainCat != null)
                     {
-                        if (MainCat.Name == Constants.Uncategorized)
+                        if (MainCat.MainCatName == Constants.Uncategorized)
                         {
                             return BadRequest(Constants.Delete_Default_Error_Response());
                         }
@@ -198,17 +198,17 @@ namespace ERP.Controllers.items
                     
                     if (MainCat != null)
                     {
-                        if (MainCat.Name == Constants.Uncategorized)
+                        if (MainCat.MainCatName == Constants.Uncategorized)
                         {
                             return BadRequest(Constants.Delete_Default_Error_Response());
                         }
-                        if (MainCat.Name == MainCategory.Name)
+                        if (MainCat.MainCatName == MainCategory.MainCatName)
                             return StatusCode(200, new { status = Constants.SameObject });
-                        if (!await IsUniqeMainCat(MainCategory.Name))
+                        if (!await IsUniqeMainCat(MainCategory.MainCatName))
                         {
                             return BadRequest(Constants.Unique_Field_ERROR_Response());
                         }
-                        MainCat.Name = MainCategory.Name;
+                        MainCat.MainCatName = MainCategory.MainCatName;
                         UserUnitOfWork.ItemMainCategory.Update(MainCat);
                         var result = await UserUnitOfWork.SaveAsync();
                         if (result > 0)
@@ -258,22 +258,23 @@ namespace ERP.Controllers.items
                 if (tenant != null)
                 {
                     await UserUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
-                    if (NewSubCat.Name == null)
+                    if (NewSubCat.SubCatName == null)
                         return BadRequest(Constants.Required_Field_ERROR_Response());
-
+                    if (NewSubCat.ItemMainCategoryId == 0)
+                        return BadRequest(Constants.NotSelected_MainCat_Error_Response());
                     if (!await IsUniqueSubCat_Per_MainCat(NewSubCat, NewSubCat.ItemMainCategoryId))
                         return BadRequest(Constants.NOT_Unique_SubCat_Per_MainCat_ERROR_Response());
 
                     await UserUnitOfWork.Item_SubCats.AddAsync(new ItemSubCategory
                     {
-                        Name = NewSubCat.Name,
+                        SubCatName = NewSubCat.SubCatName,
                         ItemMainCategoryId = NewSubCat.ItemMainCategoryId
                     });
                     var result = await UserUnitOfWork.SaveAsync();
                     if (result > 0)
                     {
                         var Cats = await UserUnitOfWork.Item_SubCats.GetAllAsync();
-                        return Ok(Cats.Last(x => x.Name == NewSubCat.Name));
+                        return Ok(Cats.Last(x => x.SubCatName == NewSubCat.SubCatName));
                     }
                     return BadRequest(Constants.DataAddtion_ERROR_Response());
                 }
@@ -302,7 +303,9 @@ namespace ERP.Controllers.items
                     await UserUnitOfWork.SetConnectionStringAsync(Tenant.ConnectionString);
                     //Check if the Main cat is found in DB
                     var SubCat = await UserUnitOfWork.Item_SubCats.GetAsync(SubCategory.Id);
-                    if(SubCat.Name == Constants.DefaultSubCategory)
+                    if (SubCategory.ItemMainCategoryId == 0)
+                        return BadRequest(Constants.NotSelected_MainCat_Error_Response());
+                    if (SubCat.SubCatName == Constants.DefaultSubCategory)
                     {
                         return BadRequest(Constants.Delete_Default_Error_Response());
                     }
@@ -310,7 +313,7 @@ namespace ERP.Controllers.items
                         return BadRequest(Constants.Unique_SubCat_Per_MainCat_ERROR_Response());
                     if (SubCat != null)
                     {
-                        SubCat.Name = SubCategory.Name;
+                        SubCat.SubCatName = SubCategory.SubCatName;
                         UserUnitOfWork.Item_SubCats.Update(SubCat);
                         var result = await UserUnitOfWork.SaveAsync();
                         if (result > 0)
@@ -346,7 +349,7 @@ namespace ERP.Controllers.items
 
                     if (SubCat != null)
                     {
-                        if (SubCat.Name == Constants.DefaultSubCategory)
+                        if (SubCat.SubCatName == Constants.DefaultSubCategory)
                             return BadRequest(Constants.Delete_Default_Error_Response());
       
                         UserUnitOfWork.Item_SubCats.Remove(SubCat);
@@ -541,18 +544,18 @@ namespace ERP.Controllers.items
                 if (tenant != null)
                 {
                     await UserUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
-                    if (NewBrand.Name == null)
+                    if (NewBrand.BrandName == null)
                         return BadRequest(Constants.Required_Field_ERROR_Response());
 
-                    if (!await UserUnitOfWork.ItemBrands.IsUnique(x=>x.Name == NewBrand.Name))
+                    if (!await UserUnitOfWork.ItemBrands.IsUnique(x=>x.BrandName == NewBrand.BrandName))
                         return BadRequest(Constants.Unique_Field_ERROR_Response());
 
-                    await UserUnitOfWork.ItemBrands.AddAsync(new Brands { Name = NewBrand.Name });
+                    await UserUnitOfWork.ItemBrands.AddAsync(new Brands { BrandName = NewBrand.BrandName });
                     var result = await UserUnitOfWork.SaveAsync();
                     if (result > 0)
                     {
                         var Brands = await UserUnitOfWork.ItemBrands.GetAllAsync();
-                        return Ok(Brands.Last(x => x.Name == NewBrand.Name));
+                        return Ok(Brands.Last(x => x.BrandName == NewBrand.BrandName));
                     }
                     return BadRequest(Constants.DataAddtion_ERROR_Response());
                 }
@@ -617,13 +620,13 @@ namespace ERP.Controllers.items
                     await UserUnitOfWork.SetConnectionStringAsync(Tenant.ConnectionString);
                     //Check if teh Main cat is found in DB
                     var BrandToUpdate = await UserUnitOfWork.ItemBrands.GetAsync(Brand.Id);
-                    if (!await UserUnitOfWork.ItemBrands.IsUnique(x=>x.Name == Brand.Name))
+                    if (!await UserUnitOfWork.ItemBrands.IsUnique(x=>x.BrandName == Brand.BrandName))
                     {
                         return BadRequest(Constants.Unique_Field_ERROR_Response());
                     }
                     if (BrandToUpdate != null)
                     {
-                        BrandToUpdate.Name = Brand.Name;
+                        BrandToUpdate.BrandName = Brand.BrandName;
                         UserUnitOfWork.ItemBrands.Update(BrandToUpdate);
                         var result = await UserUnitOfWork.SaveAsync();
                         if (result > 0)
@@ -644,30 +647,85 @@ namespace ERP.Controllers.items
 
         #region Items functions
 
-        //[HttpGet(nameof(GetAllItems))]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        //public async Task<ActionResult<List<Item>>> GetAllItems(string subomain)
-        //{
-        //    if (CheckManuallyChanged_Subdomain(subomain))
-        //    {
-        //        var tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(subomain);
-        //        if (tenant != null)
-        //        {
-        //            await UserUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
-        //            var items = await UserUnitOfWork.Inventories.GetAllAsync();
-        //            foreach (var invent in inventories)
-        //            {
-        //                invent.InventoryAddress = await UserUnitOfWork.InventoryAddress.GetFirstOrDefaultAsync(x => x.InventoriesId == invent.Id);
-        //            }
-        //            return inventories;
-        //        }
-        //        return BadRequest(Constants.NullTentant_Error_Response());
-        //    }
-        //    return BadRequest(Constants.HackTrying_Error_Response());
-        //}
+        [HttpGet(nameof(GetAll_RequiredData))]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<AllItemNeededData>> GetAll_RequiredData(string subomain)
+        {
+            if (CheckManuallyChanged_Subdomain(subomain))
+            {
+                var tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(subomain);
+                if (tenant != null)
+                {
+                    await UserUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
+
+                    var AllRequiredData = new AllItemNeededData()
+                    {
+                        Brands = await UserUnitOfWork.ItemBrands.GetAllAsync(),
+                        ItemMainCategories = UserUnitOfWork.ItemMainCategory.GetAllAsync(includeProperties: "ItemSubCategory").GetAwaiter().GetResult().ToList(),
+                        Units = await UserUnitOfWork.ItemUnits.GetAllAsync(),
+                        Suppliers = await UserUnitOfWork.Suppliers.GetAllAsync(),
+                        ItemSKUKeys = await UserUnitOfWork.ItemSKUKeys.GetAllAsync()
+                    };
+                    return AllRequiredData;
+                }
+                return BadRequest(Constants.NullTentant_Error_Response());
+            }
+            return BadRequest(Constants.HackTrying_Error_Response());
+        }
+
+        [HttpGet(nameof(GetAllItems))]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<List<Item>>> GetAllItems(string subomain)
+        {
+            if (CheckManuallyChanged_Subdomain(subomain))
+            {
+                var tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(subomain);
+                if (tenant != null)
+                {
+                    await UserUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
+                    List<Item> items = UserUnitOfWork.Items.GetAllAsync(
+                        includeProperties: "ItemNotes, ItemDescription, Item_Units, ItemBrands, Item_Per_Subcategory")
+                        .GetAwaiter().GetResult().ToList();
+                    foreach (var item in items)
+                    {
+                        item.ApplicationUser.PasswordHash = null;
+                        item.Description = item.ItemDescription.Description;
+                        item.NotesForClients = item.ItemNotes.Notes;
+                        item.InternalNote = item.InternalNotes.Notes;
+                    }
+                    return items;
+                }
+                return BadRequest(Constants.NullTentant_Error_Response());
+            }
+            return BadRequest(Constants.HackTrying_Error_Response());
+        }
+
 
         #endregion
 
+        //............................ ItemSKU
+        #region ItemSKU
+
+        [HttpGet(nameof(GetAll_ItemSKUKeys))]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<List<ItemSKUKeys>>> GetAll_ItemSKUKeys(string subomain)
+        {
+            if (CheckManuallyChanged_Subdomain(subomain))
+            {
+                var tenant = await TenantsUnitOfWork.Tenants.TenantBySubdomainAsync(subomain);
+                if (tenant != null)
+                {
+                    await UserUnitOfWork.SetConnectionStringAsync(tenant.ConnectionString);
+                    var itemSKUKeys = await UserUnitOfWork.ItemSKUKeys.GetAllAsync();
+                    
+                    return itemSKUKeys;
+                }
+                return BadRequest(Constants.NullTentant_Error_Response());
+            }
+            return BadRequest(Constants.HackTrying_Error_Response());
+        }
+
+        #endregion
         //HelperMedthod       
         private bool CheckManuallyChanged_Subdomain(string subdomain)
         {
@@ -677,12 +735,12 @@ namespace ERP.Controllers.items
         public async Task<bool> IsUniqeMainCat(string catName)
         {
             var allCats = await UserUnitOfWork.ItemMainCategory.GetAllAsync();
-            return allCats.Find(x => x.Name == catName) == null;
+            return allCats.Find(x => x.MainCatName == catName) == null;
         }
         public async Task<bool> IsUniqBrand(string BrandName)
         {
             var AllBrands = await UserUnitOfWork.ItemBrands.GetAllAsync();
-            return AllBrands.Find(x => x.Name == BrandName) == null;
+            return AllBrands.Find(x => x.BrandName == BrandName) == null;
         }
         public async Task<bool> IsUniqe_ItemUnit(string Wholesale, int id = 0)
         {
@@ -698,7 +756,7 @@ namespace ERP.Controllers.items
             var AllSubCat = await UserUnitOfWork.Item_SubCats.GetAllAsync(x => x.ItemMainCategoryId==MainCatId);
             foreach (var subcat in AllSubCat)
             {
-                if (subcat.Name == newSubCat.Name) return false;
+                if (subcat.SubCatName == newSubCat.SubCatName) return false;
             }
             return true;
         }

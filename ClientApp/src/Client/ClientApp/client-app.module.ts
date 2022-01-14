@@ -45,9 +45,10 @@ import { AddNewMainCatComponent } from './Components/Dashboard/Items/item-main-c
 import { AddNewSubCatComponent } from './Components/Dashboard/Items/item-main-categories/add-new-sub-cat/add-new-sub-cat.component';
 import { EditSubCatComponent } from './Components/Dashboard/Items/item-main-categories/edit-sub-cat/edit-sub-cat.component';
 import { EditMainCatComponent } from './Components/Dashboard/Items/item-main-categories/edit-main-cat/edit-main-cat.component';
+import { GenericStepperComponent } from 'src/CommonServices/generic-stepper/generic-stepper.component';
 
 
-const Commponents = [MatCardTitleOnlyComponent,
+const Commponents = [MatCardTitleOnlyComponent, GenericStepperComponent,
   ClientAppDashboardComponent, ClientAppHomeNavbarComponent, CLientAppHomeComponent,
   ClientDashboardHomeComponent, BadgeComponent, GenericTableComponent, GenericFormComponent,
   ItemsComponentComponent, IconButtonRendererComponent,

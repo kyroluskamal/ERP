@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { RouterConstants } from 'src/Helpers/RouterConstants';
-import { Brands, ItemMainCategory, ItemSubCategory, ItemUnit } from '../Models/item.model';
+import { AllItemNeededData, Brands, ItemMainCategory, ItemSKUKeys, ItemSubCategory, Units } from '../Models/item.model';
 import { CookieService } from "ngx-cookie-service";
 
 @Injectable({
@@ -12,10 +12,10 @@ import { CookieService } from "ngx-cookie-service";
 export class ItemsService
 {
   subdomain = window.location.hostname.split(".")[0];
-  public AllMainCats: ItemMainCategory[] = [];
+  public AllItemNeededData: AllItemNeededData = new AllItemNeededData();
   constructor(private httpClient: HttpClient, public Constants: ConstantsService)
   {
-    this.GetAllGategories().subscribe(r => { this.AllMainCats = r; console.log(this.AllMainCats); });
+    this.GetAll_NeededData().subscribe(r => { this.AllItemNeededData = r; console.log(r); });
   }
 
   //#region Item Main Category
@@ -61,16 +61,16 @@ export class ItemsService
 
 
   //#region Item Units
-  Get_All_ItemUnits(): Observable<ItemUnit[]>
+  Get_All_ItemUnits(): Observable<Units[]>
   {
-    return this.httpClient.get<ItemUnit[]>(`${RouterConstants.Item_Unit_GetAll_API}?subdomain=${this.subdomain}`, { responseType: 'json' });
+    return this.httpClient.get<Units[]>(`${RouterConstants.Item_Unit_GetAll_API}?subdomain=${this.subdomain}`, { responseType: 'json' });
   }
 
-  AddNew_ItemUnit(ItemUnit: ItemUnit): Observable<ItemUnit>
+  AddNew_ItemUnit(ItemUnit: Units): Observable<Units>
   {
-    return this.httpClient.post<ItemUnit>(`${RouterConstants.Item_Unit_Add_API}`, ItemUnit, { headers: { 'Content-Type': 'application/json' } });
+    return this.httpClient.post<Units>(`${RouterConstants.Item_Unit_Add_API}`, ItemUnit, { headers: { 'Content-Type': 'application/json' } });
   }
-  Update_ItemUnit(ItemUnit: ItemUnit): Observable<any>
+  Update_ItemUnit(ItemUnit: Units): Observable<any>
   {
     return this.httpClient.put(`${RouterConstants.Item_Unit_Update_API}`, ItemUnit);
   }
@@ -99,5 +99,17 @@ export class ItemsService
   }
   //#endregion
 
+  //#region Items Function
+  GetAll_NeededData(): Observable<AllItemNeededData>
+  {
+    return this.httpClient.get<AllItemNeededData>(`${RouterConstants.Item_GetAll_RequiredData_API}?subomain=${this.subdomain}`);
+  }
+  //#endregion
 
+  //#region ItemSKUS
+  GetAll_ItemSKUKeys(): Observable<ItemSKUKeys[]>
+  {
+    return this.httpClient.get<ItemSKUKeys[]>(`${RouterConstants.ItemSKUKeys_GetAll_API}?subomain=${this.subdomain}`);
+  }
+  //#endregion
 }

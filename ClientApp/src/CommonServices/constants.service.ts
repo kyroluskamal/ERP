@@ -33,8 +33,8 @@ export class ConstantsService
   Search_table = "Search table";
   loading = "loading";
   SelectOneMainCat = "Select One main category";
-  MainCatName = "MainCatName";
-  SubCatName = "SubCatName";
+  MainCatName = "mainCatName";
+  SubCatName = "subCatName";
   Add = "Add";
   New = "New";
   Sub_Categories_Singular = "Sub_Categories_Singular";
@@ -64,7 +64,7 @@ export class ConstantsService
   Item_Units = "Item_Units";
   Select_Item_Unit = "Select_Item_Unit";
   NoUnitsAdded = "NoUnitsAdded";
-
+  ItemMainCategories: string = "ItemMainCategories";
   Add_New_Units = "Add_New_Units";
   Search = "Search";
   Add_New_Inventory = "Add_New_Inventory";
@@ -99,6 +99,9 @@ export class ConstantsService
   ItemPerPageLabal = "ItemPerPageLabal";
   FirstPage = "FirstPage";
   NextPage = "NextPage";
+  next = "next";
+  back = "back";
+  reset = "reset";
   PreviousPage = "PreviousPage";
   LastPage = "LastPage";
   address = "address";
@@ -143,9 +146,30 @@ export class ConstantsService
   countryId = "countryId";
   MinZero = 0;
   Min1 = 1;
+  add_new_item = "add_new_item";
+  item_details = "item_details";
+  item_variants = "item_variants";
+  defaultInventoryId = "defaultInventoryId";
+  itemName = "itemName";
+  add_new_subcat_select_only_maincat = "add_new_subcat_select_only_maincat";
+  internalNote = "internalNote";
+  notesForClients = "notesForClients";
+  item_variants_per_brand = "item_variants_per_brand";
+  variantName = "variantName";
+  variants_fo_brand_ = "variants_fo_brand_";
+  hasExpire = "hasExpire";
+  isOnline = "isOnline";
+  notifyLessThan = "notifyLessThan";
+  lastPurchasePrice = "lastPurchasePrice";
+  lastPurchasePrice_ToolTip = "lastPurchasePrice_ToolTip";
+  currentNoInWarehouse = "currentNoInWarehouse";
+  currentNoInWarehouse_ToolTip = "currentNoInWarehouse_ToolTip";
+  totalAmountInAllInvetroies = "totalAmountInAllInvetroies";
+  profitMargin = "profitMargin";
+  profitMarginType = "profitMarginType";
+  //Notifications Messages
   DeleteMainCatWarning = "DeleteMainCatWarning";
   DeleteSubCatWarning = "DeleteSubCatWarning";
-  //Notifications Messages
   LoggedInSuccessfully: string = "LoggedInSuccessfully";
   EmilConfirmationResnding = "EmilConfirmationResnding";
   EmilConfirmationResnding_success = "EmilConfirmationResnding_success";
@@ -212,6 +236,16 @@ export class ConstantsService
   itemMainCategoryId = "itemMainCategoryId";
   add_new_maincat = "add_new_maincat";
   add_new_subcat = "add_new_subcat";
+  no_general_data_message = "no_general_data_message";
+  select_main_cat_first = "select_main_cat_first";
+  brandsIds = "brandsIds";
+  subCatsId = "subCatsId";
+  brandName = "brandName";
+  add_new_brand = "add_new_brand";
+  unitsIds = "unitsIds";
+  suppliersIds = "suppliersIds";
+  add_new_supplier = "add_new_supplier";
+  itemSKUKeys = "itemSKUKeys";
   //Tooltip translation
   CloseSidebar = "Close sidebar";
   FixSidebar = "Fix sidebar";

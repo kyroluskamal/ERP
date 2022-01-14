@@ -1,26 +1,25 @@
-<mat-card [fxFlex]="FormSpec.Card_fxFlex"
-          [dir]="this.translate.isRightToLeft(this.translate.GetCurrentLang())?'rtl':'ltr'"
-          [class]="DarkOrLight===Constants.dark?Constants.CSS_dark_for_Child_Component:Constants.CSS_Light_for_Child_Component">
-  <mat-card-title [ngClass]="ThemeColors.bg"
-                  *ngIf="Title.length>0"
-                  [class]="ThemeColors.colorName==='organge'||ThemeColors.colorName==='amber'?Constants.CSS_dark_color:
-Constants.CSS_text_white"
-                  [style.font-family]="!this.translate.isRightToLeft(this.translate.GetCurrentLang())? Constants.CSS_cursive_font_NotClass + ' !important':Constants.CSS_Hacen_Casablanca_font_NotClass+' !important'">
-    <span *ngFor="let t of Title">
-      {{!t.needTranslation?t.text:t.text.toLowerCase()|translate}}
-    </span>
-  </mat-card-title>
-
+<div fxLayout="column"
+     [dir]="this.translate.isRightToLeft(this.translate.GetCurrentLang())?'rtl':'ltr'"
+     [class]="DarkOrLight===Constants.dark?Constants.CSS_dark_for_Child_Component:Constants.CSS_Light_for_Child_Component">
+  <ng-container *ngIf="Title.length > 0">
+    <mat-card-title-only [Title]="Title"
+                         [Subtitle]="SubTitle"></mat-card-title-only>
+  </ng-container>
   <form [formGroup]="FormSpec.form"
         (ngSubmit)="FormSpec.form.valid"
-        fxLayout="column">
+        fxLayout="column"
+        fxFlex="100%">
     <div style="margin-top: 10px;"
-         fxLayout="row"
+         [fxLayout]="FormSpec.Form_fxLayout"
+         [fxLayoutGap]="FormSpec.Form_fxLayoutGap?FormSpec.Form_fxLayoutGap:'0px'"
          fxLayoutAlign="space-between"
          fxLayoutGap.xs="10px"
          fxLayout.xs="column">
-      <ng-container *ngFor="let section of FormSpec.formSections">
+      <ng-container *ngFor="let section of FormSpec.formSections, let s = index">
         <mat-card [fxFlex]="section.fxFlex"
+                  [class]="DarkOrLight===Constants.dark?Constants.CSS_dark_for_Child_Component:Constants.CSS_Light_for_Child_Component"
+                  [fxFlex.sm]="section.fxFlex_sm"
+                  [fxFlex.md]="section.fxFlex_md"
                   fxFlex.xs="100%">
           <mat-card-title *ngIf="section.sectionTitle"
                           [ngClass]="ThemeColors.bg"
@@ -34,171 +33,340 @@ Constants.CSS_text_white"
           <mat-card-content fxLayout="row wrap"
                             fxLayout.xs="column"
                             fxLayoutAlign="space-between">
-            <ng-container *ngFor="let field of section.formFieldsSpec">
-              <mat-form-field [appearance]="field.appearance"
-                              *ngIf="field.type==='text' || field.type==='tel' || field.type==='search' || field.type==='number'|| field.type==='email'"
-                              [fxFlex]="field.fxFlex? field.fxFlex:''"
-                              [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''">
-                <mat-label>
-                  {{field.mat_label.toLowerCase()| translate}}
-                </mat-label>
-                <input matInput
-                       [required]="field.required"
-                       [maxlength]="field.maxLength?field.maxLength:''"
-                       [minlength]="field.minLength?field.minLength:''"
-                       [min]="field.min?field.min:''"
-                       [max]="field.max?field.max:''"
-                       [type]="field.type"
-                       [value]="field.type ==='number'?'0.00':''"
-                       [step]="field.type ==='number'?'0.25':''"
-                       [formControlName]="field.formControlName"
-                       [errorStateMatcher]="customErrorStateMatcher" />
-                <mat-icon class="mat-18"
-                          *ngIf="field.faIcon||field.GoogleIcon"
-                          matSuffix>
-                  <fa-icon *ngIf="field.faIcon&&!field.GoogleIcon"
-                           [icon]="field.faIcon">
-                    {{field.GoogleIcon&&!field.faIcon?field.GoogleIcon:''}}
-                  </fa-icon>
-                </mat-icon>
-                <mat-hint *ngIf="field.hint"
-                          [dir]="field.hint.dir"
-                          [align]="field.hint.align">{{field.hint.text_no_translation?
-                  field.hint.text_no_translation: field.hint.text_to_translation.toLowerCase()|translate}}</mat-hint>
-                <mat-error *ngFor="let e of field.errors">
-                  <span *ngIf="FormSpec.form.get(field.formControlName)?.hasError(e.type)">
-                    <span *ngFor="let t of e.TranslatedMessage">
-                      {{!t.needTraslation?t.text:(t.text.toLowerCase()|translate) + ' '}}
-                    </span>
-                  </span>
-                </mat-error>
-              </mat-form-field>
-              <mat-form-field [appearance]="field.appearance"
-                              *ngIf="field.type==='date'"
-                              [fxFlex]="field.fxFlex? field.fxFlex:''"
-                              [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''">
-                <mat-label>{{field.mat_label.toLowerCase()| translate}}</mat-label>
-                <input matInput
-                       [value]="FormSpec.form.get(field.formControlName)?.value"
-                       [required]="field.required"
-                       [errorStateMatcher]="customErrorStateMatcher"
-                       [formControlName]="field.formControlName"
-                       [matDatepicker]="picker"
-                       (focus)="picker.open()"
-                       (click)="picker.open()">
-
-                <mat-datepicker-toggle matSuffix
-                                       [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-                <mat-hint *ngIf="field.hint"
-                          [dir]="field.hint.dir"
-                          [align]="field.hint.align">{{field.hint.text_no_translation?
-                  field.hint.text_no_translation: field.hint.text_to_translation.toLowerCase()|translate}}</mat-hint>
-
-                <mat-error *ngFor="let e of field.errors">
-
-                  <span *ngIf="FormSpec.form.get(field.formControlName)?.hasError(e.type)">
-                    <span *ngFor="let t of e.TranslatedMessage">
-                      {{!t.needTraslation?t.text:(t.text.toLowerCase()|translate) + ' '}}
-                    </span>
-                  </span>
-                </mat-error>
-              </mat-form-field>
-              <!-- ----------------------------------------------------------- TextArea -->
-              <mat-form-field [appearance]="field.appearance"
-                              *ngIf="field.type==='textarea'"
-                              [fxFlex]="field.fxFlex? field.fxFlex:''"
-                              [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''">
-                <mat-label>
-                  {{field.mat_label.toLowerCase()| translate}}
-                </mat-label>
-                <textarea matInput
-                          [formControlName]="field.formControlName"
-                          cdkTextareaAutosize
-                          [cdkAutosizeMinRows]="field.cdkAutosizeMinRows?field.cdkAutosizeMinRows:''"></textarea>
-                <mat-icon class="mat-18"
-                          *ngIf="field.faIcon||field.GoogleIcon"
-                          matSuffix>
-                  <fa-icon *ngIf="field.faIcon&&!field.GoogleIcon"
-                           [icon]="field.faIcon">
-                    {{field.GoogleIcon&&!field.faIcon?field.GoogleIcon:''}}
-                  </fa-icon>
-                </mat-icon>
-                <mat-hint *ngIf="field.hint"
-                          [dir]="field.hint.dir"
-                          [align]="field.hint.align">{{field.hint.text_no_translation?
-                  field.hint.text_no_translation: field.hint.text_to_translation.toLowerCase()|translate}}</mat-hint>
-
-                <mat-error *ngFor="let e of field.errors">
-                  <span *ngIf="FormSpec.form.get(field.formControlName)?.hasError(e.type)">
-                    <span *ngFor="let t of e.TranslatedMessage">
-                      {{!t.needTraslation?t.text:(t.text.toLowerCase()|translate) + ' '}}
-                    </span>
-                  </span>
-                </mat-error>
-              </mat-form-field>
-              <!-- ----------------------------------------------------------- CheckBox -->
-              <mat-checkbox color="primary"
-                            *ngIf="field.type==='checkbox'"
-                            [fxFlex]="field.fxFlex? field.fxFlex:''"
-                            [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''"
-                            [formControlName]="field.formControlName">{{field.mat_label.toLowerCase()|translate}}
-              </mat-checkbox>
-
-              <!-- .................................................... Selection -->
-              <mat-form-field [appearance]="field.appearance"
-                              *ngIf="field.type==='select'"
-                              [fxFlex]="field.fxFlex? field.fxFlex:''"
-                              [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''">
-                <mat-label>{{field.mat_label.toLowerCase()| translate}}</mat-label>
-                <mat-select [formControlName]="field.formControlName">
-                  <div style="position: sticky; top:0px;z-index: 1000;background-color: aliceblue;">
-                    <input matInput
-                           #SearchInput
-                           (input)="Search($event,field.PropertyNameToShowInSelection!)"
-                           type="search"
-                           placeholder="{{Constants.Search|translate}}">
-                  </div>
-                  <mat-divider inset></mat-divider>
-                  <mat-option *ngIf="SearchInput.value!==''&&field.SelectData?.length===0"
-                              [class]="Constants.CSS_blue">{{Constants.NoMatchedData_inSelection|translate}}
-                  </mat-option>
-                  <mat-option *ngIf="field.SelectionText_IfNoData && SearchInput.value!==''&&field.SelectData?.length===0"
-                              [class]="Constants.CSS_red">{{field.SelectionText_IfNoData!|translate}}</mat-option>
-                  <mat-option *ngFor="let el of field.SelectData"
-                              [value]="el[field.PropertyNameToSetInValue!]">
-                    {{el[field.PropertyNameToShowInSelection!]}}
-                  </mat-option>
-                  <button mat-button
-                          *ngIf="field.SelectionBottomSheetComponent"
-                          disableRipple
-                          (click)="OpenButtomSheet(field.SelectionBottomSheetComponent!)">
-                    <mat-icon class="mat-18">
-                      <fa-icon *ngIf="field.SelectionInsideButton_faIcon && !field.SelectionInsideButton_GoogleIcon"
-                               [icon]="field.SelectionInsideButton_faIcon"></fa-icon>
-                      <span class="material-icons"
-                            *ngIf="!field.SelectionInsideButton_faIcon && field.SelectionInsideButton_GoogleIcon">
-                        {{field.SelectionInsideButton_GoogleIcon}}
+            <ng-container *ngFor="let field of section.formFieldsSpec, let f = index">
+              <!-- -------------------------------------------------------------- text -->
+              <div [fxFlex]="field.fxFlex? field.fxFlex:''"
+                   *ngIf="field.type==='text' || field.type==='tel' || field.type==='search' || field.type==='number'|| field.type==='email'"
+                   fxLayout="row"
+                   fxLayoutAlign="start baseline"
+                   [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''">
+                <mat-form-field [appearance]="field.appearance"
+                                [fxFlex]="field.fieldToolTip?'95%':'100%'">
+                  <mat-label>
+                    {{field.mat_label.toLowerCase()| translate}}
+                  </mat-label>
+                  <input matInput
+                         [required]="field.required"
+                         [maxlength]="field.maxLength?field.maxLength:''"
+                         [minlength]="field.minLength?field.minLength:''"
+                         [min]="field.min?field.min:''"
+                         [max]="field.max?field.max:''"
+                         [disabled]="field.disabled?field.disabled:false"
+                         [type]="field.type"
+                         [value]="field.type ==='number'?'0.00':''"
+                         [step]="field.type ==='number'?'0.25':''"
+                         [formControlName]="field.formControlName"
+                         [errorStateMatcher]="customErrorStateMatcher" />
+                  <mat-icon class="mat-18"
+                            *ngIf="field.faIcon||field.GoogleIcon"
+                            matSuffix>
+                    <fa-icon *ngIf="field.faIcon&&!field.GoogleIcon"
+                             [icon]="field.faIcon">
+                      {{field.GoogleIcon&&!field.faIcon?field.GoogleIcon:''}}
+                    </fa-icon>
+                  </mat-icon>
+                  <mat-hint *ngIf="field.hint && FormSpec.form.valid"
+                            [dir]="field.hint.dir"
+                            [align]="field.hint.align">{{field.hint.text_no_translation?
+                    field.hint.text_no_translation:
+                    field.hint.text_to_translation.toLowerCase()|translate}}</mat-hint>
+                  <mat-error *ngFor="let e of field.errors">
+                    <span *ngIf="FormSpec.form.get(field.formControlName)?.hasError(e.type)">
+                      <span *ngFor="let t of e.TranslatedMessage">
+                        {{!t.needTraslation?t.text:(t.text.toLowerCase()|translate) + ' '}}
                       </span>
-                    </mat-icon>&nbsp; {{field.SelectionButton_text!.toLowerCase()|translate}}
-                  </button>
-                </mat-select>
-                <mat-hint *ngIf="field.hint"
-                          [dir]="field.hint.dir"
-                          [align]="field.hint.align">{{field.hint.text_no_translation?
-                  field.hint.text_no_translation: field.hint.text_to_translation.toLowerCase()|translate}}</mat-hint>
-
-                <mat-error *ngFor="let e of field.errors">
-                  <span *ngIf="FormSpec.form.get(field.formControlName)?.hasError(e.type)">
-                    <span *ngFor="let t of e.TranslatedMessage">
-                      {{!t.needTraslation?t.text:(t.text.toLowerCase()|translate) + ' '}}
                     </span>
-                  </span>
-                </mat-error>
-              </mat-form-field>
+                  </mat-error>
+                </mat-form-field>
+                <mat-icon style="color:#ff5722;"
+                          [matTooltip]="field.fieldToolTip.toLowerCase()|translate"
+                          [matTooltipPosition]="Theme_dir==='ltr'?'right':'left'"
+                          [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
+                          *ngIf="field.fieldToolTip"><span class="material-icons">
+                    lightbulb
+                  </span></mat-icon>
+              </div>
+              <!-- ----------------------------------------------------------------Date -->
+              <div [fxFlex]="field.fxFlex? field.fxFlex:''"
+                   *ngIf="field.type==='date'"
+                   fxLayout="row"
+                   fxLayoutAlign="start baseline"
+                   [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''">
+                <mat-form-field [appearance]="field.appearance"
+                                [fxFlex]="field.fieldToolTip?'95%':'100%'">
+
+                  <mat-label>{{field.mat_label.toLowerCase()| translate}}</mat-label>
+                  <input matInput
+                         [value]="FormSpec.form.get(field.formControlName)?.value"
+                         [required]="field.required"
+                         [errorStateMatcher]="customErrorStateMatcher"
+                         [formControlName]="field.formControlName"
+                         [matDatepicker]="picker"
+                         [disabled]="field.disabled?field.disabled:false"
+                         (focus)="picker.open()"
+                         (click)="picker.open()">
+
+                  <mat-datepicker-toggle matSuffix
+                                         [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                  <mat-hint *ngIf="field.hint && FormSpec.form.valid"
+                            [dir]="field.hint.dir"
+                            [align]="field.hint.align">{{field.hint.text_no_translation?
+                    field.hint.text_no_translation:
+                    field.hint.text_to_translation.toLowerCase()|translate}}</mat-hint>
+
+                  <mat-error *ngFor="let e of field.errors">
+
+                    <span *ngIf="FormSpec.form.get(field.formControlName)?.hasError(e.type)">
+                      <span *ngFor="let t of e.TranslatedMessage">
+                        {{!t.needTraslation?t.text:(t.text.toLowerCase()|translate) + ' '}}
+                      </span>
+                    </span>
+                  </mat-error>
+                </mat-form-field>
+                <mat-icon style="color:#ff5722;"
+                          [matTooltip]="field.fieldToolTip.toLowerCase()|translate"
+                          [matTooltipPosition]="Theme_dir==='ltr'?'right':'left'"
+                          [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
+                          *ngIf="field.fieldToolTip"><span class="material-icons">
+                    lightbulb
+                  </span></mat-icon>
+              </div>
+              <!-- ----------------------------------------------------------- Chips -->
+              <div [fxFlex]="field.fxFlex? field.fxFlex:''"
+                   *ngIf="field.type==='chip-autocomplete'"
+                   fxLayout="row"
+                   fxLayoutAlign="start baseline"
+                   [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''">
+                <mat-form-field [appearance]="field.appearance"
+                                [fxFlex]="field.fieldToolTip?'95%':'100%'">
+                  <mat-label>{{field.mat_label.toLowerCase()| translate}}</mat-label>
+                  <mat-chip-list #chipList
+                                 (change)="SendData()"
+                                 aria-label="Fruit selection">
+                    <mat-chip *ngFor="let c of field.chipsFill"
+                              (removed)="removeChip(c, field.chipsFill!)">
+                      {{c[field.chipPropertyToShowInSelection!]}}
+                      <button matChipRemove>
+                        <mat-icon>cancel</mat-icon>
+                      </button>
+                    </mat-chip>
+                    <input mat-input
+                           #chip
+                           (focus)="field.chipsFromDb = field.ChipsFromDbUnFiltered"
+                           (blur)="field.chipsFromDb = field.ChipsFromDbUnFiltered"
+                           (click)="field.chipsFromDb = field.ChipsFromDbUnFiltered;"
+                           [formControlName]="field.formControlName"
+                           [matAutocomplete]="auto"
+                           [matChipInputFor]="chipList"
+                           (input)="FilterChipsAutoComplete($event, field.chipPropertyToShowInSelection!)"
+                           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                           (matChipInputTokenEnd)="addChip($event); chip.value =''">
+                  </mat-chip-list>
+                  <mat-autocomplete #auto="matAutocomplete"
+                                    (optionSelected)="selectedChip($event, field.chipsFill!, field.ChipsFromDbUnFiltered!, field.chipPropertyToShowInValue!); chip.value=''">
+                    <mat-option *ngFor="let c of field.chipsFromDb"
+                                [dir]="translate.isRightToLeft(translate.GetCurrentLang())?'rtl':'ltr'"
+                                [value]="c[field.chipPropertyToShowInValue!]">
+                      {{c[field.chipPropertyToShowInSelection!]}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <mat-icon style="color:#ff5722;"
+                          [matTooltip]="field.fieldToolTip.toLowerCase()|translate"
+                          [matTooltipPosition]="Theme_dir==='ltr'?'right':'left'"
+                          [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
+                          *ngIf="field.fieldToolTip"><span class="material-icons">
+                    lightbulb
+                  </span></mat-icon>
+              </div>
+              <!-- ----------------------------------------------------------- TextArea -->
+              <div [fxFlex]="field.fxFlex? field.fxFlex:''"
+                   *ngIf="field.type==='textarea'"
+                   fxLayout="row"
+                   fxLayoutAlign="start baseline"
+                   [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''">
+                <mat-form-field [appearance]="field.appearance"
+                                [fxFlex]="field.fieldToolTip?'95%':'100%'">
+                  <mat-label>
+                    {{field.mat_label.toLowerCase()| translate}}
+                  </mat-label>
+                  <textarea matInput
+                            [disabled]="field.disabled?field.disabled:false"
+                            [formControlName]="field.formControlName"
+                            cdkTextareaAutosize
+                            [cdkAutosizeMinRows]="field.cdkAutosizeMinRows?field.cdkAutosizeMinRows:''"></textarea>
+                  <mat-icon class="mat-18"
+                            *ngIf="field.faIcon||field.GoogleIcon"
+                            matSuffix>
+                    <fa-icon *ngIf="field.faIcon&&!field.GoogleIcon"
+                             [icon]="field.faIcon">
+                      {{field.GoogleIcon&&!field.faIcon?field.GoogleIcon:''}}
+                    </fa-icon>
+                  </mat-icon>
+                  <mat-hint *ngIf="field.hint && FormSpec.form.valid"
+                            [dir]="field.hint.dir"
+                            [align]="field.hint.align">{{field.hint.text_no_translation?
+                    field.hint.text_no_translation:
+                    field.hint.text_to_translation.toLowerCase()|translate}}</mat-hint>
+
+                  <mat-error *ngFor="let e of field.errors">
+                    <span *ngIf="FormSpec.form.get(field.formControlName)?.hasError(e.type)">
+                      <span *ngFor="let t of e.TranslatedMessage">
+                        {{!t.needTraslation?t.text:(t.text.toLowerCase()|translate) + ' '}}
+                      </span>
+                    </span>
+                  </mat-error>
+                </mat-form-field>
+                <mat-icon style="color:#ff5722;"
+                          [matTooltip]="field.fieldToolTip.toLowerCase()|translate"
+                          [matTooltipPosition]="Theme_dir==='ltr'?'right':'left'"
+                          [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
+                          *ngIf="field.fieldToolTip"><span class="material-icons">
+                    lightbulb
+                  </span></mat-icon>
+              </div>
+              <!-- ----------------------------------------------------------- CheckBox -->
+              <div [fxFlex]="field.fxFlex? field.fxFlex:''"
+                   *ngIf="field.type==='checkbox'"
+                   fxLayout="row"
+                   fxLayoutAlign="start baseline"
+                   [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''">
+
+                <mat-checkbox color="primary"
+                              [disabled]="field.disabled?field.disabled:false"
+                              [formControlName]="field.formControlName">
+                  {{field.mat_label.toLowerCase()|translate}}
+                </mat-checkbox>
+                <mat-icon style="color:#ff5722;"
+                          [matTooltip]="field.fieldToolTip.toLowerCase()|translate"
+                          [matTooltipPosition]="Theme_dir==='ltr'?'right':'left'"
+                          [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
+                          *ngIf="field.fieldToolTip"><span class="material-icons">
+                    lightbulb
+                  </span></mat-icon>
+              </div>
+              <!-- .................................................... Selection -->
+              <div [fxFlex]="field.fxFlex? field.fxFlex:''"
+                   *ngIf="field.type==='select'"
+                   fxLayout="row"
+                   fxLayoutAlign="start baseline"
+                   [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''">
+                <mat-form-field [appearance]="field.appearance"
+                                [fxFlex]="field.fieldToolTip?'95%':'100%'">
+                  <mat-label>{{field.mat_label.toLowerCase()| translate}}</mat-label>
+                  <mat-select [formControlName]="field.formControlName"
+                              [disabled]="field.disabled?field.disabled:false"
+                              (closed)="!field.PropertyNameToShowInSelection_many?SetSelectionData(field.PropertyNameToShowInSelection!, field.SelectData!):SetSelectionData(field.PropertyNameToShowInSelection_many![field.PropertyNameToShowInSelection_many_index_tosearch!].prop, field.SelectData!); 
+                            SearchInput.value=''"
+                              [multiple]="field.Selection_Multiple"
+                              #matselect>
+                    <div fxLayout="row"
+                         fxLayoutAlign="space-between"
+                         style="position: sticky; top:0px;z-index: 1000;background-color: aliceblue;">
+                      <div [hidden]="field.ShowSelectionSearchBox"
+                           style="width: 100%;">
+                        <input matInput
+                               #SearchInput
+                               (input)="!field.PropertyNameToShowInSelection_many?Search($event,field.PropertyNameToShowInSelection!):Search($event,field.PropertyNameToShowInSelection_many![field.PropertyNameToShowInSelection_many_index_tosearch!].prop)"
+                               type="search"
+                               placeholder="{{Constants.Search|translate}}">
+                      </div>
+                      <button mat-button
+                              [ngStyle]="{'width':field.ShowSelectionSearchBox?'100%':''}"
+                              [matTooltip]="field.SelectionButton_ToolTip!.toLowerCase()|translate"
+                              [matTooltipPosition]="Theme_dir==='ltr'?'right':'left'"
+                              [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
+                              *ngIf="field.ShowSelectionAddButton"
+                              disableRipple
+                              (click)="OpenButtomSheet(field.SelectionBottomSheetComponent!, field.SelectionDataSentToBottomSheet)">
+                        <mat-icon class="mat-18">
+                          <fa-icon *ngIf="field.SelectionInsideButton_faIcon && !field.SelectionInsideButton_GoogleIcon"
+                                   [icon]="field.SelectionInsideButton_faIcon"></fa-icon>
+                          <span class="material-icons"
+                                *ngIf="!field.SelectionInsideButton_faIcon && field.SelectionInsideButton_GoogleIcon">
+                            {{field.SelectionInsideButton_GoogleIcon}}
+                          </span>
+                        </mat-icon>
+                      </button>
+                    </div>
+                    <mat-divider inset></mat-divider>
+                    <div style="padding: 10px;"
+                         *ngIf="SearchInput.value!==''&&field.SelectData?.length===0"
+                         [class]="Constants.CSS_blue">
+                      {{Constants.NoMatchedData_inSelection|translate}}
+                    </div>
+                    <mat-option style="padding: 10px;"
+                                disabled
+                                *ngIf="field.SelectionText_IfNoData && SearchInput.value===''&&field.SelectData?.length===0"
+                                [class]="Constants.CSS_red">{{field.SelectionText_IfNoData!.toLowerCase()|translate}}
+                    </mat-option>
+                    <ng-template [ngIf]="!field.SelectionHasOptions"
+                                 [ngIfElse]="selectionOutsideArray">
+
+                      <mat-option *ngFor="let el of field.SelectData"
+                                  [dir]="translate.isRightToLeft(translate.GetCurrentLang())?'rtl':'ltr'"
+                                  [value]="el[field.PropertyNameToSetInValue!]">
+                        <span *ngIf="field.PropertyNameToShowInSelection_many">
+                          <span *ngFor="let prop of field.PropertyNameToShowInSelection_many; let p=index">
+                            {{el[prop.prop]}}{{prop.separator}}
+                          </span>
+                        </span>
+                        <span *ngIf="!field.PropertyNameToShowInSelection_many">
+                          {{el[field.PropertyNameToShowInSelection!]}}
+                        </span>
+                      </mat-option>
+                    </ng-template>
+                    <ng-template #selectionOutsideArray>
+
+                      <mat-optgroup *ngFor="let group of field.SelectionOptionGroups"
+                                    [label]="group.name"
+                                    [disabled]="group.disabled">
+                        <mat-option *ngFor="let el of group.options"
+                                    [dir]="translate.isRightToLeft(translate.GetCurrentLang())?'rtl':'ltr'"
+                                    [value]="el[field.PropertyNameToSetInValue!]">
+                          <span *ngIf="field.PropertyNameToShowInSelection_many">
+                            <span *ngFor="let prop of field.PropertyNameToShowInSelection_many; let p=index">
+                              {{el[prop.prop]}}{{prop.separator}}
+                            </span>
+                          </span>
+                          <span *ngIf="!field.PropertyNameToShowInSelection_many">
+                            {{el[field.PropertyNameToShowInSelection!]}}
+                          </span>
+                        </mat-option>
+                      </mat-optgroup>
+
+                    </ng-template>
+
+                  </mat-select>
+                  <mat-hint *ngIf="field.hint && FormSpec.form.valid"
+                            [dir]="field.hint.dir"
+                            [align]="field.hint.align">{{field.hint.text_no_translation?
+                    field.hint.text_no_translation:
+                    field.hint.text_to_translation.toLowerCase()|translate}}</mat-hint>
+
+                  <mat-error *ngFor="let e of field.errors">
+                    <span *ngIf="FormSpec.form.get(field.formControlName)?.hasError(e.type)">
+                      <span *ngFor="let t of e.TranslatedMessage">
+                        {{!t.needTraslation?t.text:(t.text.toLowerCase()|translate) + ' '}}
+                      </span>
+                    </span>
+                  </mat-error>
+                </mat-form-field>
+                <mat-icon style="color:#ff5722;"
+                          [matTooltip]="field.fieldToolTip.toLowerCase()|translate"
+                          [matTooltipPosition]="Theme_dir==='ltr'?'right':'left'"
+                          [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
+                          *ngIf="field.fieldToolTip"><span class="material-icons">
+                    lightbulb
+                  </span></mat-icon>
+              </div>
               <div *ngIf="field.type === 'OneFile'"
                    fxLayout="row"
                    fxLayoutAlign="start center"
+                   [matTooltip]="field.fieldToolTip.toLowerCase()|translate"
+                   [matTooltipPosition]="Theme_dir==='ltr'?'right':'left'"
+                   [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
                    style="font: inherit !important;"
                    [fxFlex]="field.fxFlex? field.fxFlex:''"
                    [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''">
@@ -207,6 +375,7 @@ Constants.CSS_text_white"
                        accept="image/*"
                        name="oneFileImage"
                        hidden
+                       [disabled]="field.disabled?field.disabled:false"
                        (change)="onFileSelected($event,field.formControlName)"
                        #fileUpload>
 
@@ -245,313 +414,372 @@ Constants.CSS_text_white"
                 </div>
               </div>
               <!--..................................................... Form Array -->
-              <ng-container *ngIf="field.type === 'array'"
-                            [formArrayName]="field.formArrayName!">
-                <mat-table class="mat-elevation-z8"
-                           [dataSource]="field.dataSource!"
-                           cdkDropList
-                           #table1
-                           id="table1">
+              <div *ngIf="field.type === 'array'"
+                   [formArrayName]="field.formArrayName!">
+                <div *ngFor="let control of formArray(field.formArrayName!).controls; let arrindex=index"
+                     [formGroupName]="arrindex"
+                     fxLayout="row wrap"
+                     fxLayoutAlign="space-between stretch">
+                  <div *ngFor="let field of field.formFields"
+                       fxLayoutAlign="start baseline"
+                       [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''"
+                       fxLayout="row"
+                       [ngStyle.gt-xs]="{'margin':field.fieldToolTip&&(translate.isRightToLeft(translate.GetCurrentLang())|| Theme_dir==='rtl')?'0 0 0 20px':
+                       field.fieldToolTip&&(!translate.isRightToLeft(translate.GetCurrentLang())|| Theme_dir==='ltr')?'0 20px 0 0':''}"
+                       [fxFlex]="field.fxFlex? field.fxFlex:''">
+                    <!-- -------------------------------------------------------------- text -->
 
-                  <ng-container *ngFor="let control of formArray(field.formArrayName!).controls; let i=index"
-                                [matColumnDef]="field.columns![i].field">
-                    <th mat-header-cell
-                        fxFlexAlign="center"
-                        *matHeaderCellDef
-                        cdkDrag
-                        cdkDragLockAxis="x"
-                        mat-sort-header>
+                    <mat-form-field *ngIf="field.type==='text' || field.type==='tel' || field.type==='search' || field.type==='number'|| field.type==='email'"
+                                    [appearance]="field.appearance"
+                                    [fxFlex]="field.fieldToolTip?'95%':'100%'">
+                      <mat-label>
+                        {{field.mat_label.toLowerCase()| translate}}
+                      </mat-label>
+                      <input matInput
+                             [required]="field.required"
+                             [maxlength]="field.maxLength?field.maxLength:''"
+                             [minlength]="field.minLength?field.minLength:''"
+                             [min]="field.min?field.min:''"
+                             [max]="field.max?field.max:''"
+                             [disabled]="field.disabled?field.disabled:false"
+                             [type]="field.type"
+                             [value]="field.type ==='number'?'0.00':''"
+                             [step]="field.type ==='number'?'0.25':''"
+                             [formControlName]="field.formControlName"
+                             [errorStateMatcher]="customErrorStateMatcher" />
+                      <mat-icon class="mat-18"
+                                *ngIf="field.faIcon||field.GoogleIcon"
+                                matSuffix>
+                        <fa-icon *ngIf="field.faIcon&&!field.GoogleIcon"
+                                 [icon]="field.faIcon">
+                          {{field.GoogleIcon&&!field.faIcon?field.GoogleIcon:''}}
+                        </fa-icon>
+                      </mat-icon>
+                      <mat-hint *ngIf="field.hint && FormSpec.form.valid"
+                                [dir]="field.hint.dir"
+                                [align]="field.hint.align">{{field.hint.text_no_translation?
+                        field.hint.text_no_translation:
+                        field.hint.text_to_translation.toLowerCase()|translate}}</mat-hint>
+                      <mat-error *ngFor="let e of field.errors">
+                        <span *ngIf="FormSpec.form.get(field.formControlName)?.hasError(e.type)">
+                          <span *ngFor="let t of e.TranslatedMessage">
+                            {{!t.needTraslation?t.text:(t.text.toLowerCase()|translate) + ' '}}
+                          </span>
+                        </span>
+                      </mat-error>
+                    </mat-form-field>
+                    <!-- ----------------------------------------------------------------Date -->
 
-                      <ng-template [ngIf]="field.columns![i].HeaderfaIcon || field.columns![i].HeaderGoogleIcon">
-                        <mat-icon class="mat-18"
-                                  *ngIf="field.columns![i].HeaderfaIcon">
-                          <fa-icon [icon]="field.columns![i].HeaderfaIcon"></fa-icon>
-                        </mat-icon>
-                        <mat-icon class="mat-18"
-                                  *ngIf="field.columns![i].HeaderGoogleIcon">
-                          {{field.columns![i].HeaderGoogleIcon}}
-                        </mat-icon>
-                      </ng-template>
-                      <ng-template [ngIf]="!field.columns![i].HeaderfaIcon && !field.columns![i].HeaderGoogleIcon">
-                        {{field.columns![i].display.toLowerCase()|translate}}
-                      </ng-template>
-                    </th>
+                    <mat-form-field [appearance]="field.appearance"
+                                    *ngIf="field.type==='date'"
+                                    [fxFlex]="field.fieldToolTip?'95%':'100%'">
 
-                    <td mat-cell
-                        *matCellDef="let row">
-                      <img *ngIf="field.columns![i].field.includes('logo')||field.columns![i].field.includes('image')"
-                           [src]="formArray(field.formArrayName!).at(i).value"
-                           width="100px" />
-                      <ng-container *ngFor="let field of field.formFields">
-                        <mat-form-field [appearance]="field.appearance"
-                                        *ngIf="field.type==='text' || field.type==='tel' || field.type==='search' || field.type==='number'|| field.type==='email'"
-                                        [fxFlex]="field.fxFlex? field.fxFlex:''"
-                                        [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''">
-                          <mat-label>
-                            {{field.mat_label.toLowerCase()| translate}}
-                          </mat-label>
-                          <input matInput
-                                 [required]="field.required"
-                                 [maxlength]="field.maxLength?field.maxLength:''"
-                                 [minlength]="field.minLength?field.minLength:''"
-                                 [min]="field.min?field.min:''"
-                                 [max]="field.max?field.max:''"
-                                 [type]="field.type"
-                                 [value]="field.type ==='number'?'0.00':''"
-                                 [step]="field.type ==='number'?'0.25':''"
-                                 [formControlName]="i"
-                                 [errorStateMatcher]="customErrorStateMatcher" />
-                          <mat-icon class="mat-18"
-                                    *ngIf="field.faIcon||field.GoogleIcon"
-                                    matSuffix>
-                            <fa-icon *ngIf="field.faIcon&&!field.GoogleIcon"
-                                     [icon]="field.faIcon">
-                              {{field.GoogleIcon&&!field.faIcon?field.GoogleIcon:''}}
-                            </fa-icon>
-                          </mat-icon>
-                          <mat-hint *ngIf="field.hint"
-                                    [dir]="field.hint.dir"
-                                    [align]="field.hint.align">{{field.hint.text_no_translation?
-                            field.hint.text_no_translation: field.hint.text_to_translation.toLowerCase()|translate}}
-                          </mat-hint>
-                          <mat-error *ngFor="let e of field.errors">
-                            <span *ngIf="formArray(field.formArrayName!).at(i)?.hasError(e.type)">
-                              <span *ngFor="let t of e.TranslatedMessage">
-                                {{!t.needTraslation?t.text:(t.text.toLowerCase()|translate) + ' '}}
-                              </span>
-                            </span>
-                          </mat-error>
-                        </mat-form-field>
-                        <mat-form-field [appearance]="field.appearance"
-                                        *ngIf="field.type==='date'"
-                                        [fxFlex]="field.fxFlex? field.fxFlex:''"
-                                        [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''">
-                          <mat-label>{{field.mat_label.toLowerCase()| translate}}</mat-label>
-                          <input matInput
-                                 [value]="formArray(field.formArrayName!).at(i)?.value"
-                                 [required]="field.required"
-                                 [errorStateMatcher]="customErrorStateMatcher"
-                                 [formControlName]="i"
-                                 [matDatepicker]="picker"
-                                 (focus)="picker.open()"
-                                 (click)="picker.open()">
+                      <mat-label>{{field.mat_label.toLowerCase()| translate}}</mat-label>
+                      <input matInput
+                             [value]="FormSpec.form.get(field.formControlName)?.value"
+                             [required]="field.required"
+                             [errorStateMatcher]="customErrorStateMatcher"
+                             [formControlName]="field.formControlName"
+                             [matDatepicker]="picker"
+                             [disabled]="field.disabled?field.disabled:false"
+                             (focus)="picker.open()"
+                             (click)="picker.open()">
 
-                          <mat-datepicker-toggle matSuffix
-                                                 [for]="picker"></mat-datepicker-toggle>
-                          <mat-datepicker #picker></mat-datepicker>
-                          <mat-hint *ngIf="field.hint"
-                                    [dir]="field.hint.dir"
-                                    [align]="field.hint.align">{{field.hint.text_no_translation?
-                            field.hint.text_no_translation: field.hint.text_to_translation.toLowerCase()|translate}}
-                          </mat-hint>
+                      <mat-datepicker-toggle matSuffix
+                                             [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                      <mat-hint *ngIf="field.hint && FormSpec.form.valid"
+                                [dir]="field.hint.dir"
+                                [align]="field.hint.align">{{field.hint.text_no_translation?
+                        field.hint.text_no_translation:
+                        field.hint.text_to_translation.toLowerCase()|translate}}</mat-hint>
 
-                          <mat-error *ngFor="let e of field.errors">
+                      <mat-error *ngFor="let e of field.errors">
 
-                            <span *ngIf="formArray(field.formArrayName!).at(i)?.hasError(e.type)">
-                              <span *ngFor="let t of e.TranslatedMessage">
-                                {{!t.needTraslation?t.text:(t.text.toLowerCase()|translate) + ' '}}
-                              </span>
-                            </span>
-                          </mat-error>
-                        </mat-form-field>
-                        <!-- ----------------------------------------------------------- TextArea -->
-                        <mat-form-field [appearance]="field.appearance"
-                                        *ngIf="field.type==='textarea'"
-                                        [fxFlex]="field.fxFlex? field.fxFlex:''"
-                                        [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''">
-                          <mat-label>
-                            {{field.mat_label.toLowerCase()| translate}}
-                          </mat-label>
-                          <textarea matInput
-                                    [formControlName]="i"
-                                    cdkTextareaAutosize
-                                    [cdkAutosizeMinRows]="field.cdkAutosizeMinRows?field.cdkAutosizeMinRows:''"></textarea>
-                          <mat-icon class="mat-18"
-                                    *ngIf="field.faIcon||field.GoogleIcon"
-                                    matSuffix>
-                            <fa-icon *ngIf="field.faIcon&&!field.GoogleIcon"
-                                     [icon]="field.faIcon">
-                              {{field.GoogleIcon&&!field.faIcon?field.GoogleIcon:''}}
-                            </fa-icon>
-                          </mat-icon>
-                          <mat-hint *ngIf="field.hint"
-                                    [dir]="field.hint.dir"
-                                    [align]="field.hint.align">{{field.hint.text_no_translation?
-                            field.hint.text_no_translation: field.hint.text_to_translation.toLowerCase()|translate}}
-                          </mat-hint>
+                        <span *ngIf="FormSpec.form.get(field.formControlName)?.hasError(e.type)">
+                          <span *ngFor="let t of e.TranslatedMessage">
+                            {{!t.needTraslation?t.text:(t.text.toLowerCase()|translate) + ' '}}
+                          </span>
+                        </span>
+                      </mat-error>
+                    </mat-form-field>
+                    <!-- ----------------------------------------------------------- TextArea -->
+                    <mat-form-field [appearance]="field.appearance"
+                                    *ngIf="field.type==='textarea'"
+                                    [fxFlex]="field.fieldToolTip?'95%':'100%'">
+                      <mat-label>
+                        {{field.mat_label.toLowerCase()| translate}}
+                      </mat-label>
+                      <textarea matInput
+                                [disabled]="field.disabled?field.disabled:false"
+                                [formControlName]="field.formControlName"
+                                cdkTextareaAutosize
+                                [cdkAutosizeMinRows]="field.cdkAutosizeMinRows?field.cdkAutosizeMinRows:''"></textarea>
+                      <mat-icon class="mat-18"
+                                *ngIf="field.faIcon||field.GoogleIcon"
+                                matSuffix>
+                        <fa-icon *ngIf="field.faIcon&&!field.GoogleIcon"
+                                 [icon]="field.faIcon">
+                          {{field.GoogleIcon&&!field.faIcon?field.GoogleIcon:''}}
+                        </fa-icon>
+                      </mat-icon>
+                      <mat-hint *ngIf="field.hint && FormSpec.form.valid"
+                                [dir]="field.hint.dir"
+                                [align]="field.hint.align">{{field.hint.text_no_translation?
+                        field.hint.text_no_translation:
+                        field.hint.text_to_translation.toLowerCase()|translate}}</mat-hint>
 
-                          <mat-error *ngFor="let e of field.errors">
-                            <span *ngIf="formArray(field.formArrayName!).at(i)?.hasError(e.type)">
-                              <span *ngFor="let t of e.TranslatedMessage">
-                                {{!t.needTraslation?t.text:(t.text.toLowerCase()|translate) + ' '}}
-                              </span>
-                            </span>
-                          </mat-error>
-                        </mat-form-field>
-                        <!-- ----------------------------------------------------------- CheckBox -->
-                        <mat-checkbox color="primary"
-                                      *ngIf="field.type==='checkbox'"
-                                      [fxFlex]="field.fxFlex? field.fxFlex:''"
-                                      [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''"
-                                      [formControlName]="i">
-                          {{field.mat_label.toLowerCase()|translate}}
-                        </mat-checkbox>
+                      <mat-error *ngFor="let e of field.errors">
+                        <span *ngIf="FormSpec.form.get(field.formControlName)?.hasError(e.type)">
+                          <span *ngFor="let t of e.TranslatedMessage">
+                            {{!t.needTraslation?t.text:(t.text.toLowerCase()|translate) + ' '}}
+                          </span>
+                        </span>
+                      </mat-error>
+                    </mat-form-field>
+                    <!-- ----------------------------------------------------------- CheckBox -->
 
-                        <!-- .................................................... Selection -->
-                        <mat-form-field [appearance]="field.appearance"
-                                        *ngIf="field.type==='select'"
-                                        [fxFlex]="field.fxFlex? field.fxFlex:''"
-                                        [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''">
-                          <mat-label>{{field.mat_label.toLowerCase()| translate}}</mat-label>
-                          <mat-select [formControlName]="i">
-                            <div style="position: sticky; top:0px;z-index: 1000;background-color: aliceblue;">
-                              <input matInput
-                                     #SearchInput
-                                     (input)="Search($event,field.PropertyNameToShowInSelection!)"
-                                     type="search"
-                                     placeholder="{{Constants.Search|translate}}">
-                            </div>
-                            <mat-divider inset></mat-divider>
-                            <mat-option *ngIf="SearchInput.value!==''&&field.SelectData?.length===0"
-                                        [class]="Constants.CSS_blue">{{Constants.NoMatchedData_inSelection|translate}}
-                            </mat-option>
-                            <mat-option *ngIf="field.SelectionText_IfNoData && SearchInput.value!==''&&field.SelectData?.length===0"
-                                        [class]="Constants.CSS_red">{{field.SelectionText_IfNoData!|translate}}
-                            </mat-option>
-                            <mat-option *ngFor="let el of field.SelectData"
-                                        [value]="el[field.PropertyNameToSetInValue!]">
-                              {{el[field.PropertyNameToShowInSelection!]}}
-                            </mat-option>
-                            <button mat-button
-                                    *ngIf="field.SelectionBottomSheetComponent"
-                                    disableRipple
-                                    (click)="OpenButtomSheet(field.SelectionBottomSheetComponent!)">
-                              <mat-icon class="mat-18">
-                                <fa-icon *ngIf="field.SelectionInsideButton_faIcon && !field.SelectionInsideButton_GoogleIcon"
-                                         [icon]="field.SelectionInsideButton_faIcon"></fa-icon>
-                                <span class="material-icons"
-                                      *ngIf="!field.SelectionInsideButton_faIcon && field.SelectionInsideButton_GoogleIcon">
-                                  {{field.SelectionInsideButton_GoogleIcon}}
-                                </span>
-                              </mat-icon>&nbsp; {{field.SelectionButton_text!.toLowerCase()|translate}}
-                            </button>
-                          </mat-select>
-                          <mat-hint *ngIf="field.hint"
-                                    [dir]="field.hint.dir"
-                                    [align]="field.hint.align">{{field.hint.text_no_translation?
-                            field.hint.text_no_translation: field.hint.text_to_translation.toLowerCase()|translate}}
-                          </mat-hint>
-
-                          <mat-error *ngFor="let e of field.errors">
-                            <span *ngIf="formArray(field.formArrayName!).at(i)?.hasError(e.type)">
-                              <span *ngFor="let t of e.TranslatedMessage">
-                                {{!t.needTraslation?t.text:(t.text.toLowerCase()|translate) + ' '}}
-                              </span>
-                            </span>
-                          </mat-error>
-                        </mat-form-field>
-                        <div *ngIf="field.type === 'OneFile'"
-                             fxLayout="row"
-                             fxLayoutAlign="start center"
-                             style="font: inherit !important;"
-                             [fxFlex]="field.fxFlex? field.fxFlex:''"
-                             [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''">
-                          <label for="oneFileImage">{{field.mat_label.toLowerCase()| translate}} : </label>
-                          <input type="file"
-                                 accept="image/*"
-                                 name="oneFileImage"
-                                 hidden
-                                 (change)="onFileSelected($event,field.formControlName)"
-                                 #fileUploadInArray>
-
-                          <div class="file-upload"
-                               fxLayoutAlign="start center"
-                               [dir]="translate.isRightToLeft(translate.GetCurrentLang())?'rtl':'ltr'">
-                            <button mat-mini-fab
-                                    color="primary"
-                                    class="upload-btn"
-                                    (click)="fileUploadInArray.click()">
-                              <mat-icon>attach_file</mat-icon>
-                            </button>
-                            <div *ngIf="!formArray(field.formArrayName!).at(i)?.value"
-                                 (click)="fileUploadInArray.click()"
-                                 style="margin-left: 10px; margin-right: 10px; display: inline-block;">
-
-                              <span *ngIf="field.UploadInputText">
-                                <span *ngFor="let t of  field.UploadInputText">
-                                  {{!t.needTranslation?t.text:t.text.toLowerCase()|translate}}
-                                </span>
-                              </span>
-                            </div>
-                            <div fxLayoutAlign="center center"
-                                 *ngIf="formArray(field.formArrayName!).at(i)?.value"
-                                 style="margin-left: 10px; margin-right: 10px; display: inline-block;">
-                              <img [src]="formArray(field.formArrayName!).at(i)?.value"
-                                   width="100px">
-                              <span><button mat-icon-button
-                                        [matTooltip]="Constants.Delete|translate"
-                                        (click)="formArray(field.formArrayName!).at(i)?.setValue(null); fileUploadInArray.value=''"
-                                        [class]="Constants.CSS_text_warning">
-                                  <mat-icon class="mat-18">close</mat-icon>
-                                </button></span>
-                            </div>
+                    <mat-checkbox color="primary"
+                                  *ngIf="field.type==='checkbox'"
+                                  [disabled]="field.disabled?field.disabled:false"
+                                  [formControlName]="field.formControlName">
+                      {{field.mat_label.toLowerCase()|translate}}
+                    </mat-checkbox>
+                    <!-- .................................................... Selection -->
+                    <mat-form-field [appearance]="field.appearance"
+                                    *ngIf="field.type==='select'"
+                                    [fxFlex]="field.fieldToolTip?'95%':'100%'">
+                      <mat-label>{{field.mat_label.toLowerCase()| translate}}</mat-label>
+                      <mat-select [formControlName]="field.formControlName"
+                                  [disabled]="field.disabled?field.disabled:false"
+                                  (closed)="!field.PropertyNameToShowInSelection_many?SetSelectionData(field.PropertyNameToShowInSelection!, field.SelectData!):SetSelectionData(field.PropertyNameToShowInSelection_many![field.PropertyNameToShowInSelection_many_index_tosearch!].prop, field.SelectData!); 
+                       SearchInput.value=''"
+                                  [multiple]="field.Selection_Multiple"
+                                  #matselect>
+                        <div fxLayout="row"
+                             fxLayoutAlign="space-between"
+                             style="position: sticky; top:0px;z-index: 1000;background-color: aliceblue;">
+                          <div [hidden]="field.ShowSelectionSearchBox"
+                               style="width: 100%;">
+                            <input matInput
+                                   #SearchInput
+                                   (input)="!field.PropertyNameToShowInSelection_many?Search($event,field.PropertyNameToShowInSelection!):Search($event,field.PropertyNameToShowInSelection_many![field.PropertyNameToShowInSelection_many_index_tosearch!].prop)"
+                                   type="search"
+                                   placeholder="{{Constants.Search|translate}}">
                           </div>
+                          <button mat-button
+                                  [ngStyle]="{'width':field.ShowSelectionSearchBox?'100%':''}"
+                                  [matTooltip]="field.SelectionButton_ToolTip!.toLowerCase()|translate"
+                                  [matTooltipPosition]="Theme_dir==='ltr'?'right':'left'"
+                                  [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
+                                  *ngIf="field.ShowSelectionAddButton"
+                                  disableRipple
+                                  (click)="OpenButtomSheet(field.SelectionBottomSheetComponent!, field.SelectionDataSentToBottomSheet)">
+                            <mat-icon class="mat-18">
+                              <fa-icon *ngIf="field.SelectionInsideButton_faIcon && !field.SelectionInsideButton_GoogleIcon"
+                                       [icon]="field.SelectionInsideButton_faIcon"></fa-icon>
+                              <span class="material-icons"
+                                    *ngIf="!field.SelectionInsideButton_faIcon && field.SelectionInsideButton_GoogleIcon">
+                                {{field.SelectionInsideButton_GoogleIcon}}
+                              </span>
+                            </mat-icon>
+                          </button>
                         </div>
-                      </ng-container>
-                      <span *ngIf="field.columns![i].IsTrueOrFlase">
-                        <span *ngIf="field.columns![i].True_faIcon || field.columns![i].False_faIcon">
-                          <mat-icon class="mat-18"
-                                    [class]="Constants.CSS_green"
-                                    *ngIf="row[field.columns![i].field]===true ">
-                            <fa-icon [icon]="field.columns![i].True_faIcon"></fa-icon>
-                          </mat-icon>
-                          <mat-icon class="mat-18"
-                                    [class]="Constants.CSS_red"
-                                    *ngIf="row[field.columns![i].field]===false">
-                            <fa-icon [icon]="field.columns![i].False_faIcon"></fa-icon>
-                          </mat-icon>
-                        </span>
-                        <span *ngIf="field.columns![i].True_GoogleIcon || field.columns![i].False_GoogleIcon">
-                          <mat-icon class="mat-18"
-                                    [class]="Constants.CSS_green"
-                                    *ngIf="row[field.columns![i].field]===true ">
-                            {{field.columns![i].True_GoogleIcon }}
-                          </mat-icon>
-                          <mat-icon class="mat-18"
-                                    [class]="Constants.CSS_red"
-                                    *ngIf="row[field.columns![i].field]===false">
-                            {{field.columns![i].False_GoogleIcon}}
-                          </mat-icon>
-                        </span>
-                      </span>
+                        <mat-divider inset></mat-divider>
+                        <div style="padding: 10px;"
+                             *ngIf="SearchInput.value!==''&&field.SelectData?.length===0"
+                             [class]="Constants.CSS_blue">
+                          {{Constants.NoMatchedData_inSelection|translate}}
+                        </div>
+                        <mat-option style="padding: 10px;"
+                                    disabled
+                                    *ngIf="field.SelectionText_IfNoData && SearchInput.value===''&&field.SelectData?.length===0"
+                                    [class]="Constants.CSS_red">
+                          {{field.SelectionText_IfNoData!.toLowerCase()|translate}}
+                        </mat-option>
+                        <ng-template [ngIf]="!field.SelectionHasOptions"
+                                     [ngIfElse]="selectionOutsideArray">
 
-                    </td>
-                  </ng-container>
+                          <mat-option *ngFor="let el of field.SelectData"
+                                      [dir]="translate.isRightToLeft(translate.GetCurrentLang())?'rtl':'ltr'"
+                                      [value]="el[field.PropertyNameToSetInValue!]">
+                            <span *ngIf="field.PropertyNameToShowInSelection_many">
+                              <span *ngFor="let prop of field.PropertyNameToShowInSelection_many; let p=index">
+                                {{el[prop.prop]}}{{prop.separator}}
+                              </span>
+                            </span>
+                            <span *ngIf="!field.PropertyNameToShowInSelection_many">
+                              {{el[field.PropertyNameToShowInSelection!]}}
+                            </span>
+                          </mat-option>
+                        </ng-template>
+                        <ng-template #selectionOutsideArray>
 
-                  <mat-header-row *matHeaderRowDef="field.displayedColumns"></mat-header-row>
-                  <mat-row *matRowDef="let row; columns: field.displayedColumns;"
-                           cdkDrag></mat-row>
-                </mat-table>
-              </ng-container>
+                          <mat-optgroup *ngFor="let group of field.SelectionOptionGroups"
+                                        [label]="group.name"
+                                        [disabled]="group.disabled">
+                            <mat-option *ngFor="let el of group.options"
+                                        [dir]="translate.isRightToLeft(translate.GetCurrentLang())?'rtl':'ltr'"
+                                        [value]="el[field.PropertyNameToSetInValue!]">
+                              <span *ngIf="field.PropertyNameToShowInSelection_many">
+                                <span *ngFor="let prop of field.PropertyNameToShowInSelection_many; let p=index">
+                                  {{el[prop.prop]}}{{prop.separator}}
+                                </span>
+                              </span>
+                              <span *ngIf="!field.PropertyNameToShowInSelection_many">
+                                {{el[field.PropertyNameToShowInSelection!]}}
+                              </span>
+                            </mat-option>
+                          </mat-optgroup>
+
+                        </ng-template>
+
+                      </mat-select>
+                      <mat-hint *ngIf="field.hint && FormSpec.form.valid"
+                                [dir]="field.hint.dir"
+                                [align]="field.hint.align">{{field.hint.text_no_translation?
+                        field.hint.text_no_translation:
+                        field.hint.text_to_translation.toLowerCase()|translate}}</mat-hint>
+
+                      <mat-error *ngFor="let e of field.errors">
+                        <span *ngIf="FormSpec.form.get(field.formControlName)?.hasError(e.type)">
+                          <span *ngFor="let t of e.TranslatedMessage">
+                            {{!t.needTraslation?t.text:(t.text.toLowerCase()|translate) + ' '}}
+                          </span>
+                        </span>
+                      </mat-error>
+                    </mat-form-field>
+                    <!-- ----------------------------------------------------------- Chips -->
+                    <mat-form-field [appearance]="field.appearance"
+                                    *ngIf="field.type==='chip-autocomplete'"
+                                    [fxFlex]="field.fieldToolTip?'95%':'100%'">
+                      <mat-label>{{field.mat_label.toLowerCase()| translate}}</mat-label>
+                      <mat-chip-list #chipList
+                                     (change)="SendData()"
+                                     aria-label="Fruit selection">
+                        <mat-chip *ngFor="let c of field.chipsFill"
+                                  (removed)="removeChip(c, field.chipsFill!)">
+                          {{c[field.chipPropertyToShowInSelection!]}}
+                          <button matChipRemove>
+                            <mat-icon>cancel</mat-icon>
+                          </button>
+                        </mat-chip>
+                        <input mat-input
+                               #chip
+                               (focus)="field.chipsFromDb = field.ChipsFromDbUnFiltered"
+                               (blur)="field.chipsFromDb = field.ChipsFromDbUnFiltered"
+                               (click)="field.chipsFromDb = field.ChipsFromDbUnFiltered;"
+                               [formControlName]="field.formControlName"
+                               [matAutocomplete]="auto"
+                               [matChipInputFor]="chipList"
+                               (input)="FilterChipsAutoComplete($event, field.chipPropertyToShowInSelection!)"
+                               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                               (matChipInputTokenEnd)="addChip($event); chip.value =''">
+                      </mat-chip-list>
+                      <mat-autocomplete #auto="matAutocomplete"
+                                        (optionSelected)="selectedChip($event, field.chipsFill!, field.ChipsFromDbUnFiltered!, field.chipPropertyToShowInValue!); chip.value=''">
+                        <mat-option *ngFor="let c of field.chipsFromDb"
+                                    [dir]="translate.isRightToLeft(translate.GetCurrentLang())?'rtl':'ltr'"
+                                    [value]="c[field.chipPropertyToShowInValue!]">
+                          {{c[field.chipPropertyToShowInSelection!]}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+
+                    <div *ngIf="field.type === 'OneFile'"
+                         fxLayout="row"
+                         fxLayoutAlign="start center"
+                         [matTooltip]="field.fieldToolTip.toLowerCase()|translate"
+                         [matTooltipPosition]="Theme_dir==='ltr'?'right':'left'"
+                         [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
+                         style="font: inherit !important;"
+                         [fxFlex]="field.fxFlex? field.fxFlex:''"
+                         [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''">
+                      <label for="oneFileImage">{{field.mat_label.toLowerCase()| translate}} : </label>
+                      <input type="file"
+                             accept="image/*"
+                             name="oneFileImage"
+                             hidden
+                             [disabled]="field.disabled?field.disabled:false"
+                             (change)="onFileSelected($event,field.formControlName)"
+                             #fileUpload>
+
+                      <div class="file-upload"
+                           fxLayoutAlign="start center"
+                           [dir]="translate.isRightToLeft(translate.GetCurrentLang())?'rtl':'ltr'">
+                        <button mat-mini-fab
+                                color="primary"
+                                class="upload-btn"
+                                (click)="fileUpload.click()">
+                          <mat-icon>attach_file</mat-icon>
+                        </button>
+                        <div *ngIf="!FormSpec.form.get(field.formControlName)?.value"
+                             (click)="fileUpload.click()"
+                             style="margin-left: 10px; margin-right: 10px; display: inline-block;">
+
+                          <span *ngIf="field.UploadInputText">
+                            <span *ngFor="let t of  field.UploadInputText">
+                              {{!t.needTranslation?t.text:t.text.toLowerCase()|translate}}
+                            </span>
+                          </span>
+                        </div>
+                        <div fxLayoutAlign="center center"
+                             *ngIf="FormSpec.form.get(field.formControlName)?.value"
+                             style="margin-left: 10px; margin-right: 10px; display: inline-block;">
+                          <img [src]="FormSpec.form.get(field.formControlName)?.value"
+                               [alt]="field.formControlName"
+                               width="100px">
+                          <span><button mat-icon-button
+                                    [matTooltip]="Constants.Delete|translate"
+                                    (click)="FormSpec.form.get(field.formControlName)?.setValue(null); fileUpload.value=''"
+                                    [class]="Constants.CSS_text_warning">
+                              <mat-icon class="mat-18">close</mat-icon>
+                            </button></span>
+                        </div>
+                      </div>
+                    </div>
+                    <mat-icon style="color:#ff5722;"
+                              [matTooltip]="field.fieldToolTip.toLowerCase()|translate"
+                              [matTooltipPosition]="Theme_dir==='ltr'?'right':'left'"
+                              [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
+                              *ngIf="field.fieldToolTip"><span class="material-icons">
+                        lightbulb
+                      </span></mat-icon>
+                  </div>
+                  <button mat-icon-button
+                          color="warn"
+                          (click)="formArray(field.formArrayName!).removeAt(arrindex)">
+                    <mat-icon class="mat-18"><span class="material-icons">delete</span></mat-icon>
+                  </button>
+                </div>
+                <button mat-raised-button
+                        (click)="formArray(field.formArrayName!).push(FormSpec.formGroupToAddInFormArray!)">
+                  add
+                </button>
+              </div>
             </ng-container>
           </mat-card-content>
         </mat-card>
+
       </ng-container>
     </div>
     <div fxLayout="row"
          style="margin-top: 10px;"
          fxLayoutAlign="space-between"
          fxLayoutGap.xs="10px"
-         fxLayout.xs="column">
-      <button mat-raised-button
-              [fxFlex]="showCloseButton?'49%':'100%'"
+         fxLayout.xs="column"
+         style="margin:  16px;"
+         *ngIf="showAddOrSaveButton||showCloseButton">
+      <button [fxFlex]="showCloseButton?'49%':'100%'"
               fxFlex.xs="100%"
+              mat-raised-button
+              *ngIf="showAddOrSaveButton"
               (submit)="Form.form.valid"
               [disabled]="Form.form.invalid"
               [ngClass]="ThemeColors.bg"
               (click)="SendData()"
               [class]="ThemeColors.colorName==='organge'||ThemeColors.colorName==='amber'?Constants.CSS_dark_color:
-    Constants.CSS_text_white"
+Constants.CSS_text_white"
               aria-label="Add new product">
         <mat-icon>
           <mat-spinner diameter="20"
@@ -580,5 +808,5 @@ Constants.CSS_text_white"
       </button>
     </div>
   </form>
-</mat-card>
+</div>
 <ngx-spinner name="form"></ngx-spinner>

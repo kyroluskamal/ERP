@@ -16,7 +16,8 @@ import { InventoriesService } from '../../inventories.service';
   templateUrl: './add-invent-address.component.html',
   styleUrls: ['./add-invent-address.component.css']
 })
-export class AddInventAddressComponent implements OnInit {
+export class AddInventAddressComponent implements OnInit
+{
 
   AddAddress: FormGroup;
   Form: FormDefs = new FormDefs();
@@ -28,12 +29,13 @@ export class AddInventAddressComponent implements OnInit {
   CityMaxLength = 30;
   GovernmentMaxLength = 30;
   StreetNameMaxLength = 30;
-  AllSelectionData: SelectedDataTransfer[] = []
+  AllSelectionData: SelectedDataTransfer[] = [];
   constructor(public Constants: ConstantsService, private InventoreisService: InventoriesService,
     private GeneralsService: GeneralsService, private spinner: SpinnerService,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: Inventories, private _bottomSheetRef: MatBottomSheetRef<InventoryAddress>,
-    private ServerHandler: ServerResponseHandelerService, private translate: TranslationService) {
-    navigator.geolocation.getCurrentPosition((position) => console.log(position))
+    private ServerHandler: ServerResponseHandelerService, private translate: TranslationService)
+  {
+    navigator.geolocation.getCurrentPosition((position) => console.log(position));
     this.AddAddress = new FormGroup({
       buildingNo: new FormControl("", [Validators.maxLength(this.BuildingNoMaxLength)]),
       flatNo: new FormControl("", [Validators.maxLength(this.FlatNoMaxLength)]),
@@ -45,7 +47,7 @@ export class AddInventAddressComponent implements OnInit {
       streetName: new FormControl("", [Validators.maxLength(this.StreetNameMaxLength)]),
       countryName: new FormControl(this.GeneralsService.GetCountryId_by_countryCode(), [Validators.required])
     });
-    this.AllSelectionData.push({ property: this.Constants.countryName, SelectedData: this.GeneralsService.Country })
+    this.AllSelectionData.push({ property: this.Constants.countryName, SelectedData: this.GeneralsService.Country });
     this.Title = [
       { text: this.Constants.Add, needTranslation: true },
       { text: this.Constants.address, needTranslation: true },
@@ -63,6 +65,7 @@ export class AddInventAddressComponent implements OnInit {
         fxFlex: "100%",
         formFieldsSpec: [{
           type: "text",
+          fieldToolTip: '',
           formControlName: this.Constants.buildingNo,
           appearance: "outline",
           fxFlex: "24%",
@@ -85,6 +88,7 @@ export class AddInventAddressComponent implements OnInit {
           maxLength: this.Constants.MaxLength15
         }, {
           type: "text",
+          fieldToolTip: '',
           formControlName: this.Constants.flatNo,
           appearance: "outline",
           fxFlex: "24%",
@@ -107,6 +111,7 @@ export class AddInventAddressComponent implements OnInit {
           maxLength: this.Constants.MaxLength15
         }, {
           type: "text",
+          fieldToolTip: '',
           formControlName: this.Constants.streetName,
           appearance: "outline",
           fxFlex: "24%",
@@ -129,6 +134,7 @@ export class AddInventAddressComponent implements OnInit {
           maxLength: this.Constants.MaxLength30
         }, {
           type: "select",
+          fieldToolTip: '',
           formControlName: this.Constants.countryName,
           appearance: "outline",
           fxFlex: "24%",
@@ -140,6 +146,7 @@ export class AddInventAddressComponent implements OnInit {
           PropertyNameToShowInSelection: this.Constants.countryName,
         }, {
           type: "text",
+          fieldToolTip: '',
           formControlName: this.Constants.city,
           appearance: "outline",
           fxFlex: "33%",
@@ -162,6 +169,7 @@ export class AddInventAddressComponent implements OnInit {
           maxLength: this.Constants.MaxLength30
         }, {
           type: "text",
+          fieldToolTip: '',
           formControlName: this.Constants.government,
           appearance: "outline",
           fxFlex: "33%",
@@ -184,6 +192,7 @@ export class AddInventAddressComponent implements OnInit {
           maxLength: this.Constants.MaxLength30
         }, {
           type: "text",
+          fieldToolTip: '',
           formControlName: this.Constants.postalCode,
           appearance: "outline",
           fxFlex: "33%",
@@ -206,6 +215,7 @@ export class AddInventAddressComponent implements OnInit {
           maxLength: this.Constants.MaxLength15
         }, {
           type: "text",
+          fieldToolTip: '',
           formControlName: this.Constants.addressLine_1,
           appearance: "outline",
           fxFlex: "49%",
@@ -221,6 +231,7 @@ export class AddInventAddressComponent implements OnInit {
           }],
         }, {
           type: "text",
+          fieldToolTip: '',
           formControlName: this.Constants.addressLine_2,
           appearance: "outline",
           fxFlex: "49%",
@@ -229,13 +240,15 @@ export class AddInventAddressComponent implements OnInit {
           required: false
         }]
       }]
-    }
+    };
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
 
   }
-  AddNewAddress(newAddress: FormDefs) {
+  AddNewAddress(newAddress: FormDefs)
+  {
     this.spinner.fullScreenSpinner();
     let newAdd: InventoryAddress = {
       id: 0,
@@ -254,9 +267,10 @@ export class AddInventAddressComponent implements OnInit {
       countryId: newAddress.form.get(this.Constants.countryName)?.value,
 
       subdomain: this.subdomain
-    }
+    };
     this.InventoreisService.AddAddress(newAdd).subscribe({
-      next: r => {
+      next: r =>
+      {
         this.data.inventAdd = (r?.buildingNo !== "" ? r?.buildingNo + '-' : '') +
           (r?.streetName !== '' ? this.translate.isRightToLeft(this.translate.GetCurrentLang()) ?
             this.translate.GetTranslation(this.Constants.St) + ' ' + r?.streetName + ", " : r?.streetName +
@@ -268,7 +282,8 @@ export class AddInventAddressComponent implements OnInit {
           (r?.government !== '' ? r?.government + ', ' : '') +
           (r?.countryName !== null ? r?.countryName : '');
         this.data.inventAdd = this.data.inventAdd.trim();
-        if (this.data.inventAdd[this.data.inventAdd.length - 1] === ",") {
+        if (this.data.inventAdd[this.data.inventAdd.length - 1] === ",")
+        {
           this.data.inventAdd = this.data.inventAdd.slice(0, this.data.inventAdd.length - 1) + ".";
         }
         this.data.inventoryAddress = r;
@@ -276,7 +291,8 @@ export class AddInventAddressComponent implements OnInit {
         this.ServerHandler.DatatAddition_Success_Swal();
         this._bottomSheetRef.dismiss();
       },
-      error: e => {
+      error: e =>
+      {
         let x: MaxMinLengthValidation[] = [
           { prop: this.Constants.flatNo, maxLength: 15 },
           { prop: this.Constants.buildingNo, maxLength: 15 },
@@ -288,6 +304,6 @@ export class AddInventAddressComponent implements OnInit {
         this.spinner.removeSpinner();
         this.ServerHandler.GetErrorNotification_swal(e, x);
       }
-    })
+    });
   }
 }

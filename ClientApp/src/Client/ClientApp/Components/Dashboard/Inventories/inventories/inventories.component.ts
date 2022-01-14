@@ -115,7 +115,7 @@ export class InventoriesComponent implements OnInit, AfterViewInit
     this.ShowProgressBar = true;
     if (invent[0].warehouseName === this.translate.GetTranslation(this.Constants.MainWarehouse))
     {
-      this.ClientValidaiton.Error_swal(this.Constants.Delete_Default_inventory_Error)
+      this.ClientValidaiton.Error_swal(this.Constants.Delete_Default_inventory_Error.toLowerCase())
         .then(r => { this.ShowProgressBar = false; });
       return;
     }
@@ -134,6 +134,7 @@ export class InventoriesComponent implements OnInit, AfterViewInit
               {
                 return item.id !== invent[0].id;
               });
+              this.InventoriesService.AllInventories = this.InventoriesService.AllInventories.filter(i => { return i.id !== invent[0].id; });
               this.dataSource.paginator?.getNumberOfPages();
               this.dataSource.data = this.AllInventories;
               this.ShowProgressBar = false;

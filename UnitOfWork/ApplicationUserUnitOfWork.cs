@@ -29,6 +29,8 @@ namespace ERP.UnitOfWork
         public IInventoryAddressRepoAsync InventoryAddress { get; private set; }
         public IItemsRepoAsync Items { get; private set; }
 
+        public IItemSKUKeysRepoAsync ItemSKUKeys { get; private set; }
+
         public Constants Constants;
         public ApplicationUserUnitOfWork(ApplicationDbContext applicationDbContext,
             ApplicationUserRoleManager roleManager, Constants constants)
@@ -44,6 +46,7 @@ namespace ERP.UnitOfWork
             Suppliers = new SuppliersRepoAsync(applicationDbContext);
             InventoryAddress = new InventoryAddressRepoAsync(applicationDbContext);
             Items = new ItemRepoASync(applicationDbContext);
+            ItemSKUKeys = new ItemSKUKeysRepoAsync(applicationDbContext);
         }
 
 
@@ -82,7 +85,7 @@ namespace ERP.UnitOfWork
             {
                 await ItemMainCategory.AddAsync(new ItemMainCategory
                 {
-                    Name = "Uncategorized"
+                    MainCatName = "Uncategorized"
                 });
             }
             if (await ApplicationDbContext.Users.ToListAsync() != null)

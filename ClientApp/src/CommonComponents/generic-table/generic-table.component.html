@@ -71,10 +71,6 @@
         <mat-icon><span class="material-icons">
             add_box
           </span></mat-icon>
-        <!-- <ng-container *ngFor="let t of AddButton_Text">
-          {{!t.needTranslation?t.text:t.text|translate}}
-
-        </ng-container> -->
       </button>
 
       <button mat-icon-button
@@ -110,12 +106,6 @@
   <div [class]="Constants.CSS_table_container">
     <mat-progress-bar mode="indeterminate"
                       *ngIf="ShowProgressbar"></mat-progress-bar>
-    <!-- <div [class]="Constants.CSS_loading_shade"
-         *ngIf="isLoadingRes"
-         style="min-height: 200px;">
-      <mat-spinner *ngIf="isLoadingRes"
-                   diameter="50"></mat-spinner>
-    </div> -->
     <div style="min-height: 200px;"
          *ngIf="isLoadingRes">
       <ngx-spinner name="inside">
@@ -124,8 +114,17 @@
     </div>
     <ng-template [ngIf]="NoData&& !isLoadingRes">
       <div style="min-height: 100px;"
-           [class]="Constants.CSS_loading_shade">
-        No rows are shown
+           [dir]="translate.isRightToLeft(translate.GetCurrentLang())?'rtl':'ltr'"
+           [class]="Constants.CSS_loading_shade"
+           [ngStyle]="{'font-family':translate.isRightToLeft(translate.GetCurrentLang())?'Almarai':''}">
+        <span *ngIf="NoDataMessage.length>0">
+          <span *ngFor="let t of NoDataMessage">
+            {{!t.needTranslation?t.text:t.text.toLowerCase()|translate}}
+          </span>
+        </span>
+        <span *ngIf="NoDataMessage.length===0">
+          {{Constants.no_general_data_message.toLowerCase()|translate}}
+        </span>
       </div>
     </ng-template>
     <table mat-table

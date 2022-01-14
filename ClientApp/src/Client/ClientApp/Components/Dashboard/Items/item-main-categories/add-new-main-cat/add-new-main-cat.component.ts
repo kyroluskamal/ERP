@@ -41,7 +41,7 @@ export class AddNewMainCatComponent implements OnInit
       this._bottomSheetRef.dismiss(this.data);
     });
     this.AddNew = new FormGroup({
-      name: new FormControl(null, [Validators.required, Validators.maxLength(this.Constants.MaxLength30)]
+      mainCatName: new FormControl(null, [Validators.required, Validators.maxLength(this.Constants.MaxLength30)]
       ),
     });
     this.Title = [{ text: this.Constants.add_new_maincat, needTranslation: true },];
@@ -58,7 +58,8 @@ export class AddNewMainCatComponent implements OnInit
           formFieldsSpec: [
             {
               type: "text",
-              formControlName: this.Constants.Name.toLowerCase(),
+              fieldToolTip: '',
+              formControlName: this.Constants.MainCatName,
               appearance: this.Constants.FormFieldInputAppearance,
               faIcon: faPenAlt,
               fxFlex: "100%",
@@ -103,8 +104,8 @@ export class AddNewMainCatComponent implements OnInit
         let c = r;
         for (let x of c.itemSubCategory)
         {
-          if (x.name === this.Constants.default_subcategory)
-            x.name = this.translate.GetTranslation(this.Constants.default_subcategory.toLowerCase());
+          if (x.subCatName === this.Constants.default_subcategory)
+            x.subCatName = this.translate.GetTranslation(this.Constants.default_subcategory.toLowerCase());
         }
         console.log(c);
         if (this.data)
@@ -114,6 +115,7 @@ export class AddNewMainCatComponent implements OnInit
           this.data.SelectedRows.push(r);
           this.data.addedRow = r;
           this.data.dataSource.data = this.data.data;
+
         } this.spinner.removeSpinner();
         this.ServerResponseHandler.DatatAddition_Success_Swal();
         setTimeout(() =>
@@ -128,7 +130,7 @@ export class AddNewMainCatComponent implements OnInit
         this.spinner.removeSpinner();
         this.ClientValidaiton.refillForm(newItem, this.FormBuilder.form);
         let x: MaxMinLengthValidation[] = [
-          { prop: this.Constants.Name.toLowerCase(), maxLength: this.Constants.MaxLength30 },
+          { prop: this.Constants.MainCatName, maxLength: this.Constants.MaxLength30 },
         ];
         this.ServerResponseHandler.GetErrorNotification_swal(e, x);
       }

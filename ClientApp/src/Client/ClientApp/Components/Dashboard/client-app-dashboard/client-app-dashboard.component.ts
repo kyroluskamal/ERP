@@ -13,6 +13,8 @@ import { LightDarkThemeConverterService } from '../light-dark-theme-converter.se
 import { ClientAccountService } from 'src/Client/MainDomain/Authentication/client-account-service.service';
 import { ExpansionPanel, ThemeColor } from 'src/Interfaces/interfaces';
 import { GeneralsService } from '../Generals/generals.service';
+import { InventoriesService } from '../Inventories/inventories.service';
+import { ItemsService } from '../Items/items.service';
 
 
 
@@ -80,7 +82,7 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
 
   //#region Constructor
   //Constructor............................................................................
-  constructor(public Constants: ConstantsService, public translate: TranslationService,
+  constructor(public Constants: ConstantsService, private ItemService: ItemsService, public translate: TranslationService,
     private Notifications: NotificationsService, private mediaObserver: MediaObserver,
     private ClientAccountService: ClientAccountService, private renderer: Renderer2,
     private vr: ViewContainerRef, private GeneralsService: GeneralsService,
@@ -436,9 +438,9 @@ export class ClientAppDashboardComponent implements OnInit, AfterContentInit, On
     this.MediaSubscription = this.mediaObserver.asObservable().subscribe(
       (response: MediaChange[]) =>
       {
-
+        console.log(response);
         var matRangLanble = document.getElementsByClassName("mat-paginator-range-label");
-        if (response.some(x => x.mqAlias === 'lt-sm' || x.mqAlias === 'sm'))
+        if (response.some(x => x.mqAlias === 'xs'))
         {
           this.SideNavToggleButtonOnSmallScreen.nativeElement.style.display = "flex";
           this.pinButton.nativeElement.style.display = "none";

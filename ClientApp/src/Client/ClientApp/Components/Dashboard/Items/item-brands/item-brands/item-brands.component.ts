@@ -57,7 +57,7 @@ export class ItemBrandsComponent implements OnInit
     this.ShowProgressBar = true;
     this.columns = [
       { field: 'id', display: '#' },
-      { field: this.Constants.Name.toLowerCase(), display: this.Constants.Name },
+      { field: this.Constants.brandName, display: this.Constants.Name },
     ];
   }
   Delete(brand: Brands[])
@@ -76,12 +76,18 @@ export class ItemBrandsComponent implements OnInit
         {
           return item.id !== brand[0].id;
         });
+        this.ItemsService.AllItemNeededData.brands = this.AllItems;
         this.dataSource.paginator?.getNumberOfPages();
         this.dataSource.data = this.AllItems;
         this.ShowProgressBar = false;
         brand = [];
         this.RowDeleted = true;
-      }, error: e => { this.ShowProgressBar = false; this.spinner.removeSpinner(); this.ServerResponseHandler.GetErrorNotification_swal(e); this.ShowProgressBar = false; }
+      }, error: e =>
+      {
+        this.ShowProgressBar = false; this.spinner.removeSpinner();
+        this.ServerResponseHandler.GetErrorNotification_swal(e);
+        this.ShowProgressBar = false;
+      }
     });
 
 

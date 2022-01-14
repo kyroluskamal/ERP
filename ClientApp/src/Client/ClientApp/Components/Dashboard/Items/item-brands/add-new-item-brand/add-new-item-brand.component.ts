@@ -32,7 +32,7 @@ export class AddNewItemBrandComponent implements OnInit
   ngOnInit(): void
   {
     this.AddNew = new FormGroup({
-      name: new FormControl(null, [Validators.required, Validators.maxLength(this.Constants.MaxLength30)])
+      brandName: new FormControl(null, [Validators.required, Validators.maxLength(this.Constants.MaxLength30)])
     });
     this._bottomSheetRef.backdropClick().subscribe((r) =>
     {
@@ -54,11 +54,12 @@ export class AddNewItemBrandComponent implements OnInit
           formFieldsSpec: [
             {
               type: "text",
-              formControlName: this.Constants.Name.toLowerCase(),
+              fieldToolTip: '',
+              formControlName: this.Constants.brandName,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: "100%",
               fxFlex_xs: "100%",
-              mat_label: this.Constants.Name,
+              mat_label: this.Constants.brandName,
               faIcon: faPenAlt,
               required: true,
               errors: [{
@@ -81,10 +82,10 @@ export class AddNewItemBrandComponent implements OnInit
     let newItem = new Brands();
     this.ClientValidaiton.FillObjectFromForm(newItem, formDefs.form);
     if (this.data)
-      if (!this.ClientValidaiton.isUnique(this.data.data, this.Constants.Name.toLowerCase(), formDefs.form.get(this.Constants.Name.toLowerCase())?.value))
+      if (!this.ClientValidaiton.isUnique(this.data.data, this.Constants.brandName, formDefs.form.get(this.Constants.brandName)?.value))
       {
         this.spinner.removeSpinner();
-        this.ClientValidaiton.notUniqueNotification_Swal(this.Constants.Name);
+        this.ClientValidaiton.notUniqueNotification_Swal(this.Constants.brandName);
         this.data.ShowBrogressBar = false;
         return;
       }
@@ -111,7 +112,7 @@ export class AddNewItemBrandComponent implements OnInit
       {
         this.spinner.removeSpinner();
         this.ClientValidaiton.refillForm(newItem, this.FormBuilder.form);
-        let x: MaxMinLengthValidation[] = [{ prop: this.Constants.Name, maxLength: this.Constants.MaxLength30 }];
+        let x: MaxMinLengthValidation[] = [{ prop: this.Constants.brandName, maxLength: this.Constants.MaxLength30 }];
         this.ServerResponseHandler.GetErrorNotification_swal(e, x);
       }
     });
@@ -125,4 +126,6 @@ export class AddNewItemBrandComponent implements OnInit
       this._bottomSheetRef.dismiss(this.data);
     }
   }
+
+
 }

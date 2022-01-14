@@ -17,7 +17,8 @@ import { SpinnerService } from 'src/CommonServices/spinner.service';
   templateUrl: './edit-supplier.component.html',
   styleUrls: ['./edit-supplier.component.css']
 })
-export class EditSupplierComponent implements OnInit {
+export class EditSupplierComponent implements OnInit
+{
   faMobileAlt = faMobileAlt;
   faPhone = faPhone;
   faPenAlt = faPenAlt;
@@ -40,10 +41,12 @@ export class EditSupplierComponent implements OnInit {
     private ClientValidaiton: ClientSideValidationService
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     this.AllSelectionData.push({ property: this.Constants.countryName, SelectedData: this.GeneralsService.Country, });
     this.AllSelectionData.push({ property: this.Constants.currencyCode, SelectedData: this.GeneralsService.Currencies });
-    this._bottomSheetRef.backdropClick().subscribe((r) => {
+    this._bottomSheetRef.backdropClick().subscribe((r) =>
+    {
       this.data.ShowProgressBar = false;
       this.spinner.removeSpinner();
       this._bottomSheetRef.dismiss(this.data);
@@ -86,6 +89,7 @@ export class EditSupplierComponent implements OnInit {
           formFieldsSpec: [
             {
               type: 'text',
+              fieldToolTip: '',
               formControlName: this.Constants.businessName,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '100%',
@@ -113,6 +117,7 @@ export class EditSupplierComponent implements OnInit {
             },
             {
               type: 'text',
+              fieldToolTip: '',
               formControlName: this.Constants.firstName,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '49%',
@@ -134,6 +139,7 @@ export class EditSupplierComponent implements OnInit {
             },
             {
               type: 'text',
+              fieldToolTip: '',
               formControlName: this.Constants.lastName,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '49%',
@@ -155,6 +161,7 @@ export class EditSupplierComponent implements OnInit {
             },
             {
               type: 'tel',
+              fieldToolTip: '',
               formControlName: this.Constants.CellPhoneNumber,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '49%',
@@ -179,6 +186,7 @@ export class EditSupplierComponent implements OnInit {
             },
             {
               type: 'tel',
+              fieldToolTip: '',
               formControlName: this.Constants.TelephoneNumber,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '49%',
@@ -203,6 +211,7 @@ export class EditSupplierComponent implements OnInit {
             },
             {
               type: 'select',
+              fieldToolTip: '',
               formControlName: this.Constants.countryId,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '100%',
@@ -223,6 +232,7 @@ export class EditSupplierComponent implements OnInit {
             },
             {
               type: 'text',
+              fieldToolTip: '',
               formControlName: this.Constants.taxID,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '49%',
@@ -244,6 +254,7 @@ export class EditSupplierComponent implements OnInit {
             },
             {
               type: 'text',
+              fieldToolTip: '',
               formControlName: this.Constants.cr,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '49%',
@@ -273,6 +284,7 @@ export class EditSupplierComponent implements OnInit {
           formFieldsSpec: [
             {
               type: 'email',
+              fieldToolTip: '',
               formControlName: this.Constants.email,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '100%',
@@ -291,6 +303,7 @@ export class EditSupplierComponent implements OnInit {
             },
             {
               type: 'number',
+              fieldToolTip: '',
               formControlName: this.Constants.openingBalance,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '30%',
@@ -319,6 +332,7 @@ export class EditSupplierComponent implements OnInit {
             },
             {
               type: 'date',
+              fieldToolTip: '',
               formControlName: this.Constants.openingBalanceDate,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '69%',
@@ -336,6 +350,7 @@ export class EditSupplierComponent implements OnInit {
             },
             {
               type: 'select',
+              fieldToolTip: '',
               formControlName: this.Constants.currencyId,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '100%',
@@ -356,6 +371,7 @@ export class EditSupplierComponent implements OnInit {
             },
             {
               type: 'textarea',
+              fieldToolTip: '',
               formControlName: this.Constants.Notes,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '100%',
@@ -367,6 +383,7 @@ export class EditSupplierComponent implements OnInit {
             },
             {
               type: 'OneFile',
+              fieldToolTip: '',
               formControlName: this.Constants.logo,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '100%',
@@ -380,24 +397,29 @@ export class EditSupplierComponent implements OnInit {
       ],
     };
   }
-  CloseBottomSheet(event: boolean) {
-    if (event) {
+  CloseBottomSheet(event: boolean)
+  {
+    if (event)
+    {
       this.data.ShowProgressBar = false;
       this._bottomSheetRef.dismiss(this.data);
     }
   }
-  EditSupplier(EditedObj: FormDefs) {
+  EditSupplier(EditedObj: FormDefs)
+  {
     //If not updated close the bottomsheet
-    if (!this.ClientValidaiton.isUpdated(this.data.dataToEdit, EditedObj.form)) {
+    if (!this.ClientValidaiton.isUpdated(this.data.dataToEdit, EditedObj.form))
+    {
       this.data.ShowProgressBar = false;
       this._bottomSheetRef.dismiss(this.data);
       return;
     }
     this.spinner.fullScreenSpinnerForForm();
-    if (!(this.ClientValidaiton.isUnique(this.data.Array, this.Constants.businessName, this.Edit.get(this.Constants.businessName)?.value, this.data.dataToEdit.id))) {
+    if (!(this.ClientValidaiton.isUnique(this.data.Array, this.Constants.businessName, this.Edit.get(this.Constants.businessName)?.value, this.data.dataToEdit.id)))
+    {
       this.spinner.removeSpinner();
       this.ClientValidaiton.notUniqueNotification_Swal(this.Constants.businessName);
-      this.ClientValidaiton.refillForm(this.data.dataToEdit, EditedObj.form)
+      this.ClientValidaiton.refillForm(this.data.dataToEdit, EditedObj.form);
       return;
     }
     let UpdatedItem: Suppliers = { ...this.data.dataToEdit };
@@ -407,9 +429,11 @@ export class EditSupplierComponent implements OnInit {
     UpdatedItem.countryNameCode = this.GeneralsService.Country.find((x) => x.id === UpdatedItem.countryId)?.countryNameCode!;
     UpdatedItem.subdomain = this.Subdomain;
     this.SuppliersService.UpdateSupplier(UpdatedItem).subscribe({
-      next: r => {
+      next: r =>
+      {
         if (r.status)
-          if (r.status !== this.Constants.SameObject) {
+          if (r.status !== this.Constants.SameObject)
+          {
             this.spinner.removeSpinner();
             this.ServerResponseHandler.GeneralSuccessResponse_Swal(r);
             // this.data.dataToEdit = { ...UpdatedItem };
@@ -421,7 +445,8 @@ export class EditSupplierComponent implements OnInit {
         this.data.ShowProgressBar = false;
         this._bottomSheetRef.dismiss(this.data);
       },
-      error: e => {
+      error: e =>
+      {
         this.spinner.removeSpinner();
         this.ClientValidaiton.refillForm(this.data.dataToEdit, EditedObj.form);
         let x: MaxMinLengthValidation[] = [

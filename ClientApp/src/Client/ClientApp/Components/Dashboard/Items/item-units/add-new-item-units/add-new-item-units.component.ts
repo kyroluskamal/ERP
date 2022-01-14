@@ -11,7 +11,7 @@ import { ServerResponseHandelerService } from 'src/CommonServices/server-respons
 import { ClientSideValidationService } from 'src/CommonServices/client-side-validation.service';
 import { SpinnerService } from 'src/CommonServices/spinner.service';
 import { CustomValidators } from 'src/Helpers/CustomValidation/custom-validators';
-import { ItemUnit } from '../../../Models/item.model';
+import { Units } from '../../../Models/item.model';
 import { ItemsService } from '../../items.service';
 
 @Component({
@@ -29,7 +29,7 @@ export class AddNewItemUnitsComponent implements OnInit
   constructor(private spinner: SpinnerService,
     public Constants: ConstantsService, private bottomSheet: MatBottomSheet,
     public ValidationErrorMessage: ValidationErrorMessagesService,
-    public translate: TranslationService, @Inject(MAT_BOTTOM_SHEET_DATA) public data: MatBottomSheetDismissData<ItemUnit>,
+    public translate: TranslationService, @Inject(MAT_BOTTOM_SHEET_DATA) public data: MatBottomSheetDismissData<Units>,
     private ServerResponseHandler: ServerResponseHandelerService,
     private _bottomSheetRef: MatBottomSheetRef<AddNewItemUnitsComponent>,
     private ItemsService: ItemsService, private ClientValidaiton: ClientSideValidationService) { }
@@ -61,6 +61,7 @@ export class AddNewItemUnitsComponent implements OnInit
           formFieldsSpec: [
             {
               type: "text",
+              fieldToolTip: '',
               formControlName: this.Constants.wholeSaleUnit,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: "49%",
@@ -74,6 +75,7 @@ export class AddNewItemUnitsComponent implements OnInit
               },
               {
                 type: 'maxlength',
+
                 TranslatedMessage: [
                   { text: this.Constants.MaxLengthExceeded_ERROR, needTraslation: true },
                   { text: this.Constants.MaxLength30.toString(), needTraslation: false },
@@ -82,6 +84,7 @@ export class AddNewItemUnitsComponent implements OnInit
               maxLength: this.Constants.MaxLength30
             }, {
               type: "number",
+              fieldToolTip: '',
               formControlName: this.Constants.numberInWholeSale,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: "49%", fxFlex_xs: "100%",
@@ -102,6 +105,7 @@ export class AddNewItemUnitsComponent implements OnInit
               min: this.Constants.Min1.toString()
             }, {
               type: "text",
+              fieldToolTip: '',
               formControlName: this.Constants.retailUnit,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: "49%", fxFlex_xs: "100%",
@@ -123,6 +127,7 @@ export class AddNewItemUnitsComponent implements OnInit
               maxLength: this.Constants.MaxLength30
             }, {
               type: "number",
+              fieldToolTip: '',
               formControlName: this.Constants.numberInRetailSale,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: "49%", fxFlex_xs: "100%",
@@ -150,7 +155,7 @@ export class AddNewItemUnitsComponent implements OnInit
   {
     this.spinner.fullScreenSpinnerForForm();
     this.data.ShowBrogressBar = true;
-    let newItem = new ItemUnit();
+    let newItem = new Units();
     this.ClientValidaiton.FillObjectFromForm(newItem, formDefs.form);
     if (this.data)
       if (!this.ClientValidaiton.isUnique(this.data.data, this.Constants.wholeSaleUnit, formDefs.form.get(this.Constants.wholeSaleUnit)?.value))

@@ -31,12 +31,15 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatChipsModule } from '@angular/material/chips';
+
 const MaterialComponents = [
   MatButtonModule, MatToolbarModule, MatIconModule, MatDialogModule, MatListModule, MatDatepickerModule,
-  MatBottomSheetModule, MatInputModule, MatFormFieldModule, CommonModule, MatSnackBarModule,
+  MatBottomSheetModule, MatInputModule, MatFormFieldModule, CommonModule, MatSnackBarModule, MatChipsModule,
   MatCheckboxModule, MatProgressSpinnerModule, MatGridListModule, MatSidenavModule, MatNativeDateModule,
   FlexLayoutModule, MatSelectModule, MatMenuModule, MatExpansionModule, MatTooltipModule, MatAutocompleteModule,
-  MatButtonToggleModule, MatSlideToggleModule, MatTableModule, AgGridModule.withComponents([]),
+  MatButtonToggleModule, MatSlideToggleModule, MatTableModule, AgGridModule.withComponents([]), MatStepperModule,
   MatCardModule, MatProgressBarModule, FontAwesomeModule, MatPaginatorModule, MatSortModule, DragDropModule
 ];
 @NgModule({

@@ -22,7 +22,6 @@ export class EditSubCatComponent implements OnInit
   Subdomain: string = window.location.hostname.split('.')[0];
   Edit: FormGroup = new FormGroup({});
   FormBuilder: FormDefs = new FormDefs();
-
   constructor(private spinner: SpinnerService,
     public Constants: ConstantsService, private bottomSheet: MatBottomSheet,
     public ValidationErrorMessage: ValidationErrorMessagesService,
@@ -41,12 +40,12 @@ export class EditSubCatComponent implements OnInit
         this.spinner.removeSpinner(); this._bottomSheetRef.dismiss(this.data);
       });
     this.Edit = new FormGroup({
-      name: new FormControl(this.data.dataToEdit.name
+      subCatName: new FormControl(this.data.dataToEdit.subCatName
         , [Validators.required, Validators.maxLength(this.Constants.MaxLength30)]
       )
     });
     this.Title = [{ text: this.Constants.Edit, needTranslation: true },
-    { text: ": ", needTranslation: false }, { text: this.data.dataToEdit.name, needTranslation: false }];
+    { text: ": ", needTranslation: false }, { text: this.data.dataToEdit.subCatName, needTranslation: false }];
     this.FormBuilder = {
       form: this.Edit,
       Card_fxFlex: '100%',
@@ -60,7 +59,8 @@ export class EditSubCatComponent implements OnInit
           formFieldsSpec: [
             {
               type: "text",
-              formControlName: this.Constants.Name.toLowerCase(),
+              fieldToolTip: '',
+              formControlName: this.Constants.SubCatName,
               appearance: this.Constants.FormFieldInputAppearance,
               faIcon: faPenAlt,
               fxFlex: "100%",
@@ -124,7 +124,7 @@ export class EditSubCatComponent implements OnInit
         this.spinner.removeSpinner();
         this.ClientValidaiton.refillForm(this.data.dataToEdit, EditedObj.form);
         let x: MaxMinLengthValidation[] = [
-          { prop: this.Constants.Name.toLowerCase(), maxLength: this.Constants.MaxLength30 }
+          { prop: this.Constants.SubCatName, maxLength: this.Constants.MaxLength30 }
         ];
         this.ServerResponseHandler.GetErrorNotification_swal(e, x);
       }

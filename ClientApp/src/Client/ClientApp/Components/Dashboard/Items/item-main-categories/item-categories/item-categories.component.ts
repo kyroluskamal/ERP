@@ -49,6 +49,7 @@ export class ItemCategoriesComponent implements OnInit
   RowDeleted_MainCat: boolean = false;
   RowDeleted_SubCat: boolean = false;
   ChangeSelectedRow: any;
+  NoDataMessage: CardTitle[] = [];
   ChangeSelectedRow_SubCat: any;
   constructor(private spinner: SpinnerService,
     public Constants: ConstantsService, private bottomSheet: MatBottomSheet,
@@ -60,6 +61,8 @@ export class ItemCategoriesComponent implements OnInit
 
   ngOnInit(): void
   {
+    this.NoDataMessage = [{ text: this.Constants.select_main_cat_first, needTranslation: true }];
+
     this.Title_MainCat = [{ text: this.Constants.Main_Categories, needTranslation: true }];
     this.Subtitle_MainCat = [{ text: this.Constants.Add_Edit_Delete, needTranslation: true },
     { text: this.Constants.Main_Categories, needTranslation: true }];
@@ -70,15 +73,15 @@ export class ItemCategoriesComponent implements OnInit
     {
       for (let main of r)
       {
-        if (main.name.toLowerCase() === this.Constants.Uncategorized.toLowerCase())
+        if (main.mainCatName.toLowerCase() === this.Constants.Uncategorized.toLowerCase())
         {
-          main.name = this.translate.GetTranslation(this.Constants.Uncategorized.toLowerCase());
+          main.mainCatName = this.translate.GetTranslation(this.Constants.Uncategorized.toLowerCase());
         }
         for (let subcat of main.itemSubCategory)
         {
-          if (subcat.name === this.Constants.default_subcategory)
+          if (subcat.subCatName === this.Constants.default_subcategory)
           {
-            subcat.name = this.translate.GetTranslation(this.Constants.default_subcategory.toLowerCase());
+            subcat.subCatName = this.translate.GetTranslation(this.Constants.default_subcategory.toLowerCase());
           }
         }
       }
@@ -109,7 +112,7 @@ export class ItemCategoriesComponent implements OnInit
   {
     this.SelectedRows_MainCat = MainCat;
     this.ShowProgressBar_MainCat = true;
-    if (MainCat[0].name === this.translate.GetTranslation(this.Constants.Uncategorized.toLowerCase()))
+    if (MainCat[0].mainCatName === this.translate.GetTranslation(this.Constants.Uncategorized.toLowerCase()))
     {
       this.ClientValidaiton.Error_swal(this.Constants.delete_default_Main_cat)
         .then(r => { this.ShowProgressBar_MainCat = false; });
@@ -130,7 +133,7 @@ export class ItemCategoriesComponent implements OnInit
               {
                 return item.id !== MainCat[0].id;
               });
-              this.ItemService.AllMainCats = this.All_MainCat;
+              this.ItemService.AllItemNeededData.itemMainCategories = this.All_MainCat;
               this.dataSource_MainCat.data = this.All_MainCat;
               this.dataSource_SubCat.data = [];
               this.All_SubCat = [];
@@ -159,7 +162,7 @@ export class ItemCategoriesComponent implements OnInit
   {
     this.SelectedRows_SubCat = SubCat;
     this.ShowProgressBar_SubCat = true;
-    if (SubCat[0].name === this.translate.GetTranslation(this.Constants.default_subcategory.toLowerCase()))
+    if (SubCat[0].subCatName === this.translate.GetTranslation(this.Constants.default_subcategory.toLowerCase()))
     {
       this.ClientValidaiton.Error_swal(this.Constants.delete_default_Sub_cat)
         .then(r => { this.ShowProgressBar_SubCat = false; });
@@ -231,7 +234,7 @@ export class ItemCategoriesComponent implements OnInit
   }
   EditMainCat(row: ItemMainCategory)
   {
-    if (row.name === this.translate.GetTranslation(this.Constants.Uncategorized.toLowerCase()))
+    if (row.mainCatName === this.translate.GetTranslation(this.Constants.Uncategorized.toLowerCase()))
     {
       this.ClientValidaiton.Error_swal(this.Constants.delete_default_Main_cat)
         .then(r => { this.ShowProgressBar_MainCat = false; });
@@ -248,7 +251,7 @@ export class ItemCategoriesComponent implements OnInit
   }
   Edit_SubCat(row: ItemSubCategory)
   {
-    if (row.name === this.translate.GetTranslation(this.Constants.default_subcategory.toLowerCase()))
+    if (row.subCatName === this.translate.GetTranslation(this.Constants.default_subcategory.toLowerCase()))
     {
       this.ClientValidaiton.Error_swal(this.Constants.delete_default_Sub_cat)
         .then(r => { this.ShowProgressBar_SubCat = false; });
@@ -284,7 +287,7 @@ export class ItemCategoriesComponent implements OnInit
         this.ShowProgressBar_MainCat = r.ShowBrogressBar;
         this.SelectedRows_MainCat = [];
         this.AddedRow_MainCat = r.addedRow;
-        this.ItemService.AllMainCats = r.data;
+        this.ItemService.AllItemNeededData.itemMainCategories = r.data;
         this.SelectedRows_MainCat.push(r.addedRow);
         this.SelectRow_MainCat(this.SelectedRows_MainCat);
       });
@@ -324,6 +327,7 @@ export class ItemCategoriesComponent implements OnInit
             x.itemSubCategory.push(r.addedRow);
           }
         }
+
         this.ShowProgressBar_SubCat = r.ShowBrogressBar;
         this.SelectedRows_SubCat = [];
         this.AddedRow_SubCat = r.addedRow;

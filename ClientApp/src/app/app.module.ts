@@ -51,6 +51,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 })
 export class AppModule { }
 // AOT compilation support
-export function httpTranslateLoader(http: HttpClient) {
+export function httpTranslateLoader(http: HttpClient)
+{
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }

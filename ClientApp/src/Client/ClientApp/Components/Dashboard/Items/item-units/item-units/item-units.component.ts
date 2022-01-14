@@ -9,7 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ServerResponseHandelerService } from 'src/CommonServices/server-response-handeler.service';
 import { ClientSideValidationService } from 'src/CommonServices/client-side-validation.service';
 import { SpinnerService } from 'src/CommonServices/spinner.service';
-import { Item, ItemUnit } from '../../../Models/item.model';
+import { Item, Units } from '../../../Models/item.model';
 import { ItemsService } from '../../items.service';
 import { EditItemUnitsComponent } from '../edit-item-units/edit-item-units.component';
 import { AddNewItemUnitsComponent } from '../add-new-item-units/add-new-item-units.component';
@@ -23,10 +23,10 @@ export class ItemUnitsComponent implements OnInit
 
   Subdomain: string = window.location.hostname.split(".")[0];
   columns: ColDefs[] = [];
-  AllItems: ItemUnit[] = [];
+  AllItems: Units[] = [];
   isLoadingResults: boolean = true;
-  SelectedRows: ItemUnit[] = [];
-  dataSource = new MatTableDataSource<ItemUnit>();
+  SelectedRows: Units[] = [];
+  dataSource = new MatTableDataSource<Units>();
   ShowProgressBar: boolean = true;
   AddedRow: any;
   FormBuilder: FormDefs = new FormDefs();
@@ -69,7 +69,7 @@ export class ItemUnitsComponent implements OnInit
       { field: this.Constants.conversionRate, display: this.Constants.conversionRate },
     ];
   }
-  Delete(Units: ItemUnit[])
+  Delete(Units: Units[])
   {
     this.SelectedRows = Units;
     this.ShowProgressBar = true;
@@ -99,14 +99,14 @@ export class ItemUnitsComponent implements OnInit
   }
   SelectRow(event: any) { this.SelectedRows = event; }
 
-  Edit(row: ItemUnit)
+  Edit(row: Units)
   {
-    let x: DataToEdit_PassToBottomSheet<ItemUnit> = {
+    let x: DataToEdit_PassToBottomSheet<Units> = {
       dataToEdit: row,
       Array: this.AllItems, ShowProgressBar: this.ShowProgressBar
     };
     const ref = this.bottomSheet.open(EditItemUnitsComponent, { data: x });
-    ref.afterDismissed().subscribe((r: DataToEdit_PassToBottomSheet<ItemUnit>) =>
+    ref.afterDismissed().subscribe((r: DataToEdit_PassToBottomSheet<Units>) =>
     {
       this.ShowProgressBar = r.ShowProgressBar;
     });
@@ -117,7 +117,7 @@ export class ItemUnitsComponent implements OnInit
     if (AddClicked)
     {
       this.ShowProgressBar = true;
-      let data: MatBottomSheetDismissData<ItemUnit> = {
+      let data: MatBottomSheetDismissData<Units> = {
         dataSource: this.dataSource, ShowBrogressBar: this.ShowProgressBar,
         addedRow: this.AddedRow, data: this.AllItems, SelectedRows: this.SelectedRows
       };
@@ -125,7 +125,7 @@ export class ItemUnitsComponent implements OnInit
         data: data
       });
       AddInventBottomSheet.afterDismissed().subscribe(
-        (r: MatBottomSheetDismissData<ItemUnit>) =>
+        (r: MatBottomSheetDismissData<Units>) =>
         {
           this.ShowProgressBar = r.ShowBrogressBar;
           this.SelectedRows = [];

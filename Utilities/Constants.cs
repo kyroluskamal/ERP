@@ -254,6 +254,7 @@ namespace ERP.Utilities
         public string MainWarehouse = "Main warehouse";
         public string DefaultSubCategory = "Default Subcategory";
         public string SameObject = "SameObject";
+
         public object NullTentant_Error_Response()
         {
             return new { status = NullTenant_statuCode, error = NullTenant_ErrorMessage };
@@ -335,6 +336,10 @@ namespace ERP.Utilities
         public object Delete_Default_Error_Response()
         {
             return new { status = Delete_Default_Error_status, error = Delete_Default_Error_Message };
+        }
+        public object NotSelected_MainCat_Error_Response()
+        {
+            return new { status = NotSelected_MainCat_ERROR_status, error = NotSelected_MainCat_ERROR_Message };
         }
 
 

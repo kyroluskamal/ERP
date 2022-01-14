@@ -6,12 +6,12 @@ import { TranslationService } from 'src/CommonServices/translation-service.servi
 import { ValidationErrorMessagesService } from 'src/CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
 import { CardTitle, DataToEdit_PassToBottomSheet, FormDefs } from 'src/Interfaces/interfaces';
 import { Inventories } from '../../Models/inventories.model';
-import { InventoriesService } from '../../Inventories/inventories.service'
+import { InventoriesService } from '../../Inventories/inventories.service';
 import { MatBottomSheet, MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
-import { faMobileAlt, faPhone, faPenAlt, faEdit } from '@fortawesome/free-solid-svg-icons'
+import { faMobileAlt, faPhone, faPenAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { ClientSideValidationService } from 'src/CommonServices/client-side-validation.service';
 import { ServerResponseHandelerService } from 'src/CommonServices/server-response-handeler.service';
-import { faSave } from '@fortawesome/free-solid-svg-icons'
+import { faSave } from '@fortawesome/free-solid-svg-icons';
 import { CustomValidators } from 'src/Helpers/CustomValidation/custom-validators';
 import { SpinnerService } from 'src/CommonServices/spinner.service';
 @Component({
@@ -19,7 +19,8 @@ import { SpinnerService } from 'src/CommonServices/spinner.service';
   templateUrl: './edit-inventory.component.html',
   styleUrls: ['./edit-inventory.component.css']
 })
-export class EditInventoryComponent implements OnInit {
+export class EditInventoryComponent implements OnInit
+{
   Subdomain: string = window.location.hostname.split(".")[0];
 
   faMobileAlt = faMobileAlt;
@@ -34,16 +35,20 @@ export class EditInventoryComponent implements OnInit {
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: DataToEdit_PassToBottomSheet<Inventories>, private ClientSideValidation: ClientSideValidationService,
     private _bottomSheetRef: MatBottomSheetRef<EditInventoryComponent>,
-    private ServerResponseHandler: ServerResponseHandelerService) {
+    private ServerResponseHandler: ServerResponseHandelerService)
+  {
 
   }
 
 
-  ngOnDestroy(): void {
+  ngOnDestroy(): void
+  {
 
   }
-  ngOnInit(): void {
-    this._bottomSheetRef.backdropClick().subscribe((r) => {
+  ngOnInit(): void
+  {
+    this._bottomSheetRef.backdropClick().subscribe((r) =>
+    {
       this.data.ShowProgressBar = false;
       this.spinner.removeSpinner();
       this._bottomSheetRef.dismiss(this.data);
@@ -52,7 +57,7 @@ export class EditInventoryComponent implements OnInit {
       { text: this.Constants.Edit, needTranslation: true },
       { text: " : ", needTranslation: false },
       { text: this.data.dataToEdit.warehouseName, needTranslation: false }
-    ]
+    ];
     this.EditInvenoty = new FormGroup({
       Name: new FormControl(this.data.dataToEdit.warehouseName, [Validators.required, Validators.maxLength(this.Constants.MaxLength30)]),
       IsMain: new FormControl(this.data.dataToEdit.isMainInventory),
@@ -73,6 +78,7 @@ export class EditInventoryComponent implements OnInit {
         fxFlex: "100%",
         formFieldsSpec: [{
           type: "text",
+          fieldToolTip: '',
           formControlName: "Name",
           appearance: "outline",
           fxFlex: "33%",
@@ -103,6 +109,7 @@ export class EditInventoryComponent implements OnInit {
           maxLength: this.Constants.MaxLength30
         }, {
           type: "tel",
+          fieldToolTip: '',
           formControlName: "Phone",
           appearance: "outline",
           fxFlex: "33%",
@@ -130,6 +137,7 @@ export class EditInventoryComponent implements OnInit {
           ]
         }, {
           type: "tel",
+          fieldToolTip: '',
           formControlName: "Mobile",
           appearance: "outline",
           fxFlex: "33%",
@@ -156,6 +164,7 @@ export class EditInventoryComponent implements OnInit {
           ]
         }, {
           type: "textarea",
+          fieldToolTip: '',
           formControlName: "Notes",
           appearance: "outline",
           fxFlex: "100%",
@@ -166,6 +175,7 @@ export class EditInventoryComponent implements OnInit {
           required: false,
         }, {
           type: "checkbox",
+          fieldToolTip: '',
           appearance: "fill",
           formControlName: "IsActive",
           fxFlex: "100%",
@@ -174,6 +184,7 @@ export class EditInventoryComponent implements OnInit {
           required: false,
         }, {
           type: "checkbox",
+          fieldToolTip: '',
           appearance: "fill",
           formControlName: "IsMain",
           fxFlex: "100%",
@@ -182,21 +193,24 @@ export class EditInventoryComponent implements OnInit {
           required: false,
         }]
       }]
-    }
+    };
   }
-  EditInvent(EditedInvent: FormDefs) {
+  EditInvent(EditedInvent: FormDefs)
+  {
     if (this.data.dataToEdit.warehouseName === EditedInvent.form.get("Name")?.value
       && this.data.dataToEdit.mobilePhone === EditedInvent.form.get("Mobile")?.value
       && this.data.dataToEdit.telephone === EditedInvent.form.get("Phone")?.value
       && this.data.dataToEdit.isActive === Boolean(EditedInvent.form.get("IsActive")?.value)
       && this.data.dataToEdit.isMainInventory === Boolean(EditedInvent.form.get("IsMain")?.value)
-      && this.data.dataToEdit.notes === EditedInvent.form.get("Notes")?.value) {
+      && this.data.dataToEdit.notes === EditedInvent.form.get("Notes")?.value)
+    {
       this.data.ShowProgressBar = false;
       this._bottomSheetRef.dismiss(this.data);
       return;
     }
     this.spinner.fullScreenSpinnerForForm();
-    if (!(this.ClientSideValidation.isUnique(this.data.Array, 'warehouseName', this.EditInvenoty.get("Name")?.value, this.data.dataToEdit.id))) {
+    if (!(this.ClientSideValidation.isUnique(this.data.Array, 'warehouseName', this.EditInvenoty.get("Name")?.value, this.data.dataToEdit.id)))
+    {
       this.spinner.removeSpinner();
       this.ClientSideValidation.notUniqueNotification_Swal("warehouseName");
       EditedInvent.form.get("Name")?.setValue(this.data.dataToEdit.warehouseName);
@@ -218,13 +232,22 @@ export class EditInventoryComponent implements OnInit {
       subdomain: this.Subdomain,
       addedBy_UserName: this.data.dataToEdit.addedBy_UserName,
       addedBy_UserId: this.data.dataToEdit.addedBy_UserId
-    }
+    };
 
 
     this.InventoriesService.UpdateWarehouse(UpdateInvent).subscribe({
-      next: r => {
+      next: r =>
+      {
         if (r.status)
-          if (r.status !== this.Constants.SameObject) {
+          if (r.status !== this.Constants.SameObject)
+          {
+            for (let x of this.InventoriesService.AllInventories)
+            {
+              if (x.id === UpdateInvent.id)
+              {
+                x = { ...UpdateInvent };
+              }
+            }
             this.spinner.removeSpinner();
             this.ServerResponseHandler.GeneralSuccessResponse_Swal(r);
             this.data.dataToEdit.warehouseName = UpdateInvent.warehouseName;
@@ -237,7 +260,8 @@ export class EditInventoryComponent implements OnInit {
         this.data.ShowProgressBar = false;
         this._bottomSheetRef.dismiss(this.data);
       },
-      error: e => {
+      error: e =>
+      {
         this.spinner.removeSpinner();
         this.ServerResponseHandler.GetErrorNotification_swal(e);
         EditedInvent.form.get("Name")?.setValue(this.data.dataToEdit.warehouseName);

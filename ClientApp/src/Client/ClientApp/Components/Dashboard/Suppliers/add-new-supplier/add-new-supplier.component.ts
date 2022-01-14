@@ -20,7 +20,8 @@ import { CustomValidators } from 'src/Helpers/CustomValidation/custom-validators
   templateUrl: './add-new-supplier.component.html',
   styleUrls: ['./add-new-supplier.component.css'],
 })
-export class AddNewSupplierComponent implements OnInit {
+export class AddNewSupplierComponent implements OnInit
+{
   faMobileAlt = faMobileAlt;
   faPhone = faPhone;
   faPenAlt = faPenAlt;
@@ -43,10 +44,12 @@ export class AddNewSupplierComponent implements OnInit {
     private ClientValidaiton: ClientSideValidationService
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     this.AllSelectionData.push({ property: this.Constants.countryName, SelectedData: this.GeneralsService.Country, });
     this.AllSelectionData.push({ property: this.Constants.currencyCode, SelectedData: this.GeneralsService.Currencies });
-    this._bottomSheetRef.backdropClick().subscribe((r) => {
+    this._bottomSheetRef.backdropClick().subscribe((r) =>
+    {
       this.data.ShowBrogressBar = false;
       this._bottomSheetRef.dismiss(this.data);
     });
@@ -87,6 +90,7 @@ export class AddNewSupplierComponent implements OnInit {
           formFieldsSpec: [
             {
               type: 'text',
+              fieldToolTip: '',
               formControlName: this.Constants.businessName,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '100%',
@@ -114,6 +118,7 @@ export class AddNewSupplierComponent implements OnInit {
             },
             {
               type: 'text',
+              fieldToolTip: '',
               formControlName: this.Constants.firstName,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '49%',
@@ -135,6 +140,7 @@ export class AddNewSupplierComponent implements OnInit {
             },
             {
               type: 'text',
+              fieldToolTip: '',
               formControlName: this.Constants.lastName,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '49%',
@@ -156,6 +162,7 @@ export class AddNewSupplierComponent implements OnInit {
             },
             {
               type: 'tel',
+              fieldToolTip: '',
               formControlName: this.Constants.CellPhoneNumber,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '49%',
@@ -180,6 +187,7 @@ export class AddNewSupplierComponent implements OnInit {
             },
             {
               type: 'tel',
+              fieldToolTip: '',
               formControlName: this.Constants.TelephoneNumber,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '49%',
@@ -204,6 +212,7 @@ export class AddNewSupplierComponent implements OnInit {
             },
             {
               type: 'select',
+              fieldToolTip: '',
               formControlName: this.Constants.countryId,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '100%',
@@ -224,6 +233,7 @@ export class AddNewSupplierComponent implements OnInit {
             },
             {
               type: 'text',
+              fieldToolTip: '',
               formControlName: this.Constants.taxID,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '49%',
@@ -245,6 +255,7 @@ export class AddNewSupplierComponent implements OnInit {
             },
             {
               type: 'text',
+              fieldToolTip: '',
               formControlName: this.Constants.cr,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '49%',
@@ -274,6 +285,7 @@ export class AddNewSupplierComponent implements OnInit {
           formFieldsSpec: [
             {
               type: 'email',
+              fieldToolTip: '',
               formControlName: this.Constants.email,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '100%',
@@ -292,6 +304,7 @@ export class AddNewSupplierComponent implements OnInit {
             },
             {
               type: 'number',
+              fieldToolTip: '',
               formControlName: this.Constants.openingBalance,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '30%',
@@ -320,6 +333,7 @@ export class AddNewSupplierComponent implements OnInit {
             },
             {
               type: 'date',
+              fieldToolTip: '',
               formControlName: this.Constants.openingBalanceDate,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '69%',
@@ -337,6 +351,7 @@ export class AddNewSupplierComponent implements OnInit {
             },
             {
               type: 'select',
+              fieldToolTip: '',
               formControlName: this.Constants.currencyId,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '100%',
@@ -357,6 +372,7 @@ export class AddNewSupplierComponent implements OnInit {
             },
             {
               type: 'textarea',
+              fieldToolTip: '',
               formControlName: this.Constants.Notes,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '100%',
@@ -368,6 +384,7 @@ export class AddNewSupplierComponent implements OnInit {
             },
             {
               type: 'OneFile',
+              fieldToolTip: '',
               formControlName: this.Constants.logo,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: '100%',
@@ -382,7 +399,8 @@ export class AddNewSupplierComponent implements OnInit {
     };
   }
 
-  AddNewSupplier(formDefs: FormDefs) {
+  AddNewSupplier(formDefs: FormDefs)
+  {
     this.data.ShowBrogressBar = true;
     let CurrentUser: any = localStorage.getItem(this.Constants.Client);
     CurrentUser = JSON.parse(CurrentUser);
@@ -403,7 +421,8 @@ export class AddNewSupplierComponent implements OnInit {
 
     if (this.data)
       if (!this.ClientValidaiton.isUnique(
-        this.data.data, this.Constants.businessName, formDefs.form.get(this.Constants.businessName)?.value)) {
+        this.data.data, this.Constants.businessName, formDefs.form.get(this.Constants.businessName)?.value))
+      {
         this.spinner.removeSpinner();
         this.ClientValidaiton.notUniqueNotification_Swal(this.Constants.businessName);
         this.data.ShowBrogressBar = false;
@@ -411,8 +430,10 @@ export class AddNewSupplierComponent implements OnInit {
       }
 
     this.SuppliersService.AddNewSupplier(newSupplier).subscribe({
-      next: (r) => {
-        if (this.data) {
+      next: (r) =>
+      {
+        if (this.data)
+        {
           this.data.data.push(r);
           this.data.SelectedRows = [];
           this.data.SelectedRows.push(r);
@@ -421,7 +442,8 @@ export class AddNewSupplierComponent implements OnInit {
         }
         this.spinner.removeSpinner();
         this.ServerResponseHandler.DatatAddition_Success_Swal();
-        setTimeout(() => {
+        setTimeout(() =>
+        {
           this.data.dataSource.paginator?.lastPage();
         }, 500);
         this.AddNew.reset();
@@ -431,7 +453,8 @@ export class AddNewSupplierComponent implements OnInit {
         this.AddNew.get(this.Constants.countryId)?.setValue(this.GeneralsService.GetCountryId_by_countryCode());
         this.AddNew.clearValidators();
       },
-      error: (e) => {
+      error: (e) =>
+      {
         this.spinner.removeSpinner();
         this.ClientValidaiton.refillForm(newSupplier, this.FormBuilder.form);
         let x: MaxMinLengthValidation[] = [
@@ -446,8 +469,10 @@ export class AddNewSupplierComponent implements OnInit {
     });
     this.data.ShowBrogressBar = false;
   }
-  CloseBottomSheet(event: boolean) {
-    if (event) {
+  CloseBottomSheet(event: boolean)
+  {
+    if (event)
+    {
       this.data.ShowBrogressBar = false;
       this._bottomSheetRef.dismiss(this.data);
     }

@@ -9,7 +9,7 @@ namespace ERP.Models.Items
         public int Id { get; set; }
         [Required(ErrorMessage = "Required_field")]
         [MaxLength(30, ErrorMessage = "MaxLengthExceeded_ERROR")]
-        public string Name { get; set; }
+        public string MainCatName { get; set; }
         [NotMapped]
         public string Subdomain { get; set; }
         public ICollection<ItemSubCategory> ItemSubCategory { get; set; }

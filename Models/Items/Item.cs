@@ -21,25 +21,42 @@ namespace ERP.Models.Items
         [Column(TypeName = "bit")]
         public bool HasDescription { get; set; }
         [Column(TypeName = "bit")]
-        public bool HasSpecialOffer { get; set; }
+        public bool HasSpecialOffer { get; set; }//not implemented yet
         [Column(TypeName = "bit")]
-        public bool HasNote { get; set; }
+        public bool HasNote { get; set; }//not yet
+        [Column(TypeName = "bit")]
+        public bool HasSKU_number { get; set; }//Should be removed
+        [Column(TypeName = "bit")]
+        public bool HasInternalNote { get; set; }
         [DataType(DataType.Date)]
         [Column(TypeName = "Date")]
         public DateTime DateCreated { get; set; }
         [ForeignKey(nameof(AddedBy_UserId))]
         public virtual ApplicationUser ApplicationUser { get; set; }
-        public int? AddedBy_UserId { get; set; } //Not Required temporary
+        public int? AddedBy_UserId { get; set; }
         public string AddedBy_UserName { get; set; }
-        public ICollection<ItemVariants> ItemVariants { get; set; }
         public virtual ItemNotes ItemNotes { get; set; }
+        public virtual InternalNotes InternalNotes { get; set; }
         public virtual ItemDescription ItemDescription { get; set; }
         public ICollection<Item_Units> Item_Units { get; set; }
         public ICollection<ItemBrands> ItemBrands { get; set; }
-        public ICollection<Item_Per_MainCategory> Item_Per_Subcategory { get; set; }
+        public ICollection<Item_Per_MainCategory> Item_Per_MainCategory { get; set; }
+        public ICollection<ItemSuppliers> ItemSuppliers { get; set; }
         [NotMapped]
-        public string InternalNotes { get; set; }
+        public string NotesForClients { get; set; }
+        [NotMapped]
+        public string InternalNote { get; set; }
         [NotMapped]
         public string Description { get; set; }
+        [NotMapped]
+        public int[] SubCatsId { get; set; }
+        [NotMapped]
+        public int[] BrandsIds { get; set; }
+        [NotMapped]
+        public int[] UnitsIds { get; set; }
+        [NotMapped]
+        public int[] SuppliersIds { get; set; }
+        [NotMapped]
+        public ItemSKUKeys[] ItemSKUKeys { get; set; }
     }
 }

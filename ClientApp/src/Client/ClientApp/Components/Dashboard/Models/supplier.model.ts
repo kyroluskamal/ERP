@@ -1,6 +1,8 @@
 import { Country, Currency } from "./generals.model";
+import { ItemSuppliers } from "./item.model";
 
-export class Suppliers {
+export class Suppliers
+{
   id: number = 0;
   businessName: string = "";
   firstName: string = "";
@@ -24,4 +26,5 @@ export class Suppliers {
   addedBy_UserName: string = "";
   logo: any;
   subdomain: string = "";
+  itemSuppliers: ItemSuppliers[] = [];
 }

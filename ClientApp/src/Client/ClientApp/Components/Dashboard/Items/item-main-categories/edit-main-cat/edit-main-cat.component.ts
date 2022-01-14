@@ -42,12 +42,12 @@ export class EditMainCatComponent implements OnInit
         this.spinner.removeSpinner(); this._bottomSheetRef.dismiss(this.data);
       });
     this.Edit = new FormGroup({
-      name: new FormControl(this.data.dataToEdit.name
+      mainCatName: new FormControl(this.data.dataToEdit.mainCatName
         , [Validators.required, Validators.maxLength(this.Constants.MaxLength30)]
       ),
     });
     this.Title = [{ text: this.Constants.Edit, needTranslation: true },
-    { text: ": ", needTranslation: false }, { text: this.data.dataToEdit.name, needTranslation: false }
+    { text: ": ", needTranslation: false }, { text: this.data.dataToEdit.mainCatName, needTranslation: false }
     ];
     this.FormBuilder = {
       form: this.Edit,
@@ -62,7 +62,8 @@ export class EditMainCatComponent implements OnInit
           formFieldsSpec: [
             {
               type: "text",
-              formControlName: this.Constants.Name.toLowerCase(),
+              fieldToolTip: '',
+              formControlName: this.Constants.MainCatName,
               appearance: this.Constants.FormFieldInputAppearance,
               faIcon: faPenAlt,
               fxFlex: "100%",
@@ -114,6 +115,11 @@ export class EditMainCatComponent implements OnInit
         if (r.status)
           if (r.status !== this.Constants.SameObject)
           {
+            for (let x of this.ItemService.AllItemNeededData.itemMainCategories)
+            {
+              if (x.id === this.data.dataToEdit.id)
+                x.mainCatName = UpdatedItem.mainCatName;;
+            }
             this.spinner.removeSpinner();
             this.ServerResponseHandler.GeneralSuccessResponse_Swal(r);
             this.ClientValidaiton.FillObjectFromAnotherObject(this.data.dataToEdit, UpdatedItem);
@@ -127,7 +133,7 @@ export class EditMainCatComponent implements OnInit
         this.spinner.removeSpinner();
         this.ClientValidaiton.refillForm(this.data.dataToEdit, EditedObj.form);
         let x: MaxMinLengthValidation[] = [
-          { prop: this.Constants.Name.toLowerCase(), maxLength: this.Constants.MaxLength30 },
+          { prop: this.Constants.MainCatName, maxLength: this.Constants.MaxLength30 },
         ];
         this.ServerResponseHandler.GetErrorNotification_swal(e, x);
       }

@@ -1,4 +1,5 @@
-export abstract class RouterConstants {
+export abstract class RouterConstants
+{
 
   //API URLS for Identity
   public static ClientLoginMainDomain_APIurl: string = "/api/Identity/loginMainDomain";
@@ -37,6 +38,10 @@ export abstract class RouterConstants {
   public static Item_Brand_Add_API = "/api/items/AddNewBrand";
   public static Item_Brand_Update_API = "/api/items/UpdateBrand";
   public static Item_Brand_GetAll_API = "/api/items/GetAllBrands";
+
+  public static Item_GetAll_RequiredData_API = "/api/items/GetAll_RequiredData";
+
+  public static ItemSKUKeys_GetAll_API = "/api/items/GetAll_ItemSKUKeys";
 
   //APIURLS for Inventories
   public static Inventories_GetAll_API = "/api/Inventories/AllInventories";

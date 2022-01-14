@@ -43,11 +43,11 @@ export class EditItemBrandComponent implements OnInit
       this._bottomSheetRef.dismiss(this.data);
     });
     this.Edit = new FormGroup({
-      name: new FormControl(this.data.dataToEdit.name, [Validators.required, Validators.maxLength(this.Constants.MaxLength30)])
+      brandName: new FormControl(this.data.dataToEdit.brandName, [Validators.required, Validators.maxLength(this.Constants.MaxLength30)])
     });
     this.Title = [{ text: this.Constants.Edit, needTranslation: true },
     { text: ": ", needTranslation: false },
-    { text: this.data.dataToEdit.name, needTranslation: false },
+    { text: this.data.dataToEdit.brandName, needTranslation: false },
     ];
     this.FormBuilder = {
       form: this.Edit,
@@ -62,11 +62,12 @@ export class EditItemBrandComponent implements OnInit
           formFieldsSpec: [
             {
               type: "text",
-              formControlName: this.Constants.Name.toLowerCase(),
+              fieldToolTip: '',
+              formControlName: this.Constants.brandName,
               appearance: this.Constants.FormFieldInputAppearance,
               fxFlex: "100%",
               fxFlex_xs: "100%",
-              mat_label: this.Constants.Name,
+              mat_label: this.Constants.brandName,
               faIcon: faPenAlt,
               required: true,
               errors: [{
@@ -94,9 +95,9 @@ export class EditItemBrandComponent implements OnInit
       this._bottomSheetRef.dismiss(this.data); return;
     }
     this.spinner.fullScreenSpinnerForForm();
-    if (!(this.ClientValidaiton.isUnique(this.data.Array, this.Constants.Name.toLowerCase(), this.Edit.get(this.Constants.Name.toLowerCase())?.value, this.data.dataToEdit.id)))
+    if (!(this.ClientValidaiton.isUnique(this.data.Array, this.Constants.brandName, this.Edit.get(this.Constants.brandName)?.value, this.data.dataToEdit.id)))
     {
-      this.spinner.removeSpinner(); this.ClientValidaiton.notUniqueNotification_Swal(this.Constants.businessName); this.ClientValidaiton.refillForm(this.data.dataToEdit, EditedObj.form);
+      this.spinner.removeSpinner(); this.ClientValidaiton.notUniqueNotification_Swal(this.Constants.brandName); this.ClientValidaiton.refillForm(this.data.dataToEdit, EditedObj.form);
       return;
     }
     let UpdatedItem: Brands = { ...this.data.dataToEdit };
@@ -118,7 +119,7 @@ export class EditItemBrandComponent implements OnInit
       {
         this.spinner.removeSpinner();
         this.ClientValidaiton.refillForm(this.data.dataToEdit, EditedObj.form);
-        let x: MaxMinLengthValidation[] = [{ prop: this.Constants.Name.toLowerCase(), maxLength: this.Constants.MaxLength30 }];
+        let x: MaxMinLengthValidation[] = [{ prop: this.Constants.brandName, maxLength: this.Constants.MaxLength30 }];
         this.ServerResponseHandler.GetErrorNotification_swal(e, x);
       }
     });

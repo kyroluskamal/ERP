@@ -53,6 +53,7 @@
                     [RowDeleted]="RowDeleted_SubCat"
                     [DisableAddButton]="SelectedRows_MainCat.length===0"
                     (ClickAddButton)="AddNew_SubCat($event)"
+                    [NoDataMessage]="NoDataMessage"
                     [ChangeSelectedRow]="SelectedRows_SubCat"
                     [ToolTipText_input]="translate.GetTranslation(this.Constants.Add.toLowerCase()) + ' ' + translate.GetTranslation(this.Constants.Sub_Categories_Singular.toLowerCase())">
         </kiko-table>

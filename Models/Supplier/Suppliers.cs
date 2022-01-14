@@ -1,5 +1,6 @@
 ﻿using ERP.Models.Employee;
 using ERP.Models.Generals;
+using ERP.Models.Items;
 using ERP.Utilities.Helpers;
 using System;
 using System.Collections.Generic;
@@ -61,6 +62,7 @@ namespace ERP.Models.Supplier
         public ApplicationUser ApplicationUser { get; set; }
         public int? AddedBy_UserId { get; set; } //Not Required temporary
         public string AddedBy_UserName { get; set; }
+        public ICollection<ItemSuppliers> ItemSuppliers { get; set; }
         [NotMapped]
         public string Subdomain { get; set; }
     }

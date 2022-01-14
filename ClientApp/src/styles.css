@@ -784,10 +784,10 @@ body {
   font-size: 14px !important;
   font-family: inherit !important;
 }
-.Light-for-Child-Component .mat-card,
+/* .Light-for-Child-Component .mat-card,
 .dark-for-Child-Component .mat-card{
   margin:0 !important;
-}
+} */
 
 .space-between{
   justify-content: space-between !important;
@@ -829,7 +829,6 @@ mat-card.mat-card.mat-focus-indicator.dark-for-Child-Component , .dark-for-Body 
   font-weight: bold;
 }
 .mat-select-panel button{
-  width: 100%;
     border: none;
     background: blanchedalmond;
     cursor: pointer;
@@ -931,12 +930,13 @@ table {
   left: 0;
   bottom: 56px;
   right: 0;
-  background: rgba(0, 0, 0, 0.557);
+  background: #bebbeb9e;
   z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
+  box-shadow: 1px 1px 20px 7px white inset;
 }
 
 .table-container {
@@ -1251,7 +1251,54 @@ h2#swal2-title{
 }
 .mat-bottom-sheet-container{
   padding:0 !important;
-}
-.mat-bottom-sheet-container{
   max-height: 100vh !important;
+}
+.mat-step-label {
+  color: inherit !important;
+}
+
+.mat-step-label{
+  font-size:1.2rem;
+  font-family: "Hacen Casablanca";
+}
+.mat-optgroup-label{
+  background-color: ghostwhite;
+  font: inherit;
+  font-weight: bold;
+}
+
+.led-yellow {
+  color: #FF0;
+  text-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #808002 0 -1px 9px, #FF0 0 2px 12px;
+  /* -webkit-animation: blinkYellow 1s infinite;
+  -moz-animation: blinkYellow 1s infinite;
+  -ms-animation: blinkYellow 1s infinite;
+  -o-animation: blinkYellow 1s infinite;
+  animation: blinkYellow 1s infinite; */
+}
+
+@-webkit-keyframes blinkYellow {
+    from { color: #FF0; }
+    50% { color: #AA0; text-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #808002 0 -1px 9px, #FF0 0 2px 0; }
+    to { color: #FF0; }
+}
+@-moz-keyframes blinkYellow {
+    from { color: #FF0; }
+    50% { color: #AA0; text-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #808002 0 -1px 9px, #FF0 0 2px 0; }
+    to { color: #FF0; }
+}
+@-ms-keyframes blinkYellow {
+    from { color: #FF0; }
+    50% { color: #AA0; text-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #808002 0 -1px 9px, #FF0 0 2px 0; }
+    to { color: #FF0; }
+}
+@-o-keyframes blinkYellow {
+    from { color: #FF0; }
+    50% { color: #AA0; text-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #808002 0 -1px 9px, #FF0 0 2px 0; }
+    to { color: #FF0; }
+}
+@keyframes blinkYellow {
+    from { color: #FF0; }
+    50% { color: #AA0; text-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #808002 0 -1px 9px, #FF0 0 2px 0; }
+    to { color: #FF0; }
 }
