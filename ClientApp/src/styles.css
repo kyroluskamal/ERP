@@ -1191,10 +1191,10 @@ mat-paginator .mat-icon-button.mat-button-disabled, button.paginator-Buttons:dis
 .mat-paginator-icon{
   transform: none !important;
 }
-.dark-for-Child-Component mat-form-field.mat-form-field.ng-untouched.ng-pristine.ng-valid, .mat-checkbox.ng-untouched.ng-pristine.ng-valid label span.mat-checkbox-label{
+.dark-for-Child-Component mat-form-field.mat-form-field.ng-untouched.ng-pristine.ng-valid,.dark-for-Child-Component .mat-checkbox.ng-untouched.ng-pristine.ng-valid label span.mat-checkbox-label{
   color: #e6e6e6 !important;
 }
-.Light-for-Child-Component mat-form-field.mat-form-field.ng-untouched.ng-pristine.ng-valid, .mat-checkbox.ng-untouched.ng-pristine.ng-valid label span.mat-checkbox-label{
+.Light-for-Child-Component mat-form-field.mat-form-field.ng-untouched.ng-pristine.ng-valid,.Light-for-Child-Component .mat-checkbox.ng-untouched.ng-pristine.ng-valid label span.mat-checkbox-label{
   color: #1a202e !important;
 }
 ::ng-deep .cdk-overlay-pane {

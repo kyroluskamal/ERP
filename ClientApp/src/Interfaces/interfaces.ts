@@ -139,6 +139,9 @@ export class FormFields
   chipPropertyToShowInValue?: string = "";
   chipPropertyToShowInSelection?: string = "";
   fieldToolTip: string = "";
+  imageHeight?: string = "";
+  imageWidth?: string = "";
+  UploadedImageWidth?: string = "";
 }
 export class MatFormHint
 {
@@ -163,6 +166,7 @@ export abstract class FormFieldType
   public static tel = 'tel';
   public static textarea = 'textarea';
   public static OneFile = 'OneFile';
+  public static image = 'image';
   public static select = 'select';
   public static date = 'date';
   public static number = 'number';

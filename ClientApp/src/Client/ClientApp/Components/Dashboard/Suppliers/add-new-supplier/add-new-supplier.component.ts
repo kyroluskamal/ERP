@@ -3,7 +3,7 @@ import { FormControl, FormGroup, MaxLengthValidator, Validators, } from '@angula
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from 'src/CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
-import { CardTitle, FormDefs, MatBottomSheetDismissData, MaxMinLengthValidation, SelectedDataTransfer } from 'src/Interfaces/interfaces';
+import { CardTitle, FormDefs, FormFieldType, MatBottomSheetDismissData, MaxMinLengthValidation, SelectedDataTransfer } from 'src/Interfaces/interfaces';
 import { MatBottomSheet, MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA, } from '@angular/material/bottom-sheet';
 import { faEnvelope, faMobileAlt, faPhone, faPenAlt, faEdit, faCheckCircle, faTimesCircle, faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
 import { MatTableDataSource } from '@angular/material/table';
@@ -383,7 +383,7 @@ export class AddNewSupplierComponent implements OnInit
               required: false,
             },
             {
-              type: 'OneFile',
+              type: FormFieldType.image,
               fieldToolTip: '',
               formControlName: this.Constants.logo,
               appearance: this.Constants.FormFieldInputAppearance,
@@ -391,6 +391,9 @@ export class AddNewSupplierComponent implements OnInit
               fxFlex_xs: '100%',
               mat_label: this.Constants.logo,
               required: false,
+              imageHeight: "200",
+              imageWidth: "200",
+              UploadedImageWidth: "100",
               UploadInputText: [{ text: this.Constants.ChooseImage, needTranslation: true }]
             },
           ],

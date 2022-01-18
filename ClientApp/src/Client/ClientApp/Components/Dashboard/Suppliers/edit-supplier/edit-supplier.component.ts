@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators, } from '@angular/forms';
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { TranslationService } from 'src/CommonServices/translation-service.service';
 import { ValidationErrorMessagesService } from 'src/CommonServices/ValidationErrorMessagesService/validation-error-messages.service';
-import { CardTitle, DataToEdit_PassToBottomSheet, FormDefs, MaxMinLengthValidation, SelectedDataTransfer } from 'src/Interfaces/interfaces';
+import { CardTitle, DataToEdit_PassToBottomSheet, FormDefs, FormFieldType, MaxMinLengthValidation, SelectedDataTransfer } from 'src/Interfaces/interfaces';
 import { MatBottomSheet, MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA, } from '@angular/material/bottom-sheet';
 import { faEnvelope, faMobileAlt, faPhone, faPenAlt, faEdit, faCheckCircle, faTimesCircle, faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
 import { ServerResponseHandelerService } from 'src/CommonServices/server-response-handeler.service';
@@ -382,7 +382,7 @@ export class EditSupplierComponent implements OnInit
               required: false,
             },
             {
-              type: 'OneFile',
+              type: FormFieldType.image,
               fieldToolTip: '',
               formControlName: this.Constants.logo,
               appearance: this.Constants.FormFieldInputAppearance,
@@ -390,6 +390,9 @@ export class EditSupplierComponent implements OnInit
               fxFlex_xs: '100%',
               mat_label: this.Constants.logo,
               required: false,
+              imageHeight: "200",
+              imageWidth: "200",
+              UploadedImageWidth: "100",
               UploadInputText: [{ text: this.Constants.ChooseImage, needTranslation: true }]
             },
           ],
@@ -407,14 +410,15 @@ export class EditSupplierComponent implements OnInit
   }
   EditSupplier(EditedObj: FormDefs)
   {
+
     //If not updated close the bottomsheet
     if (!this.ClientValidaiton.isUpdated(this.data.dataToEdit, EditedObj.form))
     {
+      this.spinner.removeSpinner();
       this.data.ShowProgressBar = false;
       this._bottomSheetRef.dismiss(this.data);
       return;
     }
-    this.spinner.fullScreenSpinnerForForm();
     if (!(this.ClientValidaiton.isUnique(this.data.Array, this.Constants.businessName, this.Edit.get(this.Constants.businessName)?.value, this.data.dataToEdit.id)))
     {
       this.spinner.removeSpinner();
@@ -428,6 +432,8 @@ export class EditSupplierComponent implements OnInit
     UpdatedItem.countryName = this.GeneralsService.Country.find((x) => x.id === UpdatedItem.countryId)?.countryName!;
     UpdatedItem.countryNameCode = this.GeneralsService.Country.find((x) => x.id === UpdatedItem.countryId)?.countryNameCode!;
     UpdatedItem.subdomain = this.Subdomain;
+    this.spinner.fullScreenSpinnerForForm();
+
     this.SuppliersService.UpdateSupplier(UpdatedItem).subscribe({
       next: r =>
       {

@@ -5,11 +5,13 @@ import { TranslationService } from './translation-service.service';
 @Injectable({
   providedIn: 'root'
 })
-export class SpinnerService {
+export class SpinnerService
+{
 
   constructor(private spinner: NgxSpinnerService, private translate: TranslationService) { }
 
-  fullScreenSpinner() {
+  fullScreenSpinner()
+  {
     return this.spinner.show('general', {
       fullScreen: true,
       type: "ball-clip-rotate-pulse",
@@ -19,9 +21,10 @@ export class SpinnerService {
       zIndex: 500000
     });
   }
-  fullScreenSpinnerForForm() {
+  fullScreenSpinnerForForm()
+  {
     return this.spinner.show('form', {
-      fullScreen: false,
+      fullScreen: true,
       type: "ball-clip-rotate-pulse",
       size: "large",
       bdColor: "rgba(0, 0, 0, 0.25)",
@@ -29,7 +32,8 @@ export class SpinnerService {
       zIndex: 500000
     });
   }
-  InsideContainerSpinner() {
+  InsideContainerSpinner()
+  {
     return this.spinner.show('inside', {
       fullScreen: false,
       type: "ball-clip-rotate-pulse",
@@ -38,7 +42,8 @@ export class SpinnerService {
       color: "white",
     });
   }
-  removeSpinner() {
+  removeSpinner()
+  {
     this.spinner.hide('general');
     this.spinner.hide('inside');
     this.spinner.hide('form');

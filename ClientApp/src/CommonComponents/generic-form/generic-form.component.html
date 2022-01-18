@@ -361,16 +361,15 @@
                     lightbulb
                   </span></mat-icon>
               </div>
-              <div *ngIf="field.type === 'OneFile'"
-                   fxLayout="row"
-                   fxLayoutAlign="start center"
+              <div *ngIf="field.type === 'image'"
+                   fxLayout="column"
+                   fxLayoutAlign="center start"
                    [matTooltip]="field.fieldToolTip.toLowerCase()|translate"
                    [matTooltipPosition]="Theme_dir==='ltr'?'right':'left'"
                    [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
                    style="font: inherit !important;"
                    [fxFlex]="field.fxFlex? field.fxFlex:''"
                    [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''">
-                <label for="oneFileImage">{{field.mat_label.toLowerCase()| translate}} : </label>
                 <input type="file"
                        accept="image/*"
                        name="oneFileImage"
@@ -378,39 +377,49 @@
                        [disabled]="field.disabled?field.disabled:false"
                        (change)="onFileSelected($event,field.formControlName)"
                        #fileUpload>
-
-                <div class="file-upload"
-                     fxLayoutAlign="start center"
-                     [dir]="translate.isRightToLeft(translate.GetCurrentLang())?'rtl':'ltr'">
-                  <button mat-mini-fab
-                          color="primary"
+                <div fxLayoutAlign="center"
+                     fxLayout="column">
+                  <button mat-raised-button
+                          *ngIf="!FormSpec.form.get(field.formControlName)?.value"
                           class="upload-btn"
                           (click)="fileUpload.click()">
-                    <mat-icon>attach_file</mat-icon>
-                  </button>
-                  <div *ngIf="!FormSpec.form.get(field.formControlName)?.value"
-                       (click)="fileUpload.click()"
-                       style="margin-left: 10px; margin-right: 10px; display: inline-block;">
+                    <div fxLayout="column"
+                         fxLayoutAlign="center center"
+                         [ngStyle]="{'width.px': field.imageWidth, 'height.px':field.imageHeight}">
+                      <img *ngIf="
+                       !FormSpec.form.get(field.formControlName)?.value"
+                           src="../../assets/imageHolder.png"
+                           alt="placeholder"
+                           width="50px">
+                      <span style="color: rgb(36, 44, 255);">{{field.mat_label.toLowerCase()| translate}}</span>
 
-                    <span *ngIf="field.UploadInputText">
-                      <span *ngFor="let t of  field.UploadInputText">
-                        {{!t.needTranslation?t.text:t.text.toLowerCase()|translate}}
-                      </span>
-                    </span>
-                  </div>
-                  <div fxLayoutAlign="center center"
-                       *ngIf="FormSpec.form.get(field.formControlName)?.value"
-                       style="margin-left: 10px; margin-right: 10px; display: inline-block;">
-                    <img [src]="FormSpec.form.get(field.formControlName)?.value"
-                         [alt]="field.formControlName"
-                         width="100px">
-                    <span><button mat-icon-button
-                              [matTooltip]="Constants.Delete|translate"
-                              (click)="FormSpec.form.get(field.formControlName)?.setValue(null); fileUpload.value=''"
-                              [class]="Constants.CSS_text_warning">
-                        <mat-icon class="mat-18">close</mat-icon>
-                      </button></span>
-                  </div>
+                    </div>
+                  </button>
+                  <button mat-raised-button
+                          style="padding:10px"
+                          class="upload-btn"
+                          *ngIf="FormSpec.form.get(field.formControlName)?.value"
+                          (click)="fileUpload.click()">
+                    <div fxLayout="column"
+                         fxLayoutAlign="center center"
+                         [style.width]="field.imageWidth"
+                         [style.height]="field.imageHeight">
+                      <img *ngIf="FormSpec.form.get(field.formControlName)?.value"
+                           [src]="FormSpec.form.get(field.formControlName)?.value"
+                           [alt]="field.formControlName"
+                           [width]="field.imageWidth"
+                           height="auto">
+                      <span
+                            *ngIf="FormSpec.form.get(field.formControlName)?.value">{{Constants.change_image|translate}}</span>
+                    </div>
+                  </button>
+                  <button mat-raised-button
+                          color="warn"
+                          *ngIf="FormSpec.form.get(field.formControlName)?.value"
+                          [matTooltip]="Constants.Delete|translate"
+                          (click)="FormSpec.form.get(field.formControlName)?.setValue(''); fileUpload.value=''">
+                    {{Constants.Delete.toLowerCase()|translate}}
+                  </button>
                 </div>
               </div>
               <!--..................................................... Form Array -->
@@ -686,16 +695,15 @@
                       </mat-autocomplete>
                     </mat-form-field>
 
-                    <div *ngIf="field.type === 'OneFile'"
-                         fxLayout="row"
-                         fxLayoutAlign="start center"
+                    <div *ngIf="field.type === 'image'"
+                         fxLayout="column"
+                         fxLayoutAlign="center start"
                          [matTooltip]="field.fieldToolTip.toLowerCase()|translate"
                          [matTooltipPosition]="Theme_dir==='ltr'?'right':'left'"
                          [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
                          style="font: inherit !important;"
                          [fxFlex]="field.fxFlex? field.fxFlex:''"
                          [fxFlex.xs]="field.fxFlex_xs?field.fxFlex_xs:''">
-                      <label for="oneFileImage">{{field.mat_label.toLowerCase()| translate}} : </label>
                       <input type="file"
                              accept="image/*"
                              name="oneFileImage"
@@ -703,39 +711,49 @@
                              [disabled]="field.disabled?field.disabled:false"
                              (change)="onFileSelected($event,field.formControlName)"
                              #fileUpload>
-
-                      <div class="file-upload"
-                           fxLayoutAlign="start center"
-                           [dir]="translate.isRightToLeft(translate.GetCurrentLang())?'rtl':'ltr'">
-                        <button mat-mini-fab
-                                color="primary"
+                      <div fxLayoutAlign="center"
+                           fxLayout="column">
+                        <button mat-raised-button
+                                *ngIf="!FormSpec.form.get(field.formControlName)?.value"
                                 class="upload-btn"
                                 (click)="fileUpload.click()">
-                          <mat-icon>attach_file</mat-icon>
-                        </button>
-                        <div *ngIf="!FormSpec.form.get(field.formControlName)?.value"
-                             (click)="fileUpload.click()"
-                             style="margin-left: 10px; margin-right: 10px; display: inline-block;">
+                          <div fxLayout="column"
+                               fxLayoutAlign="center center"
+                               [ngStyle]="{'width.px': field.imageWidth, 'height.px':field.imageHeight}">
+                            <img *ngIf="
+                        !FormSpec.form.get(field.formControlName)?.value"
+                                 src="../../assets/imageHolder.png"
+                                 alt="placeholder"
+                                 width="50px">
+                            <span style="color: rgb(36, 44, 255);">{{field.mat_label.toLowerCase()| translate}}</span>
 
-                          <span *ngIf="field.UploadInputText">
-                            <span *ngFor="let t of  field.UploadInputText">
-                              {{!t.needTranslation?t.text:t.text.toLowerCase()|translate}}
-                            </span>
-                          </span>
-                        </div>
-                        <div fxLayoutAlign="center center"
-                             *ngIf="FormSpec.form.get(field.formControlName)?.value"
-                             style="margin-left: 10px; margin-right: 10px; display: inline-block;">
-                          <img [src]="FormSpec.form.get(field.formControlName)?.value"
-                               [alt]="field.formControlName"
-                               width="100px">
-                          <span><button mat-icon-button
-                                    [matTooltip]="Constants.Delete|translate"
-                                    (click)="FormSpec.form.get(field.formControlName)?.setValue(null); fileUpload.value=''"
-                                    [class]="Constants.CSS_text_warning">
-                              <mat-icon class="mat-18">close</mat-icon>
-                            </button></span>
-                        </div>
+                          </div>
+                        </button>
+                        <button mat-raised-button
+                                style="padding:10px"
+                                class="upload-btn"
+                                *ngIf="FormSpec.form.get(field.formControlName)?.value"
+                                (click)="fileUpload.click()">
+                          <div fxLayout="column"
+                               fxLayoutAlign="center center"
+                               [style.width]="field.imageWidth"
+                               [style.height]="field.imageHeight">
+                            <img *ngIf="FormSpec.form.get(field.formControlName)?.value"
+                                 [src]="FormSpec.form.get(field.formControlName)?.value"
+                                 [alt]="field.formControlName"
+                                 [width]="field.imageWidth"
+                                 height="auto">
+                            <span
+                                  *ngIf="FormSpec.form.get(field.formControlName)?.value">{{Constants.change_image|translate}}</span>
+                          </div>
+                        </button>
+                        <button mat-raised-button
+                                color="warn"
+                                *ngIf="FormSpec.form.get(field.formControlName)?.value"
+                                [matTooltip]="Constants.Delete|translate"
+                                (click)="FormSpec.form.get(field.formControlName)?.setValue(''); fileUpload.value=''">
+                          {{Constants.Delete.toLowerCase()|translate}}
+                        </button>
                       </div>
                     </div>
                     <mat-icon style="color:#ff5722;"

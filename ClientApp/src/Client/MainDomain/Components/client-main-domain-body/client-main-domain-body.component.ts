@@ -1,5 +1,4 @@
 import { ViewportScroller } from '@angular/common';
-import { ThrowStmt } from '@angular/compiler';
 import { ChangeDetectorRef, ElementRef, HostListener, Renderer2, ViewChild } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
 import { OnDestroy } from '@angular/core';
@@ -18,7 +17,8 @@ import { RouterConstants } from 'src/Helpers/RouterConstants';
   templateUrl: './client-main-domain-body.component.html',
   styleUrls: ['./client-main-domain-body.component.css']
 })
-export class ClientMainDomainBodyComponent implements OnInit, OnDestroy {
+export class ClientMainDomainBodyComponent implements OnInit, OnDestroy
+{
   //Properties
   selected: any;
   LangSubscibtion: Subscription = new Subscription();
@@ -33,31 +33,39 @@ export class ClientMainDomainBodyComponent implements OnInit, OnDestroy {
   //constructor
   constructor(public translate: TranslationService, private viewportScroller: ViewportScroller,
     private mediaObserver: MediaObserver, public dialogHandler: DialogHandlerService,
-    public Constants: ConstantsService, private router: Router, public accountService: ClientAccountService) {
+    public Constants: ConstantsService, private router: Router, public accountService: ClientAccountService)
+  {
     this.selected = localStorage.getItem(this.Constants.lang);
 
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     this.accountService.currentUserOvservable.subscribe({
-      next: (user) => {
-        if (user) {
+      next: (user) =>
+      {
+        if (user)
+        {
           this.currentUserName = user.username;
           this.CurrentUser = user;
           this.UrlWithSubdomain = `https://${user.subdomain}.${window.location.host}`;
-        } else {
+        } else
+        {
           this.currentUserName == null;
         }
       },
       error: (error) => console.log(error)
     });
     this.MediaSubscription = this.mediaObserver.asObservable().subscribe(
-      (response: MediaChange[]) => {
-        if (response.some(x => x.mqAlias === 'xs')) {
+      (response: MediaChange[]) =>
+      {
+        if (response.some(x => x.mqAlias === 'xs'))
+        {
           this.FirstSec_Header_fontSize = '2.5rem';
           this.FirstSec_Header_LineSpace = '50px';
           this.gridCols = 1;
-        } else {
+        } else
+        {
           this.FirstSec_Header_fontSize = '5rem';
           this.FirstSec_Header_LineSpace = '80px';
           this.gridCols = 3;
@@ -65,12 +73,14 @@ export class ClientMainDomainBodyComponent implements OnInit, OnDestroy {
       }
     );
     this.LangSubscibtion = this.translate.SelectedLangSubject.subscribe(
-      (response: any) => {
+      (response: any) =>
+      {
         this.selected = response;
       }
     );
   }
-  ngOnDestroy(): void {
+  ngOnDestroy(): void
+  {
     this.LangSubscibtion.unsubscribe();
     this.MediaSubscription.unsubscribe();
   }
@@ -79,24 +89,31 @@ export class ClientMainDomainBodyComponent implements OnInit, OnDestroy {
   @ViewChild('MainDomainToolbar') ClientNavBar: ClientMainDomainNavBarComponent = {} as ClientMainDomainNavBarComponent;
 
   @HostListener('window:load')
-  onWindowLoad() {
+  onWindowLoad()
+  {
     this.viewportScroller.setOffset([0, 0]);
   }
   @HostListener('window:scroll')
-  onWindowScroll() {
-    if (this.viewportScroller.getScrollPosition()[1] > 200) {
+  onWindowScroll()
+  {
+    if (this.viewportScroller.getScrollPosition()[1] > 200)
+    {
       this.ClientNavBar.toolbarStyle = `${this.Constants.CSS_ToolBar} ${this.Constants.CSS_mat_elevation_z9}`;
-    } else {
+    } else
+    {
       this.ClientNavBar.toolbarStyle = "";
     }
   }
-  OnloginClick(value: any) {
-    if (value.clientName != null) {
+  OnloginClick(value: any)
+  {
+    if (value.clientName != null)
+    {
       this.router.navigateByUrl(`/${RouterConstants.Client_MainDomainAccountURL}`);
       this.currentUserName = value.clientName;
     }
   }
-  OnLogoutClick(value: any) {
+  OnLogoutClick(value: any)
+  {
 
     this.currentUserName = value.clientName;
     console.log(value);

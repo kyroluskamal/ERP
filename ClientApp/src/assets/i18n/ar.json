@@ -297,5 +297,6 @@
   "currentnoinwarehouse":"المخزون",
   "currentnoinwarehouse_tooltip":"ادخل الكمية الموجودة في المخزن حاليا",
   "profitmargin":"هامش الربح",
-  "profitmargintype" : "نوع الهامش"
+  "profitmargintype" : "نوع الهامش",
+  "change_image" : "غير الصورة"
 }

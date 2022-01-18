@@ -167,6 +167,7 @@ export class ConstantsService
   totalAmountInAllInvetroies = "totalAmountInAllInvetroies";
   profitMargin = "profitMargin";
   profitMarginType = "profitMarginType";
+  change_image = "change_image";
   //Notifications Messages
   DeleteMainCatWarning = "DeleteMainCatWarning";
   DeleteSubCatWarning = "DeleteSubCatWarning";

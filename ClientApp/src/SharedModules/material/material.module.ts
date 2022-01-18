@@ -39,7 +39,7 @@ const MaterialComponents = [
   MatBottomSheetModule, MatInputModule, MatFormFieldModule, CommonModule, MatSnackBarModule, MatChipsModule,
   MatCheckboxModule, MatProgressSpinnerModule, MatGridListModule, MatSidenavModule, MatNativeDateModule,
   FlexLayoutModule, MatSelectModule, MatMenuModule, MatExpansionModule, MatTooltipModule, MatAutocompleteModule,
-  MatButtonToggleModule, MatSlideToggleModule, MatTableModule, AgGridModule.withComponents([]), MatStepperModule,
+  MatButtonToggleModule, MatSlideToggleModule, MatTableModule, MatStepperModule,
   MatCardModule, MatProgressBarModule, FontAwesomeModule, MatPaginatorModule, MatSortModule, DragDropModule
 ];
 @NgModule({

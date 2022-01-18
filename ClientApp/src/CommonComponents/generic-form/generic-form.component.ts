@@ -11,7 +11,6 @@ import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-shee
 import { ComponentType } from '@angular/cdk/portal';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
-import { transpileModule } from 'typescript';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 
@@ -291,9 +290,5 @@ export class GenericFormComponent implements OnInit, OnChanges, AfterViewInit
         }
       }
     }
-  }
-  AddFormGroup(formArray: FormArray)
-  {
-
   }
 }
