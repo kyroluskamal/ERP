@@ -108,6 +108,7 @@ export class Item
   unitsIds: number[] = [];
   suppliersIds: number[] = [];
   itemSKUKeys: ItemSKUKeys[] = [];
+  productImage: string = "";
 }
 
 export class ItemBrands

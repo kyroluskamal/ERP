@@ -286,5 +286,6 @@
   "currentnoinwarehouse_tooltip":"Enter the current amount in warehouse.",
   "profitmargin":"Profit margin",
   "profitmargintype":"Margin type",
-  "change_image" : "Change Image"
+  "change_image" : "Change Image",
+  "productimage":"Product Image"
 }

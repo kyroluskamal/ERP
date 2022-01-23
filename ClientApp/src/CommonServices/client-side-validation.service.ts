@@ -174,7 +174,7 @@ export class ClientSideValidationService
   Error_swal(message: string)
   {
     return this.NotificationService.Error_Swal(`${this.translate.GetTranslation(this.Constants.error)}: `,
-      this.translate.GetTranslation(this.Constants.OK), this.translate.GetTranslation(message),
+      this.translate.GetTranslation(this.Constants.OK), this.translate.GetTranslation(message.toLowerCase()),
       this.translate.isRightToLeft(this.translate.GetCurrentLang()) ? 'rtl' : 'ltr');
   }
   convertDataURIToBinary(dataURI: any)

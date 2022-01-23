@@ -31,6 +31,7 @@ namespace ERP.Models.Items
         [DataType(DataType.Date)]
         [Column(TypeName = "Date")]
         public DateTime DateCreated { get; set; }
+        public string ProductImage { get; set; }
         [ForeignKey(nameof(AddedBy_UserId))]
         public virtual ApplicationUser ApplicationUser { get; set; }
         public int? AddedBy_UserId { get; set; }

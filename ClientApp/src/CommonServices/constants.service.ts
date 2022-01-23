@@ -247,6 +247,7 @@ export class ConstantsService
   suppliersIds = "suppliersIds";
   add_new_supplier = "add_new_supplier";
   itemSKUKeys = "itemSKUKeys";
+  productImage = "productImage";
   //Tooltip translation
   CloseSidebar = "Close sidebar";
   FixSidebar = "Fix sidebar";

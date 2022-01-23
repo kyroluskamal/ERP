@@ -92,6 +92,7 @@ export class AddNewItemComponent implements OnInit
         description: new FormControl(null),
         isOnline: new FormControl(null),
         hasExpire: new FormControl(null),
+        productImage: new FormControl(null),
       });
 
       let dataForInventoriesBottomSheet: MatBottomSheetDismissData<Inventories> = {
@@ -325,7 +326,24 @@ export class AddNewItemComponent implements OnInit
                     mat_label: this.Constants.hasExpire,
                     required: false,
                     fieldToolTip: ""
-                  }
+                  },
+                  {
+                    type: FormFieldType.image,
+                    fieldToolTip: '',
+                    formControlName: this.Constants.productImage,
+                    appearance: this.Constants.FormFieldInputAppearance,
+                    fxFlex: '100%',
+                    fxFlex_xs: '100%',
+                    mat_label: this.Constants.productImage,
+                    required: false,
+                    imageHeight: "200",
+                    imageWidth: "200",
+                    UploadedImageWidth: "100",
+                    UploadInputText: [{
+                      text: this.Constants.ChooseImage,
+                      needTranslation: true
+                    }]
+                  },
                 ],
               }, {
                 fxFlex: "49%",
