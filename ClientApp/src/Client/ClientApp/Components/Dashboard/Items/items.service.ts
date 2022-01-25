@@ -4,7 +4,6 @@ import { map, Observable } from 'rxjs';
 import { ConstantsService } from 'src/CommonServices/constants.service';
 import { RouterConstants } from 'src/Helpers/RouterConstants';
 import { AllItemNeededData, Brands, ItemMainCategory, ItemSKUKeys, ItemSubCategory, Units } from '../Models/item.model';
-import { CookieService } from "ngx-cookie-service";
 
 @Injectable({
   providedIn: 'root'

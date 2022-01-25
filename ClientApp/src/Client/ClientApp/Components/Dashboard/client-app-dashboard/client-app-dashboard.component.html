@@ -33,7 +33,8 @@
     <!-- ------------------------------------------------------------------------------------
     ----------------------------- Menus of the sidebar -------------------------------------
     ------------------------------------------------------------------------------------- -->
-    <mat-accordion multi>
+    <mat-accordion multi
+                   style="text-align: initial;">
       <mat-expansion-panel hideToggle
                            *ngFor="let item of SideNavItems; let i = index"
                            [expanded]="item.expanded">

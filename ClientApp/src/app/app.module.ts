@@ -20,6 +20,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
+
 @NgModule({
   declarations: [
     AppComponent, NotFoundComponent, CommoneResetPasswordComponent,
@@ -38,7 +39,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
       cookieName: 'XSRF-TOKEN',
       headerName: 'scfD1z5dp2',
     }),
-    SweetAlert2Module.forRoot()
+    SweetAlert2Module.forRoot(),
+
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorHandlingInterceptor, multi: true },

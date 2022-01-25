@@ -394,6 +394,8 @@ export class ConstantsService
   CSS_sidenav_content_pin_RTL = "mat-sidenav-content-pin-RTL";
   CSS_Openned_pin = "Openned-pin";
   CSS_Dashboard_ToolTip = "Dashboard-ToolTip";
+  CSS_Dashboard_ToolTip_left = "Dashboard-ToolTip-left";
+  CSS_Dashboard_ToolTip_right = "Dashboard-ToolTip-right";
   CSS_text_center = "text-center";
   CSS_Dashboard_Sidenav_CompmanyName = "Dashboard-Sidenav-CompmanyName";
   CSS_userIconImage = "userIconImage";

@@ -10,9 +10,6 @@ import { CLientAppHomeComponent } from './Components/ClientAppHome/client-app-ho
 import { ClientDashboardHomeComponent } from './Components/Dashboard/client-dashboard-home/client-dashboard-home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ItemsComponentComponent } from './Components/Dashboard/Items/items-component/items-component.component';
-import { IconButtonRendererComponent } from './Components/Dashboard/AgFrameworkComponents/button-renderer-component/Icon-button-renderer.component';
-import { SelectableEditroAgFramweworkComponent } from './Components/Dashboard/AgFrameworkComponents/selectable-editro-ag-framwework/selectable-editro-ag-framwework.component';
-import { NumberCellEditorComponent } from './Components/Dashboard/AgFrameworkComponents/number-cell-editor/number-cell-editor.component';
 import { HttpClientXsrfModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorHandlingInterceptor } from 'src/Interceptors/ErrorHandling/error-handling.interceptor';
 import { TokenInterceptorInterceptor } from 'src/Interceptors/TokenInterceptor/token-interceptor.interceptor';
@@ -51,8 +48,7 @@ import { GenericStepperComponent } from 'src/CommonServices/generic-stepper/gene
 const Commponents = [MatCardTitleOnlyComponent, GenericStepperComponent,
   ClientAppDashboardComponent, ClientAppHomeNavbarComponent, CLientAppHomeComponent,
   ClientDashboardHomeComponent, BadgeComponent, GenericTableComponent, GenericFormComponent,
-  ItemsComponentComponent, IconButtonRendererComponent,
-  SelectableEditroAgFramweworkComponent, NumberCellEditorComponent,
+  ItemsComponentComponent,
   RegisterOnAppComponent, AddNewItemComponent, InventoriesComponent, ItemBrandsComponent,
   EditInventoryComponent, StylePaginatorDirective, AddInventAddressComponent, EditInventAddressComponent,
   AddNewInventoryComponent, SuppliersComponent, AddNewItemBrandComponent, EditItemBrandComponent,

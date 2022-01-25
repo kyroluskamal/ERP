@@ -1,7 +1,7 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { StepperOrientation } from '@angular/cdk/stepper';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormArray } from '@angular/forms';
+import { FormArray, FormGroup } from '@angular/forms';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { map, Observable, Subscription } from 'rxjs';
 import { LightDarkThemeConverterService } from 'src/Client/ClientApp/Components/Dashboard/light-dark-theme-converter.service';
@@ -33,7 +33,7 @@ export class GenericStepperComponent implements OnInit
   @Output() ChipsHandler: EventEmitter<FormDefs> = new EventEmitter();
   @Output() ResetClick: EventEmitter<boolean> = new EventEmitter();
   @Output() NextClick: EventEmitter<StepperNextData> = new EventEmitter();
-  @Output() FormArrayAddButtonClick: EventEmitter<FormArray_Add_Remove_TransferData> = new EventEmitter();
+  @Output() FormArrayAddButtonClick: EventEmitter<StepperNextData> = new EventEmitter();
   constructor(
     public Constants: ConstantsService, breakpointObserver: BreakpointObserver,
     public ValidationErrorMessage: ValidationErrorMessagesService, public translate: TranslationService,
@@ -94,4 +94,9 @@ export class GenericStepperComponent implements OnInit
       }
     }
   }
+  FormArrayAdd_Click(event: FormGroup, stepper: KikoStepper, index: number)
+  {
+    this.FormArrayAddButtonClick.emit({ Stepper: stepper, index: index });
+  }
+
 }

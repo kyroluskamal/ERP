@@ -22,6 +22,7 @@
                   [fxFlex.md]="section.fxFlex_md"
                   fxFlex.xs="100%">
           <mat-card-title *ngIf="section.sectionTitle"
+                          style="text-align: initial;"
                           [ngClass]="ThemeColors.bg"
                           [class]="ThemeColors.colorName==='organge'||ThemeColors.colorName==='amber'?Constants.CSS_dark_color:
             Constants.CSS_text_white">
@@ -81,7 +82,7 @@
                 <mat-icon style="color:#ff5722;"
                           [matTooltip]="field.fieldToolTip.toLowerCase()|translate"
                           [matTooltipPosition]="Theme_dir==='ltr'?'right':'left'"
-                          [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
+                          [matTooltipClass]="Theme_dir==='ltr'?Constants.CSS_Dashboard_ToolTip_right:Constants.CSS_Dashboard_ToolTip_left"
                           *ngIf="field.fieldToolTip"><span class="material-icons">
                     lightbulb
                   </span></mat-icon>
@@ -127,7 +128,7 @@
                 <mat-icon style="color:#ff5722;"
                           [matTooltip]="field.fieldToolTip.toLowerCase()|translate"
                           [matTooltipPosition]="Theme_dir==='ltr'?'right':'left'"
-                          [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
+                          [matTooltipClass]="Theme_dir==='ltr'?Constants.CSS_Dashboard_ToolTip_right:Constants.CSS_Dashboard_ToolTip_left"
                           *ngIf="field.fieldToolTip"><span class="material-icons">
                     lightbulb
                   </span></mat-icon>
@@ -175,7 +176,7 @@
                 <mat-icon style="color:#ff5722;"
                           [matTooltip]="field.fieldToolTip.toLowerCase()|translate"
                           [matTooltipPosition]="Theme_dir==='ltr'?'right':'left'"
-                          [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
+                          [matTooltipClass]="Theme_dir==='ltr'?Constants.CSS_Dashboard_ToolTip_right:Constants.CSS_Dashboard_ToolTip_left"
                           *ngIf="field.fieldToolTip"><span class="material-icons">
                     lightbulb
                   </span></mat-icon>
@@ -221,7 +222,7 @@
                 <mat-icon style="color:#ff5722;"
                           [matTooltip]="field.fieldToolTip.toLowerCase()|translate"
                           [matTooltipPosition]="Theme_dir==='ltr'?'right':'left'"
-                          [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
+                          [matTooltipClass]="Theme_dir==='ltr'?Constants.CSS_Dashboard_ToolTip_right:Constants.CSS_Dashboard_ToolTip_left"
                           *ngIf="field.fieldToolTip"><span class="material-icons">
                     lightbulb
                   </span></mat-icon>
@@ -241,7 +242,7 @@
                 <mat-icon style="color:#ff5722;"
                           [matTooltip]="field.fieldToolTip.toLowerCase()|translate"
                           [matTooltipPosition]="Theme_dir==='ltr'?'right':'left'"
-                          [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
+                          [matTooltipClass]="Theme_dir==='ltr'?Constants.CSS_Dashboard_ToolTip_right:Constants.CSS_Dashboard_ToolTip_left"
                           *ngIf="field.fieldToolTip"><span class="material-icons">
                     lightbulb
                   </span></mat-icon>
@@ -356,7 +357,7 @@
                 <mat-icon style="color:#ff5722;"
                           [matTooltip]="field.fieldToolTip.toLowerCase()|translate"
                           [matTooltipPosition]="Theme_dir==='ltr'?'right':'left'"
-                          [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
+                          [matTooltipClass]="Theme_dir==='ltr'?Constants.CSS_Dashboard_ToolTip_right:Constants.CSS_Dashboard_ToolTip_left"
                           *ngIf="field.fieldToolTip"><span class="material-icons">
                     lightbulb
                   </span></mat-icon>
@@ -759,7 +760,7 @@
                     <mat-icon style="color:#ff5722;"
                               [matTooltip]="field.fieldToolTip.toLowerCase()|translate"
                               [matTooltipPosition]="Theme_dir==='ltr'?'right':'left'"
-                              [matTooltipClass]="Constants.CSS_Dashboard_ToolTip"
+                              [matTooltipClass]="Theme_dir==='ltr'?Constants.CSS_Dashboard_ToolTip_right:Constants.CSS_Dashboard_ToolTip_left"
                               *ngIf="field.fieldToolTip"><span class="material-icons">
                         lightbulb
                       </span></mat-icon>
@@ -771,7 +772,7 @@
                   </button>
                 </div>
                 <button mat-raised-button
-                        (click)="formArray(field.formArrayName!).push(FormSpec.formGroupToAddInFormArray!)">
+                        (click)="FormArrayAdd_click(FormSpec.formGroupToAddInFormArray!);formArray(field.formArrayName!).push(FormSpec.formGroupToAddInFormArray!)">
                   add
                 </button>
               </div>

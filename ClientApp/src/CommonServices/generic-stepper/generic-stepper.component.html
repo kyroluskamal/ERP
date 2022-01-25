@@ -10,6 +10,7 @@
                            (DatOnChange)="SendData($event)"
                            [showAddOrSaveButton]="false"
                            (ChipsHandler)="ChipsHandle($event)"
+                           (FormArrayAddClick)="FormArrayAdd_Click($event, Stepper, i)"
                            [AllSelectedData]="form.AllSelectionData!"
                            (GetValue)="SendData($event)"></kiko-form>
                 <div fxLayout="row"

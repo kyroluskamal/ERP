@@ -45,6 +45,7 @@ export class GenericFormComponent implements OnInit, OnChanges, AfterViewInit
   @Output() BottomSheetDismissed: EventEmitter<boolean> = new EventEmitter();
   @Output() DatOnChange: EventEmitter<FormDefs> = new EventEmitter();
   @Output() ChipsHandler: EventEmitter<FormDefs> = new EventEmitter();
+  @Output() FormArrayAddClick: EventEmitter<FormGroup> = new EventEmitter();
   @ViewChild("matselect") MatSelect!: MatSelect;
   @ViewChild('chip') chipsInput!: ElementRef<HTMLInputElement>;
   constructor(private _bottomSheetRef: MatBottomSheetRef<any>,
@@ -290,5 +291,9 @@ export class GenericFormComponent implements OnInit, OnChanges, AfterViewInit
         }
       }
     }
+  }
+  FormArrayAdd_click(formGroup: FormGroup)
+  {
+    this.FormArrayAddClick.emit(formGroup);
   }
 }

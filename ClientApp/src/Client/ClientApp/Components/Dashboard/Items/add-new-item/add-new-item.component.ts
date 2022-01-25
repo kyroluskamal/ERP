@@ -93,6 +93,7 @@ export class AddNewItemComponent implements OnInit
         isOnline: new FormControl(null),
         hasExpire: new FormControl(null),
         productImage: new FormControl(null),
+        notifyLessThan: new FormControl(1),
       });
 
       let dataForInventoriesBottomSheet: MatBottomSheetDismissData<Inventories> = {
@@ -146,7 +147,7 @@ export class AddNewItemComponent implements OnInit
                 fxFlex_sm: "100%",
                 formFieldsSpec: [
                   {
-                    type: "text",
+                    type: FormFieldType.text,
                     fieldToolTip: '',
                     formControlName: this.Constants.itemName,
                     appearance: this.Constants.FormFieldInputAppearance,
@@ -166,7 +167,7 @@ export class AddNewItemComponent implements OnInit
                     // maxLength: "30"
                   },
                   {
-                    type: "select",
+                    type: FormFieldType.select,
                     fieldToolTip: '',
                     formControlName: this.Constants.defaultInventoryId,
                     appearance: this.Constants.FormFieldInputAppearance,
@@ -184,7 +185,7 @@ export class AddNewItemComponent implements OnInit
                     ShowSelectionAddButton: true,
                     SelectionDataSentToBottomSheet: dataForInventoriesBottomSheet
                   }, {
-                    type: "select",
+                    type: FormFieldType.select,
                     fieldToolTip: '',
                     formControlName: this.Constants.MainCat_Singular,
                     appearance: this.Constants.FormFieldInputAppearance,
@@ -204,7 +205,7 @@ export class AddNewItemComponent implements OnInit
                     SelectionDataSentToBottomSheet: dataForMainCatBottomSheet
                   },
                   {
-                    type: "select",
+                    type: FormFieldType.select,
                     formControlName: this.Constants.subCatsId,
                     appearance: this.Constants.FormFieldInputAppearance,
                     fxFlex: "49%",
@@ -224,7 +225,7 @@ export class AddNewItemComponent implements OnInit
                     Selection_Multiple: true,
                   },
                   {
-                    type: "select",
+                    type: FormFieldType.select,
                     fieldToolTip: '',
                     formControlName: this.Constants.brandsIds,
                     appearance: this.Constants.FormFieldInputAppearance,
@@ -245,7 +246,7 @@ export class AddNewItemComponent implements OnInit
                   },
                   {
                     // ..................................................Item units
-                    type: "select",
+                    type: FormFieldType.select,
                     fieldToolTip: '',
                     formControlName: this.Constants.unitsIds,
                     appearance: this.Constants.FormFieldInputAppearance,
@@ -308,7 +309,21 @@ export class AddNewItemComponent implements OnInit
                     chipPropertyToShowInValue: "id"
                   },
                   {
-                    type: "checkbox",
+                    type: FormFieldType.number,
+                    formControlName: this.Constants.notifyLessThan,
+                    appearance: this.Constants.FormFieldInputAppearance,
+                    fxFlex: "49%",
+                    fxFlex_xs: "100%",
+                    mat_label: this.Constants.notifyLessThan,
+                    required: false,
+                    fieldToolTip: "",
+                    errors: [{
+                      type: 'required',
+                      TranslatedMessage: [{ text: this.Constants.Required_field_Error, needTraslation: true }]
+                    }]
+                  },
+                  {
+                    type: FormFieldType.checkbox,
                     appearance: this.Constants.FormFieldInputAppearance,
                     formControlName: this.Constants.isOnline,
                     fxFlex: "49%",
@@ -318,7 +333,7 @@ export class AddNewItemComponent implements OnInit
                     fieldToolTip: ""
                   },
                   {
-                    type: "checkbox",
+                    type: FormFieldType.checkbox,
                     appearance: this.Constants.FormFieldInputAppearance,
                     formControlName: this.Constants.hasExpire,
                     fxFlex: "49%",
@@ -326,6 +341,48 @@ export class AddNewItemComponent implements OnInit
                     mat_label: this.Constants.hasExpire,
                     required: false,
                     fieldToolTip: ""
+                  },
+
+                ],
+              }, {
+                fxFlex: "49%",
+                fxFlex_sm: "100%",
+                formFieldsSpec: [
+                  {
+                    type: FormFieldType.textarea,
+                    formControlName: this.Constants.Description.toLowerCase(),
+                    fieldToolTip: '',
+                    appearance: this.Constants.FormFieldInputAppearance,
+                    fxFlex: "100%",
+                    fxFlex_xs: "100%",
+                    mat_label: this.Constants.Description,
+                    faIcon: faPenAlt,
+                    cdkAutosizeMinRows: '5',
+                    required: false,
+                  },
+                  {
+                    type: FormFieldType.textarea,
+                    formControlName: this.Constants.Description.toLowerCase(),
+                    fieldToolTip: '',
+                    appearance: this.Constants.FormFieldInputAppearance,
+                    fxFlex: "100%",
+                    fxFlex_xs: "100%",
+                    mat_label: this.Constants.internalNote,
+                    faIcon: faPenAlt,
+                    cdkAutosizeMinRows: '5',
+                    required: false,
+                  },
+                  {
+                    type: FormFieldType.textarea,
+                    formControlName: this.Constants.notesForClients,
+                    fieldToolTip: '',
+                    appearance: this.Constants.FormFieldInputAppearance,
+                    fxFlex: "100%",
+                    fxFlex_xs: "100%",
+                    mat_label: this.Constants.notesForClients,
+                    faIcon: faPenAlt,
+                    cdkAutosizeMinRows: '5',
+                    required: false,
                   },
                   {
                     type: FormFieldType.image,
@@ -344,47 +401,6 @@ export class AddNewItemComponent implements OnInit
                       needTranslation: true
                     }]
                   },
-                ],
-              }, {
-                fxFlex: "49%",
-                fxFlex_sm: "100%",
-                formFieldsSpec: [
-                  {
-                    type: "textarea",
-                    formControlName: this.Constants.Description.toLowerCase(),
-                    fieldToolTip: '',
-                    appearance: this.Constants.FormFieldInputAppearance,
-                    fxFlex: "100%",
-                    fxFlex_xs: "100%",
-                    mat_label: this.Constants.Description,
-                    faIcon: faPenAlt,
-                    cdkAutosizeMinRows: '3',
-                    required: false,
-                  },
-                  {
-                    type: "textarea",
-                    formControlName: this.Constants.Description.toLowerCase(),
-                    fieldToolTip: '',
-                    appearance: this.Constants.FormFieldInputAppearance,
-                    fxFlex: "100%",
-                    fxFlex_xs: "100%",
-                    mat_label: this.Constants.internalNote,
-                    faIcon: faPenAlt,
-                    cdkAutosizeMinRows: '3',
-                    required: false,
-                  },
-                  {
-                    type: "textarea",
-                    formControlName: this.Constants.notesForClients,
-                    fieldToolTip: '',
-                    appearance: this.Constants.FormFieldInputAppearance,
-                    fxFlex: "100%",
-                    fxFlex_xs: "100%",
-                    mat_label: this.Constants.notesForClients,
-                    faIcon: faPenAlt,
-                    cdkAutosizeMinRows: '3',
-                    required: false,
-                  }
                 ]
               }
             ],
@@ -530,7 +546,7 @@ export class AddNewItemComponent implements OnInit
 
   NextClick(event: StepperNextData)
   {
-    console.log(event);
+
     if (event.index === 0)
     {
       let ChoosenItemBrands: number[] = event.Stepper.formDef![0].form.get(this.Constants.brandsIds)?.value;
@@ -538,11 +554,10 @@ export class AddNewItemComponent implements OnInit
       for (let brand of ChoosenItemBrands)
       {
         let formArray: FormArray = new FormArray([]);
-        formArray.push(this.AddItemVariantToFormArray());
+        event.Stepper.formDef![1].formGroupToAddInFormArray?.get(this.Constants.notifyLessThan)?.setValue(event.Stepper.formDef![0].form.get(this.Constants.notifyLessThan)?.value);
+        formArray.push(event.Stepper.formDef![1].formGroupToAddInFormArray!);
         event.Stepper.formDef![1].form.addControl(`itemvariants${brand}`, formArray);
-        console.log(this.ItemsService.AllItemNeededData.brands.filter(i => { return i.id === brand; })[0].brandName!);
-        let dataSource: MatTableDataSource<ItemVariants> = new MatTableDataSource<ItemVariants>();
-        dataSource.data.push(new ItemVariants());
+
         let formSection: formSections = {
           sectionTitle: [
             { text: this.Constants.variants_fo_brand_, needTranslation: true },
@@ -556,7 +571,6 @@ export class AddNewItemComponent implements OnInit
               formControlName: "",
               type: FormFieldType.array,
               displayedColumns: [this.Constants.variantName],
-              dataSource: dataSource,
               formArray: event.Stepper.formDef![1].form.get(`itemvariants${brand}`) as FormArray,
               formArrayName: `itemvariants${brand}`,
               appearance: this.Constants.FormFieldInputAppearance,
@@ -651,7 +665,6 @@ export class AddNewItemComponent implements OnInit
         };
         event.Stepper.formDef![1].formSections.push(formSection);
       }
-      console.log(event);
     }
   }
 
@@ -659,11 +672,13 @@ export class AddNewItemComponent implements OnInit
   {
     let newFormGroup = new FormGroup({
       variantName: new FormControl(null),
-      notifyLessThan: new FormControl(0),
+      notifyLessThan: new FormControl(this.AddNew.get(this.Constants.notifyLessThan)?.value),
       lastPurchasePrice: new FormControl(0),
       profitMargin: new FormControl(0),
       profitMarginType: new FormControl(1)
     });
     return newFormGroup;
   }
+
+
 }
