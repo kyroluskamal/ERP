@@ -7,7 +7,7 @@
          fxFlex.xs="100%">
         <mat-card-title-only [Title]="Title_MainCat"
                              [Subtitle]="Subtitle_MainCat"></mat-card-title-only>
-        <kiko-table [columns]="columns_MainCat"
+        <erp-table [columns]="columns_MainCat"
                     [data]="All_MainCat"
                     [datasource]="dataSource_MainCat"
                     [isLoadingResults]="isLoadingResults_MainCat"
@@ -26,7 +26,7 @@
                     [RowDeleted]="RowDeleted_MainCat"
                     (ClickAddButton)="AddNew_MainCat($event)"
                     [ToolTipText_input]="translate.GetTranslation(this.Constants.Add.toLowerCase()) + ' ' + translate.GetTranslation(this.Constants.MainCat_Singular.toLowerCase())">
-        </kiko-table>
+        </erp-table>
     </div>
     <div fxLayout="column"
          fxLayoutGap="16px"
@@ -34,7 +34,7 @@
          fxFlex.xs="100%">
         <mat-card-title-only [Title]="Title_SubCat"
                              [Subtitle]="Subtitle_SubCat"></mat-card-title-only>
-        <kiko-table [columns]="columns_SubCat"
+        <erp-table [columns]="columns_SubCat"
                     [data]="All_SubCat"
                     [datasource]="dataSource_SubCat"
                     [isLoadingResults]="isLoadingResults_SubCat"
@@ -56,6 +56,6 @@
                     [NoDataMessage]="NoDataMessage"
                     [ChangeSelectedRow]="SelectedRows_SubCat"
                     [ToolTipText_input]="translate.GetTranslation(this.Constants.Add.toLowerCase()) + ' ' + translate.GetTranslation(this.Constants.Sub_Categories_Singular.toLowerCase())">
-        </kiko-table>
+        </erp-table>
     </div>
 </div>

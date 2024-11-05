@@ -5,14 +5,14 @@
         <mat-step *ngFor="let form of Stepper.formDef; let i =index"
                   [stepControl]="form.form">
                 <ng-template matStepLabel>{{form.stepperStepLabel!.toLowerCase()|translate}}</ng-template>
-                <kiko-form [Form]="form"
+                <erp-form [Form]="form"
                            *ngIf="form"
                            (DatOnChange)="SendData($event)"
                            [showAddOrSaveButton]="false"
                            (ChipsHandler)="ChipsHandle($event)"
                            (FormArrayAddClick)="FormArrayAdd_Click($event, Stepper, i)"
                            [AllSelectedData]="form.AllSelectionData!"
-                           (GetValue)="SendData($event)"></kiko-form>
+                           (GetValue)="SendData($event)"></erp-form>
                 <div fxLayout="row"
                      style="margin-top: 5px;">
                         <button mat-raised-button

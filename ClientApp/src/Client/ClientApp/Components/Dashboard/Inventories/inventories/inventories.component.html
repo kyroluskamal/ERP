@@ -3,7 +3,7 @@
   <mat-card-title-only [Title]="Title"
                        [Subtitle]="Subtitle">
   </mat-card-title-only>
-  <kiko-table [columns]="columns"
+  <erp-table [columns]="columns"
               [data]="AllInventories"
               [datasource]="dataSource"
               [isLoadingResults]="isLoadingResults"
@@ -28,5 +28,5 @@
               (ClickAddButton)="AddNewInvent($event)"
               [ToolTipText_input]="translate.GetTranslation(this.Constants.Add.toLowerCase()) + ' ' + translate.GetTranslation(this.Constants.Warehouse_Singular.toLowerCase())">
 
-  </kiko-table>
+  </erp-table>
 </div>

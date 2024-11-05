@@ -3,7 +3,7 @@
      <mat-card-title-only [Title]="Title"
                           [Subtitle]="Subtitle">
      </mat-card-title-only>
-     <kiko-table [columns]="columns"
+     <erp-table [columns]="columns"
                  [data]="AllSuppliers"
                  [datasource]="dataSource"
                  [isLoadingResults]="isLoadingResults"
@@ -20,5 +20,5 @@
                  (ClickAddButton)="AddSupplier($event)"
                  [CollabsableDataSections]="CollapsibleDataSections"
                  [ToolTipText_input]="translate.GetTranslation(Constants.Add.toLowerCase()) + ' ' + translate.GetTranslation(Constants.Supplier_Singular.toLowerCase())">
-     </kiko-table>
+     </erp-table>
 </div>
